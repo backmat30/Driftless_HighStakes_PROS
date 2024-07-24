@@ -1,4 +1,4 @@
-#ifndef __DRIVETRAIN_SUBSYTEM_HPP__
+#ifndef __DRIVETRAIN_SUBSYSTEM_HPP__
 #define __DRIVETRAIN_SUBSYSTEM_HPP__
 
 #include "pvegas/robot/subsystems/ASubsystem.hpp"
@@ -10,26 +10,25 @@ namespace robot {
 namespace subsystems {
 namespace drivetrain {
 class DrivetrainSubsystem : public ASubsystem {
-    private:
+private:
+  static constexpr char SUBSYSTEM[]{"DIFFERENTIAL DRIVE"};
+  static constexpr char SET_VELOCITY_COMMAND[]{"SET VELOCITY"};
+  static constexpr char SET_VOLTAGE_COMMAND[]{"SET VOLTAGE"};
+  static constexpr char GET_VELOCITY[]{"GET VELOCITY"};
+  static constexpr char GET_RADIUS[]{"GET RADIUS"};
 
-    static constexpr char SUBSYSTEM[]{"DIFFERENTIAL DRIVE"};
-    static constexpr char SET_VELOCITY_COMMAND[]{"SET VELOCITY"};
-    static constexpr char SET_VOLTAGE_COMMAND[]{"SET VOLTAGE"};
-    static constexpr char GET_VELOCITY[]{"GET VELOCITY"};
-    static constexpr char GET_RADIUS[]{"GET RADIUS"};
+  std::unique_ptr<IDrivetrain> m_drivetrain{};
 
-    std::unique_ptr<IDriveTrain> m_drivetrain{};
+public:
+  DrivetrainSubsystem(std::unique_ptr<IDrivetrain> &drivetrain);
 
-    public:
-    DrivetrainSubsystem(std::unique_ptr<IDriveTrain>& drivetrain);
+  void init() override;
 
-    void init() override;
+  void run() override;
 
-    void run() override;
+  void command(std::string command_name, va_list &args) override;
 
-    void command(std::string command_name, va_list& args) override;
-
-    void* state(std::string state_name) override;
+  void *state(std::string state_name) override;
 };
 } // namespace drivetrain
 } // namespace subsystems

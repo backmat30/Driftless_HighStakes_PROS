@@ -6,9 +6,9 @@ namespace pvegas {
 namespace robot {
 namespace subsystems {
 namespace drivetrain {
-    class IDriveTrain{
+    class IDrivetrain{
         public:
-        virtual ~IDriveTrain() = default;
+        virtual ~IDrivetrain() = default;
 
         virtual void init() = 0;
 
@@ -20,7 +20,7 @@ namespace drivetrain {
 
         virtual void setVoltage(double leftVoltage, double rightVoltage) = 0;
         
-        virtual double getRadius() = 0;
+        virtual double getDriveRadius() = 0;
     };
 }
 } // namespace subsystems
