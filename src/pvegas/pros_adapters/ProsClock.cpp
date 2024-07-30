@@ -2,8 +2,8 @@
 
 namespace pvegas {
 namespace pros_adapters {
-std::unique_ptr<ProsClock> ProsClock::clone() const {
-  return std::unique_ptr<ProsClock>(std::make_unique<ProsClock>(*this));
+std::unique_ptr<rtos::IClock> ProsClock::clone() const {
+  return std::unique_ptr<rtos::IClock>(std::make_unique<ProsClock>(*this));
 }
 
 uint32_t ProsClock::getTime() { return pros::millis(); }
