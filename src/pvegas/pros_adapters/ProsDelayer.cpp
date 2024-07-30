@@ -1,7 +1,4 @@
 #include "pvegas/pros_adapters/ProsDelayer.hpp"
-#include "pros/rtos.hpp"
-#include <cstdint>
-#include <memory>
 
 namespace pvegas{
     namespace pros_adapters{
