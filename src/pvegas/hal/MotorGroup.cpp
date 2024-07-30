@@ -1,9 +1,8 @@
 #include "pvegas/hal/MotorGroup.hpp"
-#include "pvegas/pros_adapters/ProsV5Motor.hpp"
 
 namespace pvegas {
 namespace hal {
-void MotorGroup::addMotor(std::unique_ptr<pros_adapters::ProsV5Motor> &motor) {
+void MotorGroup::addMotor(std::unique_ptr<io::IMotor> &motor) {
   motors.push_back(std::move(motor));
 }
 

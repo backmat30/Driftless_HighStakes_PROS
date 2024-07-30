@@ -5,13 +5,13 @@ namespace robot {
 namespace subsystems {
 namespace drivetrain {
 DirectDriveBuilder *DirectDriveBuilder::withLeftMotor(
-    std::unique_ptr<pros_adapters::ProsV5Motor> &motor) {
+    std::unique_ptr<io::IMotor> &motor) {
   m_left_motors.addMotor(motor);
   return this;
 }
 
 DirectDriveBuilder *DirectDriveBuilder::withRightMotor(
-    std::unique_ptr<pros_adapters::ProsV5Motor> &motor) {
+    std::unique_ptr<io::IMotor> &motor) {
   m_right_motors.addMotor(motor);
   return this;
 }

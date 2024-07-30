@@ -3,7 +3,7 @@
 
 #include "DirectDrive.hpp"
 #include "pvegas/hal/MotorGroup.hpp"
-#include "pvegas/pros_adapters/ProsV5Motor.hpp"
+#include "pvegas/io/IMotor.hpp"
 #include "pvegas/robot/subsystems/drivetrain/IDrivetrain.hpp"
 #include <memory>
 
@@ -23,9 +23,9 @@ private:
   double m_drive_radius{};
 
 public:
-  DirectDriveBuilder* withLeftMotor(std::unique_ptr<pros_adapters::ProsV5Motor>& motor);
+  DirectDriveBuilder* withLeftMotor(std::unique_ptr<io::IMotor>& motor);
 
-  DirectDriveBuilder* withRightMotor(std::unique_ptr<pros_adapters::ProsV5Motor>& motor);
+  DirectDriveBuilder* withRightMotor(std::unique_ptr<io::IMotor>& motor);
 
   DirectDriveBuilder* withVelocityToVoltage(double velocity_to_voltage);
 

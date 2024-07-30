@@ -1,16 +1,16 @@
 #ifndef __MOTOR_GROUP_HPP__
 #define __MOTOR_GROUP_HPP__
-#include "pvegas/pros_adapters/ProsV5Motor.hpp"
+#include "pvegas/io/IMotor.hpp"
 #include <memory>
 #include <vector>
 namespace pvegas {
 namespace hal {
 class MotorGroup {
 private:
-  std::vector<std::unique_ptr<pros_adapters::ProsV5Motor>> motors{};
+  std::vector<std::unique_ptr<io::IMotor>> motors{};
 
 public:
-  void addMotor(std::unique_ptr<pros_adapters::ProsV5Motor> &motor);
+  void addMotor(std::unique_ptr<io::IMotor> &motor);
 
   void init();
 
