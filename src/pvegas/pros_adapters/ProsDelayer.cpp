@@ -2,8 +2,8 @@
 
 namespace pvegas{
     namespace pros_adapters{
-        std::unique_ptr<ProsDelayer> ProsDelayer::clone() const{
-            return std::unique_ptr<ProsDelayer>(std::make_unique<ProsDelayer>(*this));
+        std::unique_ptr<rtos::IDelayer> ProsDelayer::clone() const{
+            return std::unique_ptr<rtos::IDelayer>(std::make_unique<ProsDelayer>(*this));
         }
 
         void ProsDelayer::delay(uint32_t millis){
