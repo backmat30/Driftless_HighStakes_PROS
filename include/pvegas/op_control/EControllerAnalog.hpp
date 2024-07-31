@@ -6,7 +6,8 @@ enum class EControllerAnalog {
   JOYSTICK_LEFT_X,
   JOYSTICK_LEFT_Y,
   JOYSTICK_RIGHT_X,
-  JOYSTICK_RIGHT_Y
+  JOYSTICK_RIGHT_Y,
+  NONE
 };
 } // namespace io
 } // namespace pvegas

@@ -14,7 +14,8 @@ enum class EControllerDigital {
   TRIGGER_LEFT_TOP,
   TRIGGER_LEFT_BOTTOM,
   TRIGGER_RIGHT_TOP,
-  TRIGGER_RIGHT_BOTTOM
+  TRIGGER_RIGHT_BOTTOM,
+  NONE
 };
 } // namespace io
 } // namespace pvegas
