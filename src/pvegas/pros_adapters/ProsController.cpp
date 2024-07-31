@@ -1,12 +1,8 @@
-#include "pvegas/pros_adapters/pros_controller/ProsController.hpp"
-#include "pros/rtos.hpp"
-#include "pros_controller/EControllerAnalog.hpp"
-#include "pros_controller/EControllerDigital.hpp"
+#include "pvegas/pros_adapters/ProsController.hpp"
 #include <cstdint>
 #include <memory>
 namespace pvegas {
 namespace pros_adapters {
-namespace pros_controller {
 
 void ProsController::updateRumble() {
   // get current time in ms
@@ -41,7 +37,7 @@ void ProsController::run() {
   pros::Task controller_task{&ProsController::taskLoop, this};
 }
 
-double ProsController::getAnalog(EControllerAnalog channel) {
+double ProsController::getAnalog(op_control::EControllerAnalog channel) {
   double value{};
 
   if (ANALOGUE_MAP.contains(channel)) {
@@ -52,7 +48,7 @@ double ProsController::getAnalog(EControllerAnalog channel) {
   return value;
 }
 
-bool ProsController::getDigital(EControllerDigital channel) {
+bool ProsController::getDigital(op_control::EControllerDigital channel) {
   bool value{};
 
   if (DIGITAL_MAP.contains(channel)) {
@@ -63,7 +59,7 @@ bool ProsController::getDigital(EControllerDigital channel) {
   return value;
 }
 
-bool ProsController::getNewDigital(EControllerDigital channel) {
+bool ProsController::getNewDigital(op_control::EControllerDigital channel) {
   bool value{};
 
   if (DIGITAL_MAP.contains(channel)) {
@@ -81,7 +77,6 @@ void ProsController::rumble(std::string pattern) {
   }
   new_rumble_pattern = true;
   mutex.give();
-}
 } // namespace pros_controller
 } // namespace pros_adapters
 } // namespace pvegas
