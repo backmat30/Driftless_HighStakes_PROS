@@ -1,6 +1,8 @@
 #ifndef __DRIVETRAIN_OPERATOR_HPP__
 #define __DRIVETRAIN_OPERATOR_HPP__
-#include "pvegas/pros_adapters/pros_controller/ProsController.hpp"
+#include "pvegas/pros_adapters/ProsController.hpp"
+#include "pvegas/op_control/EControllerAnalog.hpp"
+#include "pvegas/op_control/EControllerDigital.hpp"
 #include "pvegas/robot/Robot.hpp"
 #include <memory>
 
@@ -15,7 +17,7 @@ private:
 
   static constexpr double VOLTAGE_CONVERSION{12.0};
 
-  std::shared_ptr<pros_adapters::pros_controller::ProsController>
+  std::shared_ptr<pros_adapters::ProsController>
       m_controller{};
 
   std::shared_ptr<robot::Robot> m_robot{};
@@ -26,7 +28,7 @@ private:
 
 public:
   DrivetrainOperator(
-      const std::shared_ptr<pros_adapters::pros_controller::ProsController>
+      const std::shared_ptr<pros_adapters::ProsController>
           &controller,
       const std::shared_ptr<robot::Robot> &robot);
 
