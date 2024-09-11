@@ -1,7 +1,7 @@
 #ifndef __CONTROL_SYSTEM_HPP__
 #define __CONTROL_SYSTEM_HPP__
 
-#include "control/AControl.hpp"
+#include "pvegas/control/AControl.hpp"
 #include <memory>
 #include <string>
 #include <vector>
