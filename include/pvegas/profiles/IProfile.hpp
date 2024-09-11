@@ -10,7 +10,7 @@
 
 
 namespace pvegas {
-namespace profile {
+namespace profiles {
 class IProfile {
 public:
 //default destructor

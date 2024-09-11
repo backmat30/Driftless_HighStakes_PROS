@@ -13,7 +13,7 @@
 
 namespace pvegas {
 namespace profiles {
-class DefaultProfile : public profile::IProfile {
+class DefaultProfile : public profiles::IProfile {
 private:
 //name of profile
   static constexpr char PROFILE_NAME[]{"DEFAULT"};
