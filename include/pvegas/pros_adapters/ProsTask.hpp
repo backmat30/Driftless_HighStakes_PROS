@@ -1,3 +1,6 @@
+#ifndef __PROS_TASK_HPP__
+#define __PROS_TASK_HPP__
+
 #include "pros/rtos.hpp"
 #include "pvegas/rtos/ITask.hpp"
 #include <memory>
@@ -26,3 +29,4 @@ public:
 };
 } // namespace pros_adapters
 } // namespace pvegas
+#endif
