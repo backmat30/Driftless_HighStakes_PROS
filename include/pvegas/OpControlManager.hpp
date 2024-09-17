@@ -28,7 +28,7 @@ public:
                    const std::unique_ptr<rtos::IDelayer> &delayer);
 
 //defines the controller profile to use
-  void setProfile(std::unique_ptr<profiles::IProfile> profile);
+  void setProfile(std::unique_ptr<profiles::IProfile>& profile);
 
 //initializes op control
   void init(std::shared_ptr<control::ControlSystem> control_system,

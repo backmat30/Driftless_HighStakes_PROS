@@ -6,9 +6,9 @@
 #include <memory>
 namespace pvegas {
 struct SystemConfig {
-  std::shared_ptr<config::IConfig> config{};
+  std::unique_ptr<config::IConfig> config{};
 
-  std::shared_ptr<profiles::IProfile> profile{};
+  std::unique_ptr<profiles::IProfile> profile{};
 };
 } // namespace pvegas
 #endif

@@ -17,7 +17,7 @@ OpControlManager::OpControlManager(
     : m_clock{clock}, m_delayer{delayer->clone()} {}
 
 // sets the controller's profile
-void OpControlManager::setProfile(std::unique_ptr<profiles::IProfile> profile) {
+void OpControlManager::setProfile(std::unique_ptr<profiles::IProfile>& profile) {
   m_profile = std::move(profile);
 }
 

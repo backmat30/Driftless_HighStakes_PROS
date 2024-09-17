@@ -2,12 +2,14 @@
 #define __MATCHCONTROLLER_HPP__
 
 // includes
+#include "control/ControlSystem.hpp"
 #include "menu/IMenu.hpp"
 #include "pros/misc.hpp"
 #include "pvegas/io/IController.hpp"
 #include "pvegas/robot/Robot.hpp"
 #include "pvegas/rtos/IClock.hpp"
 #include "pvegas/rtos/IDelayer.hpp"
+#include "pvegas/OpControlManager.hpp"
 #include <memory>
 
 namespace pvegas {
@@ -21,7 +23,11 @@ private:
 
   std::unique_ptr<rtos::IDelayer> m_delayer{};
 
-  std::shared_ptr<io::IController> m_controller{};
+  OpControlManager op_control_manager{m_clock, m_delayer};
+
+  std::shared_ptr<control::ControlSystem> control_system{};
+
+  std::shared_ptr<io::IController> controller{};
 
   std::shared_ptr<robot::Robot> robot{};
 
