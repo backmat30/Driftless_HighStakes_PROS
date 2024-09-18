@@ -30,13 +30,15 @@ private:
 
 public:
   //add a config to the selection
-  void addConfig(std::unique_ptr<config::IConfig>& config);
+  void addConfig(std::unique_ptr<config::IConfig>& config) override;
 
   //add a profile to the selection
-  void addProfile(std::unique_ptr<profiles::IProfile>& profile);
+  void addProfile(std::unique_ptr<profiles::IProfile>& profile) override;
 
+  // display menu
   void display() override;
 
+  // checks if the menu is running
   bool isStarted() override;
 
   //gets the systems config settings
