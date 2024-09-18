@@ -14,7 +14,7 @@ namespace profiles {
 class IProfile {
 public:
 //default destructor
-  virtual ~IProfile() = 0;
+  virtual ~IProfile() = default;
 
 //returns the name of the profile
   virtual std::string getName() = 0;

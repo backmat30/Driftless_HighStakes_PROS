@@ -4,7 +4,7 @@
 #include "pros/abstract_motor.hpp"
 #include "pros/motors.h"
 #include "pvegas/pros_adapters/ProsV5Motor.hpp"
-#include "pros_adapters/ProsClock.hpp"
+#include "pvegas/pros_adapters/ProsClock.hpp"
 #include "pvegas/control/ControlSystem.hpp"
 #include "pvegas/io/IController.hpp"
 #include "pvegas/pros_adapters/ProsController.hpp"
@@ -16,7 +16,7 @@
 #include "pvegas/rtos/IDelayer.hpp"
 #include "pvegas/rtos/IMutex.hpp"
 #include "pvegas/rtos/ITask.hpp"
-#include "rtos/IClock.hpp"
+#include "pvegas/rtos/IClock.hpp"
 #include "pvegas/config/IConfig.hpp"
 #include <memory>
 namespace pvegas {
@@ -28,13 +28,13 @@ private:
   // -----PORT NUMBERS-----
   // DRIVE MOTORS
   // first left drive motor
-  static constexpr int8_t DRIVE_LEFT_MOTOR_1{-1};
+  static constexpr int8_t DRIVE_LEFT_MOTOR_1{12};
   // second left drive motor
-  static constexpr int8_t DRIVE_LEFT_MOTOR_2{-1};
+  static constexpr int8_t DRIVE_LEFT_MOTOR_2{13};
   // third left drive motor
-  static constexpr int8_t DRIVE_LEFT_MOTOR_3{-1};
+  static constexpr int8_t DRIVE_LEFT_MOTOR_3{-14};
   // fourth left drive motor
-  static constexpr int8_t DRIVE_LEFT_MOTOR_4{-1};
+  static constexpr int8_t DRIVE_LEFT_MOTOR_4{-6};
   // first right drive motor
   static constexpr int8_t DRIVE_RIGHT_MOTOR_1{-1};
   // second right drive motor

@@ -4,6 +4,17 @@
 namespace pvegas {
 namespace pros_adapters {
 
+void ProsController::taskLoop(void *params) {
+  // define the controller
+  ProsController *controller{static_cast<ProsController *>(params)};
+
+  // constantly update the controller
+  while (true) {
+    controller->taskUpdate();
+    pros::delay(TASK_DELAY);
+  }
+}
+
 void ProsController::updateRumble() {
   // get current time in ms
   uint32_t time{pros::millis()};

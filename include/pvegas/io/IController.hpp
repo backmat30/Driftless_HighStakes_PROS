@@ -8,7 +8,7 @@ namespace pvegas {
 namespace io {
 class IController {
 public:
-  virtual ~IController() = 0;
+  virtual ~IController() = default;
 
   virtual void init() = 0;
 

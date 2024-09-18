@@ -1,11 +1,11 @@
 #ifndef __DRIVETRAIN_OPERATOR_HPP__
 #define __DRIVETRAIN_OPERATOR_HPP__
 #include "pvegas/io/IController.hpp"
-#include "pvegas/pros_adapters/ProsController.hpp"
 #include "pvegas/op_control/EControllerAnalog.hpp"
 #include "pvegas/op_control/EControllerDigital.hpp"
 #include "pvegas/robot/Robot.hpp"
 #include <memory>
+
 
 namespace pvegas {
 namespace op_control {
@@ -18,8 +18,7 @@ private:
 
   static constexpr double VOLTAGE_CONVERSION{12.0};
 
-  std::shared_ptr<pros_adapters::ProsController>
-      m_controller{};
+  std::shared_ptr<io::IController> m_controller{};
 
   std::shared_ptr<robot::Robot> m_robot{};
 
@@ -28,10 +27,8 @@ private:
   void updateTank();
 
 public:
-  DrivetrainOperator(
-      const std::shared_ptr<io::IController>
-          &controller,
-      const std::shared_ptr<robot::Robot> &robot);
+  DrivetrainOperator(const std::shared_ptr<io::IController> &controller,
+                     const std::shared_ptr<robot::Robot> &robot);
 
   void setDriveVoltage();
 };

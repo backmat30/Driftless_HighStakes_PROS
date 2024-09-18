@@ -43,12 +43,10 @@ public:
                       int control_mode) override;
 
 //gets the analog input type used for an action
-  op_control::EControllerAnalog
-  getAnalogControlMapping(op_control::EControl control) const override;
+  op_control::EControllerAnalog getAnalogControlMapping(op_control::EControl control) const override;
 
 //gets the digital input type used for an action
-  op_control::EControllerDigital
-  getDigitalControlMapping(op_control::EControl control) const override;
+  op_control::EControllerDigital getDigitalControlMapping(op_control::EControl control) const override;
 };
 } // namespace profiles
 } // namespace pvegas

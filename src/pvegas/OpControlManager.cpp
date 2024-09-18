@@ -1,5 +1,5 @@
 #include "pvegas/OpControlManager.hpp"
-#include "DrivetrainOperator.hpp"
+#include "pvegas/op_control/drivetrain/DrivetrainOperator.hpp"
 #include "pvegas/control/ControlSystem.hpp"
 #include "pvegas/io/IController.hpp"
 #include "pvegas/profiles/IProfile.hpp"
@@ -21,6 +21,11 @@ void OpControlManager::setProfile(std::unique_ptr<profiles::IProfile>& profile) 
   m_profile = std::move(profile);
 }
 
+void OpControlManager::init(std::shared_ptr<control::ControlSystem> control_system,
+            std::shared_ptr<io::IController> controller,
+            std::shared_ptr<robot::Robot> robot){
+
+}
 void OpControlManager::run(
     std::shared_ptr<control::ControlSystem> control_system,
     std::shared_ptr<io::IController> controller,

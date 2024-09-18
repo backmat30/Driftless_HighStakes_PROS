@@ -1,6 +1,6 @@
 #include "pvegas/config/DefaultConfig.hpp"
-#include "robot/subsystems/drivetrain/DrivetrainSubsystem.hpp"
-#include "robot/subsystems/drivetrain/IDriveTrain.hpp"
+#include "pvegas/robot/subsystems/drivetrain/DrivetrainSubsystem.hpp"
+#include "pvegas/robot/subsystems/drivetrain/IDriveTrain.hpp"
 #include <memory>
 
 namespace pvegas {
@@ -98,6 +98,8 @@ std::shared_ptr<robot::Robot> DefaultConfig::buildRobot() {
           drivetrain)};
   // add the new subsystem to the robot
   robot->addSubsystem(drivetrain_subsystem);
+
+  return robot;
 }
 } // namespace config
 } // namespace pvegas

@@ -5,7 +5,7 @@ namespace pvegas {
 namespace io {
 class IMotor {
 public:
-  virtual ~IMotor() = 0;
+  virtual ~IMotor() = default;
 
   virtual void initialize() = 0;
 

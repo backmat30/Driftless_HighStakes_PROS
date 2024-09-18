@@ -9,6 +9,10 @@ namespace drivetrain {
         m_right_motors.init();
     }
 
+    void directDrive::run(){
+        
+    }
+
     void directDrive::setVelocity(Velocity velocity){
         m_left_motors.setVoltage(velocity.left_velocity * m_velocity_to_voltage);
         m_right_motors.setVoltage(velocity.right_velocity * m_velocity_to_voltage);

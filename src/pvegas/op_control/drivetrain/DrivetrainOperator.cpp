@@ -1,4 +1,7 @@
 #include "pvegas/op_control/drivetrain/DrivetrainOperator.hpp"
+#include "pvegas/io/IController.hpp"
+#include "pvegas/robot/Robot.hpp"
+#include <memory>
 namespace pvegas {
 namespace op_control {
 namespace drivetrain {
@@ -18,6 +21,11 @@ void DrivetrainOperator::updateTank() {
       m_controller->getAnalog(EControllerAnalog::JOYSTICK_RIGHT_Y) *
       VOLTAGE_CONVERSION};
 }
+
+DrivetrainOperator::DrivetrainOperator(
+    const std::shared_ptr<io::IController> &controller,
+    const std::shared_ptr<robot::Robot> &robot)
+    : m_controller{controller}, m_robot{robot} {}
 
 void DrivetrainOperator::setDriveVoltage() {
   if (!m_controller) {
