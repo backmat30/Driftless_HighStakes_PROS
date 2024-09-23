@@ -20,6 +20,8 @@ void DrivetrainOperator::updateTank() {
   double right_voltage{
       m_controller->getAnalog(EControllerAnalog::JOYSTICK_RIGHT_Y) *
       VOLTAGE_CONVERSION};
+
+      updateDriveVoltage(left_voltage, right_voltage);
 }
 
 DrivetrainOperator::DrivetrainOperator(
