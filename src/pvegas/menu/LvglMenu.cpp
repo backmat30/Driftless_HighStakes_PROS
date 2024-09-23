@@ -136,7 +136,7 @@ void LvglMenu::initStyles(){
     style_initialized = true;
 }
 
-void LvglMenu::addOtion(Option option){
+void LvglMenu::addOption(Option option){
     //pushes the new option to the back of the vector
     options.push_back(option);
 }

@@ -50,7 +50,7 @@ private:
   static void initStyles();
 
 public:
-  void addOtion(Option option);
+  void addOption(Option option);
 
   void removeOption(const std::string &option_name);
 

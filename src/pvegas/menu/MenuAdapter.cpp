@@ -35,7 +35,26 @@ void MenuAdapter::addProfile(std::unique_ptr<profiles::IProfile>& profile){
     }
 }
 
-void MenuAdapter::display() { lvgl_menu.displayMenu(); }
+void MenuAdapter::display() { 
+    // list of config names
+    std::vector<std::string> config_options{};
+    //fills list of config names
+    for(auto& config : configs){
+        config_options.push_back(config->getName());
+    }
+    // turn the config list into an option and add it to the menu
+    Option config_option{CONFIG_OPTION_NAME, config_options};
+    lvgl_menu.addOption(config_option);
+
+    std::vector<std::string> profile_options{};
+    for(auto& profile : profiles){
+        profile_options.push_back(profile->getName());
+    }
+    Option profile_option{PROFILE_OPTION_NAME, profile_options};
+    lvgl_menu.addOption(profile_option);
+    
+    lvgl_menu.displayMenu(); 
+    }
 
 bool MenuAdapter::isStarted() { return lvgl_menu.selectionComplete(); }
 
