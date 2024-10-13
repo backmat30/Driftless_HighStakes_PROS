@@ -4,7 +4,7 @@
 namespace pvegas {
 namespace io {
 class IMotor {
-public:
+ public:
   virtual ~IMotor() = default;
 
   virtual void initialize() = 0;
@@ -25,6 +25,6 @@ public:
 
   virtual void setPosition(double position) = 0;
 };
-} // namespace io
-} // namespace pvegas
+}  // namespace io
+}  // namespace pvegas
 #endif

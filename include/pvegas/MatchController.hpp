@@ -2,19 +2,20 @@
 #define __MATCHCONTROLLER_HPP__
 
 // includes
+#include <memory>
+
 #include "control/ControlSystem.hpp"
 #include "menu/IMenu.hpp"
 #include "pros/misc.hpp"
+#include "pvegas/OpControlManager.hpp"
 #include "pvegas/io/IController.hpp"
 #include "pvegas/robot/Robot.hpp"
 #include "pvegas/rtos/IClock.hpp"
 #include "pvegas/rtos/IDelayer.hpp"
-#include "pvegas/OpControlManager.hpp"
-#include <memory>
 
 namespace pvegas {
 class MatchController {
-private:
+ private:
   static constexpr uint32_t MENU_DELAY{10};
 
   std::unique_ptr<menu::IMenu> m_menu{};
@@ -31,7 +32,7 @@ private:
 
   std::shared_ptr<robot::Robot> robot{};
 
-public:
+ public:
   MatchController(std::unique_ptr<menu::IMenu> &new_menu,
                   std::shared_ptr<rtos::IClock> &clock,
                   std::unique_ptr<rtos::IDelayer> &delayer);
@@ -46,5 +47,5 @@ public:
 
   void operatorControl();
 };
-} // namespace pvegas
+}  // namespace pvegas
 #endif

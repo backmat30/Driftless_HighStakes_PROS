@@ -46,8 +46,7 @@ double ProsV5Motor::getAngularVelocity() {
 double ProsV5Motor::getPosition() {
   double position{position_offset};
 
-  if (m_motor)
-    position += m_motor->get_position() * POSITION_CONVERSION;
+  if (m_motor) position += m_motor->get_position() * POSITION_CONVERSION;
 
   return position;
 }
@@ -57,13 +56,12 @@ void ProsV5Motor::setVoltage(double volts) {
   millivolts = std::min(millivolts, MAX_MILLIVOLTS);
   millivolts = std::max(millivolts, -MAX_MILLIVOLTS);
 
-  if (m_motor)
-    m_motor->move_voltage(millivolts);
+  if (m_motor) m_motor->move_voltage(millivolts);
 }
 
 void ProsV5Motor::setPosition(double position) {
   position_offset = position;
   m_motor->tare_position();
 }
-} // namespace pros_adapters
-} // namespace pvegas
+}  // namespace pros_adapters
+}  // namespace pvegas

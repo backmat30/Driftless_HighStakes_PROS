@@ -3,15 +3,15 @@
 
 #include <string>
 #include <vector>
-namespace pvegas{
-    namespace menu{
-        struct Option{
-            std::string name{};
+namespace pvegas {
+namespace menu {
+struct Option {
+  std::string name{};
 
-            std::vector<std::string> choices{};
+  std::vector<std::string> choices{};
 
-            int selected{};
-        };
-    }
-}
+  int selected{};
+};
+}  // namespace menu
+}  // namespace pvegas
 #endif

@@ -1,17 +1,17 @@
 #ifndef __DRIVETRAIN_OPERATOR_HPP__
 #define __DRIVETRAIN_OPERATOR_HPP__
+#include <memory>
+
 #include "pvegas/io/IController.hpp"
 #include "pvegas/op_control/EControllerAnalog.hpp"
 #include "pvegas/op_control/EControllerDigital.hpp"
 #include "pvegas/robot/Robot.hpp"
-#include <memory>
-
 
 namespace pvegas {
 namespace op_control {
 namespace drivetrain {
 class DrivetrainOperator {
-private:
+ private:
   static constexpr char DRIVE_SUBSYSTEM_NAME[]{"DIFFERENTIAL DRIVE"};
 
   static constexpr char SET_VOLTAGE_COMMAND[]{"SET VOLTAGE"};
@@ -26,13 +26,13 @@ private:
 
   void updateTank();
 
-public:
+ public:
   DrivetrainOperator(const std::shared_ptr<io::IController> &controller,
                      const std::shared_ptr<robot::Robot> &robot);
 
   void setDriveVoltage();
 };
-} // namespace drivetrain
-} // namespace op_control
-} // namespace pvegas
+}  // namespace drivetrain
+}  // namespace op_control
+}  // namespace pvegas
 #endif

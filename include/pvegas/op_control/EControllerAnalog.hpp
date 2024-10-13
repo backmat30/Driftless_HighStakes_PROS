@@ -9,6 +9,6 @@ enum class EControllerAnalog {
   JOYSTICK_RIGHT_Y,
   NONE
 };
-} // namespace io
-} // namespace pvegas
+}  // namespace op_control
+}  // namespace pvegas
 #endif

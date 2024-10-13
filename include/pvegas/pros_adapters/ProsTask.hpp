@@ -1,17 +1,18 @@
 #ifndef __PROS_TASK_HPP__
 #define __PROS_TASK_HPP__
 
+#include <memory>
+
 #include "pros/rtos.hpp"
 #include "pvegas/rtos/ITask.hpp"
-#include <memory>
 
 namespace pvegas {
 namespace pros_adapters {
 class ProsTask : public rtos::ITask {
-private:
+ private:
   std::unique_ptr<pros::Task> task{};
 
-public:
+ public:
   // starts a task using the provided function and given parameters
   void start(void (*function)(void *), void *params) override;
 
@@ -27,6 +28,6 @@ public:
   // pauses other tasks until this task is done
   void join() override;
 };
-} // namespace pros_adapters
-} // namespace pvegas
+}  // namespace pros_adapters
+}  // namespace pvegas
 #endif

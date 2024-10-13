@@ -1,22 +1,23 @@
 #ifndef __CONTROL_SYSTEM_HPP__
 #define __CONTROL_SYSTEM_HPP__
 
-#include "pvegas/control/AControl.hpp"
+#include <cstdarg>
 #include <memory>
 #include <string>
 #include <vector>
-#include <cstdarg>
+
+#include "pvegas/control/AControl.hpp"
 namespace pvegas {
 namespace control {
 class ControlSystem {
-private:
+ private:
   // possible controls for the robot
   std::vector<std::unique_ptr<AControl>> controls{};
 
   // the name of the active control
   std::string active_control{};
 
-public:
+ public:
   // adds a control type to the robot
   void addControl(std::unique_ptr<AControl> &control);
 
@@ -41,6 +42,6 @@ public:
   // gets a state of a specified control
   void *getState(std::string control_name, std::string state_name);
 };
-} // namespace control
-} // namespace pvegas
+}  // namespace control
+}  // namespace pvegas
 #endif

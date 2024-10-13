@@ -8,8 +8,8 @@ struct Velocity {
   double left_velocity{};
   double right_velocity{};
 };
-} // namespace drivetrain
-} // namespace subsystems
-} // namespace robot
-} // namespace pvegas
+}  // namespace drivetrain
+}  // namespace subsystems
+}  // namespace robot
+}  // namespace pvegas
 #endif

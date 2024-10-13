@@ -8,15 +8,13 @@ void MotorGroup::addMotor(std::unique_ptr<io::IMotor> &motor) {
 
 void MotorGroup::init() {
   for (auto &motor : motors)
-    if (motor)
-      motor->initialize();
+    if (motor) motor->initialize();
 }
 
 double MotorGroup::getTorqueConstant() {
   double sum_constant{};
   for (auto &motor : motors)
-    if (motor)
-      sum_constant += motor->getTorqueConstant();
+    if (motor) sum_constant += motor->getTorqueConstant();
 
   return sum_constant;
 }
@@ -25,8 +23,7 @@ double MotorGroup::getResistance() {
   double average_resistance{};
   if (!motors.empty()) {
     for (auto &motor : motors)
-      if (motor)
-        average_resistance += motor->getResistance();
+      if (motor) average_resistance += motor->getResistance();
     average_resistance /= motors.size();
   }
 
@@ -37,8 +34,7 @@ double MotorGroup::getAngularVelocityConstant() {
   double average_constant{};
   if (!motors.empty()) {
     for (auto &motor : motors)
-      if (motor)
-        average_constant += motor->getAngularVelocityConstant();
+      if (motor) average_constant += motor->getAngularVelocityConstant();
     average_constant /= motors.size();
   }
 
@@ -56,8 +52,7 @@ double MotorGroup::getAngularVelocity() {
   double average_velocity{};
   if (!motors.empty()) {
     for (auto &motor : motors)
-      if (motor)
-        average_velocity += motor->getAngularVelocity();
+      if (motor) average_velocity += motor->getAngularVelocity();
     average_velocity /= motors.size();
   }
 
@@ -68,8 +63,7 @@ double MotorGroup::getPosition() {
   double average_position{};
   if (!motors.empty()) {
     for (auto &motor : motors)
-      if (motor)
-        average_position += motor->getPosition();
+      if (motor) average_position += motor->getPosition();
     average_position /= motors.size();
   }
 
@@ -78,14 +72,12 @@ double MotorGroup::getPosition() {
 
 void MotorGroup::setVoltage(double volts) {
   for (auto &motor : motors)
-    if (motor)
-      motor->setVoltage(volts);
+    if (motor) motor->setVoltage(volts);
 }
 
 void MotorGroup::setPosition(double position) {
   for (auto &motor : motors)
-    if (motor)
-      motor->setPosition(position);
+    if (motor) motor->setPosition(position);
 }
 
 MotorGroup &MotorGroup::operator=(MotorGroup &rhs) {
@@ -95,5 +87,5 @@ MotorGroup &MotorGroup::operator=(MotorGroup &rhs) {
   rhs.motors.clear();
   return *this;
 }
-} // namespace hal
-} // namespace pvegas
+}  // namespace hal
+}  // namespace pvegas

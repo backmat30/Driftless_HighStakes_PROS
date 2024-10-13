@@ -4,7 +4,7 @@
 namespace pvegas {
 namespace rtos {
 class ITask {
-public:
+ public:
   virtual ~ITask() = 0;
 
   // starts a task using the provided function and given parameters
@@ -22,6 +22,6 @@ public:
   // pauses other tasks until this task is done
   virtual void join() = 0;
 };
-} // namespace rtos
-} // namespace pvegas
+}  // namespace rtos
+}  // namespace pvegas
 #endif

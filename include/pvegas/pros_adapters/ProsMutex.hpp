@@ -6,17 +6,17 @@
 namespace pvegas {
 namespace pros_adapters {
 class ProsMutex : public rtos::IMutex {
-private:
+ private:
   // pros mutex being adapted
   pros::Mutex mutex{};
 
-public:
+ public:
   // takes the mutex, blocking other tasks from running without it
   void take() override;
 
   // gives the mutex back, unblocking it for other tasks
   void give() override;
 };
-} // namespace pros_adapters
-} // namespace pvegas
+}  // namespace pros_adapters
+}  // namespace pvegas
 #endif

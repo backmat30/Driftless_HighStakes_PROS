@@ -1,7 +1,9 @@
 #include "pvegas/config/DefaultConfig.hpp"
+
+#include <memory>
+
 #include "pvegas/robot/subsystems/drivetrain/DrivetrainSubsystem.hpp"
 #include "pvegas/robot/subsystems/drivetrain/IDriveTrain.hpp"
-#include <memory>
 
 namespace pvegas {
 namespace config {
@@ -79,7 +81,7 @@ std::shared_ptr<robot::Robot> DefaultConfig::buildRobot() {
 
   // assembling the drive train
   std::unique_ptr<robot::subsystems::drivetrain::IDrivetrain> drivetrain{
-    //call the factory and add all necessary items for the drivetrain
+      // call the factory and add all necessary items for the drivetrain
       drive_factory.withLeftMotor(left_motor_1)
           ->withLeftMotor(left_motor_2)
           ->withLeftMotor(left_motor_3)
@@ -101,5 +103,5 @@ std::shared_ptr<robot::Robot> DefaultConfig::buildRobot() {
 
   return robot;
 }
-} // namespace config
-} // namespace pvegas
+}  // namespace config
+}  // namespace pvegas

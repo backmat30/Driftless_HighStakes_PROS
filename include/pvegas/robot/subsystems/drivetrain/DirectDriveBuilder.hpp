@@ -1,19 +1,19 @@
 #ifndef __DIRECT_DRIVE_BUILDER_HPP__
 #define __DIRECT_DRIVE_BUILDER_HPP__
 
+#include <memory>
+
 #include "DirectDrive.hpp"
 #include "pvegas/hal/MotorGroup.hpp"
 #include "pvegas/io/IMotor.hpp"
 #include "pvegas/robot/subsystems/drivetrain/IDrivetrain.hpp"
-#include <memory>
-
 
 namespace pvegas {
 namespace robot {
 namespace subsystems {
 namespace drivetrain {
 class DirectDriveBuilder {
-private:
+ private:
   hal::MotorGroup m_left_motors{};
   hal::MotorGroup m_right_motors{};
 
@@ -22,7 +22,7 @@ private:
   double m_wheel_radius{};
   double m_drive_radius{};
 
-public:
+ public:
   // Adds a designated motor to the left side of the robot
   DirectDriveBuilder* withLeftMotor(std::unique_ptr<io::IMotor>& motor);
 
@@ -38,11 +38,12 @@ public:
   // Designates the radius of the robot
   DirectDriveBuilder* withDriveRadius(double drive_radius);
 
-  //final call in the chain, uses the newly defined data to construct a drive train
+  // final call in the chain, uses the newly defined data to construct a drive
+  // train
   std::unique_ptr<IDrivetrain> build();
 };
-} // namespace drivetrain
-} // namespace subsystems
-} // namespace robot
-} // namespace pvegas
+}  // namespace drivetrain
+}  // namespace subsystems
+}  // namespace robot
+}  // namespace pvegas
 #endif

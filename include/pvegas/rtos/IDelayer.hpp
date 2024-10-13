@@ -5,13 +5,13 @@
 namespace pvegas {
 namespace rtos {
 class IDelayer {
-public:
+ public:
   virtual std::unique_ptr<IDelayer> clone() const = 0;
 
   virtual void delay(uint32_t millis) = 0;
 
   virtual void delayUntil(uint32_t time) = 0;
 };
-} // namespace rtos
-} // namespace pvegas
+}  // namespace rtos
+}  // namespace pvegas
 #endif

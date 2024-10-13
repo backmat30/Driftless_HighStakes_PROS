@@ -6,10 +6,10 @@ namespace pvegas {
 namespace control {
 // Abstract class for control algorithms
 class AControl {
-private:
+ private:
   std::string m_name{};
 
-public:
+ public:
   // basic constructor
   AControl() = default;
 
@@ -47,11 +47,11 @@ public:
   virtual void *state(std::string state_name) = 0;
 
   // copy assignment operator ovveride
-  AControl& operator=(const AControl &rhs) = default;
+  AControl &operator=(const AControl &rhs) = default;
 
   // move assignment operator override
   // AControl& operator=(const AControl &&rhs) = default;
 };
-} // namespace control
-} // namespace pvegas
+}  // namespace control
+}  // namespace pvegas
 #endif

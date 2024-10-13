@@ -22,7 +22,7 @@ namespace pros_adapters {
  *
  */
 class ProsV5Motor : public io::IMotor {
-private:
+ private:
   /**
    * @brief Map from v5 motor cartridges to gear ratios
    *
@@ -92,7 +92,7 @@ private:
    */
   double position_offset{};
 
-public:
+ public:
   /**
    * @brief Construct a new Pros V5 Motor object
    *
@@ -162,6 +162,6 @@ public:
    */
   void setPosition(double position) override;
 };
-} // namespace pros_adapters
-} // namespace pvegas
+}  // namespace pros_adapters
+}  // namespace pvegas
 #endif

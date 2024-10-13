@@ -1,7 +1,8 @@
 #include "main.h"
 
-//create the match controller
-static pvegas::MatchController match_controller{pvegas::MatchControllerFactory::createMatchController()};
+// create the match controller
+static pvegas::MatchController match_controller{
+    pvegas::MatchControllerFactory::createMatchController()};
 /**
  * Runs initialization code. This occurs as soon as the program is started.
  *
@@ -9,8 +10,8 @@ static pvegas::MatchController match_controller{pvegas::MatchControllerFactory::
  * to keep execution time for this mode under a few seconds.
  */
 void initialize() {
-	bool fast_init = false;
-	match_controller.init(fast_init);
+  bool fast_init = false;
+  match_controller.init(fast_init);
 }
 
 /**
@@ -18,9 +19,7 @@ void initialize() {
  * the VEX Competition Switch, following either autonomous or opcontrol. When
  * the robot is enabled, this task will exit.
  */
-void disabled() {
-	match_controller.disabled();
-}
+void disabled() { match_controller.disabled(); }
 
 /**
  * Runs after initialize(), and before autonomous when connected to the Field
@@ -31,9 +30,7 @@ void disabled() {
  * This task will exit when the robot is enabled and autonomous or opcontrol
  * starts.
  */
-void competition_initialize() {
-	match_controller.competitionInit();
-}
+void competition_initialize() { match_controller.competitionInit(); }
 
 /**
  * Runs the user autonomous code. This function will be started in its own task
@@ -46,9 +43,7 @@ void competition_initialize() {
  * will be stopped. Re-enabling the robot will restart the task, not re-start it
  * from where it left off.
  */
-void autonomous() {
-	match_controller.autonomous();
-}
+void autonomous() { match_controller.autonomous(); }
 
 /**
  * Runs the operator control code. This function will be started in its own task
@@ -63,6 +58,4 @@ void autonomous() {
  * operator control task will be stopped. Re-enabling the robot will restart the
  * task, not resume it from where it left off.
  */
-void opcontrol() {
-	match_controller.operatorControl();
-}
+void opcontrol() { match_controller.operatorControl(); }

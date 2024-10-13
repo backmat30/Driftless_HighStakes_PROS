@@ -4,7 +4,7 @@
 namespace pvegas {
 namespace rtos {
 class IMutex {
-public:
+ public:
   virtual ~IMutex() = default;
 
   // takes the mutex, blocking other tasks from running without it
@@ -13,6 +13,6 @@ public:
   // gives the mutex back, unblocking it for other tasks
   virtual void give() = 0;
 };
-} // namespace rtos
-} // namespace pvegas
+}  // namespace rtos
+}  // namespace pvegas
 #endif

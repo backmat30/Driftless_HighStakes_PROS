@@ -1,4 +1,5 @@
 #include "pvegas/pros_adapters/ProsController.hpp"
+
 #include <cstdint>
 #include <memory>
 namespace pvegas {
@@ -88,6 +89,6 @@ void ProsController::rumble(std::string pattern) {
   }
   new_rumble_pattern = true;
   mutex.give();
-} // namespace pros_controller
-} // namespace pros_adapters
-} // namespace pvegas
+}  // namespace pros_controller
+}  // namespace pros_adapters
+}  // namespace pvegas

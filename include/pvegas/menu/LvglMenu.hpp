@@ -1,14 +1,13 @@
 #ifndef __LVGL_MENU_HPP__
 #define __LVGL_MENU_HPP__
 
-#include "liblvgl/lvgl.h"
-
-#include "Option.hpp"
-
+#include <fstream>
+#include <memory>
 #include <string>
 #include <vector>
-#include <memory>
-#include <fstream>
+
+#include "Option.hpp"
+#include "liblvgl/lvgl.h"
 
 namespace pvegas {
 namespace menu {
@@ -22,7 +21,7 @@ extern void settingsBackButtonEventHandler(lv_event_t *event);
 extern void settingsButtonMatrixEventHandler(lv_event_t *event);
 
 class LvglMenu {
-private:
+ private:
   static constexpr char CONFIG_FILE[]{"/usd/system/menu_data.txt"};
 
   static constexpr int COLUMN_WIDTH{16};
@@ -49,7 +48,7 @@ private:
 
   static void initStyles();
 
-public:
+ public:
   void addOption(Option option);
 
   void removeOption(const std::string &option_name);
@@ -70,6 +69,6 @@ public:
 
   std::string getSelection(const std::string &option_name);
 };
-} // namespace menu
-} // namespace pvegas
+}  // namespace menu
+}  // namespace pvegas
 #endif

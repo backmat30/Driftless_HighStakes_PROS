@@ -16,8 +16,8 @@ DirectDriveBuilder *DirectDriveBuilder::withRightMotor(
   return this;
 }
 
-DirectDriveBuilder *
-DirectDriveBuilder::withVelocityToVoltage(double velocity_to_voltage) {
+DirectDriveBuilder *DirectDriveBuilder::withVelocityToVoltage(
+    double velocity_to_voltage) {
   m_velocity_to_voltage = velocity_to_voltage;
   return this;
 }
@@ -40,7 +40,7 @@ std::unique_ptr<IDrivetrain> DirectDriveBuilder::build() {
   drivetrain->setDriveRadius(m_drive_radius);
   return drivetrain;
 }
-} // namespace drivetrain
-} // namespace subsystems
-} // namespace robot
-} // namespace pvegas
+}  // namespace drivetrain
+}  // namespace subsystems
+}  // namespace robot
+}  // namespace pvegas

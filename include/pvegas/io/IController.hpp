@@ -1,13 +1,14 @@
 #ifndef __I_CONTROLLER_HPP__
 #define __I_CONTROLLER_HPP__
 
+#include <string>
+
 #include "pvegas/op_control/EControllerAnalog.hpp"
 #include "pvegas/op_control/EControllerDigital.hpp"
-#include <string>
 namespace pvegas {
 namespace io {
 class IController {
-public:
+ public:
   virtual ~IController() = default;
 
   virtual void init() = 0;
@@ -22,6 +23,6 @@ public:
 
   virtual void rumble(std::string pattern) = 0;
 };
-} // namespace io
-} // namespace pvegas
+}  // namespace io
+}  // namespace pvegas
 #endif

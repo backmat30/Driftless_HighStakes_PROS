@@ -1,28 +1,29 @@
 #ifndef __DEFAULT_CONFIG_HPP__
 #define __DEFAULT_CONFIG_HPP__
 
+#include <memory>
+
 #include "pros/abstract_motor.hpp"
 #include "pros/motors.h"
-#include "pvegas/pros_adapters/ProsV5Motor.hpp"
-#include "pvegas/pros_adapters/ProsClock.hpp"
+#include "pvegas/config/IConfig.hpp"
 #include "pvegas/control/ControlSystem.hpp"
 #include "pvegas/io/IController.hpp"
+#include "pvegas/pros_adapters/ProsClock.hpp"
 #include "pvegas/pros_adapters/ProsController.hpp"
 #include "pvegas/pros_adapters/ProsDelayer.hpp"
 #include "pvegas/pros_adapters/ProsMutex.hpp"
 #include "pvegas/pros_adapters/ProsTask.hpp"
+#include "pvegas/pros_adapters/ProsV5Motor.hpp"
 #include "pvegas/robot/Robot.hpp"
 #include "pvegas/robot/subsystems/drivetrain/DirectDriveBuilder.hpp"
+#include "pvegas/rtos/IClock.hpp"
 #include "pvegas/rtos/IDelayer.hpp"
 #include "pvegas/rtos/IMutex.hpp"
 #include "pvegas/rtos/ITask.hpp"
-#include "pvegas/rtos/IClock.hpp"
-#include "pvegas/config/IConfig.hpp"
-#include <memory>
 namespace pvegas {
 namespace config {
 class DefaultConfig : public IConfig {
-private:
+ private:
   static constexpr char CONFIG_NAME[]{"DEFAULT CONFIG"};
 
   // -----PORT NUMBERS-----
@@ -54,7 +55,7 @@ private:
   // radius of the drive wheels
   static constexpr double DRIVE_WHEEL_RADIUS{1.25};
 
-public:
+ public:
   std::string getName() override;
 
   std::shared_ptr<control::ControlSystem> buildControlSystem() override;
@@ -63,6 +64,6 @@ public:
 
   std::shared_ptr<robot::Robot> buildRobot() override;
 };
-} // namespace config
-} // namespace pvegas
+}  // namespace config
+}  // namespace pvegas
 #endif

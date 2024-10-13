@@ -5,5 +5,5 @@ namespace pvegas {
 namespace op_control {
 enum EControlType { DRIVE };
 }
-} // namespace pvegas
+}  // namespace pvegas
 #endif

@@ -7,5 +7,5 @@ std::unique_ptr<rtos::IClock> ProsClock::clone() const {
 }
 
 uint32_t ProsClock::getTime() { return pros::millis(); }
-} // namespace pros_adapters
-} // namespace pvegas
+}  // namespace pros_adapters
+}  // namespace pvegas
