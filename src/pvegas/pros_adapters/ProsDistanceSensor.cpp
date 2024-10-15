@@ -4,7 +4,7 @@ namespace pvegas {
 namespace pros_adapters {
 ProsDistanceSensor::ProsDistanceSensor(
     std::unique_ptr<pros::Distance>& distance_sensor,
-    double tuning_constant = 1, double tuning_offset = 0)
+    double tuning_constant, double tuning_offset)
     : m_distance_sensor{std::move(distance_sensor)},
       m_tuning_constant{tuning_constant},
       m_tuning_offset{tuning_offset} {}

@@ -3,7 +3,7 @@
 namespace pvegas {
 namespace pros_adapters {
 ProsInertialSensor::ProsInertialSensor(
-    std::unique_ptr<pros::IMU>& inertial_sensor, double tuning_constant = 1)
+    std::unique_ptr<pros::IMU>& inertial_sensor, double tuning_constant)
     : m_inertial_sensor{std::move(inertial_sensor)},
       m_tuning_constant{tuning_constant} {}
 
