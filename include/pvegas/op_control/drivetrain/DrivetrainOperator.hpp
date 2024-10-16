@@ -16,7 +16,7 @@ class DrivetrainOperator {
 
   static constexpr char SET_VOLTAGE_COMMAND[]{"SET VOLTAGE"};
 
-  static constexpr double VOLTAGE_CONVERSION{12.0};
+  static constexpr double VOLTAGE_CONVERSION{12.0 / 127.0};
 
   std::shared_ptr<io::IController> m_controller{};
 
