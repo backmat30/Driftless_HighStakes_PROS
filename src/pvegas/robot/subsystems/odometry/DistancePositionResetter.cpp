@@ -4,16 +4,6 @@ namespace pvegas {
 namespace robot {
 namespace subsystems {
 namespace odometry {
-double DistancePositionResetter::bindRadians(double radians) {
-  while (radians > M_PI) {
-    radians -= M_PI * 2;
-  }
-  while (radians < -M_PI) {
-    radians += M_PI * 2;
-  }
-  return radians;
-}
-
 void DistancePositionResetter::init() {
   if (m_distance_sensor) {
     m_distance_sensor->init();

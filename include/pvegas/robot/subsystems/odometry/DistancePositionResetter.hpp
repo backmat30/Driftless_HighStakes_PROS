@@ -1,11 +1,12 @@
 #ifndef __DISTANCE_POSITION_RESETTER_HPP__
 #define __DISTANCE_POSITION_RESETTER_HPP__
 
+#include <cmath>
 #include <memory>
-#include <math.h>
 
 #include "pvegas/io/IDistanceSensor.hpp"
 #include "pvegas/robot/subsystems/odometry/IPositionResetter.hpp"
+#include "pvegas/utils/UtilityFunctions.hpp"
 
 namespace pvegas {
 namespace robot {
@@ -32,9 +33,6 @@ class DistancePositionResetter
   // local angle offset
   double m_local_theta{};
 
-  // binds a radian value between -PI to PI
-  double bindRadians(double radians);
-
  public:
   // initialize the position resetter
   void init() override;
@@ -52,7 +50,8 @@ class DistancePositionResetter
   double getRawValue() override;
 
   // changes the distance sensor reference
-  void setDistanceSensor(std::unique_ptr<pvegas::io::IDistanceSensor>& distance_sensor);
+  void setDistanceSensor(
+      std::unique_ptr<pvegas::io::IDistanceSensor>& distance_sensor);
 
   // set the local x offset
   void setLocalX(double local_x);
