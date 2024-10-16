@@ -75,7 +75,7 @@ class InertialPositionTrackerBuilder {
   InertialPositionTrackerBuilder* withRightDistanceTrackerOffset(
       double right_distance_tracker_offset);
 
-  std::unique_ptr<InertialPositionTracker> build();
+  std::unique_ptr<IPositionTracker> build();
 };
 }  // namespace odometry
 }  // namespace subsystems

@@ -63,7 +63,7 @@ InertialPositionTrackerBuilder::withRightDistanceTrackerOffset(
   return this;
 }
 
-std::unique_ptr<InertialPositionTracker>
+std::unique_ptr<IPositionTracker>
 InertialPositionTrackerBuilder::build() {
   std::unique_ptr<InertialPositionTracker> position_tracker{
       std::make_unique<InertialPositionTracker>()};
