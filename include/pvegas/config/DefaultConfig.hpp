@@ -27,6 +27,8 @@
 #include "pvegas/pros_adapters/ProsV5Motor.hpp"
 #include "pvegas/robot/Robot.hpp"
 #include "pvegas/robot/subsystems/drivetrain/DirectDriveBuilder.hpp"
+#include "pvegas/robot/subsystems/drivetrain/DrivetrainSubsystem.hpp"
+#include "pvegas/robot/subsystems/drivetrain/IDriveTrain.hpp"
 #include "pvegas/robot/subsystems/odometry/DistancePositionResetterBuilder.hpp"
 #include "pvegas/robot/subsystems/odometry/InertialPositionTrackerBuilder.hpp"
 #include "pvegas/robot/subsystems/odometry/OdometrySubsystem.hpp"

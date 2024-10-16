@@ -1,10 +1,5 @@
 #include "pvegas/config/DefaultConfig.hpp"
 
-#include <memory>
-
-#include "pvegas/robot/subsystems/drivetrain/DrivetrainSubsystem.hpp"
-#include "pvegas/robot/subsystems/drivetrain/IDriveTrain.hpp"
-
 namespace pvegas {
 namespace config {
 std::string DefaultConfig::getName() { return CONFIG_NAME; }
