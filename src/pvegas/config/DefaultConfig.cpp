@@ -34,11 +34,9 @@ std::shared_ptr<robot::Robot> DefaultConfig::buildRobot() {
   // create the robot
   std::shared_ptr<robot::Robot> robot{std::make_shared<robot::Robot>()};
 
-  // DRIVE TRAIN SETUP
+  // DRIVETRAIN
   // creates the factory used to build the drivetrain
   robot::subsystems::drivetrain::DirectDriveBuilder drive_factory{};
-
-  // Objects needed for drivetrain
   // pros objects
   // left motors
   std::unique_ptr<pros::Motor> left_temp_motor_1{
@@ -101,6 +99,79 @@ std::shared_ptr<robot::Robot> DefaultConfig::buildRobot() {
   // add the new subsystem to the robot
   robot->addSubsystem(drivetrain_subsystem);
 
+  // objects for the odometry subsystem
+  // pros objects
+  std::unique_ptr<pros::Rotation> temp_left_rotation_sensor{
+      std::make_unique<pros::Rotation>(ODOMETRY_LEFT_TRACKING_WHEEL)};
+  std::unique_ptr<pros::Rotation> temp_right_rotation_sensor{
+      std::make_unique<pros::Rotation>(ODOMETRY_RIGHT_TRACKING_WHEEL)};
+  std::unique_ptr<pros::IMU> temp_inertial_sensor{
+      std::make_unique<pros::IMU>(ODOMETRY_INERTIAL_SENSOR)};
+  std::unique_ptr<pros::Distance> temp_distance_sensor{
+      std::make_unique<pros::Distance>(ODOMETRY_DISTANCE_SENSOR)};
+
+  // adapted objects
+  // left tracking wheel
+  std::unique_ptr<pvegas::io::IRotationSensor> left_rotation_sensor{
+      std::make_unique<pvegas::pros_adapters::ProsRotationSensor>(
+          temp_left_rotation_sensor)};
+  std::unique_ptr<pvegas::io::IDistanceTracker> left_tracking_wheel{
+      std::make_unique<pvegas::hal::TrackingWheel>(left_rotation_sensor, TRACKING_WHEEL_RADIUS)};
+  // right tracking wheel
+  std::unique_ptr<pvegas::io::IRotationSensor> right_rotation_sensor{
+      std::make_unique<pvegas::pros_adapters::ProsRotationSensor>(
+          temp_right_rotation_sensor)};
+  std::unique_ptr<pvegas::io::IDistanceTracker> right_tracking_wheel{
+      std::make_unique<pvegas::hal::TrackingWheel>(right_rotation_sensor, TRACKING_WHEEL_RADIUS)};
+  // inertial sensor
+  std::unique_ptr<pvegas::io::IInertialSensor> inertial_sensor{
+      std::make_unique<pvegas::pros_adapters::ProsInertialSensor>(
+          temp_inertial_sensor)};
+  // distance sensor
+  std::unique_ptr<pvegas::io::IDistanceSensor> distance_sensor{
+      std::make_unique<pvegas::pros_adapters::ProsDistanceSensor>(
+          temp_distance_sensor)};
+  // odometry rtos
+  std::unique_ptr<pvegas::rtos::IClock> odometry_clock{
+      std::make_unique<pvegas::pros_adapters::ProsClock>()};
+  std::unique_ptr<pvegas::rtos::IDelayer> odometry_delayer{
+      std::make_unique<pvegas::pros_adapters::ProsDelayer>()};
+  std::unique_ptr<pvegas::rtos::IMutex> odometry_mutex{
+      std::make_unique<pvegas::pros_adapters::ProsMutex>()};
+  std::unique_ptr<pvegas::rtos::ITask> odometry_task{
+      std::make_unique<pvegas::pros_adapters::ProsTask>()};
+  // position tracker
+  pvegas::robot::subsystems::odometry::InertialPositionTrackerBuilder
+      inertial_position_tracker_builder{};
+  std::unique_ptr<pvegas::robot::subsystems::odometry::IPositionTracker>
+      inertial_position_tracker{
+          inertial_position_tracker_builder.withClock(odometry_clock)
+              ->withDelayer(odometry_delayer)
+              ->withMutex(odometry_mutex)
+              ->withTask(odometry_task)
+              ->withInertialSensor(inertial_sensor)
+              ->withLeftDistanceTracker(left_tracking_wheel)
+              ->withLeftDistanceTrackerOffset(LEFT_TRACKING_WHEEL_OFFSET)
+              ->withRightDistanceTracker(right_tracking_wheel)
+              ->withRightDistanceTrackerOffset(RIGHT_TRACKING_WHEEL_OFFSET)
+              ->build()};
+  // position resetter
+  pvegas::robot::subsystems::odometry::DistancePositionResetterBuilder
+      distance_position_resetter_builder{};
+  std::unique_ptr<pvegas::robot::subsystems::odometry::IPositionResetter>
+      distance_position_resetter{
+          distance_position_resetter_builder
+              .withDistanceSensor(distance_sensor)
+              ->withLocalX(RESETTER_LOCAL_X_OFFSET)
+              ->withLocalY(RESETTER_LOCAL_Y_OFFSET)
+              ->withLocalTheta(RESETTER_LOCAL_THETA_OFFSET)
+              ->build()};
+
+  // create the subsystem
+  std::unique_ptr<pvegas::robot::ASubsystem> odometry_subsystem{
+      std::make_unique<pvegas::robot::subsystems::odometry::OdometrySubsystem>(
+          inertial_position_tracker, distance_position_resetter)};
+  robot->addSubsystem(odometry_subsystem);
   return robot;
 }
 }  // namespace config

@@ -4,18 +4,32 @@
 #include <memory>
 
 #include "pros/abstract_motor.hpp"
-#include "pros/motors.h"
+#include "pros/distance.hpp"
+#include "pros/imu.hpp"
+#include "pros/motors.hpp"
+#include "pros/rotation.hpp"
 #include "pvegas/config/IConfig.hpp"
 #include "pvegas/control/ControlSystem.hpp"
+#include "pvegas/hal/TrackingWheel.hpp"
 #include "pvegas/io/IController.hpp"
+#include "pvegas/io/IDistanceSensor.hpp"
+#include "pvegas/io/IDistanceTracker.hpp"
+#include "pvegas/io/IInertialSensor.hpp"
+#include "pvegas/io/IRotationSensor.hpp"
 #include "pvegas/pros_adapters/ProsClock.hpp"
 #include "pvegas/pros_adapters/ProsController.hpp"
 #include "pvegas/pros_adapters/ProsDelayer.hpp"
+#include "pvegas/pros_adapters/ProsDistanceSensor.hpp"
+#include "pvegas/pros_adapters/ProsInertialSensor.hpp"
 #include "pvegas/pros_adapters/ProsMutex.hpp"
+#include "pvegas/pros_adapters/ProsRotationSensor.hpp"
 #include "pvegas/pros_adapters/ProsTask.hpp"
 #include "pvegas/pros_adapters/ProsV5Motor.hpp"
 #include "pvegas/robot/Robot.hpp"
 #include "pvegas/robot/subsystems/drivetrain/DirectDriveBuilder.hpp"
+#include "pvegas/robot/subsystems/odometry/DistancePositionResetterBuilder.hpp"
+#include "pvegas/robot/subsystems/odometry/InertialPositionTrackerBuilder.hpp"
+#include "pvegas/robot/subsystems/odometry/OdometrySubsystem.hpp"
 #include "pvegas/rtos/IClock.hpp"
 #include "pvegas/rtos/IDelayer.hpp"
 #include "pvegas/rtos/IMutex.hpp"
@@ -29,21 +43,31 @@ class DefaultConfig : public IConfig {
   // -----PORT NUMBERS-----
   // DRIVE MOTORS
   // first left drive motor
-  static constexpr int8_t DRIVE_LEFT_MOTOR_1{12};
+  static constexpr int8_t DRIVE_LEFT_MOTOR_1{-4};
   // second left drive motor
-  static constexpr int8_t DRIVE_LEFT_MOTOR_2{13};
+  static constexpr int8_t DRIVE_LEFT_MOTOR_2{3};
   // third left drive motor
-  static constexpr int8_t DRIVE_LEFT_MOTOR_3{-14};
+  static constexpr int8_t DRIVE_LEFT_MOTOR_3{-2};
   // fourth left drive motor
-  static constexpr int8_t DRIVE_LEFT_MOTOR_4{-6};
+  static constexpr int8_t DRIVE_LEFT_MOTOR_4{1};
   // first right drive motor
-  static constexpr int8_t DRIVE_RIGHT_MOTOR_1{-1};
+  static constexpr int8_t DRIVE_RIGHT_MOTOR_1{11};
   // second right drive motor
-  static constexpr int8_t DRIVE_RIGHT_MOTOR_2{-1};
+  static constexpr int8_t DRIVE_RIGHT_MOTOR_2{-12};
   // third right drive motor
-  static constexpr int8_t DRIVE_RIGHT_MOTOR_3{-1};
+  static constexpr int8_t DRIVE_RIGHT_MOTOR_3{13};
   // fourth right drive motor
-  static constexpr int8_t DRIVE_RIGHT_MOTOR_4{-1};
+  static constexpr int8_t DRIVE_RIGHT_MOTOR_4{-14};
+
+  // ODOMETRY PORTS
+  // left tracking wheel
+  static constexpr int8_t ODOMETRY_LEFT_TRACKING_WHEEL{0};
+  // right tracking wheel
+  static constexpr int8_t ODOMETRY_RIGHT_TRACKING_WHEEL{0};
+  // inertial sensor
+  static constexpr int8_t ODOMETRY_INERTIAL_SENSOR{0};
+  // distance sensor
+  static constexpr int8_t ODOMETRY_DISTANCE_SENSOR{0};
 
   // -----MISC VALUES-----
   // drive gearset
@@ -54,6 +78,18 @@ class DefaultConfig : public IConfig {
   static constexpr double ROBOT_RADIUS{7.25};
   // radius of the drive wheels
   static constexpr double DRIVE_WHEEL_RADIUS{1.25};
+  // radius of the tracking wheels
+  static constexpr double TRACKING_WHEEL_RADIUS{1.0};
+  // left offset of the left tracking wheel
+  static constexpr double LEFT_TRACKING_WHEEL_OFFSET{4.8};
+  // left offset of the right tracking wheel
+  static constexpr double RIGHT_TRACKING_WHEEL_OFFSET{8.69};
+  // position resetter x offset
+  static constexpr double RESETTER_LOCAL_X_OFFSET{7.5};
+  // position resetter y offset
+  static constexpr double RESETTER_LOCAL_Y_OFFSET{0.0};
+  // position resetter angular offset
+  static constexpr double RESETTER_LOCAL_THETA_OFFSET{0.0};
 
  public:
   std::string getName() override;
