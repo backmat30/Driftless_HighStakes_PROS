@@ -19,7 +19,7 @@ class Point {
   Point(double x, double y);
 
   // default copy constructor
-  Point(Point& other) = default;
+  Point(const Point& other) = default;
 
   // default move constructor
   Point(Point&& other) = default;

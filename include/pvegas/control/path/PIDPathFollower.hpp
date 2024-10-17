@@ -121,7 +121,7 @@ class PIDPathFollower : public pvegas::control::path::IPathFollower {
 
   // follow a given path of points
   void followPath(const std::shared_ptr<pvegas::robot::Robot>& robot,
-                  const std::vector<Point>& path, double velocity) override;
+                  const std::vector<Point>& control_path, double velocity) override;
 
   // sets the velocity to follow the path at
   void setVelocity(double velocity) override;

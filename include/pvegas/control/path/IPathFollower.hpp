@@ -29,7 +29,7 @@ class IPathFollower {
 
   // follow a given path
   virtual void followPath(const std::shared_ptr<pvegas::robot::Robot>& robot,
-                          const std::vector<Point>& path, double velocity) = 0;
+                          const std::vector<Point>& control_path, double velocity) = 0;
 
   // set the velocity to follow the path at
   virtual void setVelocity(double velocity) = 0;

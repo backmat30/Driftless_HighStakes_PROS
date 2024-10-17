@@ -41,8 +41,8 @@ void PathFollowerControl::command(std::string command_name, va_list& args) {
     // get the control path from the va_list
     void* temp_path{va_arg(args, void*)};
     // cast the path to the desired type
-    std::vector<pvegas::control::path::Point> control_path{
-        *static_cast<std::vector<pvegas::control::path::Point>*>(temp_path)};
+    std::vector<pvegas::control::Point> control_path{
+        *static_cast<std::vector<pvegas::control::Point>*>(temp_path)};
     // get the max velocity from the va_list
     double velocity{va_arg(args, double)};
 
@@ -56,7 +56,7 @@ void PathFollowerControl::command(std::string command_name, va_list& args) {
 
 void* PathFollowerControl::state(std::string state_name) {
   void* result{nullptr};
-  if(state_name == TARGET_REACHED_STATE_NAME) {
+  if (state_name == TARGET_REACHED_STATE_NAME) {
     result = new bool(m_path_follower->targetReached());
   }
   return result;

@@ -5,7 +5,7 @@ namespace pvegas {
 namespace rtos {
 class ITask {
  public:
-  virtual ~ITask() = 0;
+  virtual ~ITask() = default;
 
   // starts a task using the provided function and given parameters
   virtual void start(void (*function)(void *), void *params) = 0;
