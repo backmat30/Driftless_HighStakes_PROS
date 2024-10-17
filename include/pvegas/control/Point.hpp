@@ -3,7 +3,6 @@
 
 namespace pvegas {
 namespace control {
-namespace path {
 class Point {
  private:
   // x position
@@ -60,7 +59,7 @@ class Point {
   // division overload
   Point operator/(double rhs);
 
-  //addition assignment overload
+  // addition assignment overload
   Point& operator+=(const Point& rhs);
 
   // subtraction assignment overload
@@ -71,9 +70,7 @@ class Point {
 
   // division assignment overload
   Point& operator/=(double rhs);
-
 };
-}  // namespace path
 }  // namespace control
 }  // namespace pvegas
 #endif

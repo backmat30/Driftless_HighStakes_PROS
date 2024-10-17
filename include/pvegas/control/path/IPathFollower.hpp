@@ -4,7 +4,7 @@
 #include <memory>
 #include <vector>
 
-#include "pvegas/control/path/Point.hpp"
+#include "pvegas/control/Point.hpp"
 #include "pvegas/robot/Robot.hpp"
 
 namespace pvegas {

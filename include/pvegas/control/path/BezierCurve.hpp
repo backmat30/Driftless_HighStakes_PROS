@@ -5,7 +5,7 @@
 #include <cstdint>
 #include <vector>
 
-#include "pvegas/control/path/Point.hpp"
+#include "pvegas/control/Point.hpp"
 #include "pvegas/utils/UtilityFunctions.hpp"
 
 namespace pvegas {
