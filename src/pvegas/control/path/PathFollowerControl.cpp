@@ -56,7 +56,7 @@ void PathFollowerControl::command(std::string command_name, va_list& args) {
 
 void* PathFollowerControl::state(std::string state_name) {
   void* result{nullptr};
-  if (state_name == TARGET_REACHED_STATE_NAME) {
+  if(state_name == TARGET_REACHED_STATE_NAME) {
     result = new bool(m_path_follower->targetReached());
   }
   return result;
