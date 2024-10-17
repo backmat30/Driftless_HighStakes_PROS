@@ -19,3 +19,9 @@ double angle(double x1, double y1, double x2, double y2) {
 double distance(double x1, double y1, double x2, double y2) {
   return std::sqrt(std::pow(x2 - x1, 2) + std::pow(y2 - y1, 2));
 }
+
+int16_t binomialCoefficient(int8_t n, int8_t k) {
+  // https://en.cppreference.com/w/cpp/experimental/special_functions/beta
+  // math is funky beta function goes over my head frfr
+  return 1 / ((n + 1) * std::beta(n - k + 1, k + 1));
+}

@@ -16,5 +16,6 @@ double angle(double x1, double y1, double x2, double y2);
 // get the distance between 2 points
 double distance(double x1, double y1, double x2, double y2);
 
-
+// get the binomial coefficient (n choose k)
+int16_t binomialCoefficient(int8_t n, int8_t k);
 #endif
