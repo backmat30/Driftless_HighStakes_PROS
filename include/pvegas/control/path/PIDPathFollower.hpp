@@ -64,7 +64,7 @@ class PIDPathFollower : public pvegas::control::path::IPathFollower {
   std::shared_ptr<pvegas::robot::Robot> m_robot{};
 
   // the path being followed
-  std::vector<pvegas::control::path::Point> m_control_path{};
+  std::vector<pvegas::control::Point> m_control_path{};
 
   // the index of the latest point found
   uint32_t found_index{};

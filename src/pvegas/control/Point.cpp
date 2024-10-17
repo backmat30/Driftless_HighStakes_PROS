@@ -1,8 +1,7 @@
-#include "pvegas/control/path/Point.hpp"
+#include "pvegas/control/Point.hpp"
 
 namespace pvegas {
 namespace control {
-namespace path {
 Point::Point(double x, double y) : m_x{x}, m_y{y} {}
 
 void Point::setX(double x) { m_x = x; }
@@ -47,7 +46,6 @@ Point& Point::operator/=(double rhs) {
   m_x /= rhs;
   m_y /= rhs;
   return *this;
-}
 }  // namespace path
 }  // namespace control
 }  // namespace pvegas
