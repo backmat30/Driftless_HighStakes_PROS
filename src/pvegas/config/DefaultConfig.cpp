@@ -8,8 +8,44 @@ std::shared_ptr<control::ControlSystem> DefaultConfig::buildControlSystem() {
   // creates a new ControlSystem object through the copy constructor
   std::shared_ptr<control::ControlSystem> control_system{
       std::make_shared<control::ControlSystem>()};
+  // delayer and clock passed to all controls
+  std::unique_ptr<pvegas::rtos::IClock> clock{
+      std::make_unique<pvegas::pros_adapters::ProsClock>()};
+  std::unique_ptr<pvegas::rtos::IDelayer> delayer{
+      std::make_unique<pvegas::pros_adapters::ProsDelayer>()};
 
-  // TODO - add controls as needed
+  // PATH FOLLOWER CONTROL
+  pvegas::control::path::PIDPathFollowerBuilder pid_path_follower_builder{};
+  // needed objects for the path follower
+  std::unique_ptr<pvegas::rtos::IMutex> pid_path_follower_mutex{
+      std::make_unique<pvegas::pros_adapters::ProsMutex>()};
+  std::unique_ptr<pvegas::rtos::ITask> pid_path_follower_task{
+      std::make_unique<pvegas::pros_adapters::ProsTask>()};
+  pvegas::control::PID pid_path_follower_linear_pid{
+      clock, PID_PATH_FOLLOWER_LINEAR_KP, PID_PATH_FOLLOWER_LINEAR_KI,
+      PID_PATH_FOLLOWER_LINEAR_KD};
+  pvegas::control::PID pid_path_follower_rotational_pid{
+      clock, PID_PATH_FOLLOWER_ROTATIONAL_KP, PID_PATH_FOLLOWER_ROTATIONAL_KI,
+      PID_PATH_FOLLOWER_ROTATIONAL_KD};
+
+  // assemble the path follower
+  std::unique_ptr<pvegas::control::path::IPathFollower> pid_path_follower{
+      pid_path_follower_builder.withDelayer(delayer)
+          ->withMutex(pid_path_follower_mutex)
+          ->withTask(pid_path_follower_task)
+          ->withLinearPID(pid_path_follower_linear_pid)
+          ->withRotationalPID(pid_path_follower_rotational_pid)
+          ->withFollowDistance(PID_PATH_FOLLOWER_FOLLOW_DISTANCE)
+          ->withTargetTolerance(PID_PATH_FOLLOWER_TARGET_TOLERANCE)
+          ->withTargetVelocity(PID_PATH_FOLLOWER_TARGET_VELOCITY)
+          ->build()};
+
+  // put the path follower in a control object
+  std::unique_ptr<pvegas::control::AControl> path_follower_control{
+      std::make_unique<pvegas::control::path::PathFollowerControl>(
+          pid_path_follower)};
+  // insert the path follower control into the control manager
+  control_system->addControl(path_follower_control);
 
   return control_system;
 }
@@ -94,7 +130,7 @@ std::shared_ptr<robot::Robot> DefaultConfig::buildRobot() {
   // add the new subsystem to the robot
   robot->addSubsystem(drivetrain_subsystem);
 
-  // objects for the odometry subsystem
+  // ODOMETRY
   // pros objects
   std::unique_ptr<pros::Rotation> temp_left_rotation_sensor{
       std::make_unique<pros::Rotation>(ODOMETRY_LEFT_TRACKING_WHEEL)};
@@ -111,13 +147,15 @@ std::shared_ptr<robot::Robot> DefaultConfig::buildRobot() {
       std::make_unique<pvegas::pros_adapters::ProsRotationSensor>(
           temp_left_rotation_sensor)};
   std::unique_ptr<pvegas::io::IDistanceTracker> left_tracking_wheel{
-      std::make_unique<pvegas::hal::TrackingWheel>(left_rotation_sensor, TRACKING_WHEEL_RADIUS)};
+      std::make_unique<pvegas::hal::TrackingWheel>(left_rotation_sensor,
+                                                   TRACKING_WHEEL_RADIUS)};
   // right tracking wheel
   std::unique_ptr<pvegas::io::IRotationSensor> right_rotation_sensor{
       std::make_unique<pvegas::pros_adapters::ProsRotationSensor>(
           temp_right_rotation_sensor)};
   std::unique_ptr<pvegas::io::IDistanceTracker> right_tracking_wheel{
-      std::make_unique<pvegas::hal::TrackingWheel>(right_rotation_sensor, TRACKING_WHEEL_RADIUS)};
+      std::make_unique<pvegas::hal::TrackingWheel>(right_rotation_sensor,
+                                                   TRACKING_WHEEL_RADIUS)};
   // inertial sensor
   std::unique_ptr<pvegas::io::IInertialSensor> inertial_sensor{
       std::make_unique<pvegas::pros_adapters::ProsInertialSensor>(
@@ -162,11 +200,13 @@ std::shared_ptr<robot::Robot> DefaultConfig::buildRobot() {
               ->withLocalTheta(RESETTER_LOCAL_THETA_OFFSET)
               ->build()};
 
-  // create the subsystem
+  // create and add the subsystem
   std::unique_ptr<pvegas::robot::ASubsystem> odometry_subsystem{
       std::make_unique<pvegas::robot::subsystems::odometry::OdometrySubsystem>(
           inertial_position_tracker, distance_position_resetter)};
   robot->addSubsystem(odometry_subsystem);
+
+  // send out the finalized robot
   return robot;
 }
 }  // namespace config

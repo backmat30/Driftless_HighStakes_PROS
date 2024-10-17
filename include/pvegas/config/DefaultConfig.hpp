@@ -10,6 +10,8 @@
 #include "pros/rotation.hpp"
 #include "pvegas/config/IConfig.hpp"
 #include "pvegas/control/ControlSystem.hpp"
+#include "pvegas/control/path/PIDPathFollowerBuilder.hpp"
+#include "pvegas/control/path/PathFollowerControl.hpp"
 #include "pvegas/hal/TrackingWheel.hpp"
 #include "pvegas/io/IController.hpp"
 #include "pvegas/io/IDistanceSensor.hpp"
@@ -41,6 +43,27 @@ namespace config {
 class DefaultConfig : public IConfig {
  private:
   static constexpr char CONFIG_NAME[]{"DEFAULT CONFIG"};
+
+  // --CONTROL SYSTEM CONSTANTS--
+  // path follower
+  // kp value for the linear PID controller used in the path follower
+  static constexpr double PID_PATH_FOLLOWER_LINEAR_KP{12.0};
+  // ki value for the linear PID controller used in the path follower
+  static constexpr double PID_PATH_FOLLOWER_LINEAR_KI{0.0};
+  // kd value for the linear PID controller used in the path follower
+  static constexpr double PID_PATH_FOLLOWER_LINEAR_KD{640.0};
+  // kp value for the rotational PID controller used in the path follower
+  static constexpr double PID_PATH_FOLLOWER_ROTATIONAL_KP{640.0};
+  // ki value for the rotational PID controller used in the path follower
+  static constexpr double PID_PATH_FOLLOWER_ROTATIONAL_KI{0.0};
+  // kd value for the rotational PID controller used in the path follower
+  static constexpr double PID_PATH_FOLLOWER_ROTATIONAL_KD{10000.0};
+  // path follower follow distance
+  static constexpr double PID_PATH_FOLLOWER_FOLLOW_DISTANCE{12.0};
+  // path follower target tolerance
+  static constexpr double PID_PATH_FOLLOWER_TARGET_TOLERANCE{3.0};
+  // path follower target velocity
+  static constexpr double PID_PATH_FOLLOWER_TARGET_VELOCITY{1.0};
 
   // -----PORT NUMBERS-----
   // DRIVE MOTORS
