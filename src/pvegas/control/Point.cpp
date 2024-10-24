@@ -46,6 +46,6 @@ Point& Point::operator/=(double rhs) {
   m_x /= rhs;
   m_y /= rhs;
   return *this;
-}  // namespace path
+}
 }  // namespace control
 }  // namespace pvegas
