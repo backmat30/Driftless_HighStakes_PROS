@@ -21,7 +21,7 @@ pvegas::robot::subsystems::odometry::Position PIDDriveStraight::getPosition() {
   pvegas::robot::subsystems::odometry::Position position{};
   if (m_robot) {
     position = *static_cast<pvegas::robot::subsystems::odometry::Position*>(
-        m_robot->getState("POSITION TRACKER", "GET POSITION"));
+        m_robot->getState("ODOMETRY", "GET POSITION"));
   }
   return position;
 }
