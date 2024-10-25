@@ -19,7 +19,7 @@ namespace motion {
 class PIDTurn : public ITurn {
  private:
   // the task delay
-  static constexpr uint8_t TASK_DELAY{20};
+  static constexpr uint8_t TASK_DELAY{10};
 
   // the distance to the imaginary point to turn towards
   static constexpr double TURN_TO_ANGLE_DISTANCE{120000};
@@ -67,7 +67,7 @@ class PIDTurn : public ITurn {
   bool paused{};
 
   // sets the velocity of the drive train
-  void setDriveVelocity(double left, double right);
+  void setDriveVelocity(pvegas::robot::subsystems::drivetrain::Velocity velocity);
 
   // gets the position of the robot from the odometry
   pvegas::robot::subsystems::odometry::Position getPosition();
@@ -100,7 +100,7 @@ class PIDTurn : public ITurn {
   void resume() override;
 
   // tell the robot to turn in to a given angle
-  void turnToAngle(std::shared_ptr<pvegas::robot::Robot>& robot,
+  void turnToAngle(const std::shared_ptr<pvegas::robot::Robot>& robot,
                    double velocity, double theta,
                    ETurnDirection direction = ETurnDirection::AUTO) override;
 

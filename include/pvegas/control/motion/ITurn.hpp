@@ -28,7 +28,7 @@ class ITurn {
   virtual void resume() = 0;
 
   // tell the robot to turn in to a given angle
-  virtual void turnToAngle(std::shared_ptr<pvegas::robot::Robot>& robot,
+  virtual void turnToAngle(const std::shared_ptr<pvegas::robot::Robot>& robot,
                            double velocity, double theta,
                            ETurnDirection direction = ETurnDirection::AUTO) = 0;
 
