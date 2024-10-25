@@ -33,12 +33,9 @@ class ITurn {
                            ETurnDirection direction = ETurnDirection::AUTO) = 0;
 
   // tell the robot to turn towards a point on the field
-  virtual void turnToPoint(std::shared_ptr<pvegas::robot::Robot>& robot,
+  virtual void turnToPoint(const std::shared_ptr<pvegas::robot::Robot>& robot,
                            double velocity, Point point,
                            ETurnDirection direction = ETurnDirection::AUTO) = 0;
-
-  // set the max velocity
-  virtual void setVelocity(double velocity) = 0;
 
   // determines if the robot has reached the target
   virtual bool targetReached() = 0;
