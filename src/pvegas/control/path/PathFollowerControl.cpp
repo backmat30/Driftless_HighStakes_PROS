@@ -5,7 +5,7 @@ namespace control {
 namespace path {
 PathFollowerControl::PathFollowerControl(
     std::unique_ptr<pvegas::control::path::IPathFollower>& path_follower)
-    : m_path_follower{std::move(path_follower)} {}
+    : AControl{CONTROL_NAME}, m_path_follower{std::move(path_follower)} {}
 
 void PathFollowerControl::init() {
   if (m_path_follower) {
