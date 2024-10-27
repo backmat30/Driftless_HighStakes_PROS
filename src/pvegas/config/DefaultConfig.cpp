@@ -14,6 +14,81 @@ std::shared_ptr<control::ControlSystem> DefaultConfig::buildControlSystem() {
   std::unique_ptr<pvegas::rtos::IDelayer> delayer{
       std::make_unique<pvegas::pros_adapters::ProsDelayer>()};
 
+  // MOTION CONTROL
+  pvegas::control::motion::PIDDriveStraightBuilder pid_drive_straight_builder{};
+  // objects needed for drive straight algorithm
+  std::unique_ptr<pvegas::rtos::IMutex> pid_drive_straight_mutex{
+      std::make_unique<pvegas::pros_adapters::ProsMutex>()};
+  std::unique_ptr<pvegas::rtos::ITask> pid_drive_straight_task{
+      std::make_unique<pvegas::pros_adapters::ProsTask>()};
+  pvegas::control::PID pid_drive_straight_linear_pid{
+      clock, PID_DRIVE_STRAIGHT_LINEAR_KP, PID_DRIVE_STRAIGHT_LINEAR_KI,
+      PID_DRIVE_STRAIGHT_LINEAR_KD};
+  pvegas::control::PID pid_drive_straight_rotational_pid{
+      clock, PID_DRIVE_STRAIGHT_ROTATIONAL_KP, PID_DRIVE_STRAIGHT_ROTATIONAL_KI,
+      PID_DRIVE_STRAIGHT_ROTATIONAL_KD};
+
+  // assemble the drive straight object
+  std::unique_ptr<pvegas::control::motion::IDriveStraight> drive_straight{
+      pid_drive_straight_builder.withDelayer(delayer)
+          ->withMutex(pid_drive_straight_mutex)
+          ->withTask(pid_drive_straight_task)
+          ->withLinearPID(pid_drive_straight_linear_pid)
+          ->withRotationalPID(pid_drive_straight_rotational_pid)
+          ->withTargetTolerance(PID_DRIVE_STRAIGHT_TARGET_TOLERANCE)
+          ->withTargetVelocity(PID_DRIVE_STRAIGHT_TARGET_VELOCITY)
+          ->build()};
+
+  pvegas::control::motion::PIDGoToPointBuilder pid_go_to_point_builder{};
+  // objects needed for go to point algorithm
+  std::unique_ptr<pvegas::rtos::IMutex> pid_go_to_point_mutex{
+      std::make_unique<pvegas::pros_adapters::ProsMutex>()};
+  std::unique_ptr<pvegas::rtos::ITask> pid_go_to_point_task{
+      std::make_unique<pvegas::pros_adapters::ProsTask>()};
+  pvegas::control::PID pid_go_to_point_linear_pid{
+      clock, PID_GO_TO_POINT_LINEAR_KP, PID_GO_TO_POINT_LINEAR_KI,
+      PID_GO_TO_POINT_LINEAR_KD};
+  pvegas::control::PID pid_go_to_point_rotational_pid{
+      clock, PID_GO_TO_POINT_ROTATIONAL_KP, PID_GO_TO_POINT_ROTATIONAL_KI,
+      PID_GO_TO_POINT_ROTATIONAL_KD};
+
+  // assemble the go to point object
+  std::unique_ptr<pvegas::control::motion::IGoToPoint> go_to_point{
+      pid_go_to_point_builder.withDelayer(delayer)
+          ->withMutex(pid_go_to_point_mutex)
+          ->withTask(pid_go_to_point_task)
+          ->withLinearPID(pid_go_to_point_linear_pid)
+          ->withRotationalPID(pid_go_to_point_rotational_pid)
+          ->withTargetTolerance(PID_GO_TO_POINT_TARGET_TOLERANCE)
+          ->withTargetVelocity(PID_GO_TO_POINT_TARGET_VELOCITY)
+          ->build()};
+
+  pvegas::control::motion::PIDTurnBuilder pid_turn_builder{};
+  // objects needed for turn algorithm
+  std::unique_ptr<pvegas::rtos::IMutex> pid_turn_mutex{
+      std::make_unique<pvegas::pros_adapters::ProsMutex>()};
+  std::unique_ptr<pvegas::rtos::ITask> pid_turn_task{
+      std::make_unique<pvegas::pros_adapters::ProsTask>()};
+  pvegas::control::PID pid_turn_rotational_pid{clock, PID_TURN_ROTATIONAL_KP,
+                                               PID_TURN_ROTATIONAL_KI,
+                                               PID_TURN_ROTATIONAL_KD};
+
+  // assemble the turn object
+  std::unique_ptr<pvegas::control::motion::ITurn> turn{
+      pid_turn_builder.withDelayer(delayer)
+          ->withMutex(pid_turn_mutex)
+          ->withTask(pid_turn_task)
+          ->withRotationalPID(pid_turn_rotational_pid)
+          ->withTargetTolerance(PID_TURN_TARGET_TOLERANCE)
+          ->withTargetVelocity(PID_TURN_TARGET_VELOCITY)
+          ->build()};
+
+  // create and add the motion control
+  std::unique_ptr<pvegas::control::AControl> motion_control{
+      std::make_unique<pvegas::control::motion::MotionControl>(
+          drive_straight, go_to_point, turn)};
+  control_system->addControl(motion_control);
+
   // PATH FOLLOWER CONTROL
   pvegas::control::path::PIDPathFollowerBuilder pid_path_follower_builder{};
   // needed objects for the path follower

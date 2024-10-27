@@ -10,6 +10,10 @@
 #include "pros/rotation.hpp"
 #include "pvegas/config/IConfig.hpp"
 #include "pvegas/control/ControlSystem.hpp"
+#include "pvegas/control/motion/MotionControl.hpp"
+#include "pvegas/control/motion/PIDDriveStraightBuilder.hpp"
+#include "pvegas/control/motion/PIDGoToPointBuilder.hpp"
+#include "pvegas/control/motion/PIDTurnBuilder.hpp"
 #include "pvegas/control/path/PIDPathFollowerBuilder.hpp"
 #include "pvegas/control/path/PathFollowerControl.hpp"
 #include "pvegas/hal/TrackingWheel.hpp"
@@ -45,7 +49,60 @@ class DefaultConfig : public IConfig {
   static constexpr char CONFIG_NAME[]{"DEFAULT CONFIG"};
 
   // --CONTROL SYSTEM CONSTANTS--
-  // path follower
+  // motion control
+  // drive straight
+
+  // kp value for the drive straight linear pid controller
+  static constexpr double PID_DRIVE_STRAIGHT_LINEAR_KP{12.0};
+  // ki value for the drive straight linear pid controller
+  static constexpr double PID_DRIVE_STRAIGHT_LINEAR_KI{0};
+  // kd value for the drive straight linear pid controller
+  static constexpr double PID_DRIVE_STRAIGHT_LINEAR_KD{800};
+  // kp value for the drive straight rotational pid controller
+  static constexpr double PID_DRIVE_STRAIGHT_ROTATIONAL_KP{128.0};
+  // ki value for the drive straight rotational pid controller
+  static constexpr double PID_DRIVE_STRAIGHT_ROTATIONAL_KI{0.001};
+  // kd value for the drive straight rotational pid controller
+  static constexpr double PID_DRIVE_STRAIGHT_ROTATIONAL_KD{800};
+  // the target tolerance of the drive straight algorithm
+  static constexpr double PID_DRIVE_STRAIGHT_TARGET_TOLERANCE{2.0};
+  // the target velocity of the drive straight algorithm
+  static constexpr double PID_DRIVE_STRAIGHT_TARGET_VELOCITY{1.0};
+
+  // go to point
+
+  // kp value for the go to point linear pid controller
+  static constexpr double PID_GO_TO_POINT_LINEAR_KP{12.0};
+  // ki value for the go to point linear pid controller
+  static constexpr double PID_GO_TO_POINT_LINEAR_KI{0};
+  // kd value of the go to point linear pid controller
+  static constexpr double PID_GO_TO_POINT_LINEAR_KD{800};
+  // kp value for the go to point rotational pid controller
+  static constexpr double PID_GO_TO_POINT_ROTATIONAL_KP{128.0};
+  // ki value for the go to point rotational pid controller
+  static constexpr double PID_GO_TO_POINT_ROTATIONAL_KI{0.001};
+  // kd value for the go to point rotational pid controller
+  static constexpr double PID_GO_TO_POINT_ROTATIONAL_KD{800};
+  // the target tolerance of the go to point algorithm
+  static constexpr double PID_GO_TO_POINT_TARGET_TOLERANCE{2.0};
+  // the target velocity of the go to point algorithm
+  static constexpr double PID_GO_TO_POINT_TARGET_VELOCITY{1.0};
+
+  // turn
+
+  // kp value for the turn rotational pid controller
+  static constexpr double PID_TURN_ROTATIONAL_KP{180.0};
+  // ki value for the turn rotational pid controller
+  static constexpr double PID_TURN_ROTATIONAL_KI{0.001};
+  // kd value for the turn rotational pid controller
+  static constexpr double PID_TURN_ROTATIONAL_KD{10000.0};
+  // the target tolerance of the turn algorithm
+  static constexpr double PID_TURN_TARGET_TOLERANCE{M_PI / 50};
+  // the target velocity of the turn algorithm
+  static constexpr double PID_TURN_TARGET_VELOCITY{M_PI / 200};
+
+  // path follower control
+
   // kp value for the linear PID controller used in the path follower
   static constexpr double PID_PATH_FOLLOWER_LINEAR_KP{12.0};
   // ki value for the linear PID controller used in the path follower
@@ -67,6 +124,7 @@ class DefaultConfig : public IConfig {
 
   // -----PORT NUMBERS-----
   // DRIVE MOTORS
+
   // first left drive motor
   static constexpr int8_t DRIVE_LEFT_MOTOR_1{-4};
   // second left drive motor
@@ -85,6 +143,7 @@ class DefaultConfig : public IConfig {
   static constexpr int8_t DRIVE_RIGHT_MOTOR_4{-14};
 
   // ODOMETRY PORTS
+
   // left tracking wheel
   static constexpr int8_t ODOMETRY_LEFT_TRACKING_WHEEL{0};
   // right tracking wheel
@@ -95,6 +154,7 @@ class DefaultConfig : public IConfig {
   static constexpr int8_t ODOMETRY_DISTANCE_SENSOR{0};
 
   // -----MISC VALUES-----
+
   // drive gearset
   static constexpr pros::MotorGearset DRIVE_GEARSET{pros::E_MOTOR_GEAR_BLUE};
   // drive ratio of motor voltage to velocity
