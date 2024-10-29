@@ -15,13 +15,13 @@ ElevatorOperator::ElevatorOperator(
     const std::shared_ptr<pvegas::robot::Robot>& robot)
     : m_controller{controller}, m_robot{robot} {}
 
-void ElevatorOperator::setElevatorVoltage() {
+void ElevatorOperator::setElevatorVoltage(EControllerDigital spin) {
   if (!m_controller) {
     updateElevatorVoltage(0);
     return;
   }
   double voltage{
-      m_controller->getDigital(EControllerDigital::TRIGGER_RIGHT_TOP) * 127.0 *
+      m_controller->getDigital(spin) * 127.0 *
       VOLTAGE_CONVERSION};
 
   updateElevatorVoltage(voltage);
