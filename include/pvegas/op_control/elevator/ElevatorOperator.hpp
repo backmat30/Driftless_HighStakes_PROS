@@ -35,7 +35,7 @@ class ElevatorOperator {
                    const std::shared_ptr<pvegas::robot::Robot>& robot);
 
   // spin the elevator
-  void spinElevator();
+  void setElevatorVoltage();
 };
 }  // namespace elevator
 }  // namespace op_control

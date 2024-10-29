@@ -15,7 +15,7 @@ ElevatorOperator::ElevatorOperator(
     const std::shared_ptr<pvegas::robot::Robot>& robot)
     : m_controller{controller}, m_robot{robot} {}
 
-void ElevatorOperator::spinElevator() {
+void ElevatorOperator::setElevatorVoltage() {
   if (!m_controller) {
     updateElevatorVoltage(0);
     return;
@@ -23,7 +23,7 @@ void ElevatorOperator::spinElevator() {
   double voltage{
       m_controller->getDigital(EControllerDigital::TRIGGER_RIGHT_TOP) * 127.0 *
       VOLTAGE_CONVERSION};
-      
+
   updateElevatorVoltage(voltage);
 }
 }  // namespace elevator
