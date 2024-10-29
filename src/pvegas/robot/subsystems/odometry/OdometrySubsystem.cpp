@@ -7,7 +7,8 @@ namespace odometry {
 OdometrySubsystem::OdometrySubsystem(
     std::unique_ptr<IPositionTracker>& position_tracker,
     std::unique_ptr<IPositionResetter>& position_resetter)
-    : m_position_tracker{std::move(position_tracker)},
+    : ASubsystem{SUBSYSTEM_NAME},
+      m_position_tracker{std::move(position_tracker)},
       m_position_resetter{std::move(position_resetter)} {}
 
 void OdometrySubsystem::init() {
