@@ -6,6 +6,7 @@
 
 namespace pvegas {
 namespace robot {
+namespace subsystems {
 class ASubsystem {
  private:
   std::string m_name{};
@@ -31,6 +32,7 @@ class ASubsystem {
 
   ASubsystem& operator=(const ASubsystem& rhs) = default;
 };
+}  // namespace subsystems
 }  // namespace robot
 }  // namespace pvegas
 #endif
