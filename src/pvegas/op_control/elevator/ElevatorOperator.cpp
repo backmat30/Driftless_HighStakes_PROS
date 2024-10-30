@@ -15,7 +15,9 @@ ElevatorOperator::ElevatorOperator(
     const std::shared_ptr<pvegas::robot::Robot>& robot)
     : m_controller{controller}, m_robot{robot} {}
 
-void ElevatorOperator::setElevatorVoltage(EControllerDigital spin) {
+void ElevatorOperator::update(const std::unique_ptr<pvegas::profiles::IProfile>& profile) {
+  EControllerDigital spin{profile->getDigitalControlMapping(EControl::ELEVATOR_SPIN)};
+
   if (!m_controller) {
     updateElevatorVoltage(0);
     return;

@@ -6,6 +6,8 @@
 #include "pvegas/io/IController.hpp"
 #include "pvegas/op_control/EControllerDigital.hpp"
 #include "pvegas/robot/Robot.hpp"
+#include "pvegas/profiles/IProfile.hpp"
+
 namespace pvegas {
 namespace op_control {
 namespace elevator {
@@ -35,7 +37,7 @@ class ElevatorOperator {
                    const std::shared_ptr<pvegas::robot::Robot>& robot);
 
   // spin the elevator
-  void setElevatorVoltage(EControllerDigital spin);
+  void update(const std::unique_ptr<pvegas::profiles::IProfile>& profile);
 };
 }  // namespace elevator
 }  // namespace op_control
