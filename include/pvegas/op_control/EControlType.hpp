@@ -3,7 +3,14 @@
 
 namespace pvegas {
 namespace op_control {
-enum EControlType { DRIVE };
+enum EControlType {
+  ARM,
+  CLAMP,
+  CLIMB,
+  DRIVE,
+  ELEVATOR,
+  INTAKE
+};
 }
 }  // namespace pvegas
 #endif
