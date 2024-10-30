@@ -7,6 +7,7 @@
 #include "pvegas/control/ControlSystem.hpp"
 #include "pvegas/io/IController.hpp"
 #include "pvegas/op_control/drivetrain/DrivetrainOperator.hpp"
+#include "pvegas/op_control/elevator/ElevatorOperator.hpp"
 #include "pvegas/profiles/IProfile.hpp"
 #include "pvegas/robot/Robot.hpp"
 #include "pvegas/rtos/IClock.hpp"

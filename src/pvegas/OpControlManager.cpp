@@ -37,6 +37,7 @@ void OpControlManager::run(
 
   // set subsystems to driver control
   op_control::drivetrain::DrivetrainOperator drive_operator{controller, robot};
+  op_control::elevator::ElevatorOperator elevator_operator{controller, robot};
 
   // variable to hold time for delayer
   uint32_t current_time{};
@@ -48,6 +49,7 @@ void OpControlManager::run(
 
     // updates all subsystems
     drive_operator.setDriveVoltage();
+    elevator_operator.update(m_profile);
 
     // delay until 10 seconds after loop start
     // keeps time per loop consistent rather than delaying 10 seconds AFTER
