@@ -26,17 +26,17 @@ class InertialPositionTrackerBuilder {
   // the inertial sensor used to build the position tracker
   std::unique_ptr<pvegas::io::IInertialSensor> m_inertial_sensor{};
 
-  // the left distance tracker used to build the position tracker
-  std::unique_ptr<pvegas::io::IDistanceTracker> m_left_distance_tracker{};
+  // the linear distance tracker used to build the position tracker
+  std::unique_ptr<pvegas::io::IDistanceTracker> m_linear_distance_tracker{};
 
-  // the offset of the left distance tracker used to build the position tracker
-  double m_left_distance_tracker_offset{};
+  // the offset of the linear distance tracker used to build the position tracker
+  double m_linear_distance_tracker_offset{};
 
-  // the right distance tracker used to build the position tracker
-  std::unique_ptr<pvegas::io::IDistanceTracker> m_right_distance_tracker{};
+  // the strafe distance tracker used to build the position tracker
+  std::unique_ptr<pvegas::io::IDistanceTracker> m_strafe_distance_tracker{};
 
-  // the offset of the right distance tracker used to build the position tracker
-  double m_right_distance_tracker_offset{};
+  // the offset of the strafe distance tracker used to build the position tracker
+  double m_strafe_distance_tracker_offset{};
 
  public:
   // add a clock to the builder
@@ -59,21 +59,21 @@ class InertialPositionTrackerBuilder {
   InertialPositionTrackerBuilder* withInertialSensor(
       std::unique_ptr<pvegas::io::IInertialSensor>& inertial_sensor);
 
-  // add a left distance tracker to the builder
-  InertialPositionTrackerBuilder* withLeftDistanceTracker(
-      std::unique_ptr<pvegas::io::IDistanceTracker>& left_distance_tracker);
+  // add a linear distance tracker to the builder
+  InertialPositionTrackerBuilder* withLinearDistanceTracker(
+      std::unique_ptr<pvegas::io::IDistanceTracker>& linear_distance_tracker);
 
-  // add a left distance tracker offset to the builder
-  InertialPositionTrackerBuilder* withLeftDistanceTrackerOffset(
-      double left_distance_tracker_offset);
+  // add a linear distance tracker offset to the builder
+  InertialPositionTrackerBuilder* withLinearDistanceTrackerOffset(
+      double linear_distance_tracker_offset);
 
-  // add a right distance tracker to the builder
-  InertialPositionTrackerBuilder* withRightDistanceTracker(
-      std::unique_ptr<pvegas::io::IDistanceTracker>& right_distance_tracker);
+  // add a strafe distance tracker to the builder
+  InertialPositionTrackerBuilder* withStrafeDistanceTracker(
+      std::unique_ptr<pvegas::io::IDistanceTracker>& strafe_distance_tracker);
 
-  // add a right distance tracker offset to the builder
-  InertialPositionTrackerBuilder* withRightDistanceTrackerOffset(
-      double right_distance_tracker_offset);
+  // add a strafe distance tracker offset to the builder
+  InertialPositionTrackerBuilder* withStrafeDistanceTrackerOffset(
+      double strafe_distance_tracker_offset);
 
   std::unique_ptr<IPositionTracker> build();
 };

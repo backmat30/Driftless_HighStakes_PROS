@@ -117,18 +117,18 @@ class InertialPositionTracker : public IPositionTracker {
       std::unique_ptr<pvegas::io::IInertialSensor>& inertial_sensor);
 
   // set the linear distance tracker
-  void setlinearDistanceTracker(
+  void setLinearDistanceTracker(
       std::unique_ptr<pvegas::io::IDistanceTracker>& linear_distance_tracker);
 
   // set the offset of the linear distance tracker
-  void setlinearDIstanceTrackerOffset(double linear_distance_tracker_offset);
+  void setLinearDIstanceTrackerOffset(double linear_distance_tracker_offset);
 
   // set the strafe distance tracker
-  void setstrafeDistanceTracker(
+  void setStrafeDistanceTracker(
       std::unique_ptr<pvegas::io::IDistanceTracker>& strafe_distance_tracker);
 
   // set the offset of the strafe distance tracker
-  void setstrafeDistanceTrackerOffset(double strafe_distance_tracker_offset);
+  void setStrafeDistanceTrackerOffset(double strafe_distance_tracker_offset);
 };
 }  // namespace odometry
 }  // namespace subsystems

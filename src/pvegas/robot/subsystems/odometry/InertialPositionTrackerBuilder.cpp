@@ -36,30 +36,30 @@ InertialPositionTrackerBuilder::withInertialSensor(
 }
 
 InertialPositionTrackerBuilder*
-InertialPositionTrackerBuilder::withLeftDistanceTracker(
-    std::unique_ptr<pvegas::io::IDistanceTracker>& left_distance_tracker) {
-  m_left_distance_tracker = std::move(left_distance_tracker);
+InertialPositionTrackerBuilder::withLinearDistanceTracker(
+    std::unique_ptr<pvegas::io::IDistanceTracker>& linear_distance_tracker) {
+  m_linear_distance_tracker = std::move(linear_distance_tracker);
   return this;
 }
 
 InertialPositionTrackerBuilder*
-InertialPositionTrackerBuilder::withLeftDistanceTrackerOffset(
-    double left_distance_tracker_offset) {
-  m_left_distance_tracker_offset = left_distance_tracker_offset;
+InertialPositionTrackerBuilder::withLinearDistanceTrackerOffset(
+    double linear_distance_tracker_offset) {
+  m_linear_distance_tracker_offset = linear_distance_tracker_offset;
   return this;
 }
 
 InertialPositionTrackerBuilder*
-InertialPositionTrackerBuilder::withRightDistanceTracker(
-    std::unique_ptr<pvegas::io::IDistanceTracker>& right_distance_tracker) {
-  m_right_distance_tracker = std::move(right_distance_tracker);
+InertialPositionTrackerBuilder::withStrafeDistanceTracker(
+    std::unique_ptr<pvegas::io::IDistanceTracker>& strafe_distance_tracker) {
+  m_strafe_distance_tracker = std::move(strafe_distance_tracker);
   return this;
 }
 
 InertialPositionTrackerBuilder*
-InertialPositionTrackerBuilder::withRightDistanceTrackerOffset(
-    double right_distance_tracker_offset) {
-  m_right_distance_tracker_offset = right_distance_tracker_offset;
+InertialPositionTrackerBuilder::withStrafeDistanceTrackerOffset(
+    double strafe_distance_tracker_offset) {
+  m_strafe_distance_tracker_offset = strafe_distance_tracker_offset;
   return this;
 }
 
@@ -72,12 +72,12 @@ InertialPositionTrackerBuilder::build() {
   position_tracker->setMutex(m_mutex);
   position_tracker->setTask(m_task);
   position_tracker->setInertialSensor(m_inertial_sensor);
-  position_tracker->setLeftDistanceTracker(m_left_distance_tracker);
-  position_tracker->setLeftDIstanceTrackerOffset(
-      m_left_distance_tracker_offset);
-  position_tracker->setRightDistanceTracker(m_right_distance_tracker);
-  position_tracker->setRightDistanceTrackerOffset(
-      m_right_distance_tracker_offset);
+  position_tracker->setLinearDistanceTracker(m_linear_distance_tracker);
+  position_tracker->setLinearDIstanceTrackerOffset(
+      m_linear_distance_tracker_offset);
+  position_tracker->setStrafeDistanceTracker(m_strafe_distance_tracker);
+  position_tracker->setStrafeDistanceTrackerOffset(
+      m_strafe_distance_tracker_offset);
 
   return position_tracker;
 }

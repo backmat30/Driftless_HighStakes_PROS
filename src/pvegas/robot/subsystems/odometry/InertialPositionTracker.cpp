@@ -197,22 +197,22 @@ void InertialPositionTracker::setInertialSensor(
   m_inertial_sensor = std::move(inertial_sensor);
 }
 
-void InertialPositionTracker::setlinearDistanceTracker(
+void InertialPositionTracker::setLinearDistanceTracker(
     std::unique_ptr<pvegas::io::IDistanceTracker>& linear_distance_tracker) {
   m_linear_distance_tracker = std::move(linear_distance_tracker);
 }
 
-void InertialPositionTracker::setlinearDIstanceTrackerOffset(
+void InertialPositionTracker::setLinearDIstanceTrackerOffset(
     double linear_distance_tracker_offset) {
   m_linear_distance_tracker_offset = linear_distance_tracker_offset;
 }
 
-void InertialPositionTracker::setstrafeDistanceTracker(
+void InertialPositionTracker::setStrafeDistanceTracker(
     std::unique_ptr<pvegas::io::IDistanceTracker>& strafe_distance_tracker) {
   m_strafe_distance_tracker = std::move(strafe_distance_tracker);
 }
 
-void InertialPositionTracker::setstrafeDistanceTrackerOffset(
+void InertialPositionTracker::setStrafeDistanceTrackerOffset(
     double strafe_distance_tracker_offset) {
   m_strafe_distance_tracker_offset = strafe_distance_tracker_offset;
 }
