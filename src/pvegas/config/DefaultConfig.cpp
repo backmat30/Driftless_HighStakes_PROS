@@ -199,7 +199,7 @@ std::shared_ptr<robot::Robot> DefaultConfig::buildRobot() {
           ->withWheelRadius(DRIVE_WHEEL_RADIUS)
           ->build()};
   // create the subsystem for the drivetrain
-  std::unique_ptr<robot::ASubsystem> drivetrain_subsystem{
+  std::unique_ptr<robot::subsystems::ASubsystem> drivetrain_subsystem{
       std::make_unique<robot::subsystems::drivetrain::DrivetrainSubsystem>(
           drivetrain)};
   // add the new subsystem to the robot
@@ -207,29 +207,29 @@ std::shared_ptr<robot::Robot> DefaultConfig::buildRobot() {
 
   // ODOMETRY
   // pros objects
-  std::unique_ptr<pros::Rotation> temp_left_rotation_sensor{
-      std::make_unique<pros::Rotation>(ODOMETRY_LEFT_TRACKING_WHEEL)};
-  std::unique_ptr<pros::Rotation> temp_right_rotation_sensor{
-      std::make_unique<pros::Rotation>(ODOMETRY_RIGHT_TRACKING_WHEEL)};
+  std::unique_ptr<pros::Rotation> temp_linear_rotation_sensor{
+      std::make_unique<pros::Rotation>(ODOMETRY_LINEAR_TRACKING_WHEEL)};
+  std::unique_ptr<pros::Rotation> temp_strafe_rotation_sensor{
+      std::make_unique<pros::Rotation>(ODOMETRY_STRAFE_TRACKING_WHEEL)};
   std::unique_ptr<pros::IMU> temp_inertial_sensor{
       std::make_unique<pros::IMU>(ODOMETRY_INERTIAL_SENSOR)};
   std::unique_ptr<pros::Distance> temp_distance_sensor{
       std::make_unique<pros::Distance>(ODOMETRY_DISTANCE_SENSOR)};
 
   // adapted objects
-  // left tracking wheel
-  std::unique_ptr<pvegas::io::IRotationSensor> left_rotation_sensor{
+  // linear tracking wheel
+  std::unique_ptr<pvegas::io::IRotationSensor> linear_rotation_sensor{
       std::make_unique<pvegas::pros_adapters::ProsRotationSensor>(
-          temp_left_rotation_sensor)};
-  std::unique_ptr<pvegas::io::IDistanceTracker> left_tracking_wheel{
-      std::make_unique<pvegas::hal::TrackingWheel>(left_rotation_sensor,
+          temp_linear_rotation_sensor)};
+  std::unique_ptr<pvegas::io::IDistanceTracker> linear_tracking_wheel{
+      std::make_unique<pvegas::hal::TrackingWheel>(linear_rotation_sensor,
                                                    TRACKING_WHEEL_RADIUS)};
-  // right tracking wheel
-  std::unique_ptr<pvegas::io::IRotationSensor> right_rotation_sensor{
+  // strafe tracking wheel
+  std::unique_ptr<pvegas::io::IRotationSensor> strafe_rotation_sensor{
       std::make_unique<pvegas::pros_adapters::ProsRotationSensor>(
-          temp_right_rotation_sensor)};
-  std::unique_ptr<pvegas::io::IDistanceTracker> right_tracking_wheel{
-      std::make_unique<pvegas::hal::TrackingWheel>(right_rotation_sensor,
+          temp_strafe_rotation_sensor)};
+  std::unique_ptr<pvegas::io::IDistanceTracker> strafe_tracking_wheel{
+      std::make_unique<pvegas::hal::TrackingWheel>(strafe_rotation_sensor,
                                                    TRACKING_WHEEL_RADIUS)};
   // inertial sensor
   std::unique_ptr<pvegas::io::IInertialSensor> inertial_sensor{
@@ -258,10 +258,10 @@ std::shared_ptr<robot::Robot> DefaultConfig::buildRobot() {
               ->withMutex(odometry_mutex)
               ->withTask(odometry_task)
               ->withInertialSensor(inertial_sensor)
-              ->withLeftDistanceTracker(left_tracking_wheel)
-              ->withLeftDistanceTrackerOffset(LEFT_TRACKING_WHEEL_OFFSET)
-              ->withRightDistanceTracker(right_tracking_wheel)
-              ->withRightDistanceTrackerOffset(RIGHT_TRACKING_WHEEL_OFFSET)
+              ->withLinearDistanceTracker(linear_tracking_wheel)
+              ->withLinearDistanceTrackerOffset(LINEAR_TRACKING_WHEEL_OFFSET)
+              ->withStrafeDistanceTracker(strafe_tracking_wheel)
+              ->withStrafeDistanceTrackerOffset(STRAFE_TRACKING_WHEEL_OFFSET)
               ->build()};
   // position resetter
   pvegas::robot::subsystems::odometry::DistancePositionResetterBuilder
@@ -276,7 +276,7 @@ std::shared_ptr<robot::Robot> DefaultConfig::buildRobot() {
               ->build()};
 
   // create and add the subsystem
-  std::unique_ptr<pvegas::robot::ASubsystem> odometry_subsystem{
+  std::unique_ptr<pvegas::robot::subsystems::ASubsystem> odometry_subsystem{
       std::make_unique<pvegas::robot::subsystems::odometry::OdometrySubsystem>(
           inertial_position_tracker, distance_position_resetter)};
   robot->addSubsystem(odometry_subsystem);
