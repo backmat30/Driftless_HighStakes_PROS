@@ -15,9 +15,11 @@ enum EControl {
   CLIMB_PULL,
   CLIMB_RELEASE,
   ELEVATOR_SPIN,
+  ELEVATOR_TOGGLE,
   INTAKE_SPIN,
   INTAKE_RAISE,
-  INTAKE_LOWER
+  INTAKE_LOWER,
+  INTAKE_TOGGLE_HEIGHT
 };
 }  // namespace op_control
 }  // namespace pvegas

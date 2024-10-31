@@ -5,6 +5,7 @@
 
 #include "pvegas/io/IController.hpp"
 #include "pvegas/op_control/EControllerDigital.hpp"
+#include "pvegas/op_control/elevator/EElevatorControlMode.hpp"
 #include "pvegas/profiles/IProfile.hpp"
 #include "pvegas/robot/Robot.hpp"
 
