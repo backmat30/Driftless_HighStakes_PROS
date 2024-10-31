@@ -23,6 +23,7 @@ void PIDElevator::taskUpdate() {
   if (m_mutex) {
     m_mutex->give();
   }
+  m_delayer->delay(TASK_DELAY);
 }
 
 void PIDElevator::updatePosition() {
