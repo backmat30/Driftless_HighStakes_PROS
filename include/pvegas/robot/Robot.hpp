@@ -9,10 +9,10 @@ namespace pvegas {
 namespace robot {
 class Robot {
  private:
-  std::vector<std::unique_ptr<ASubsystem>> subsystems{};
+  std::vector<std::unique_ptr<subsystems::ASubsystem>> subsystems{};
 
  public:
-  void addSubsystem(std::unique_ptr<ASubsystem> &subsystem);
+  void addSubsystem(std::unique_ptr<subsystems::ASubsystem> &subsystem);
 
   bool removeSubsystem(std::string subsystem);
 

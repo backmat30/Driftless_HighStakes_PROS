@@ -2,7 +2,7 @@
 
 namespace pvegas {
 namespace robot {
-void Robot::addSubsystem(std::unique_ptr<ASubsystem>& subsystem) {
+void Robot::addSubsystem(std::unique_ptr<subsystems::ASubsystem>& subsystem) {
   subsystems.push_back(std::move(subsystem));
 }
 
