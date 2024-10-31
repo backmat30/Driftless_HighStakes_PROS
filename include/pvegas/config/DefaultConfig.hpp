@@ -123,35 +123,54 @@ class DefaultConfig : public IConfig {
   static constexpr double PID_PATH_FOLLOWER_TARGET_VELOCITY{1.0};
 
   // -----PORT NUMBERS-----
+
+  // use for undefined ports
+  static constexpr int8_t UNDEFINED_PORT{};
+
   // DRIVE MOTORS
 
   // first left drive motor
-  static constexpr int8_t DRIVE_LEFT_MOTOR_1{-4};
+  static constexpr int8_t DRIVE_LEFT_MOTOR_1{-UNDEFINED_PORT};
   // second left drive motor
-  static constexpr int8_t DRIVE_LEFT_MOTOR_2{3};
+  static constexpr int8_t DRIVE_LEFT_MOTOR_2{UNDEFINED_PORT};
   // third left drive motor
-  static constexpr int8_t DRIVE_LEFT_MOTOR_3{-2};
+  static constexpr int8_t DRIVE_LEFT_MOTOR_3{-UNDEFINED_PORT};
   // fourth left drive motor
-  static constexpr int8_t DRIVE_LEFT_MOTOR_4{1};
+  static constexpr int8_t DRIVE_LEFT_MOTOR_4{UNDEFINED_PORT};
   // first right drive motor
-  static constexpr int8_t DRIVE_RIGHT_MOTOR_1{11};
+  static constexpr int8_t DRIVE_RIGHT_MOTOR_1{UNDEFINED_PORT};
   // second right drive motor
-  static constexpr int8_t DRIVE_RIGHT_MOTOR_2{-12};
+  static constexpr int8_t DRIVE_RIGHT_MOTOR_2{-UNDEFINED_PORT};
   // third right drive motor
-  static constexpr int8_t DRIVE_RIGHT_MOTOR_3{13};
+  static constexpr int8_t DRIVE_RIGHT_MOTOR_3{UNDEFINED_PORT};
   // fourth right drive motor
-  static constexpr int8_t DRIVE_RIGHT_MOTOR_4{-14};
+  static constexpr int8_t DRIVE_RIGHT_MOTOR_4{-UNDEFINED_PORT};
+
+  // ELEVATOR PORTS
+
+  // first elevator motor
+  static constexpr int8_t ELEVATOR_MOTOR_1{UNDEFINED_PORT};
+  // elevator rotational sensor
+  static constexpr int8_t ELEVATOR_ROTATIONAL_SENSOR{UNDEFINED_PORT};
+
+  // INTAKE PORTS
+  // left intake piston
+  static constexpr int8_t INTAKE_LEFT_PISTON{UNDEFINED_PORT};
+  // right intake piston
+  static constexpr int8_t INTAKE_RIGHT_PISTON{UNDEFINED_PORT};
+  // intake motor
+  static constexpr int8_t INTAKE_MOTOR{UNDEFINED_PORT};
 
   // ODOMETRY PORTS
 
   // left tracking wheel
-  static constexpr int8_t ODOMETRY_LEFT_TRACKING_WHEEL{0};
+  static constexpr int8_t ODOMETRY_LINEAR_TRACKING_WHEEL{UNDEFINED_PORT};
   // right tracking wheel
-  static constexpr int8_t ODOMETRY_RIGHT_TRACKING_WHEEL{0};
+  static constexpr int8_t ODOMETRY_STRAFE_TRACKING_WHEEL{UNDEFINED_PORT};
   // inertial sensor
-  static constexpr int8_t ODOMETRY_INERTIAL_SENSOR{0};
+  static constexpr int8_t ODOMETRY_INERTIAL_SENSOR{UNDEFINED_PORT};
   // distance sensor
-  static constexpr int8_t ODOMETRY_DISTANCE_SENSOR{0};
+  static constexpr int8_t ODOMETRY_DISTANCE_SENSOR{UNDEFINED_PORT};
 
   // -----MISC VALUES-----
 
@@ -166,9 +185,9 @@ class DefaultConfig : public IConfig {
   // radius of the tracking wheels
   static constexpr double TRACKING_WHEEL_RADIUS{1.0};
   // left offset of the left tracking wheel
-  static constexpr double LEFT_TRACKING_WHEEL_OFFSET{4.8};
+  static constexpr double LINEAR_TRACKING_WHEEL_OFFSET{4.8};
   // left offset of the right tracking wheel
-  static constexpr double RIGHT_TRACKING_WHEEL_OFFSET{8.69};
+  static constexpr double STRAFE_TRACKING_WHEEL_OFFSET{8.69};
   // position resetter x offset
   static constexpr double RESETTER_LOCAL_X_OFFSET{7.5};
   // position resetter y offset
