@@ -29,7 +29,9 @@ class DefaultProfile : public profiles::IProfile {
 
   // maps subsystem controls to digital inputs
   const std::map<op_control::EControl, op_control::EControllerDigital>
-      DIGITAL_CONTROL_MAP{};
+      DIGITAL_CONTROL_MAP{
+        {op_control::EControl::ELEVATOR_SPIN, op_control::EControllerDigital::TRIGGER_RIGHT_BOTTOM}
+      };
 
  public:
   // returns profile name
