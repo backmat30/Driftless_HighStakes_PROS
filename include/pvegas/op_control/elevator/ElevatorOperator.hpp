@@ -5,8 +5,8 @@
 
 #include "pvegas/io/IController.hpp"
 #include "pvegas/op_control/EControllerDigital.hpp"
-#include "pvegas/robot/Robot.hpp"
 #include "pvegas/profiles/IProfile.hpp"
+#include "pvegas/robot/Robot.hpp"
 
 namespace pvegas {
 namespace op_control {
@@ -21,6 +21,9 @@ class ElevatorOperator {
 
   // conversion factor to voltage
   static constexpr double VOLTAGE_CONVERSION{12.0 / 127.0};
+
+  // voltage used to run the elevator by default
+  static constexpr double DEFAULT_VOLTAGE{127.0};
 
   // the controller being used
   std::shared_ptr<pvegas::io::IController> m_controller{};

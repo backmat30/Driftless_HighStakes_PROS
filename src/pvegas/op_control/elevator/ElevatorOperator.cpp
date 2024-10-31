@@ -23,7 +23,7 @@ void ElevatorOperator::update(const std::unique_ptr<pvegas::profiles::IProfile>&
     return;
   }
   double voltage{
-      m_controller->getDigital(spin) * 127.0 *
+      m_controller->getDigital(spin) * DEFAULT_VOLTAGE *
       VOLTAGE_CONVERSION};
 
   updateElevatorVoltage(voltage);
