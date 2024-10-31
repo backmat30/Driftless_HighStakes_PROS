@@ -42,17 +42,17 @@ class InertialPositionTracker : public IPositionTracker {
   // inertial sensor to track rotation
   std::unique_ptr<pvegas::io::IInertialSensor> m_inertial_sensor{};
 
-  // distance tracker on the left side of the robot
-  std::unique_ptr<pvegas::io::IDistanceTracker> m_left_distance_tracker{};
+  // distance tracker on the linear side of the robot
+  std::unique_ptr<pvegas::io::IDistanceTracker> m_linear_distance_tracker{};
 
-  // the offset, from the left side of the robot, of the left distance tracker
-  double m_left_distance_tracker_offset{};
+  // the offset, from the linear side of the robot, of the linear distance tracker
+  double m_linear_distance_tracker_offset{};
 
-  // distance tracker on the right side of the robot
-  std::unique_ptr<pvegas::io::IDistanceTracker> m_right_distance_tracker{};
+  // distance tracker on the strafe side of the robot
+  std::unique_ptr<pvegas::io::IDistanceTracker> m_strafe_distance_tracker{};
 
-  // the offset, from the left side of the robot, of the right distance tracker
-  double m_right_distance_tracker_offset{};
+  // the offset, from the linear side of the robot, of the strafe distance tracker
+  double m_strafe_distance_tracker_offset{};
 
   // the position on the field
   Position m_position{};
@@ -63,11 +63,11 @@ class InertialPositionTracker : public IPositionTracker {
   // the latest heading value
   double last_heading{};
 
-  // the latest distance recorded on the left tracking wheel
-  double last_left_distance{};
+  // the latest distance recorded on the linear tracking wheel
+  double last_linear_distance{};
 
-  // the latest distance recorded on the right tracking wheel
-  double last_right_distance{};
+  // the latest distance recorded on the strafe tracking wheel
+  double last_strafe_distance{};
 
   // the system time of the latest update
   uint8_t last_time{};
@@ -116,19 +116,19 @@ class InertialPositionTracker : public IPositionTracker {
   void setInertialSensor(
       std::unique_ptr<pvegas::io::IInertialSensor>& inertial_sensor);
 
-  // set the left distance tracker
-  void setLeftDistanceTracker(
-      std::unique_ptr<pvegas::io::IDistanceTracker>& left_distance_tracker);
+  // set the linear distance tracker
+  void setlinearDistanceTracker(
+      std::unique_ptr<pvegas::io::IDistanceTracker>& linear_distance_tracker);
 
-  // set the offset of the left distance tracker
-  void setLeftDIstanceTrackerOffset(double left_distance_tracker_offset);
+  // set the offset of the linear distance tracker
+  void setlinearDIstanceTrackerOffset(double linear_distance_tracker_offset);
 
-  // set the right distance tracker
-  void setRightDistanceTracker(
-      std::unique_ptr<pvegas::io::IDistanceTracker>& right_distance_tracker);
+  // set the strafe distance tracker
+  void setstrafeDistanceTracker(
+      std::unique_ptr<pvegas::io::IDistanceTracker>& strafe_distance_tracker);
 
-  // set the offset of the right distance tracker
-  void setRightDistanceTrackerOffset(double right_distance_tracker_offset);
+  // set the offset of the strafe distance tracker
+  void setstrafeDistanceTrackerOffset(double strafe_distance_tracker_offset);
 };
 }  // namespace odometry
 }  // namespace subsystems

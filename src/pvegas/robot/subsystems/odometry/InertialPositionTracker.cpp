@@ -24,45 +24,42 @@ void InertialPositionTracker::updatePosition() {
   }
 
   double current_rotation{};
-  double current_left_distance{};
-  double current_right_distance{};
+  double current_linear_distance{};
+  double current_strafe_distance{};
   uint32_t current_time{};
 
   // get raw data from sensors
   if (m_inertial_sensor) {
     current_rotation = m_inertial_sensor->getRotation() + m_heading_offset;
   }
-  if (m_left_distance_tracker) {
-    current_left_distance = m_left_distance_tracker->getDistance();
+  if (m_linear_distance_tracker) {
+    current_linear_distance = m_linear_distance_tracker->getDistance();
   }
-  if (m_right_distance_tracker) {
-    current_right_distance = m_right_distance_tracker->getDistance();
+  if (m_strafe_distance_tracker) {
+    current_strafe_distance = m_strafe_distance_tracker->getDistance();
   }
 
   double rotation_change{current_rotation - last_heading};
-  double left_linear_change{current_left_distance - last_left_distance};
-  double right_linear_change{current_right_distance - last_right_distance};
+  double linear_change{current_linear_distance - last_linear_distance};
+  double strafe_change{current_strafe_distance - last_strafe_distance};
   uint32_t time_change{current_time - last_time};
 
-  double average_offset{
-      (m_left_distance_tracker_offset + m_right_distance_tracker_offset) / 2.0};
-  double average_linear_change{(left_linear_change + right_linear_change) /
-                               2.0};
   double local_x{};
   double local_y{};
   double local_theta{};
   // find the x and y changes from the robot's POV
   if (rotation_change != 0.0) {
     // arc length = angle * radius => radius = arc length / angle
-    double linear_radius{(average_linear_change / rotation_change) -
-                         average_offset};
-    local_x = 2 * std::cos(rotation_change / 2) * linear_radius;
+    double linear_radius{(linear_change / rotation_change) -
+                         m_linear_distance_tracker_offset};
+    double strafe_radius{(strafe_change / rotation_change) -
+                         m_strafe_distance_tracker_offset};
+    local_x = 2 * std::sin(rotation_change / 2) * strafe_radius;
     local_y = 2 * std::sin(rotation_change / 2) * linear_radius;
     local_theta = (last_heading + current_rotation) / 2;
   } else {
-    // no strafe wheel, assume x is constant unless turning
-    local_x = 0;
-    local_y = average_linear_change;
+    local_x = strafe_change;
+    local_y = linear_change;
     local_theta = current_rotation;
   }
 
@@ -85,8 +82,8 @@ void InertialPositionTracker::updatePosition() {
   }
 
   last_heading = current_rotation;
-  last_left_distance = current_left_distance;
-  last_right_distance = current_right_distance;
+  last_linear_distance = current_linear_distance;
+  last_strafe_distance = current_strafe_distance;
   last_time = current_time;
 
   if (m_mutex) {
@@ -100,13 +97,13 @@ void InertialPositionTracker::init() {
     m_inertial_sensor->init();
     last_heading = m_inertial_sensor->getRotation();
   }
-  if (m_left_distance_tracker) {
-    m_left_distance_tracker->init();
-    last_left_distance = m_left_distance_tracker->getDistance();
+  if (m_linear_distance_tracker) {
+    m_linear_distance_tracker->init();
+    last_linear_distance = m_linear_distance_tracker->getDistance();
   }
-  if (m_right_distance_tracker) {
-    m_right_distance_tracker->init();
-    last_right_distance = m_right_distance_tracker->getDistance();
+  if (m_strafe_distance_tracker) {
+    m_strafe_distance_tracker->init();
+    last_strafe_distance = m_strafe_distance_tracker->getDistance();
   }
   if (m_clock) {
     last_time = m_clock->getTime();
@@ -200,24 +197,24 @@ void InertialPositionTracker::setInertialSensor(
   m_inertial_sensor = std::move(inertial_sensor);
 }
 
-void InertialPositionTracker::setLeftDistanceTracker(
-    std::unique_ptr<pvegas::io::IDistanceTracker>& left_distance_tracker) {
-  m_left_distance_tracker = std::move(left_distance_tracker);
+void InertialPositionTracker::setlinearDistanceTracker(
+    std::unique_ptr<pvegas::io::IDistanceTracker>& linear_distance_tracker) {
+  m_linear_distance_tracker = std::move(linear_distance_tracker);
 }
 
-void InertialPositionTracker::setLeftDIstanceTrackerOffset(
-    double left_distance_tracker_offset) {
-  m_left_distance_tracker_offset = left_distance_tracker_offset;
+void InertialPositionTracker::setlinearDIstanceTrackerOffset(
+    double linear_distance_tracker_offset) {
+  m_linear_distance_tracker_offset = linear_distance_tracker_offset;
 }
 
-void InertialPositionTracker::setRightDistanceTracker(
-    std::unique_ptr<pvegas::io::IDistanceTracker>& right_distance_tracker) {
-  m_right_distance_tracker = std::move(right_distance_tracker);
+void InertialPositionTracker::setstrafeDistanceTracker(
+    std::unique_ptr<pvegas::io::IDistanceTracker>& strafe_distance_tracker) {
+  m_strafe_distance_tracker = std::move(strafe_distance_tracker);
 }
 
-void InertialPositionTracker::setRightDistanceTrackerOffset(
-    double right_distance_tracker_offset) {
-  m_right_distance_tracker_offset = right_distance_tracker_offset;
+void InertialPositionTracker::setstrafeDistanceTrackerOffset(
+    double strafe_distance_tracker_offset) {
+  m_strafe_distance_tracker_offset = strafe_distance_tracker_offset;
 }
 }  // namespace odometry
 }  // namespace subsystems
