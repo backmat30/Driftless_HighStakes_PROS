@@ -9,6 +9,8 @@
 #include "pvegas/op_control/EControllerAnalog.hpp"
 #include "pvegas/op_control/EControllerDigital.hpp"
 #include "pvegas/op_control/drivetrain/EDrivetrainControlMode.hpp"
+#include "pvegas/op_control/elevator/EElevatorControlMode.hpp"
+#include "pvegas/op_control/intake/EIntakeControlMode.hpp"
 #include "pvegas/profiles/IProfile.hpp"
 
 namespace pvegas {
@@ -21,7 +23,12 @@ class DefaultProfile : public profiles::IProfile {
   // list of subsystems to be controlled and the type of control used
   std::map<op_control::EControlType, int> CONTROL_MODE_MAP{
       {op_control::EControlType::DRIVE,
-       static_cast<int>(op_control::drivetrain::EDrivetrainControlMode::TANK)}};
+       static_cast<int>(op_control::drivetrain::EDrivetrainControlMode::TANK)},
+      {op_control::EControlType::ELEVATOR,
+       static_cast<int>(op_control::elevator::EElevatorControlMode::HOLD)},
+      {op_control::EControlType::INTAKE,
+       static_cast<int>(
+           op_control::intake::EIntakeControlMode::SINGLE_TOGGLE)}};
 
   // maps subsystem controls to analog inputs
   const std::map<op_control::EControl, op_control::EControllerAnalog>
@@ -30,8 +37,12 @@ class DefaultProfile : public profiles::IProfile {
   // maps subsystem controls to digital inputs
   const std::map<op_control::EControl, op_control::EControllerDigital>
       DIGITAL_CONTROL_MAP{
-        {op_control::EControl::ELEVATOR_SPIN, op_control::EControllerDigital::TRIGGER_RIGHT_BOTTOM}
-      };
+          {op_control::EControl::ELEVATOR_SPIN,
+           op_control::EControllerDigital::TRIGGER_RIGHT_BOTTOM},
+          {op_control::EControl::INTAKE_TOGGLE_HEIGHT,
+           op_control::EControllerDigital::TRIGGER_LEFT_BOTTOM},
+          {op_control::EControl::INTAKE_SPIN,
+           op_control::EControllerDigital::TRIGGER_RIGHT_BOTTOM}};
 
  public:
   // returns profile name

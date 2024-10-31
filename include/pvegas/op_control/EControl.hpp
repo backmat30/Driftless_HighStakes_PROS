@@ -19,7 +19,8 @@ enum EControl {
   INTAKE_SPIN,
   INTAKE_RAISE,
   INTAKE_LOWER,
-  INTAKE_TOGGLE_HEIGHT
+  INTAKE_TOGGLE_HEIGHT,
+  INTAKE_HOLD_UP
 };
 }  // namespace op_control
 }  // namespace pvegas

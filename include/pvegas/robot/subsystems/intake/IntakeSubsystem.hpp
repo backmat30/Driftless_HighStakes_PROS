@@ -14,7 +14,7 @@ namespace intake {
 class IntakeSubsystem : public ASubsystem {
  private:
   // name of the subsystem
-  static constexpr char SUBSYSTEM_NAME[]{"ELEVATOR"};
+  static constexpr char SUBSYSTEM_NAME[]{"INTAKE"};
 
   // COMMAND NAMES
 
