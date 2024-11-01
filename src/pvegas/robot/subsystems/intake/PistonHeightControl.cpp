@@ -10,9 +10,9 @@ void PistonHeightControl::run() {}
 
 void PistonHeightControl::setHeight(bool up) {
   if (up) {
-    m_pistons.extend();
-  } else {
     m_pistons.retract();
+  } else {
+    m_pistons.extend();
   }
   raised = up;
 }
