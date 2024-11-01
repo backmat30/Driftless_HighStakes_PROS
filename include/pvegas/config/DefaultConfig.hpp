@@ -4,6 +4,7 @@
 #include <memory>
 
 #include "pros/abstract_motor.hpp"
+#include "pros/adi.hpp"
 #include "pros/distance.hpp"
 #include "pros/imu.hpp"
 #include "pros/motors.hpp"
@@ -28,6 +29,7 @@
 #include "pvegas/pros_adapters/ProsDistanceSensor.hpp"
 #include "pvegas/pros_adapters/ProsInertialSensor.hpp"
 #include "pvegas/pros_adapters/ProsMutex.hpp"
+#include "pvegas/pros_adapters/ProsPiston.hpp"
 #include "pvegas/pros_adapters/ProsRotationSensor.hpp"
 #include "pvegas/pros_adapters/ProsTask.hpp"
 #include "pvegas/pros_adapters/ProsV5Motor.hpp"
@@ -35,6 +37,11 @@
 #include "pvegas/robot/subsystems/drivetrain/DirectDriveBuilder.hpp"
 #include "pvegas/robot/subsystems/drivetrain/DrivetrainSubsystem.hpp"
 #include "pvegas/robot/subsystems/drivetrain/IDriveTrain.hpp"
+#include "pvegas/robot/subsystems/elevator/ElevatorSubsystem.hpp"
+#include "pvegas/robot/subsystems/elevator/PIDElevatorBuilder.hpp"
+#include "pvegas/robot/subsystems/intake/DirectIntakeBuilder.hpp"
+#include "pvegas/robot/subsystems/intake/IntakeSubsystem.hpp"
+#include "pvegas/robot/subsystems/intake/PistonHeightControlBuilder.hpp"
 #include "pvegas/robot/subsystems/odometry/DistancePositionResetterBuilder.hpp"
 #include "pvegas/robot/subsystems/odometry/InertialPositionTrackerBuilder.hpp"
 #include "pvegas/robot/subsystems/odometry/OdometrySubsystem.hpp"
@@ -42,6 +49,7 @@
 #include "pvegas/rtos/IDelayer.hpp"
 #include "pvegas/rtos/IMutex.hpp"
 #include "pvegas/rtos/ITask.hpp"
+
 namespace pvegas {
 namespace config {
 class DefaultConfig : public IConfig {
@@ -182,6 +190,14 @@ class DefaultConfig : public IConfig {
   static constexpr double ROBOT_RADIUS{7.25};
   // radius of the drive wheels
   static constexpr double DRIVE_WHEEL_RADIUS{1.25};
+  // elevator pid controller kp value
+  static constexpr double PID_ELEVATOR_KP{};
+  // elevator pid controller ki value
+  static constexpr double PID_ELEVATOR_KI{};
+  // elevator pid controller kd value
+  static constexpr double PID_ELEVATOR_KD{};
+  // elevator radians to inches travelled
+  static constexpr double ELEVATOR_RADIANS_TO_INCHES{};
   // radius of the tracking wheels
   static constexpr double TRACKING_WHEEL_RADIUS{1.0};
   // left offset of the left tracking wheel

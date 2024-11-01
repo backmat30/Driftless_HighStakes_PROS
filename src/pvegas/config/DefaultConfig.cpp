@@ -141,6 +141,7 @@ std::shared_ptr<robot::Robot> DefaultConfig::buildRobot() {
   std::shared_ptr<robot::Robot> robot{std::make_shared<robot::Robot>()};
 
   // DRIVETRAIN
+
   // creates the factory used to build the drivetrain
   robot::subsystems::drivetrain::DirectDriveBuilder drive_factory{};
   // pros objects
@@ -205,7 +206,97 @@ std::shared_ptr<robot::Robot> DefaultConfig::buildRobot() {
   // add the new subsystem to the robot
   robot->addSubsystem(drivetrain_subsystem);
 
+  // ELEVATOR
+
+  // rtos
+  std::unique_ptr<pvegas::rtos::IClock> elevator_clock{
+      std::make_unique<pvegas::pros_adapters::ProsClock>()};
+  std::unique_ptr<pvegas::rtos::IDelayer> elevator_delayer{
+      std::make_unique<pvegas::pros_adapters::ProsDelayer>()};
+  std::unique_ptr<pvegas::rtos::IMutex> elevator_mutex{
+      std::make_unique<pvegas::pros_adapters::ProsMutex>()};
+  std::unique_ptr<pvegas::rtos::ITask> elevator_task{
+      std::make_unique<pvegas::pros_adapters::ProsTask>()};
+  // pros objects
+  std::unique_ptr<pros::Motor> temp_elevator_motor_1{
+      std::make_unique<pros::Motor>(ELEVATOR_MOTOR_1)};
+  std::unique_ptr<pros::Rotation> temp_elevator_rotation_sensor{
+      std::make_unique<pros::Rotation>(ELEVATOR_ROTATIONAL_SENSOR)};
+
+  // adapted objects
+  std::unique_ptr<pvegas::io::IMotor> adapted_elevator_motor_1{
+      std::make_unique<pvegas::pros_adapters::ProsV5Motor>(
+          temp_elevator_motor_1)};
+  std::unique_ptr<pvegas::io::IRotationSensor>
+      adapted_elevator_rotational_sensor{
+          std::make_unique<pvegas::pros_adapters::ProsRotationSensor>(
+              temp_elevator_rotation_sensor)};
+
+  pvegas::control::PID elevator_pid{elevator_clock, PID_ELEVATOR_KP,
+                                    PID_ELEVATOR_KI, PID_ELEVATOR_KD};
+
+  // build the elevator
+  pvegas::robot::subsystems::elevator::PIDElevatorBuilder
+      pid_elevator_builder{};
+
+  std::unique_ptr<pvegas::robot::subsystems::elevator::IElevator> elevator{
+      pid_elevator_builder.withDelayer(elevator_delayer)
+          ->withMutex(elevator_mutex)
+          ->withTask(elevator_task)
+          ->withMotor(adapted_elevator_motor_1)
+          ->withRotationSensor(adapted_elevator_rotational_sensor)
+          ->withPID(elevator_pid)
+          ->withRadiansToInches(ELEVATOR_RADIANS_TO_INCHES)
+          ->build()};
+
+  std::unique_ptr<pvegas::robot::subsystems::ASubsystem> elevator_subsystem{
+      std::make_unique<pvegas::robot::subsystems::elevator::ElevatorSubsystem>(
+          elevator)};
+  robot->addSubsystem(elevator_subsystem);
+
+  // INTAKE
+
+  // pros objects
+  std::unique_ptr<pros::Motor> temp_intake_motor_1{
+      std::make_unique<pros::Motor>(INTAKE_MOTOR)};
+  std::unique_ptr<pros::adi::DigitalOut> temp_intake_left_piston{
+      std::make_unique<pros::adi::DigitalOut>(INTAKE_LEFT_PISTON)};
+  std::unique_ptr<pros::adi::DigitalOut> temp_intake_right_piston{
+      std::make_unique<pros::adi::DigitalOut>(INTAKE_RIGHT_PISTON)};
+
+  // adapted objects
+  std::unique_ptr<pvegas::io::IMotor> intake_motor_1{
+      std::make_unique<pvegas::pros_adapters::ProsV5Motor>(
+          temp_intake_motor_1)};
+  std::unique_ptr<pvegas::io::IPiston> intake_left_piston{
+      std::make_unique<pvegas::pros_adapters::ProsPiston>(
+          temp_intake_left_piston)};
+  std::unique_ptr<pvegas::io::IPiston> intake_right_piston{
+      std::make_unique<pvegas::pros_adapters::ProsPiston>(
+          temp_intake_right_piston)};
+
+  // build the intake
+  pvegas::robot::subsystems::intake::DirectIntakeBuilder
+      direct_intake_builder{};
+  pvegas::robot::subsystems::intake::PistonHeightControlBuilder
+      piston_height_control_builder{};
+
+  std::unique_ptr<pvegas::robot::subsystems::intake::IIntake> direct_intake{
+      direct_intake_builder.withMotor(intake_motor_1)->build()};
+  std::unique_ptr<pvegas::robot::subsystems::intake::IHeightControl>
+      piston_height_control{
+          piston_height_control_builder.withPiston(intake_left_piston)
+              ->withPiston(intake_right_piston)
+              ->build()};
+
+  // create and add the intake subsystem to the robot
+  std::unique_ptr<pvegas::robot::subsystems::ASubsystem> intake_subsystem{
+      std::make_unique<pvegas::robot::subsystems::intake::IntakeSubsystem>(
+          direct_intake, piston_height_control)};
+  robot->addSubsystem(intake_subsystem);
+
   // ODOMETRY
+
   // pros objects
   std::unique_ptr<pros::Rotation> temp_linear_rotation_sensor{
       std::make_unique<pros::Rotation>(ODOMETRY_LINEAR_TRACKING_WHEEL)};
