@@ -22,9 +22,9 @@ PIDElevatorBuilder* PIDElevatorBuilder::withTask(
   return this;
 }
 
-PIDElevatorBuilder* PIDElevatorBuilder::withMotors(
-    pvegas::hal::MotorGroup motors) {
-  m_motors = motors;
+PIDElevatorBuilder* PIDElevatorBuilder::withMotor(
+    std::unique_ptr<pvegas::io::IMotor>& motor) {
+  m_motors.addMotor(motor);
   return this;
 }
 

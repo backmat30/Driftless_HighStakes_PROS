@@ -42,7 +42,7 @@ class PIDElevatorBuilder {
   PIDElevatorBuilder* withTask(std::unique_ptr<pvegas::rtos::ITask>& task);
 
   // adds a motor group to the builder
-  PIDElevatorBuilder* withMotors(pvegas::hal::MotorGroup motors);
+  PIDElevatorBuilder* withMotor(std::unique_ptr<pvegas::io::IMotor>& motor);
 
   // adds a rotation sensor to the builder
   PIDElevatorBuilder* withRotationSensor(
