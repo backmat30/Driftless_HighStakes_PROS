@@ -14,13 +14,13 @@ class DirectIntakeBuilder {
 
  public:
   // adds motors to the builder
-  DirectIntakeBuilder* withMotors(pvegas::hal::MotorGroup motors);
+  DirectIntakeBuilder* withMotor(std::unique_ptr<pvegas::io::IMotor>& motor);
 
   // build a new intake
   std::unique_ptr<DirectIntake> build();
 };
-}
-}
-}
-}
+}  // namespace intake
+}  // namespace subsystems
+}  // namespace robot
+}  // namespace pvegas
 #endif

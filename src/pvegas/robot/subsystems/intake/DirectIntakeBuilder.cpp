@@ -4,9 +4,9 @@ namespace pvegas {
 namespace robot {
 namespace subsystems {
 namespace intake {
-DirectIntakeBuilder* DirectIntakeBuilder::withMotors(
-    pvegas::hal::MotorGroup motors) {
-  m_motors = motors;
+DirectIntakeBuilder* DirectIntakeBuilder::withMotor(
+    std::unique_ptr<pvegas::io::IMotor>& motor) {
+  m_motors.addMotor(motor);
   return this;
 }
 
