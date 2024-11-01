@@ -16,7 +16,8 @@ class PistonHeightControlBuilder {
 
  public:
   // add a piston group to the builder
-  PistonHeightControlBuilder* withPistons(pvegas::hal::PistonGroup pistons);
+  PistonHeightControlBuilder* withPiston(
+      std::unique_ptr<pvegas::io::IPiston>& piston);
 
   // build a new piston height controller
   std::unique_ptr<PistonHeightControl> build();

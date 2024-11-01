@@ -4,9 +4,9 @@ namespace pvegas {
 namespace robot {
 namespace subsystems {
 namespace intake {
-PistonHeightControlBuilder* PistonHeightControlBuilder::withPistons(
-    pvegas::hal::PistonGroup pistons) {
-  m_pistons = pistons;
+PistonHeightControlBuilder* PistonHeightControlBuilder::withPiston(
+    std::unique_ptr<pvegas::io::IPiston>& piston) {
+  m_pistons.addPiston(piston);
   return this;
 }
 
