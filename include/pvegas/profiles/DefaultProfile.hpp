@@ -42,7 +42,9 @@ class DefaultProfile : public profiles::IProfile {
           {op_control::EControl::INTAKE_TOGGLE_HEIGHT,
            op_control::EControllerDigital::TRIGGER_LEFT_BOTTOM},
           {op_control::EControl::INTAKE_SPIN,
-           op_control::EControllerDigital::TRIGGER_RIGHT_BOTTOM}};
+           op_control::EControllerDigital::TRIGGER_RIGHT_BOTTOM},
+          {op_control::EControl::CLAMP_GRAB,
+           op_control::EControllerDigital::TRIGGER_RIGHT_TOP}};
 
  public:
   // returns profile name

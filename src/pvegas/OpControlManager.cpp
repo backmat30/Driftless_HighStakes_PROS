@@ -1,16 +1,5 @@
 #include "pvegas/OpControlManager.hpp"
 
-#include <cstdint>
-#include <memory>
-
-#include "pvegas/control/ControlSystem.hpp"
-#include "pvegas/io/IController.hpp"
-#include "pvegas/op_control/drivetrain/DrivetrainOperator.hpp"
-#include "pvegas/profiles/IProfile.hpp"
-#include "pvegas/robot/Robot.hpp"
-#include "pvegas/rtos/IClock.hpp"
-#include "pvegas/rtos/IDelayer.hpp"
-
 namespace pvegas {
 // constructor
 OpControlManager::OpControlManager(
@@ -36,6 +25,7 @@ void OpControlManager::run(
   control_system->pause();
 
   // set subsystems to driver control
+  op_control::clamp::ClampOperator clamp_operator{controller, robot};
   op_control::drivetrain::DrivetrainOperator drive_operator{controller, robot};
   op_control::elevator::ElevatorOperator elevator_operator{controller, robot};
   op_control::intake::IntakeOperator intake_operator{controller, robot};
@@ -49,6 +39,7 @@ void OpControlManager::run(
     current_time = m_clock->getTime();
 
     // updates all subsystems
+    clamp_operator.update(m_profile);
     drive_operator.setDriveVoltage();
     elevator_operator.update(m_profile);
     intake_operator.update(m_profile);

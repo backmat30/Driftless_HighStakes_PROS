@@ -6,6 +6,7 @@
 
 #include "pvegas/control/ControlSystem.hpp"
 #include "pvegas/io/IController.hpp"
+#include "pvegas/op_control/clamp/ClampOperator.hpp"
 #include "pvegas/op_control/drivetrain/DrivetrainOperator.hpp"
 #include "pvegas/op_control/elevator/ElevatorOperator.hpp"
 #include "pvegas/op_control/intake/IntakeOperator.hpp"
