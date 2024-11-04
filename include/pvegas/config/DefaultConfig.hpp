@@ -34,6 +34,8 @@
 #include "pvegas/pros_adapters/ProsTask.hpp"
 #include "pvegas/pros_adapters/ProsV5Motor.hpp"
 #include "pvegas/robot/Robot.hpp"
+#include "pvegas/robot/subsystems/clamp/ClampSubsystem.hpp"
+#include "pvegas/robot/subsystems/clamp/PistonClampBuilder.hpp"
 #include "pvegas/robot/subsystems/drivetrain/DirectDriveBuilder.hpp"
 #include "pvegas/robot/subsystems/drivetrain/DrivetrainSubsystem.hpp"
 #include "pvegas/robot/subsystems/drivetrain/IDriveTrain.hpp"
@@ -153,6 +155,13 @@ class DefaultConfig : public IConfig {
   static constexpr int8_t DRIVE_RIGHT_MOTOR_3{UNDEFINED_PORT};
   // fourth right drive motor
   static constexpr int8_t DRIVE_RIGHT_MOTOR_4{-UNDEFINED_PORT};
+
+  // CLAMP PORTS
+
+  // left clamp piston
+  static constexpr int8_t CLAMP_LEFT_PISTON{UNDEFINED_PORT};
+  // right clamp piston
+  static constexpr int8_t CLAMP_RIGHT_PISTON{UNDEFINED_PORT};
 
   // ELEVATOR PORTS
 
