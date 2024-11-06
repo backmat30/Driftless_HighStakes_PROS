@@ -8,6 +8,8 @@
 #include "pvegas/op_control/EControlType.hpp"
 #include "pvegas/op_control/EControllerAnalog.hpp"
 #include "pvegas/op_control/EControllerDigital.hpp"
+#include "pvegas/op_control/arm/EArmControlMode.hpp"
+#include "pvegas/op_control/clamp/EClampControlMode.hpp"
 #include "pvegas/op_control/drivetrain/EDrivetrainControlMode.hpp"
 #include "pvegas/op_control/elevator/EElevatorControlMode.hpp"
 #include "pvegas/op_control/intake/EIntakeControlMode.hpp"
@@ -22,6 +24,10 @@ class DefaultProfile : public profiles::IProfile {
 
   // list of subsystems to be controlled and the type of control used
   std::map<op_control::EControlType, int> CONTROL_MODE_MAP{
+      {op_control::EControlType::ARM,
+       static_cast<int>(op_control::arm::EArmControlMode::SINGLE_TOGGLE)},
+      {op_control::EControlType::CLAMP,
+       static_cast<int>(op_control::clamp::EClampControlMode::SINGLE_TOGGLE)},
       {op_control::EControlType::DRIVE,
        static_cast<int>(op_control::drivetrain::EDrivetrainControlMode::TANK)},
       {op_control::EControlType::ELEVATOR,
@@ -37,13 +43,15 @@ class DefaultProfile : public profiles::IProfile {
   // maps subsystem controls to digital inputs
   const std::map<op_control::EControl, op_control::EControllerDigital>
       DIGITAL_CONTROL_MAP{
+          {op_control::EControl::ARM_TOGGLE,
+           op_control::EControllerDigital::BUTTON_A},
           {op_control::EControl::ELEVATOR_SPIN,
            op_control::EControllerDigital::TRIGGER_RIGHT_BOTTOM},
           {op_control::EControl::INTAKE_TOGGLE_HEIGHT,
            op_control::EControllerDigital::TRIGGER_LEFT_BOTTOM},
           {op_control::EControl::INTAKE_SPIN,
            op_control::EControllerDigital::TRIGGER_RIGHT_BOTTOM},
-          {op_control::EControl::CLAMP_GRAB,
+          {op_control::EControl::CLAMP_TOGGLE,
            op_control::EControllerDigital::TRIGGER_RIGHT_TOP}};
 
  public:
