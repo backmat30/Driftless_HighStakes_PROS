@@ -4,10 +4,10 @@
 namespace pvegas {
 namespace op_control {
 enum EControl {
-  ARM_GRAB,
-  ARM_RELEASE,
-  ARM_OUT,
-  ARM_IN,
+  ARM_NEUTRAL,
+  ARM_LOAD,
+  ARM_SCORE,
+  ARM_TOGGLE,
   CLAMP_GRAB,
   CLAMP_RELEASE,
   CLAMP_HOLD,
