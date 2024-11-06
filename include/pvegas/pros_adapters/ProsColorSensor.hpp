@@ -29,6 +29,9 @@ class ProsColorSensor : public pvegas::io::IColorSensor {
 
   // get the hue from the color sensor
   double getHue() override;
+
+  // get the proximity from the color sensor
+  uint32_t getProximity() override;
 };
 }  // namespace pros_adapters
 }  // namespace pvegas

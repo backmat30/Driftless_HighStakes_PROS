@@ -18,6 +18,9 @@ class IColorSensor {
 
   // gets the current hue from the color sensor
   virtual double getHue() = 0;
+
+  // gets the proximity of the nearest object to the sensor
+  virtual uint32_t getProximity() = 0;
 };
 }  // namespace io
 }  // namespace pvegas

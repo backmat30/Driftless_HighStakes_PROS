@@ -17,5 +17,9 @@ void ProsColorSensor::setLEDBrightness(uint8_t brightness) {
 double ProsColorSensor::getHue() {
   return m_optical_sensor->get_hue();
 }
+
+uint32_t ProsColorSensor::getProximity() {
+  return m_optical_sensor->get_proximity();
+}
 }  // namespace pros_adapters
 }  // namespace pvegas
