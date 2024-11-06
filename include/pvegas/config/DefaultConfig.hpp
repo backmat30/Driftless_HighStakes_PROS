@@ -3,13 +3,19 @@
 
 #include <memory>
 
+// config interface
+#include "pvegas/config/IConfig.hpp"
+
+// pros object includes
 #include "pros/abstract_motor.hpp"
 #include "pros/adi.hpp"
 #include "pros/distance.hpp"
 #include "pros/imu.hpp"
 #include "pros/motors.hpp"
+#include "pros/optical.hpp"
 #include "pros/rotation.hpp"
-#include "pvegas/config/IConfig.hpp"
+
+// control system includes
 #include "pvegas/control/ControlSystem.hpp"
 #include "pvegas/control/motion/MotionControl.hpp"
 #include "pvegas/control/motion/PIDDriveStraightBuilder.hpp"
@@ -17,13 +23,23 @@
 #include "pvegas/control/motion/PIDTurnBuilder.hpp"
 #include "pvegas/control/path/PIDPathFollowerBuilder.hpp"
 #include "pvegas/control/path/PathFollowerControl.hpp"
+
+// hardware interface includes
 #include "pvegas/hal/TrackingWheel.hpp"
+#include "pvegas/io/IColorSensor.hpp"
 #include "pvegas/io/IController.hpp"
 #include "pvegas/io/IDistanceSensor.hpp"
 #include "pvegas/io/IDistanceTracker.hpp"
 #include "pvegas/io/IInertialSensor.hpp"
+#include "pvegas/io/IMotor.hpp"
+#include "pvegas/io/IPiston.hpp"
+#include "pvegas/io/IPotentiometer.hpp"
 #include "pvegas/io/IRotationSensor.hpp"
+
+// pros adapter includes
+#include "pvegas/pros_adapters/ProsADIPotentiometer.hpp"
 #include "pvegas/pros_adapters/ProsClock.hpp"
+#include "pvegas/pros_adapters/ProsColorSensor.hpp"
 #include "pvegas/pros_adapters/ProsController.hpp"
 #include "pvegas/pros_adapters/ProsDelayer.hpp"
 #include "pvegas/pros_adapters/ProsDistanceSensor.hpp"
@@ -33,20 +49,39 @@
 #include "pvegas/pros_adapters/ProsRotationSensor.hpp"
 #include "pvegas/pros_adapters/ProsTask.hpp"
 #include "pvegas/pros_adapters/ProsV5Motor.hpp"
+
+// robot include
 #include "pvegas/robot/Robot.hpp"
+
+// arm subsystem includes
+#include "pvegas/robot/subsystems/arm/ArmSubsystem.hpp"
+#include "pvegas/robot/subsystems/arm/ColorRingSensorBuilder.hpp"
+#include "pvegas/robot/subsystems/arm/PIDArmMotionBuilder.hpp"
+
+// clamp subsystem includes
 #include "pvegas/robot/subsystems/clamp/ClampSubsystem.hpp"
 #include "pvegas/robot/subsystems/clamp/PistonClampBuilder.hpp"
+
+// drivetrain subsystem includes
 #include "pvegas/robot/subsystems/drivetrain/DirectDriveBuilder.hpp"
 #include "pvegas/robot/subsystems/drivetrain/DrivetrainSubsystem.hpp"
 #include "pvegas/robot/subsystems/drivetrain/IDriveTrain.hpp"
+
+// elevator subsystem includes
 #include "pvegas/robot/subsystems/elevator/ElevatorSubsystem.hpp"
 #include "pvegas/robot/subsystems/elevator/PIDElevatorBuilder.hpp"
+
+// intake subsystem includes
 #include "pvegas/robot/subsystems/intake/DirectIntakeBuilder.hpp"
 #include "pvegas/robot/subsystems/intake/IntakeSubsystem.hpp"
 #include "pvegas/robot/subsystems/intake/PistonHeightControlBuilder.hpp"
+
+// odometry subsystem includes
 #include "pvegas/robot/subsystems/odometry/DistancePositionResetterBuilder.hpp"
 #include "pvegas/robot/subsystems/odometry/InertialPositionTrackerBuilder.hpp"
 #include "pvegas/robot/subsystems/odometry/OdometrySubsystem.hpp"
+
+// rtos includes
 #include "pvegas/rtos/IClock.hpp"
 #include "pvegas/rtos/IDelayer.hpp"
 #include "pvegas/rtos/IMutex.hpp"
@@ -156,12 +191,14 @@ class DefaultConfig : public IConfig {
   // fourth right drive motor
   static constexpr int8_t DRIVE_RIGHT_MOTOR_4{-UNDEFINED_PORT};
 
+  // ARM PORTS
+
+  // 
+
   // CLAMP PORTS
 
-  // left clamp piston
-  static constexpr int8_t CLAMP_LEFT_PISTON{UNDEFINED_PORT};
-  // right clamp piston
-  static constexpr int8_t CLAMP_RIGHT_PISTON{UNDEFINED_PORT};
+  // clamp piston controller
+  static constexpr int8_t CLAMP_PISTON_1{UNDEFINED_PORT};
 
   // ELEVATOR PORTS
 

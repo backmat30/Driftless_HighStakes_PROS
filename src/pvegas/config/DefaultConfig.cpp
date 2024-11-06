@@ -210,25 +210,18 @@ std::shared_ptr<robot::Robot> DefaultConfig::buildRobot() {
 
   // pros objects
   std::unique_ptr<pros::ADIDigitalOut> temp_clamp_left_piston{
-      std::make_unique<pros::ADIDigitalOut>(CLAMP_LEFT_PISTON)};
-  std::unique_ptr<pros::ADIDigitalOut> temp_clamp_right_piston{
-      std::make_unique<pros::ADIDigitalOut>(CLAMP_RIGHT_PISTON)};
+      std::make_unique<pros::ADIDigitalOut>(CLAMP_PISTON_1)};
 
   // adapted objects
   std::unique_ptr<pvegas::io::IPiston> adapted_clamp_left_piston{
       std::make_unique<pvegas::pros_adapters::ProsPiston>(
           temp_clamp_left_piston)};
-  std::unique_ptr<pvegas::io::IPiston> adapted_clamp_right_piston{
-      std::make_unique<pvegas::pros_adapters::ProsPiston>(
-          temp_clamp_right_piston)};
 
   // build the clamp
   pvegas::robot::subsystems::clamp::PistonClampBuilder piston_clamp_builder{};
 
   std::unique_ptr<pvegas::robot::subsystems::clamp::IClamp> piston_clamp{
-      piston_clamp_builder.withPiston(adapted_clamp_left_piston)
-          ->withPiston(adapted_clamp_right_piston)
-          ->build()};
+      piston_clamp_builder.withPiston(adapted_clamp_left_piston)->build()};
 
   std::unique_ptr<pvegas::robot::subsystems::ASubsystem> clamp_subsystem{
       std::make_unique<pvegas::robot::subsystems::clamp::ClampSubsystem>(
