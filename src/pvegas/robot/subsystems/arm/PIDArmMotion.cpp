@@ -101,26 +101,44 @@ void PIDArmMotion::init() {
 void PIDArmMotion::run() { m_task->start(&PIDArmMotion::taskLoop, this); }
 
 void PIDArmMotion::goNeutral() {
+  if (m_mutex) {
+    m_mutex->take();
+  }
   if (state != EState::NEUTRAL) {
     state = EState::NEUTRAL_MOTION;
     rotational_target_position = m_rotational_neutral_position;
     linear_target_position = m_linear_neutral_position;
   }
+  if (m_mutex) {
+    m_mutex->give();
+  }
 }
 
 void PIDArmMotion::goLoad() {
+  if (m_mutex) {
+    m_mutex->take();
+  }
   if (state != EState::LOAD) {
     state = EState::LOAD_MOTION;
     rotational_target_position = m_rotational_load_position;
     linear_target_position = m_linear_load_position;
   }
+  if (m_mutex) {
+    m_mutex->give();
+  }
 }
 
 void PIDArmMotion::goScore() {
+  if (m_mutex) {
+    m_mutex->take();
+  }
   if (state != EState::SCORE) {
     state = EState::SCORE_MOTION;
     rotational_target_position = m_rotational_score_position;
     linear_target_position = m_linear_score_position;
+  }
+  if (m_mutex) {
+    m_mutex->give();
   }
 }
 
@@ -130,7 +148,8 @@ bool PIDArmMotion::isAtLoad() { return state == EState::LOAD; }
 
 bool PIDArmMotion::isAtScore() { return state == EState::SCORE; }
 
-void PIDArmMotion::setDelayer(const std::unique_ptr<pvegas::rtos::IDelayer>& delayer) {
+void PIDArmMotion::setDelayer(
+    const std::unique_ptr<pvegas::rtos::IDelayer>& delayer) {
   m_delayer = delayer->clone();
 }
 
@@ -142,11 +161,13 @@ void PIDArmMotion::setTask(std::unique_ptr<pvegas::rtos::ITask>& task) {
   m_task = std::move(task);
 }
 
-void PIDArmMotion::setRotationSensor(std::unique_ptr<pvegas::io::IRotationSensor>& rotation_sensor) {
+void PIDArmMotion::setRotationSensor(
+    std::unique_ptr<pvegas::io::IRotationSensor>& rotation_sensor) {
   m_rotation_sensor = std::move(rotation_sensor);
 }
 
-void PIDArmMotion::setPotentiometer(std::unique_ptr<pvegas::io::IPotentiometer>& potentiometer) {
+void PIDArmMotion::setPotentiometer(
+    std::unique_ptr<pvegas::io::IPotentiometer>& potentiometer) {
   m_potentiometer = std::move(potentiometer);
 }
 
@@ -166,7 +187,8 @@ void PIDArmMotion::setLinearPID(pvegas::control::PID linear_pid) {
   m_linear_pid = linear_pid;
 }
 
-void PIDArmMotion::setRotationalNeutralPosition(double rotational_neutral_position) {
+void PIDArmMotion::setRotationalNeutralPosition(
+    double rotational_neutral_position) {
   m_rotational_neutral_position = rotational_neutral_position;
 }
 
@@ -174,7 +196,8 @@ void PIDArmMotion::setRotationalLoadPosition(double rotational_load_position) {
   m_rotational_load_position = rotational_load_position;
 }
 
-void PIDArmMotion::setRotationalScorePosition(double rotational_score_position) {
+void PIDArmMotion::setRotationalScorePosition(
+    double rotational_score_position) {
   m_rotational_score_position = rotational_score_position;
 }
 
