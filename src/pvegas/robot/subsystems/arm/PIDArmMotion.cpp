@@ -142,11 +142,17 @@ void PIDArmMotion::goScore() {
   }
 }
 
-bool PIDArmMotion::isAtNeutral() { return state == EState::NEUTRAL; }
+bool PIDArmMotion::isAtNeutral() {
+  return (state == EState::NEUTRAL || state == EState::NEUTRAL_MOTION);
+}
 
-bool PIDArmMotion::isAtLoad() { return state == EState::LOAD; }
+bool PIDArmMotion::isAtLoad() {
+  return (state == EState::LOAD || state == EState::LOAD_MOTION);
+}
 
-bool PIDArmMotion::isAtScore() { return state == EState::SCORE; }
+bool PIDArmMotion::isAtScore() {
+  return (state == EState::SCORE || state == EState::SCORE_MOTION);
+}
 
 void PIDArmMotion::setDelayer(
     const std::unique_ptr<pvegas::rtos::IDelayer>& delayer) {
