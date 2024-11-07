@@ -4,8 +4,10 @@
 #include <cstdint>
 #include <memory>
 
+#include "pvegas/alliance/Alliance.hpp"
 #include "pvegas/control/ControlSystem.hpp"
 #include "pvegas/io/IController.hpp"
+#include "pvegas/op_control/arm/ArmOperator.hpp"
 #include "pvegas/op_control/clamp/ClampOperator.hpp"
 #include "pvegas/op_control/drivetrain/DrivetrainOperator.hpp"
 #include "pvegas/op_control/elevator/ElevatorOperator.hpp"
@@ -27,6 +29,9 @@ class OpControlManager {
 
   std::unique_ptr<profiles::IProfile> m_profile{};
 
+  // the current alliance
+  pvegas::alliance::Alliance m_alliance{};
+
  public:
   // constructor
   OpControlManager(const std::shared_ptr<rtos::IClock> &clock,
@@ -34,6 +39,9 @@ class OpControlManager {
 
   // defines the controller profile to use
   void setProfile(std::unique_ptr<profiles::IProfile> &profile);
+
+  // defines the alliance the robot is on
+  void setAlliance(pvegas::alliance::Alliance alliance);
 
   // initializes op control
   void init(std::shared_ptr<control::ControlSystem> control_system,

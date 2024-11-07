@@ -13,6 +13,10 @@ void OpControlManager::setProfile(
   m_profile = std::move(profile);
 }
 
+void OpControlManager::setAlliance(pvegas::alliance::Alliance alliance) {
+  m_alliance = alliance;
+}
+
 void OpControlManager::init(
     std::shared_ptr<control::ControlSystem> control_system,
     std::shared_ptr<io::IController> controller,
@@ -29,6 +33,7 @@ void OpControlManager::run(
   op_control::drivetrain::DrivetrainOperator drive_operator{controller, robot};
   op_control::elevator::ElevatorOperator elevator_operator{controller, robot};
   op_control::intake::IntakeOperator intake_operator{controller, robot};
+  op_control::arm::ArmOperator arm_operator{controller, robot};
 
   // variable to hold time for delayer
   uint32_t current_time{};
@@ -43,6 +48,7 @@ void OpControlManager::run(
     drive_operator.setDriveVoltage();
     elevator_operator.update(m_profile);
     intake_operator.update(m_profile);
+    arm_operator.update(m_profile, m_alliance);
 
     // delay until 10 seconds after loop start
     // keeps time per loop consistent rather than delaying 10 seconds AFTER
