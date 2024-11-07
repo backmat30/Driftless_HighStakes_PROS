@@ -206,6 +206,88 @@ std::shared_ptr<robot::Robot> DefaultConfig::buildRobot() {
   // add the new subsystem to the robot
   robot->addSubsystem(drivetrain_subsystem);
 
+  // ARM
+
+  // rtos
+  std::unique_ptr<pvegas::rtos::IClock> arm_clock{
+      std::make_unique<pvegas::pros_adapters::ProsClock>()};
+  std::unique_ptr<pvegas::rtos::IDelayer> arm_delayer{
+      std::make_unique<pvegas::pros_adapters::ProsDelayer>()};
+  std::unique_ptr<pvegas::rtos::IMutex> arm_mutex{
+      std::make_unique<pvegas::pros_adapters::ProsMutex>()};
+  std::unique_ptr<pvegas::rtos::ITask> arm_task{
+      std::make_unique<pvegas::pros_adapters::ProsTask>()};
+
+  // pros objects
+  std::unique_ptr<pros::Motor> temp_arm_left_rotation_motor{
+      std::make_unique<pros::Motor>(ARM_LEFT_ROTATION_MOTOR)};
+  std::unique_ptr<pros::Motor> temp_arm_right_rotation_motor{
+      std::make_unique<pros::Motor>(ARM_RIGHT_ROTATION_MOTOR)};
+  std::unique_ptr<pros::Motor> temp_arm_linear_motor{
+      std::make_unique<pros::Motor>(ARM_LINEAR_MOTOR)};
+  std::unique_ptr<pros::Optical> temp_arm_color_sensor{
+      std::make_unique<pros::Optical>(ARM_COLOR_SENSOR)};
+  std::unique_ptr<pros::adi::AnalogIn> temp_arm_potentiometer{
+      std::make_unique<pros::adi::AnalogIn>(ARM_POTENTIOMETER)};
+
+  // adapted objects
+  std::unique_ptr<pvegas::io::IMotor> arm_left_rotation_motor{
+      std::make_unique<pvegas::pros_adapters::ProsV5Motor>(
+          temp_arm_left_rotation_motor)};
+  std::unique_ptr<pvegas::io::IMotor> arm_right_rotation_motor{
+      std::make_unique<pvegas::pros_adapters::ProsV5Motor>(
+          temp_arm_right_rotation_motor)};
+  std::unique_ptr<pvegas::io::IMotor> arm_linear_motor{
+      std::make_unique<pvegas::pros_adapters::ProsV5Motor>(
+          temp_arm_linear_motor)};
+  std::unique_ptr<pvegas::io::IColorSensor> arm_color_sensor{
+      std::make_unique<pvegas::pros_adapters::ProsColorSensor>(
+          temp_arm_color_sensor)};
+  std::unique_ptr<pvegas::io::IPotentiometer> arm_potentiometer{
+      std::make_unique<pvegas::pros_adapters::ProsADIPotentiometer>(
+          temp_arm_potentiometer)};
+
+  pvegas::control::PID arm_rotational_pid{arm_clock, PID_ARM_ROTATIONAL_KP,
+                                          PID_ARM_ROTATIONAL_KI,
+                                          PID_ARM_ROTATIONAL_KD};
+  pvegas::control::PID arm_linear_pid{arm_clock, PID_ARM_LINEAR_KP,
+                                      PID_ARM_LINEAR_KI, PID_ARM_LINEAR_KD};
+
+  // assemble the subsystem
+  pvegas::robot::subsystems::arm::PIDArmMotionBuilder pid_arm_motion_builder{};
+  pvegas::robot::subsystems::arm::ColorRingSensorBuilder
+      color_ring_sensor_builder{};
+
+  std::unique_ptr<pvegas::robot::subsystems::arm::IArmMotion> arm_motion{
+      pid_arm_motion_builder.withDelayer(arm_delayer)
+          ->withMutex(arm_mutex)
+          ->withTask(arm_task)
+          ->withRotationalMotor(arm_left_rotation_motor)
+          ->withRotationalMotor(arm_right_rotation_motor)
+          ->withLinearMotor(arm_linear_motor)
+          ->withRotationalPID(arm_rotational_pid)
+          ->withLinearPID(arm_linear_pid)
+          ->withRotationalNeutralPosition(ARM_ROTATIONAL_NEUTRAL_POSITION)
+          ->withRotationalLoadPosition(ARM_ROTATIONAL_LOAD_POSITION)
+          ->withRotationalScorePosition(ARM_ROTATIONAL_SCORE_POSITION)
+          ->withRotationalTolerance(ARM_ROTATIONAL_TOLERANCE)
+          ->withLinearNeutralPosition(ARM_LINEAR_NEUTRAL_POSITION)
+          ->withLinearLoadPosition(ARM_LINEAR_LOAD_POSITION)
+          ->withLinearScorePosition(ARM_LINEAR_SCORE_POSITION)
+          ->withLinearTolerance(ARM_LINEAR_TOLERANCE)
+          ->build()};
+
+  std::unique_ptr<pvegas::robot::subsystems::arm::IRingSensor> ring_sensor{
+      color_ring_sensor_builder.withColorSensor(arm_color_sensor)
+          ->withRingProximity(ARM_RING_PROXIMITY)
+          ->build()};
+
+  std::unique_ptr<pvegas::robot::subsystems::ASubsystem> arm_subsystem{
+      std::make_unique<pvegas::robot::subsystems::arm::ArmSubsystem>(
+          arm_motion, ring_sensor)};
+
+  robot->addSubsystem(arm_subsystem);
+  
   // CLAMP
 
   // pros objects

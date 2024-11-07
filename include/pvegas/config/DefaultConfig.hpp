@@ -193,7 +193,20 @@ class DefaultConfig : public IConfig {
 
   // ARM PORTS
 
-  // 
+  // left side arm rotational motor
+  static constexpr int8_t ARM_LEFT_ROTATION_MOTOR{UNDEFINED_PORT};
+
+  // right side arm rotational motor
+  static constexpr int8_t ARM_RIGHT_ROTATION_MOTOR{UNDEFINED_PORT};
+
+  // arm linear motor
+  static constexpr int8_t ARM_LINEAR_MOTOR{UNDEFINED_PORT};
+
+  // arm color sensor
+  static constexpr int8_t ARM_COLOR_SENSOR{UNDEFINED_PORT};
+
+  // arm potentiometer
+  static constexpr int8_t ARM_POTENTIOMETER{UNDEFINED_PORT};
 
   // CLAMP PORTS
 
@@ -228,6 +241,8 @@ class DefaultConfig : public IConfig {
 
   // -----MISC VALUES-----
 
+  // drive
+
   // drive gearset
   static constexpr pros::MotorGearset DRIVE_GEARSET{pros::E_MOTOR_GEAR_BLUE};
   // drive ratio of motor voltage to velocity
@@ -236,14 +251,53 @@ class DefaultConfig : public IConfig {
   static constexpr double ROBOT_RADIUS{7.25};
   // radius of the drive wheels
   static constexpr double DRIVE_WHEEL_RADIUS{1.25};
+
+  // arm
+
+  // arm rotational pid controller kp value
+  static constexpr double PID_ARM_ROTATIONAL_KP{24.0};
+  // arm rotational pid controller ki value
+  static constexpr double PID_ARM_ROTATIONAL_KI{0.0};
+  // arm rotational pid controller kd value
+  static constexpr double PID_ARM_ROTATIONAL_KD{256.0};
+  // arm linear pid controller kp value
+  static constexpr double PID_ARM_LINEAR_KP{24.0};
+  // arm linear pid controller ki value
+  static constexpr double PID_ARM_LINEAR_KI{0.0};
+  // arm linear pid controller kd value
+  static constexpr double PID_ARM_LINEAR_KD{256.0};
+  // arm rotational neutral position
+  static constexpr double ARM_ROTATIONAL_NEUTRAL_POSITION{};
+  // arm rotational load position
+  static constexpr double ARM_ROTATIONAL_LOAD_POSITION{};
+  // arm rotational score position
+  static constexpr double ARM_ROTATIONAL_SCORE_POSITION{};
+  // arm rotational position tolerance
+  static constexpr double ARM_ROTATIONAL_TOLERANCE{0.5};
+  // arm linear neutral position
+  static constexpr double ARM_LINEAR_NEUTRAL_POSITION{};
+  // arm linear load position
+  static constexpr double ARM_LINEAR_LOAD_POSITION{};
+  // arm linear score position
+  static constexpr double ARM_LINEAR_SCORE_POSITION{};
+  // arm linear position tolerance
+  static constexpr double ARM_LINEAR_TOLERANCE{0.5};
+  // arm ring proximity
+  static constexpr uint32_t ARM_RING_PROXIMITY{0.0};
+
+  // elevator
+
   // elevator pid controller kp value
-  static constexpr double PID_ELEVATOR_KP{};
+  static constexpr double PID_ELEVATOR_KP{24.0};
   // elevator pid controller ki value
-  static constexpr double PID_ELEVATOR_KI{};
+  static constexpr double PID_ELEVATOR_KI{0.0};
   // elevator pid controller kd value
-  static constexpr double PID_ELEVATOR_KD{};
+  static constexpr double PID_ELEVATOR_KD{256.0};
   // elevator radians to inches travelled
   static constexpr double ELEVATOR_RADIANS_TO_INCHES{};
+
+  // odometry
+
   // radius of the tracking wheels
   static constexpr double TRACKING_WHEEL_RADIUS{1.0};
   // left offset of the left tracking wheel
