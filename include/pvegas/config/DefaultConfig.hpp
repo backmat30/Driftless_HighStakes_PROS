@@ -194,13 +194,13 @@ class DefaultConfig : public IConfig {
   // ARM PORTS
 
   // left side arm rotational motor
-  static constexpr int8_t ARM_LEFT_ROTATION_MOTOR{UNDEFINED_PORT};
+  static constexpr int8_t ARM_LEFT_ROTATION_MOTOR{2};
 
   // right side arm rotational motor
-  static constexpr int8_t ARM_RIGHT_ROTATION_MOTOR{UNDEFINED_PORT};
+  static constexpr int8_t ARM_RIGHT_ROTATION_MOTOR{-1};
 
   // arm linear motor
-  static constexpr int8_t ARM_LINEAR_MOTOR{UNDEFINED_PORT};
+  static constexpr int8_t ARM_LINEAR_MOTOR{3};
 
   // arm color sensor
   static constexpr int8_t ARM_COLOR_SENSOR{UNDEFINED_PORT};
@@ -267,23 +267,23 @@ class DefaultConfig : public IConfig {
   // arm linear pid controller kd value
   static constexpr double PID_ARM_LINEAR_KD{256.0};
   // arm rotational neutral position
-  static constexpr double ARM_ROTATIONAL_NEUTRAL_POSITION{};
+  static constexpr double ARM_ROTATIONAL_NEUTRAL_POSITION{0.0};
   // arm rotational load position
-  static constexpr double ARM_ROTATIONAL_LOAD_POSITION{};
+  static constexpr double ARM_ROTATIONAL_LOAD_POSITION{0.0};
   // arm rotational score position
-  static constexpr double ARM_ROTATIONAL_SCORE_POSITION{};
+  static constexpr double ARM_ROTATIONAL_SCORE_POSITION{0.3375 * 2 * M_PI};
   // arm rotational position tolerance
   static constexpr double ARM_ROTATIONAL_TOLERANCE{0.5};
   // arm linear neutral position
-  static constexpr double ARM_LINEAR_NEUTRAL_POSITION{};
+  static constexpr double ARM_LINEAR_NEUTRAL_POSITION{0.6 * 2 * M_PI};
   // arm linear load position
-  static constexpr double ARM_LINEAR_LOAD_POSITION{};
+  static constexpr double ARM_LINEAR_LOAD_POSITION{0.0};
   // arm linear score position
-  static constexpr double ARM_LINEAR_SCORE_POSITION{};
+  static constexpr double ARM_LINEAR_SCORE_POSITION{1.85 * 2 * M_PI};
   // arm linear position tolerance
   static constexpr double ARM_LINEAR_TOLERANCE{0.5};
   // arm ring proximity
-  static constexpr uint32_t ARM_RING_PROXIMITY{0.0};
+  static constexpr uint32_t ARM_RING_PROXIMITY{0};
 
   // elevator
 

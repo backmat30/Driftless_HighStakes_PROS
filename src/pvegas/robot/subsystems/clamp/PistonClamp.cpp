@@ -19,8 +19,8 @@ void PistonClamp::setState(bool clamped) {
 
 bool PistonClamp::getState() { return state; }
 
-void PistonClamp::setPistons(pvegas::hal::PistonGroup pistons) {
-  m_pistons = pistons;
+void PistonClamp::setPistons(pvegas::hal::PistonGroup& pistons) {
+  m_pistons = std::move(pistons);
 }
 }  // namespace clamp
 }  // namespace subsystems

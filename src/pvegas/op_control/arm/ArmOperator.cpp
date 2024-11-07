@@ -53,13 +53,13 @@ void ArmOperator::updateSingleToggle(
     if (is_neutral) {
       m_robot->sendCommand(ARM_SUBSYSTEM_NAME, GO_LOAD_COMMAND_NAME);
     } else if (is_load) {
-      if (hasAllianceRing(alliance)) {
+      // if (hasAllianceRing(alliance)) {
         m_robot->sendCommand(ARM_SUBSYSTEM_NAME, GO_SCORE_COMMAND_NAME);
-      } else {
-        m_robot->sendCommand(ARM_SUBSYSTEM_NAME, GO_NEUTRAL_COMMAND_NAME);
-      }
+      // } else {
+      //   m_robot->sendCommand(ARM_SUBSYSTEM_NAME, GO_NEUTRAL_COMMAND_NAME);
+      // }
     } else if (is_score) {
-      m_robot->sendCommand(ARM_SUBSYSTEM_NAME, GO_LOAD_COMMAND_NAME);
+      m_robot->sendCommand(ARM_SUBSYSTEM_NAME, GO_NEUTRAL_COMMAND_NAME);
     }
   }
 }

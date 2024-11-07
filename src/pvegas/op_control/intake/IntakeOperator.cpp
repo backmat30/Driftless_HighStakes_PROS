@@ -22,7 +22,6 @@ void IntakeOperator::updateSingleToggle(EControllerDigital toggle) {
     void* intake_state{
         m_robot->getState(INTAKE_SUBSYSTEM_NAME, GET_HEIGHT_STATE_NAME)};
     bool current_height{*static_cast<bool*>(intake_state)};
-    delete intake_state;
 
     m_robot->sendCommand(INTAKE_SUBSYSTEM_NAME, SET_HEIGHT_COMMAND_NAME,
                          !current_height);

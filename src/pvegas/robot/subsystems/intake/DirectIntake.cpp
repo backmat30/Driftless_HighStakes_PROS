@@ -10,7 +10,7 @@ void DirectIntake::run() {}
 
 void DirectIntake::setVoltage(double voltage) { m_motors.setVoltage(voltage); }
 
-void DirectIntake::setMotors(pvegas::hal::MotorGroup motors) {
+void DirectIntake::setMotors(pvegas::hal::MotorGroup& motors) {
   m_motors = motors;
 }
 }  // namespace intake

@@ -32,7 +32,7 @@ class PistonHeightControl : public IHeightControl {
   bool isRaised() override;
 
   // set the pistons
-  void setPistons(pvegas::hal::PistonGroup pistons);
+  void setPistons(pvegas::hal::PistonGroup& pistons);
 };
 }  // namespace intake
 }  // namespace subsystems

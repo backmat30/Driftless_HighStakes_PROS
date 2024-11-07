@@ -90,7 +90,7 @@ void PIDElevator::setTask(std::unique_ptr<pvegas::rtos::ITask>& task) {
   m_task = std::move(task);
 }
 
-void PIDElevator::setMotors(pvegas::hal::MotorGroup motors) {
+void PIDElevator::setMotors(pvegas::hal::MotorGroup& motors) {
   m_motors = motors;
 }
 

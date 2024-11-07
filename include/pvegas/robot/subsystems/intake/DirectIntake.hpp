@@ -26,7 +26,7 @@ class DirectIntake : public IIntake {
   void setVoltage(double voltage) override;
 
   // set the motors
-  void setMotors(pvegas::hal::MotorGroup motors);
+  void setMotors(pvegas::hal::MotorGroup& motors);
 };
 }
 }

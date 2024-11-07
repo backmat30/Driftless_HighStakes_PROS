@@ -19,8 +19,8 @@ void PistonHeightControl::setHeight(bool up) {
 
 bool PistonHeightControl::isRaised() { return raised; }
 
-void PistonHeightControl::setPistons(pvegas::hal::PistonGroup pistons) {
-  m_pistons = pistons;
+void PistonHeightControl::setPistons(pvegas::hal::PistonGroup& pistons) {
+  m_pistons = std::move(pistons);
 }
 }  // namespace intake
 }  // namespace subsystems

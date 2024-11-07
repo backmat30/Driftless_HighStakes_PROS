@@ -177,11 +177,11 @@ void PIDArmMotion::setPotentiometer(
   m_potentiometer = std::move(potentiometer);
 }
 
-void PIDArmMotion::setRotationMotors(pvegas::hal::MotorGroup rotation_motors) {
+void PIDArmMotion::setRotationMotors(pvegas::hal::MotorGroup& rotation_motors) {
   m_rotation_motors = rotation_motors;
 }
 
-void PIDArmMotion::setLinearMotors(pvegas::hal::MotorGroup linear_motors) {
+void PIDArmMotion::setLinearMotors(pvegas::hal::MotorGroup& linear_motors) {
   m_linear_motors = linear_motors;
 }
 

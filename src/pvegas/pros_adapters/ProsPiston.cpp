@@ -2,7 +2,7 @@
 
 namespace pvegas {
 namespace pros_adapters {
-ProsPiston::ProsPiston(std::unique_ptr<pros::ADIDigitalOut>& adi_digital_out)
+ProsPiston::ProsPiston(std::unique_ptr<pros::adi::DigitalOut>& adi_digital_out)
     : m_adi_digital_out{std::move(adi_digital_out)} {}
 
 void ProsPiston::extend() {

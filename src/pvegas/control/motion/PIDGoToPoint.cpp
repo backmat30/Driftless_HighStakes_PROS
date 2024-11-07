@@ -135,17 +135,20 @@ void PIDGoToPoint::goToPoint(const std::shared_ptr<pvegas::robot::Robot>& robot,
 }
 
 void PIDGoToPoint::setVelocity(double velocity) {
-  if(m_mutex) {
+  if (m_mutex) {
     m_mutex->take();
   }
   m_max_velocity = velocity;
-  if(m_mutex) {
+  if (m_mutex) {
     m_mutex->give();
   }
 }
 
-bool PIDGoToPoint::targetReached() {
-  return target_reached;
+bool PIDGoToPoint::targetReached() { return target_reached; }
+
+void PIDGoToPoint::setDelayer(
+    std::unique_ptr<pvegas::rtos::IDelayer>& delayer) {
+  m_delayer = std::move(delayer);
 }
 
 void PIDGoToPoint::setMutex(std::unique_ptr<pvegas::rtos::IMutex>& mutex) {
@@ -156,9 +159,7 @@ void PIDGoToPoint::setTask(std::unique_ptr<pvegas::rtos::ITask>& task) {
   m_task = std::move(task);
 }
 
-void PIDGoToPoint::setLinearPID(PID linear_pid) {
-  m_linear_pid = linear_pid;
-}
+void PIDGoToPoint::setLinearPID(PID linear_pid) { m_linear_pid = linear_pid; }
 
 void PIDGoToPoint::setRotationalPID(PID rotational_pid) {
   m_rotational_pid = rotational_pid;

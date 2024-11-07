@@ -67,7 +67,7 @@ class PIDArmMotion : public IArmMotion {
   pvegas::control::PID m_linear_pid{};
 
   // the current position of the arm
-  EState state{EState::NEUTRAL};
+  EState state{EState::LOAD};
 
   // the rotational position when neutral
   double m_rotational_neutral_position{};
@@ -157,10 +157,10 @@ class PIDArmMotion : public IArmMotion {
       std::unique_ptr<pvegas::io::IPotentiometer>& potentiometer);
 
   // sets the rotation motors
-  void setRotationMotors(pvegas::hal::MotorGroup rotation_motors);
+  void setRotationMotors(pvegas::hal::MotorGroup& rotation_motors);
 
   // sets the linear motors
-  void setLinearMotors(pvegas::hal::MotorGroup linear_motors);
+  void setLinearMotors(pvegas::hal::MotorGroup& linear_motors);
 
   // sets the rotational PID controller
   void setRotationalPID(pvegas::control::PID rotational_pid);

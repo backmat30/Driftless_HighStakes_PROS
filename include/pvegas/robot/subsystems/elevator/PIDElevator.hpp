@@ -83,7 +83,7 @@ class PIDElevator : public pvegas::robot::subsystems::elevator::IElevator {
   void setTask(std::unique_ptr<pvegas::rtos::ITask>& task);
 
   // sets the motors
-  void setMotors(pvegas::hal::MotorGroup motors);
+  void setMotors(pvegas::hal::MotorGroup& motors);
 
   // sets the rotation sensor
   void setRotationSensor(

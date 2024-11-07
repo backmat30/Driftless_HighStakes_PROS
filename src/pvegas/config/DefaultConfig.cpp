@@ -287,12 +287,12 @@ std::shared_ptr<robot::Robot> DefaultConfig::buildRobot() {
           arm_motion, ring_sensor)};
 
   robot->addSubsystem(arm_subsystem);
-  
+
   // CLAMP
 
   // pros objects
-  std::unique_ptr<pros::ADIDigitalOut> temp_clamp_left_piston{
-      std::make_unique<pros::ADIDigitalOut>(CLAMP_PISTON_1)};
+  std::unique_ptr<pros::adi::DigitalOut> temp_clamp_left_piston{
+      std::make_unique<pros::adi::DigitalOut>(CLAMP_PISTON_1)};
 
   // adapted objects
   std::unique_ptr<pvegas::io::IPiston> adapted_clamp_left_piston{

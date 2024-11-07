@@ -9,28 +9,30 @@ void PistonGroup::addPiston(std::unique_ptr<pvegas::io::IPiston>& piston) {
 void PistonGroup::extend() {
   extended = true;
   for (std::unique_ptr<io::IPiston>& piston : m_pistons) {
-    piston->extend();
+    if (piston) {
+      piston->extend();
+    }
   }
 }
 
 void PistonGroup::retract() {
   extended = false;
   for (std::unique_ptr<io::IPiston>& piston : m_pistons) {
-    piston->retract();
+    if (piston) {
+      piston->retract();
+    }
   }
 }
 
 void PistonGroup::toggleState() {
   extended = !extended;
-  if(extended) {
+  if (extended) {
     extend();
   } else {
     retract();
   }
 }
 
-bool PistonGroup::isExtended() {
-  return extended;
-}
+bool PistonGroup::isExtended() { return extended; }
 }  // namespace hal
 }  // namespace pvegas

@@ -32,7 +32,7 @@ class PistonClamp : public IClamp {
   bool getState() override;
 
   // set the pistons used
-  void setPistons(pvegas::hal::PistonGroup pistons);
+  void setPistons(pvegas::hal::PistonGroup& pistons);
 };
 }  // namespace clamp
 }  // namespace subsystems

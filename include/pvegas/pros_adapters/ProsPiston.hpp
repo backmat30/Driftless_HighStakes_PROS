@@ -11,14 +11,14 @@ namespace pros_adapters {
 class ProsPiston : public pvegas::io::IPiston {
  private:
   // the ADI port used by the piston
-  std::unique_ptr<pros::ADIDigitalOut> m_adi_digital_out{};
+  std::unique_ptr<pros::adi::DigitalOut> m_adi_digital_out{};
 
   // whether the piston is extended or retracted
   bool extended{};
 
  public:
   // constructs a new pros piston object
-  ProsPiston(std::unique_ptr<pros::ADIDigitalOut>& adi_digital_out);
+  ProsPiston(std::unique_ptr<pros::adi::DigitalOut>& adi_digital_out);
 
   // extends the piston
   void extend() override;

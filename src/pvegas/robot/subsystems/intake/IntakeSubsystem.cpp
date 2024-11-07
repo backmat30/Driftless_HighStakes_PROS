@@ -26,7 +26,7 @@ void IntakeSubsystem::command(std::string command_name, va_list& args) {
     double voltage{va_arg(args, double)};
     m_intake->setVoltage(voltage);
   } else if (command_name == SET_HEIGHT_COMMAND_NAME) {
-    bool raised{va_arg(args, bool)};
+    bool raised{static_cast<bool>(va_arg(args, int))};
     m_height_control->setHeight(raised);
   }
 }

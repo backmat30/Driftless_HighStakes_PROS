@@ -17,7 +17,7 @@ void ClampSubsystem::run() {
 
 void ClampSubsystem::command(std::string command_name, va_list& args) {
   if(command_name == SET_STATE_COMMAND_NAME) {
-    bool state{va_arg(args, bool)};
+    bool state{static_cast<bool>(va_arg(args, int))};
     m_clamp->setState(state);
   }
 }
