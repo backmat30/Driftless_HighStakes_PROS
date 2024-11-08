@@ -1,6 +1,6 @@
 #include "pvegas/op_control/intake/IntakeOperator.hpp"
 
-namespace pvegas {
+namespace driftless {
 namespace op_control {
 namespace intake {
 void IntakeOperator::updateSplitToggle(EControllerDigital up,
@@ -41,11 +41,11 @@ void IntakeOperator::updateSpinner(EControllerDigital spin) {
 }
 
 IntakeOperator::IntakeOperator(
-    const std::shared_ptr<pvegas::io::IController>& controller,
-    const std::shared_ptr<pvegas::robot::Robot>& robot)
+    const std::shared_ptr<driftless::io::IController>& controller,
+    const std::shared_ptr<driftless::robot::Robot>& robot)
     : m_controller{controller}, m_robot{robot} {}
 
-void IntakeOperator::update(const std::unique_ptr<pvegas::profiles::IProfile>& profile) {
+void IntakeOperator::update(const std::unique_ptr<driftless::profiles::IProfile>& profile) {
   EControllerDigital toggle_up{profile->getDigitalControlMapping(EControl::INTAKE_RAISE)};
   EControllerDigital toggle_down{profile->getDigitalControlMapping(EControl::INTAKE_LOWER)};
   EControllerDigital toggle_states{profile->getDigitalControlMapping(EControl::INTAKE_TOGGLE_HEIGHT)};

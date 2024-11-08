@@ -8,7 +8,7 @@
 #include "pvegas/control/Point.hpp"
 #include "pvegas/utils/UtilityFunctions.hpp"
 
-namespace pvegas {
+namespace driftless {
 namespace control {
 namespace path {
 class BezierCurve {

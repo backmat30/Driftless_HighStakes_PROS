@@ -8,7 +8,7 @@
 #include "pvegas/profiles/IProfile.hpp"
 #include "pvegas/robot/Robot.hpp"
 
-namespace pvegas {
+namespace driftless {
 namespace op_control {
 namespace arm {
 class ArmOperator {
@@ -59,31 +59,31 @@ class ArmOperator {
   static constexpr char GET_HUE_STATE_NAME[]{"GET HUE"};
 
   // the controller used
-  std::shared_ptr<pvegas::io::IController> m_controller{};
+  std::shared_ptr<driftless::io::IController> m_controller{};
 
   // the robot being controlled
-  std::shared_ptr<pvegas::robot::Robot> m_robot{};
+  std::shared_ptr<driftless::robot::Robot> m_robot{};
 
   // determines if the robot has an alliance ring loaded
-  bool hasAllianceRing(const pvegas::alliance::Alliance);
+  bool hasAllianceRing(const driftless::alliance::Alliance);
 
   // updates the arm using split toggle
   void updateSplitToggle(EControllerDigital neutral, EControllerDigital load,
                          EControllerDigital ready, EControllerDigital score,
-                         const pvegas::alliance::Alliance alliance);
+                         const driftless::alliance::Alliance alliance);
 
   // update the arm using single toggle
   void updateSingleToggle(EControllerDigital toggle,
-                          const pvegas::alliance::Alliance alliance);
+                          const driftless::alliance::Alliance alliance);
 
  public:
   // constructs a new arm operator
-  ArmOperator(const std::shared_ptr<pvegas::io::IController>& controller,
-              const std::shared_ptr<pvegas::robot::Robot>& robot);
+  ArmOperator(const std::shared_ptr<driftless::io::IController>& controller,
+              const std::shared_ptr<driftless::robot::Robot>& robot);
 
   // update the arm
-  void update(const std::unique_ptr<pvegas::profiles::IProfile>& profile,
-              const pvegas::alliance::Alliance alliance);
+  void update(const std::unique_ptr<driftless::profiles::IProfile>& profile,
+              const driftless::alliance::Alliance alliance);
 };
 }  // namespace arm
 }  // namespace op_control

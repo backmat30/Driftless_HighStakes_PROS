@@ -6,19 +6,19 @@
 #include "pvegas/io/IDistanceTracker.hpp"
 #include "pvegas/io/IRotationSensor.hpp"
 
-namespace pvegas {
+namespace driftless {
 namespace hal {
-class TrackingWheel : public pvegas::io::IDistanceTracker {
+class TrackingWheel : public driftless::io::IDistanceTracker {
  private:
   // the rotation sensor for the wheel
-  std::unique_ptr<pvegas::io::IRotationSensor> m_rotation_sensor{};
+  std::unique_ptr<driftless::io::IRotationSensor> m_rotation_sensor{};
 
   // the radius of the wheel
   double m_wheel_radius{};
 
  public:
   // constructor
-  TrackingWheel(std::unique_ptr<pvegas::io::IRotationSensor>& rotation_sensor,
+  TrackingWheel(std::unique_ptr<driftless::io::IRotationSensor>& rotation_sensor,
                 double wheel_radius);
 
   // initialize the sensor

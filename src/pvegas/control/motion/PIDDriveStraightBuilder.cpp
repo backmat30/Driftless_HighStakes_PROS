@@ -1,22 +1,22 @@
 #include "pvegas/control/motion/PIDDriveStraightBuilder.hpp"
 
-namespace pvegas {
+namespace driftless {
 namespace control {
 namespace motion {
 PIDDriveStraightBuilder* PIDDriveStraightBuilder::withDelayer(
-    const std::unique_ptr<pvegas::rtos::IDelayer>& delayer) {
+    const std::unique_ptr<driftless::rtos::IDelayer>& delayer) {
   m_delayer = delayer->clone();
   return this;
 }
 
 PIDDriveStraightBuilder* PIDDriveStraightBuilder::withMutex(
-    std::unique_ptr<pvegas::rtos::IMutex>& mutex) {
+    std::unique_ptr<driftless::rtos::IMutex>& mutex) {
   m_mutex = std::move(mutex);
   return this;
 }
 
 PIDDriveStraightBuilder* PIDDriveStraightBuilder::withTask(
-    std::unique_ptr<pvegas::rtos::ITask>& task) {
+    std::unique_ptr<driftless::rtos::ITask>& task) {
   m_task = std::move(task);
   return this;
 }

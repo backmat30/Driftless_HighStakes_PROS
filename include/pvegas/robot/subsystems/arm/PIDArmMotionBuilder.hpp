@@ -5,38 +5,38 @@
 
 #include "pvegas/robot/subsystems/arm/PIDArmMotion.hpp"
 
-namespace pvegas {
+namespace driftless {
 namespace robot {
 namespace subsystems {
 namespace arm {
 class PIDArmMotionBuilder {
  private:
   // the delayer used by the subsystem
-  std::unique_ptr<pvegas::rtos::IDelayer> m_delayer{};
+  std::unique_ptr<driftless::rtos::IDelayer> m_delayer{};
 
   // the mutex used for task-related functions
-  std::unique_ptr<pvegas::rtos::IMutex> m_mutex{};
+  std::unique_ptr<driftless::rtos::IMutex> m_mutex{};
 
   // the task used by the subsystem
-  std::unique_ptr<pvegas::rtos::ITask> m_task{};
+  std::unique_ptr<driftless::rtos::ITask> m_task{};
 
   // rotation sensor for the arm rotation
-  std::unique_ptr<pvegas::io::IRotationSensor> m_rotation_sensor{};
+  std::unique_ptr<driftless::io::IRotationSensor> m_rotation_sensor{};
 
   // potentiometer for arm rotation
-  std::unique_ptr<pvegas::io::IPotentiometer> m_potentiometer{};
+  std::unique_ptr<driftless::io::IPotentiometer> m_potentiometer{};
 
   // the motors used to rotate the arm
-  pvegas::hal::MotorGroup m_rotation_motors{};
+  driftless::hal::MotorGroup m_rotation_motors{};
 
   // the motors used to control the length of the arm
-  pvegas::hal::MotorGroup m_linear_motors{};
+  driftless::hal::MotorGroup m_linear_motors{};
 
   // the rotational PID controller
-  pvegas::control::PID m_rotational_pid{};
+  driftless::control::PID m_rotational_pid{};
 
   // the linear PID controller
-  pvegas::control::PID m_linear_pid{};
+  driftless::control::PID m_linear_pid{};
 
   // the rotational position when neutral
   double m_rotational_neutral_position{};
@@ -71,35 +71,35 @@ class PIDArmMotionBuilder {
  public:
   // add a delayer to the builder
   PIDArmMotionBuilder* withDelayer(
-      const std::unique_ptr<pvegas::rtos::IDelayer>& delayer);
+      const std::unique_ptr<driftless::rtos::IDelayer>& delayer);
 
   // add a mutex to the builder
-  PIDArmMotionBuilder* withMutex(std::unique_ptr<pvegas::rtos::IMutex>& mutex);
+  PIDArmMotionBuilder* withMutex(std::unique_ptr<driftless::rtos::IMutex>& mutex);
 
   // add a task to the builder
-  PIDArmMotionBuilder* withTask(std::unique_ptr<pvegas::rtos::ITask>& task);
+  PIDArmMotionBuilder* withTask(std::unique_ptr<driftless::rtos::ITask>& task);
 
   // add a rotation sensor to the builder
   PIDArmMotionBuilder* withRotationSensor(
-      std::unique_ptr<pvegas::io::IRotationSensor>& rotation_sensor);
+      std::unique_ptr<driftless::io::IRotationSensor>& rotation_sensor);
 
   // add a potentiometer to the builder
   PIDArmMotionBuilder* withPotentiometer(
-      std::unique_ptr<pvegas::io::IPotentiometer>& potentiometer);
+      std::unique_ptr<driftless::io::IPotentiometer>& potentiometer);
 
   // add a rotational motor to the builder
   PIDArmMotionBuilder* withRotationalMotor(
-      std::unique_ptr<pvegas::io::IMotor>& motor);
+      std::unique_ptr<driftless::io::IMotor>& motor);
 
   // add a linear motor to the builder
   PIDArmMotionBuilder* withLinearMotor(
-      std::unique_ptr<pvegas::io::IMotor>& motor);
+      std::unique_ptr<driftless::io::IMotor>& motor);
 
   // add a rotational PID controller to the builder
-  PIDArmMotionBuilder* withRotationalPID(pvegas::control::PID rotational_pid);
+  PIDArmMotionBuilder* withRotationalPID(driftless::control::PID rotational_pid);
 
   // add a linear PID controller to the builder
-  PIDArmMotionBuilder* withLinearPID(pvegas::control::PID linear_pid);
+  PIDArmMotionBuilder* withLinearPID(driftless::control::PID linear_pid);
 
   // add a rotational neutral position to the builder
   PIDArmMotionBuilder* withRotationalNeutralPosition(

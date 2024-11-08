@@ -7,7 +7,7 @@
 #include "pvegas/control/ControlSystem.hpp"
 #include "pvegas/io/IController.hpp"
 #include "pvegas/robot/Robot.hpp"
-namespace pvegas {
+namespace driftless {
 namespace config {
 class IConfig {
  public:

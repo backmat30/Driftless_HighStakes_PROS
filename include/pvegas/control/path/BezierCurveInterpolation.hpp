@@ -5,7 +5,7 @@
 
 #include "pvegas/control/path/BezierCurve.hpp"
 
-namespace pvegas {
+namespace driftless {
 namespace control {
 namespace path {
 class BezierCurveInterpolation {

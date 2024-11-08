@@ -3,19 +3,19 @@
 
 #include "pvegas/control/motion/PIDGoToPoint.hpp"
 
-namespace pvegas {
+namespace driftless {
 namespace control {
 namespace motion {
 class PIDGoToPointBuilder {
  private:
   // the delayer used to build the control
-  std::unique_ptr<pvegas::rtos::IDelayer> m_delayer{};
+  std::unique_ptr<driftless::rtos::IDelayer> m_delayer{};
 
   // the mutex used to build the control
-  std::unique_ptr<pvegas::rtos::IMutex> m_mutex{};
+  std::unique_ptr<driftless::rtos::IMutex> m_mutex{};
 
   // the task used to build the control
-  std::unique_ptr<pvegas::rtos::ITask> m_task{};
+  std::unique_ptr<driftless::rtos::ITask> m_task{};
 
   // the linear PID controller used to build the control
   PID m_linear_pid{};
@@ -32,13 +32,13 @@ class PIDGoToPointBuilder {
  public:
   // add a delayer to the builder
   PIDGoToPointBuilder* withDelayer(
-      const std::unique_ptr<pvegas::rtos::IDelayer>& delayer);
+      const std::unique_ptr<driftless::rtos::IDelayer>& delayer);
 
   // add a mutex to the builder
-  PIDGoToPointBuilder* withMutex(std::unique_ptr<pvegas::rtos::IMutex>& mutex);
+  PIDGoToPointBuilder* withMutex(std::unique_ptr<driftless::rtos::IMutex>& mutex);
 
   // add a task to the builder
-  PIDGoToPointBuilder* withTask(std::unique_ptr<pvegas::rtos::ITask>& task);
+  PIDGoToPointBuilder* withTask(std::unique_ptr<driftless::rtos::ITask>& task);
 
   // add a linear pid controller to the builder
   PIDGoToPointBuilder* withLinearPID(PID linear_pid);

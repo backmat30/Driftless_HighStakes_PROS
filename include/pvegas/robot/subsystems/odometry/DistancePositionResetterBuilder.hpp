@@ -5,14 +5,14 @@
 
 #include "pvegas/robot/subsystems/odometry/DistancePositionResetter.hpp"
 
-namespace pvegas {
+namespace driftless {
 namespace robot {
 namespace subsystems {
 namespace odometry {
 class DistancePositionResetterBuilder {
  private:
   // the resetter being built
-  std::unique_ptr<pvegas::io::IDistanceSensor> m_distance_sensor{};
+  std::unique_ptr<driftless::io::IDistanceSensor> m_distance_sensor{};
 
   // the local X offset
   double m_local_x{};
@@ -25,7 +25,7 @@ class DistancePositionResetterBuilder {
 
  public:
   // add a distance sensor to the position resetter
-  DistancePositionResetterBuilder* withDistanceSensor(std::unique_ptr<pvegas::io::IDistanceSensor>& distance_sensor);
+  DistancePositionResetterBuilder* withDistanceSensor(std::unique_ptr<driftless::io::IDistanceSensor>& distance_sensor);
 
   // add a local x offset to the position resetter
   DistancePositionResetterBuilder* withLocalX(double local_x);

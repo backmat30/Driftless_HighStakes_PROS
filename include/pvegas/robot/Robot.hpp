@@ -5,7 +5,7 @@
 #include <vector>
 
 #include "subsystems/ASubsystem.hpp"
-namespace pvegas {
+namespace driftless {
 namespace robot {
 class Robot {
  private:

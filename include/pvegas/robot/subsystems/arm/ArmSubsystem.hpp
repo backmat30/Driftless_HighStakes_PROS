@@ -7,7 +7,7 @@
 #include "pvegas/robot/subsystems/arm/IArmMotion.hpp"
 #include "pvegas/robot/subsystems/arm/IRingSensor.hpp"
 
-namespace pvegas {
+namespace driftless {
 namespace robot {
 namespace subsystems {
 namespace arm {

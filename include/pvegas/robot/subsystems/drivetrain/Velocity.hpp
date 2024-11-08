@@ -1,6 +1,6 @@
 #ifndef __VELOCITY_HPP__
 #define __VELOCITY_HPP__
-namespace pvegas {
+namespace driftless {
 namespace robot {
 namespace subsystems {
 namespace drivetrain {

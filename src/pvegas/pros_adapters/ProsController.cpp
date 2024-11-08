@@ -2,7 +2,7 @@
 
 #include <cstdint>
 #include <memory>
-namespace pvegas {
+namespace driftless {
 namespace pros_adapters {
 
 void ProsController::taskLoop(void *params) {

@@ -4,7 +4,7 @@
 #include <cstdarg>
 #include <string>
 
-namespace pvegas {
+namespace driftless {
 namespace robot {
 namespace subsystems {
 class ASubsystem {

@@ -1,7 +1,7 @@
 #ifndef __I_DISTANCE_SENSOR_HPP__
 #define __I_DISTANCE_SENSOR_HPP__
 
-namespace pvegas {
+namespace driftless {
 namespace io {
 class IDistanceSensor {
  public:

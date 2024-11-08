@@ -1,8 +1,8 @@
 #include "pvegas/hal/PistonGroup.hpp"
 
-namespace pvegas {
+namespace driftless {
 namespace hal {
-void PistonGroup::addPiston(std::unique_ptr<pvegas::io::IPiston>& piston) {
+void PistonGroup::addPiston(std::unique_ptr<driftless::io::IPiston>& piston) {
   m_pistons.push_back(std::move(piston));
 }
 

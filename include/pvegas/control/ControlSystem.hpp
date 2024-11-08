@@ -7,7 +7,7 @@
 #include <vector>
 
 #include "pvegas/control/AControl.hpp"
-namespace pvegas {
+namespace driftless {
 namespace control {
 class ControlSystem {
  private:

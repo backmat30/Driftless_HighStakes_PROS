@@ -3,18 +3,18 @@
 
 #include "pvegas/robot/subsystems/clamp/PistonClamp.hpp"
 
-namespace pvegas {
+namespace driftless {
 namespace robot {
 namespace subsystems {
 namespace clamp {
 class PistonClampBuilder {
  private:
   // piston group used to build the clamp
-  pvegas::hal::PistonGroup m_pistons{};
+  driftless::hal::PistonGroup m_pistons{};
 
  public:
   // add a piston to the builder
-  PistonClampBuilder* withPiston(std::unique_ptr<pvegas::io::IPiston>& piston);
+  PistonClampBuilder* withPiston(std::unique_ptr<driftless::io::IPiston>& piston);
 
   // build a PistonClamp object
   std::unique_ptr<PistonClamp> build();

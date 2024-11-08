@@ -1,7 +1,7 @@
 #ifndef __POSITION_HPP__
 #define __POSITION_HPP__
 
-namespace pvegas {
+namespace driftless {
 namespace robot {
 namespace subsystems {
 namespace odometry {

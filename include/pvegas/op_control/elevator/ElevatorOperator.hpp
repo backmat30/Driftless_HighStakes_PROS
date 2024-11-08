@@ -9,7 +9,7 @@
 #include "pvegas/profiles/IProfile.hpp"
 #include "pvegas/robot/Robot.hpp"
 
-namespace pvegas {
+namespace driftless {
 namespace op_control {
 namespace elevator {
 class ElevatorOperator {
@@ -27,21 +27,21 @@ class ElevatorOperator {
   static constexpr double DEFAULT_VOLTAGE{127.0};
 
   // the controller being used
-  std::shared_ptr<pvegas::io::IController> m_controller{};
+  std::shared_ptr<driftless::io::IController> m_controller{};
 
   // the robot being controlled
-  std::shared_ptr<pvegas::robot::Robot> m_robot{};
+  std::shared_ptr<driftless::robot::Robot> m_robot{};
 
   // updates the voltage of the elevator motors
   void updateElevatorVoltage(double voltage);
 
  public:
   // constructor
-  ElevatorOperator(const std::shared_ptr<pvegas::io::IController>& controller,
-                   const std::shared_ptr<pvegas::robot::Robot>& robot);
+  ElevatorOperator(const std::shared_ptr<driftless::io::IController>& controller,
+                   const std::shared_ptr<driftless::robot::Robot>& robot);
 
   // spin the elevator
-  void update(const std::unique_ptr<pvegas::profiles::IProfile>& profile);
+  void update(const std::unique_ptr<driftless::profiles::IProfile>& profile);
 };
 }  // namespace elevator
 }  // namespace op_control

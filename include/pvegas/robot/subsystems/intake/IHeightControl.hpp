@@ -1,7 +1,7 @@
 #ifndef __I_HEIGHT_CONTROL_HPP__
 #define __I_HEIGHT_CONTROL_HPP__
 
-namespace pvegas {
+namespace driftless {
 namespace robot {
 namespace subsystems {
 namespace intake {

@@ -1,6 +1,6 @@
 #include "pvegas/config/DefaultConfig.hpp"
 
-namespace pvegas {
+namespace driftless {
 namespace config {
 std::string DefaultConfig::getName() { return CONFIG_NAME; }
 
@@ -9,27 +9,27 @@ std::shared_ptr<control::ControlSystem> DefaultConfig::buildControlSystem() {
   std::shared_ptr<control::ControlSystem> control_system{
       std::make_shared<control::ControlSystem>()};
   // delayer and clock passed to all controls
-  std::unique_ptr<pvegas::rtos::IClock> clock{
-      std::make_unique<pvegas::pros_adapters::ProsClock>()};
-  std::unique_ptr<pvegas::rtos::IDelayer> delayer{
-      std::make_unique<pvegas::pros_adapters::ProsDelayer>()};
+  std::unique_ptr<driftless::rtos::IClock> clock{
+      std::make_unique<driftless::pros_adapters::ProsClock>()};
+  std::unique_ptr<driftless::rtos::IDelayer> delayer{
+      std::make_unique<driftless::pros_adapters::ProsDelayer>()};
 
   // MOTION CONTROL
-  pvegas::control::motion::PIDDriveStraightBuilder pid_drive_straight_builder{};
+  driftless::control::motion::PIDDriveStraightBuilder pid_drive_straight_builder{};
   // objects needed for drive straight algorithm
-  std::unique_ptr<pvegas::rtos::IMutex> pid_drive_straight_mutex{
-      std::make_unique<pvegas::pros_adapters::ProsMutex>()};
-  std::unique_ptr<pvegas::rtos::ITask> pid_drive_straight_task{
-      std::make_unique<pvegas::pros_adapters::ProsTask>()};
-  pvegas::control::PID pid_drive_straight_linear_pid{
+  std::unique_ptr<driftless::rtos::IMutex> pid_drive_straight_mutex{
+      std::make_unique<driftless::pros_adapters::ProsMutex>()};
+  std::unique_ptr<driftless::rtos::ITask> pid_drive_straight_task{
+      std::make_unique<driftless::pros_adapters::ProsTask>()};
+  driftless::control::PID pid_drive_straight_linear_pid{
       clock, PID_DRIVE_STRAIGHT_LINEAR_KP, PID_DRIVE_STRAIGHT_LINEAR_KI,
       PID_DRIVE_STRAIGHT_LINEAR_KD};
-  pvegas::control::PID pid_drive_straight_rotational_pid{
+  driftless::control::PID pid_drive_straight_rotational_pid{
       clock, PID_DRIVE_STRAIGHT_ROTATIONAL_KP, PID_DRIVE_STRAIGHT_ROTATIONAL_KI,
       PID_DRIVE_STRAIGHT_ROTATIONAL_KD};
 
   // assemble the drive straight object
-  std::unique_ptr<pvegas::control::motion::IDriveStraight> drive_straight{
+  std::unique_ptr<driftless::control::motion::IDriveStraight> drive_straight{
       pid_drive_straight_builder.withDelayer(delayer)
           ->withMutex(pid_drive_straight_mutex)
           ->withTask(pid_drive_straight_task)
@@ -39,21 +39,21 @@ std::shared_ptr<control::ControlSystem> DefaultConfig::buildControlSystem() {
           ->withTargetVelocity(PID_DRIVE_STRAIGHT_TARGET_VELOCITY)
           ->build()};
 
-  pvegas::control::motion::PIDGoToPointBuilder pid_go_to_point_builder{};
+  driftless::control::motion::PIDGoToPointBuilder pid_go_to_point_builder{};
   // objects needed for go to point algorithm
-  std::unique_ptr<pvegas::rtos::IMutex> pid_go_to_point_mutex{
-      std::make_unique<pvegas::pros_adapters::ProsMutex>()};
-  std::unique_ptr<pvegas::rtos::ITask> pid_go_to_point_task{
-      std::make_unique<pvegas::pros_adapters::ProsTask>()};
-  pvegas::control::PID pid_go_to_point_linear_pid{
+  std::unique_ptr<driftless::rtos::IMutex> pid_go_to_point_mutex{
+      std::make_unique<driftless::pros_adapters::ProsMutex>()};
+  std::unique_ptr<driftless::rtos::ITask> pid_go_to_point_task{
+      std::make_unique<driftless::pros_adapters::ProsTask>()};
+  driftless::control::PID pid_go_to_point_linear_pid{
       clock, PID_GO_TO_POINT_LINEAR_KP, PID_GO_TO_POINT_LINEAR_KI,
       PID_GO_TO_POINT_LINEAR_KD};
-  pvegas::control::PID pid_go_to_point_rotational_pid{
+  driftless::control::PID pid_go_to_point_rotational_pid{
       clock, PID_GO_TO_POINT_ROTATIONAL_KP, PID_GO_TO_POINT_ROTATIONAL_KI,
       PID_GO_TO_POINT_ROTATIONAL_KD};
 
   // assemble the go to point object
-  std::unique_ptr<pvegas::control::motion::IGoToPoint> go_to_point{
+  std::unique_ptr<driftless::control::motion::IGoToPoint> go_to_point{
       pid_go_to_point_builder.withDelayer(delayer)
           ->withMutex(pid_go_to_point_mutex)
           ->withTask(pid_go_to_point_task)
@@ -63,18 +63,18 @@ std::shared_ptr<control::ControlSystem> DefaultConfig::buildControlSystem() {
           ->withTargetVelocity(PID_GO_TO_POINT_TARGET_VELOCITY)
           ->build()};
 
-  pvegas::control::motion::PIDTurnBuilder pid_turn_builder{};
+  driftless::control::motion::PIDTurnBuilder pid_turn_builder{};
   // objects needed for turn algorithm
-  std::unique_ptr<pvegas::rtos::IMutex> pid_turn_mutex{
-      std::make_unique<pvegas::pros_adapters::ProsMutex>()};
-  std::unique_ptr<pvegas::rtos::ITask> pid_turn_task{
-      std::make_unique<pvegas::pros_adapters::ProsTask>()};
-  pvegas::control::PID pid_turn_rotational_pid{clock, PID_TURN_ROTATIONAL_KP,
+  std::unique_ptr<driftless::rtos::IMutex> pid_turn_mutex{
+      std::make_unique<driftless::pros_adapters::ProsMutex>()};
+  std::unique_ptr<driftless::rtos::ITask> pid_turn_task{
+      std::make_unique<driftless::pros_adapters::ProsTask>()};
+  driftless::control::PID pid_turn_rotational_pid{clock, PID_TURN_ROTATIONAL_KP,
                                                PID_TURN_ROTATIONAL_KI,
                                                PID_TURN_ROTATIONAL_KD};
 
   // assemble the turn object
-  std::unique_ptr<pvegas::control::motion::ITurn> turn{
+  std::unique_ptr<driftless::control::motion::ITurn> turn{
       pid_turn_builder.withDelayer(delayer)
           ->withMutex(pid_turn_mutex)
           ->withTask(pid_turn_task)
@@ -84,27 +84,27 @@ std::shared_ptr<control::ControlSystem> DefaultConfig::buildControlSystem() {
           ->build()};
 
   // create and add the motion control
-  std::unique_ptr<pvegas::control::AControl> motion_control{
-      std::make_unique<pvegas::control::motion::MotionControl>(
+  std::unique_ptr<driftless::control::AControl> motion_control{
+      std::make_unique<driftless::control::motion::MotionControl>(
           drive_straight, go_to_point, turn)};
   control_system->addControl(motion_control);
 
   // PATH FOLLOWER CONTROL
-  pvegas::control::path::PIDPathFollowerBuilder pid_path_follower_builder{};
+  driftless::control::path::PIDPathFollowerBuilder pid_path_follower_builder{};
   // needed objects for the path follower
-  std::unique_ptr<pvegas::rtos::IMutex> pid_path_follower_mutex{
-      std::make_unique<pvegas::pros_adapters::ProsMutex>()};
-  std::unique_ptr<pvegas::rtos::ITask> pid_path_follower_task{
-      std::make_unique<pvegas::pros_adapters::ProsTask>()};
-  pvegas::control::PID pid_path_follower_linear_pid{
+  std::unique_ptr<driftless::rtos::IMutex> pid_path_follower_mutex{
+      std::make_unique<driftless::pros_adapters::ProsMutex>()};
+  std::unique_ptr<driftless::rtos::ITask> pid_path_follower_task{
+      std::make_unique<driftless::pros_adapters::ProsTask>()};
+  driftless::control::PID pid_path_follower_linear_pid{
       clock, PID_PATH_FOLLOWER_LINEAR_KP, PID_PATH_FOLLOWER_LINEAR_KI,
       PID_PATH_FOLLOWER_LINEAR_KD};
-  pvegas::control::PID pid_path_follower_rotational_pid{
+  driftless::control::PID pid_path_follower_rotational_pid{
       clock, PID_PATH_FOLLOWER_ROTATIONAL_KP, PID_PATH_FOLLOWER_ROTATIONAL_KI,
       PID_PATH_FOLLOWER_ROTATIONAL_KD};
 
   // assemble the path follower
-  std::unique_ptr<pvegas::control::path::IPathFollower> pid_path_follower{
+  std::unique_ptr<driftless::control::path::IPathFollower> pid_path_follower{
       pid_path_follower_builder.withDelayer(delayer)
           ->withMutex(pid_path_follower_mutex)
           ->withTask(pid_path_follower_task)
@@ -116,8 +116,8 @@ std::shared_ptr<control::ControlSystem> DefaultConfig::buildControlSystem() {
           ->build()};
 
   // put the path follower in a control object
-  std::unique_ptr<pvegas::control::AControl> path_follower_control{
-      std::make_unique<pvegas::control::path::PathFollowerControl>(
+  std::unique_ptr<driftless::control::AControl> path_follower_control{
+      std::make_unique<driftless::control::path::PathFollowerControl>(
           pid_path_follower)};
   // insert the path follower control into the control manager
   control_system->addControl(path_follower_control);
@@ -209,14 +209,14 @@ std::shared_ptr<robot::Robot> DefaultConfig::buildRobot() {
   // ARM
 
   // rtos
-  std::unique_ptr<pvegas::rtos::IClock> arm_clock{
-      std::make_unique<pvegas::pros_adapters::ProsClock>()};
-  std::unique_ptr<pvegas::rtos::IDelayer> arm_delayer{
-      std::make_unique<pvegas::pros_adapters::ProsDelayer>()};
-  std::unique_ptr<pvegas::rtos::IMutex> arm_mutex{
-      std::make_unique<pvegas::pros_adapters::ProsMutex>()};
-  std::unique_ptr<pvegas::rtos::ITask> arm_task{
-      std::make_unique<pvegas::pros_adapters::ProsTask>()};
+  std::unique_ptr<driftless::rtos::IClock> arm_clock{
+      std::make_unique<driftless::pros_adapters::ProsClock>()};
+  std::unique_ptr<driftless::rtos::IDelayer> arm_delayer{
+      std::make_unique<driftless::pros_adapters::ProsDelayer>()};
+  std::unique_ptr<driftless::rtos::IMutex> arm_mutex{
+      std::make_unique<driftless::pros_adapters::ProsMutex>()};
+  std::unique_ptr<driftless::rtos::ITask> arm_task{
+      std::make_unique<driftless::pros_adapters::ProsTask>()};
 
   // pros objects
   std::unique_ptr<pros::Motor> temp_arm_left_rotation_motor{
@@ -231,34 +231,34 @@ std::shared_ptr<robot::Robot> DefaultConfig::buildRobot() {
       std::make_unique<pros::adi::AnalogIn>(ARM_POTENTIOMETER)};
 
   // adapted objects
-  std::unique_ptr<pvegas::io::IMotor> arm_left_rotation_motor{
-      std::make_unique<pvegas::pros_adapters::ProsV5Motor>(
+  std::unique_ptr<driftless::io::IMotor> arm_left_rotation_motor{
+      std::make_unique<driftless::pros_adapters::ProsV5Motor>(
           temp_arm_left_rotation_motor)};
-  std::unique_ptr<pvegas::io::IMotor> arm_right_rotation_motor{
-      std::make_unique<pvegas::pros_adapters::ProsV5Motor>(
+  std::unique_ptr<driftless::io::IMotor> arm_right_rotation_motor{
+      std::make_unique<driftless::pros_adapters::ProsV5Motor>(
           temp_arm_right_rotation_motor)};
-  std::unique_ptr<pvegas::io::IMotor> arm_linear_motor{
-      std::make_unique<pvegas::pros_adapters::ProsV5Motor>(
+  std::unique_ptr<driftless::io::IMotor> arm_linear_motor{
+      std::make_unique<driftless::pros_adapters::ProsV5Motor>(
           temp_arm_linear_motor)};
-  std::unique_ptr<pvegas::io::IColorSensor> arm_color_sensor{
-      std::make_unique<pvegas::pros_adapters::ProsColorSensor>(
+  std::unique_ptr<driftless::io::IColorSensor> arm_color_sensor{
+      std::make_unique<driftless::pros_adapters::ProsColorSensor>(
           temp_arm_color_sensor)};
-  std::unique_ptr<pvegas::io::IPotentiometer> arm_potentiometer{
-      std::make_unique<pvegas::pros_adapters::ProsADIPotentiometer>(
+  std::unique_ptr<driftless::io::IPotentiometer> arm_potentiometer{
+      std::make_unique<driftless::pros_adapters::ProsADIPotentiometer>(
           temp_arm_potentiometer)};
 
-  pvegas::control::PID arm_rotational_pid{arm_clock, PID_ARM_ROTATIONAL_KP,
+  driftless::control::PID arm_rotational_pid{arm_clock, PID_ARM_ROTATIONAL_KP,
                                           PID_ARM_ROTATIONAL_KI,
                                           PID_ARM_ROTATIONAL_KD};
-  pvegas::control::PID arm_linear_pid{arm_clock, PID_ARM_LINEAR_KP,
+  driftless::control::PID arm_linear_pid{arm_clock, PID_ARM_LINEAR_KP,
                                       PID_ARM_LINEAR_KI, PID_ARM_LINEAR_KD};
 
   // assemble the subsystem
-  pvegas::robot::subsystems::arm::PIDArmMotionBuilder pid_arm_motion_builder{};
-  pvegas::robot::subsystems::arm::ColorRingSensorBuilder
+  driftless::robot::subsystems::arm::PIDArmMotionBuilder pid_arm_motion_builder{};
+  driftless::robot::subsystems::arm::ColorRingSensorBuilder
       color_ring_sensor_builder{};
 
-  std::unique_ptr<pvegas::robot::subsystems::arm::IArmMotion> arm_motion{
+  std::unique_ptr<driftless::robot::subsystems::arm::IArmMotion> arm_motion{
       pid_arm_motion_builder.withDelayer(arm_delayer)
           ->withMutex(arm_mutex)
           ->withTask(arm_task)
@@ -280,13 +280,13 @@ std::shared_ptr<robot::Robot> DefaultConfig::buildRobot() {
           ->withLinearTolerance(ARM_LINEAR_TOLERANCE)
           ->build()};
 
-  std::unique_ptr<pvegas::robot::subsystems::arm::IRingSensor> ring_sensor{
+  std::unique_ptr<driftless::robot::subsystems::arm::IRingSensor> ring_sensor{
       color_ring_sensor_builder.withColorSensor(arm_color_sensor)
           ->withRingProximity(ARM_RING_PROXIMITY)
           ->build()};
 
-  std::unique_ptr<pvegas::robot::subsystems::ASubsystem> arm_subsystem{
-      std::make_unique<pvegas::robot::subsystems::arm::ArmSubsystem>(
+  std::unique_ptr<driftless::robot::subsystems::ASubsystem> arm_subsystem{
+      std::make_unique<driftless::robot::subsystems::arm::ArmSubsystem>(
           arm_motion, ring_sensor)};
 
   robot->addSubsystem(arm_subsystem);
@@ -298,32 +298,32 @@ std::shared_ptr<robot::Robot> DefaultConfig::buildRobot() {
       std::make_unique<pros::adi::DigitalOut>(CLAMP_PISTON_1)};
 
   // adapted objects
-  std::unique_ptr<pvegas::io::IPiston> adapted_clamp_left_piston{
-      std::make_unique<pvegas::pros_adapters::ProsPiston>(
+  std::unique_ptr<driftless::io::IPiston> adapted_clamp_left_piston{
+      std::make_unique<driftless::pros_adapters::ProsPiston>(
           temp_clamp_left_piston)};
 
   // build the clamp
-  pvegas::robot::subsystems::clamp::PistonClampBuilder piston_clamp_builder{};
+  driftless::robot::subsystems::clamp::PistonClampBuilder piston_clamp_builder{};
 
-  std::unique_ptr<pvegas::robot::subsystems::clamp::IClamp> piston_clamp{
+  std::unique_ptr<driftless::robot::subsystems::clamp::IClamp> piston_clamp{
       piston_clamp_builder.withPiston(adapted_clamp_left_piston)->build()};
 
-  std::unique_ptr<pvegas::robot::subsystems::ASubsystem> clamp_subsystem{
-      std::make_unique<pvegas::robot::subsystems::clamp::ClampSubsystem>(
+  std::unique_ptr<driftless::robot::subsystems::ASubsystem> clamp_subsystem{
+      std::make_unique<driftless::robot::subsystems::clamp::ClampSubsystem>(
           piston_clamp)};
   robot->addSubsystem(clamp_subsystem);
 
   // ELEVATOR
 
   // rtos
-  std::unique_ptr<pvegas::rtos::IClock> elevator_clock{
-      std::make_unique<pvegas::pros_adapters::ProsClock>()};
-  std::unique_ptr<pvegas::rtos::IDelayer> elevator_delayer{
-      std::make_unique<pvegas::pros_adapters::ProsDelayer>()};
-  std::unique_ptr<pvegas::rtos::IMutex> elevator_mutex{
-      std::make_unique<pvegas::pros_adapters::ProsMutex>()};
-  std::unique_ptr<pvegas::rtos::ITask> elevator_task{
-      std::make_unique<pvegas::pros_adapters::ProsTask>()};
+  std::unique_ptr<driftless::rtos::IClock> elevator_clock{
+      std::make_unique<driftless::pros_adapters::ProsClock>()};
+  std::unique_ptr<driftless::rtos::IDelayer> elevator_delayer{
+      std::make_unique<driftless::pros_adapters::ProsDelayer>()};
+  std::unique_ptr<driftless::rtos::IMutex> elevator_mutex{
+      std::make_unique<driftless::pros_adapters::ProsMutex>()};
+  std::unique_ptr<driftless::rtos::ITask> elevator_task{
+      std::make_unique<driftless::pros_adapters::ProsTask>()};
   // pros objects
   std::unique_ptr<pros::Motor> temp_elevator_motor_1{
       std::make_unique<pros::Motor>(ELEVATOR_MOTOR_1)};
@@ -331,22 +331,22 @@ std::shared_ptr<robot::Robot> DefaultConfig::buildRobot() {
       std::make_unique<pros::Rotation>(ELEVATOR_ROTATIONAL_SENSOR)};
 
   // adapted objects
-  std::unique_ptr<pvegas::io::IMotor> adapted_elevator_motor_1{
-      std::make_unique<pvegas::pros_adapters::ProsV5Motor>(
+  std::unique_ptr<driftless::io::IMotor> adapted_elevator_motor_1{
+      std::make_unique<driftless::pros_adapters::ProsV5Motor>(
           temp_elevator_motor_1)};
-  std::unique_ptr<pvegas::io::IRotationSensor>
+  std::unique_ptr<driftless::io::IRotationSensor>
       adapted_elevator_rotational_sensor{
-          std::make_unique<pvegas::pros_adapters::ProsRotationSensor>(
+          std::make_unique<driftless::pros_adapters::ProsRotationSensor>(
               temp_elevator_rotation_sensor)};
 
-  pvegas::control::PID elevator_pid{elevator_clock, PID_ELEVATOR_KP,
+  driftless::control::PID elevator_pid{elevator_clock, PID_ELEVATOR_KP,
                                     PID_ELEVATOR_KI, PID_ELEVATOR_KD};
 
   // build the elevator
-  pvegas::robot::subsystems::elevator::PIDElevatorBuilder
+  driftless::robot::subsystems::elevator::PIDElevatorBuilder
       pid_elevator_builder{};
 
-  std::unique_ptr<pvegas::robot::subsystems::elevator::IElevator> elevator{
+  std::unique_ptr<driftless::robot::subsystems::elevator::IElevator> elevator{
       pid_elevator_builder.withDelayer(elevator_delayer)
           ->withMutex(elevator_mutex)
           ->withTask(elevator_task)
@@ -356,8 +356,8 @@ std::shared_ptr<robot::Robot> DefaultConfig::buildRobot() {
           ->withRadiansToInches(ELEVATOR_RADIANS_TO_INCHES)
           ->build()};
 
-  std::unique_ptr<pvegas::robot::subsystems::ASubsystem> elevator_subsystem{
-      std::make_unique<pvegas::robot::subsystems::elevator::ElevatorSubsystem>(
+  std::unique_ptr<driftless::robot::subsystems::ASubsystem> elevator_subsystem{
+      std::make_unique<driftless::robot::subsystems::elevator::ElevatorSubsystem>(
           elevator)};
   robot->addSubsystem(elevator_subsystem);
 
@@ -372,33 +372,33 @@ std::shared_ptr<robot::Robot> DefaultConfig::buildRobot() {
       std::make_unique<pros::adi::DigitalOut>(INTAKE_RIGHT_PISTON)};
 
   // adapted objects
-  std::unique_ptr<pvegas::io::IMotor> intake_motor_1{
-      std::make_unique<pvegas::pros_adapters::ProsV5Motor>(
+  std::unique_ptr<driftless::io::IMotor> intake_motor_1{
+      std::make_unique<driftless::pros_adapters::ProsV5Motor>(
           temp_intake_motor_1)};
-  std::unique_ptr<pvegas::io::IPiston> intake_left_piston{
-      std::make_unique<pvegas::pros_adapters::ProsPiston>(
+  std::unique_ptr<driftless::io::IPiston> intake_left_piston{
+      std::make_unique<driftless::pros_adapters::ProsPiston>(
           temp_intake_left_piston)};
-  std::unique_ptr<pvegas::io::IPiston> intake_right_piston{
-      std::make_unique<pvegas::pros_adapters::ProsPiston>(
+  std::unique_ptr<driftless::io::IPiston> intake_right_piston{
+      std::make_unique<driftless::pros_adapters::ProsPiston>(
           temp_intake_right_piston)};
 
   // build the intake
-  pvegas::robot::subsystems::intake::DirectIntakeBuilder
+  driftless::robot::subsystems::intake::DirectIntakeBuilder
       direct_intake_builder{};
-  pvegas::robot::subsystems::intake::PistonHeightControlBuilder
+  driftless::robot::subsystems::intake::PistonHeightControlBuilder
       piston_height_control_builder{};
 
-  std::unique_ptr<pvegas::robot::subsystems::intake::IIntake> direct_intake{
+  std::unique_ptr<driftless::robot::subsystems::intake::IIntake> direct_intake{
       direct_intake_builder.withMotor(intake_motor_1)->build()};
-  std::unique_ptr<pvegas::robot::subsystems::intake::IHeightControl>
+  std::unique_ptr<driftless::robot::subsystems::intake::IHeightControl>
       piston_height_control{
           piston_height_control_builder.withPiston(intake_left_piston)
               ->withPiston(intake_right_piston)
               ->build()};
 
   // create and add the intake subsystem to the robot
-  std::unique_ptr<pvegas::robot::subsystems::ASubsystem> intake_subsystem{
-      std::make_unique<pvegas::robot::subsystems::intake::IntakeSubsystem>(
+  std::unique_ptr<driftless::robot::subsystems::ASubsystem> intake_subsystem{
+      std::make_unique<driftless::robot::subsystems::intake::IntakeSubsystem>(
           direct_intake, piston_height_control)};
   robot->addSubsystem(intake_subsystem);
 
@@ -416,40 +416,40 @@ std::shared_ptr<robot::Robot> DefaultConfig::buildRobot() {
 
   // adapted objects
   // linear tracking wheel
-  std::unique_ptr<pvegas::io::IRotationSensor> linear_rotation_sensor{
-      std::make_unique<pvegas::pros_adapters::ProsRotationSensor>(
+  std::unique_ptr<driftless::io::IRotationSensor> linear_rotation_sensor{
+      std::make_unique<driftless::pros_adapters::ProsRotationSensor>(
           temp_linear_rotation_sensor)};
-  std::unique_ptr<pvegas::io::IDistanceTracker> linear_tracking_wheel{
-      std::make_unique<pvegas::hal::TrackingWheel>(linear_rotation_sensor,
+  std::unique_ptr<driftless::io::IDistanceTracker> linear_tracking_wheel{
+      std::make_unique<driftless::hal::TrackingWheel>(linear_rotation_sensor,
                                                    TRACKING_WHEEL_RADIUS)};
   // strafe tracking wheel
-  std::unique_ptr<pvegas::io::IRotationSensor> strafe_rotation_sensor{
-      std::make_unique<pvegas::pros_adapters::ProsRotationSensor>(
+  std::unique_ptr<driftless::io::IRotationSensor> strafe_rotation_sensor{
+      std::make_unique<driftless::pros_adapters::ProsRotationSensor>(
           temp_strafe_rotation_sensor)};
-  std::unique_ptr<pvegas::io::IDistanceTracker> strafe_tracking_wheel{
-      std::make_unique<pvegas::hal::TrackingWheel>(strafe_rotation_sensor,
+  std::unique_ptr<driftless::io::IDistanceTracker> strafe_tracking_wheel{
+      std::make_unique<driftless::hal::TrackingWheel>(strafe_rotation_sensor,
                                                    TRACKING_WHEEL_RADIUS)};
   // inertial sensor
-  std::unique_ptr<pvegas::io::IInertialSensor> inertial_sensor{
-      std::make_unique<pvegas::pros_adapters::ProsInertialSensor>(
+  std::unique_ptr<driftless::io::IInertialSensor> inertial_sensor{
+      std::make_unique<driftless::pros_adapters::ProsInertialSensor>(
           temp_inertial_sensor)};
   // distance sensor
-  std::unique_ptr<pvegas::io::IDistanceSensor> distance_sensor{
-      std::make_unique<pvegas::pros_adapters::ProsDistanceSensor>(
+  std::unique_ptr<driftless::io::IDistanceSensor> distance_sensor{
+      std::make_unique<driftless::pros_adapters::ProsDistanceSensor>(
           temp_distance_sensor)};
   // odometry rtos
-  std::unique_ptr<pvegas::rtos::IClock> odometry_clock{
-      std::make_unique<pvegas::pros_adapters::ProsClock>()};
-  std::unique_ptr<pvegas::rtos::IDelayer> odometry_delayer{
-      std::make_unique<pvegas::pros_adapters::ProsDelayer>()};
-  std::unique_ptr<pvegas::rtos::IMutex> odometry_mutex{
-      std::make_unique<pvegas::pros_adapters::ProsMutex>()};
-  std::unique_ptr<pvegas::rtos::ITask> odometry_task{
-      std::make_unique<pvegas::pros_adapters::ProsTask>()};
+  std::unique_ptr<driftless::rtos::IClock> odometry_clock{
+      std::make_unique<driftless::pros_adapters::ProsClock>()};
+  std::unique_ptr<driftless::rtos::IDelayer> odometry_delayer{
+      std::make_unique<driftless::pros_adapters::ProsDelayer>()};
+  std::unique_ptr<driftless::rtos::IMutex> odometry_mutex{
+      std::make_unique<driftless::pros_adapters::ProsMutex>()};
+  std::unique_ptr<driftless::rtos::ITask> odometry_task{
+      std::make_unique<driftless::pros_adapters::ProsTask>()};
   // position tracker
-  pvegas::robot::subsystems::odometry::InertialPositionTrackerBuilder
+  driftless::robot::subsystems::odometry::InertialPositionTrackerBuilder
       inertial_position_tracker_builder{};
-  std::unique_ptr<pvegas::robot::subsystems::odometry::IPositionTracker>
+  std::unique_ptr<driftless::robot::subsystems::odometry::IPositionTracker>
       inertial_position_tracker{
           inertial_position_tracker_builder.withClock(odometry_clock)
               ->withDelayer(odometry_delayer)
@@ -462,9 +462,9 @@ std::shared_ptr<robot::Robot> DefaultConfig::buildRobot() {
               ->withStrafeDistanceTrackerOffset(STRAFE_TRACKING_WHEEL_OFFSET)
               ->build()};
   // position resetter
-  pvegas::robot::subsystems::odometry::DistancePositionResetterBuilder
+  driftless::robot::subsystems::odometry::DistancePositionResetterBuilder
       distance_position_resetter_builder{};
-  std::unique_ptr<pvegas::robot::subsystems::odometry::IPositionResetter>
+  std::unique_ptr<driftless::robot::subsystems::odometry::IPositionResetter>
       distance_position_resetter{
           distance_position_resetter_builder
               .withDistanceSensor(distance_sensor)
@@ -474,8 +474,8 @@ std::shared_ptr<robot::Robot> DefaultConfig::buildRobot() {
               ->build()};
 
   // create and add the subsystem
-  std::unique_ptr<pvegas::robot::subsystems::ASubsystem> odometry_subsystem{
-      std::make_unique<pvegas::robot::subsystems::odometry::OdometrySubsystem>(
+  std::unique_ptr<driftless::robot::subsystems::ASubsystem> odometry_subsystem{
+      std::make_unique<driftless::robot::subsystems::odometry::OdometrySubsystem>(
           inertial_position_tracker, distance_position_resetter)};
   robot->addSubsystem(odometry_subsystem);
 

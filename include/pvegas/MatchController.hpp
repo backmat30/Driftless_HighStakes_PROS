@@ -13,7 +13,7 @@
 #include "pvegas/rtos/IClock.hpp"
 #include "pvegas/rtos/IDelayer.hpp"
 
-namespace pvegas {
+namespace driftless {
 class MatchController {
  private:
   static constexpr uint32_t MENU_DELAY{10};

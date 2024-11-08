@@ -7,9 +7,9 @@
 #include "pros/rotation.hpp"
 #include "pvegas/io/IRotationSensor.hpp"
 
-namespace pvegas {
+namespace driftless {
 namespace pros_adapters {
-class ProsRotationSensor : public pvegas::io::IRotationSensor {
+class ProsRotationSensor : public driftless::io::IRotationSensor {
  private:
   // conversion factor between centidegrees and radians
   static constexpr double CENTIDEGREES_TO_RADIANS{M_PI / 18000};

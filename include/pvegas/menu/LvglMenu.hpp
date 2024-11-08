@@ -9,7 +9,7 @@
 #include "Option.hpp"
 #include "liblvgl/lvgl.h"
 
-namespace pvegas {
+namespace driftless {
 namespace menu {
 
 extern void startButtonEventHandler(lv_event_t *event);

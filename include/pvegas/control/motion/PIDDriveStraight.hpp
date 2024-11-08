@@ -14,10 +14,10 @@
 #include "pvegas/rtos/ITask.hpp"
 #include "pvegas/utils/UtilityFunctions.hpp"
 
-namespace pvegas {
+namespace driftless {
 namespace control {
 namespace motion {
-class PIDDriveStraight : public pvegas::control::motion::IDriveStraight {
+class PIDDriveStraight : public driftless::control::motion::IDriveStraight {
  private:
   // delay on the task loop
   static constexpr uint8_t TASK_DELAY{10};
@@ -26,16 +26,16 @@ class PIDDriveStraight : public pvegas::control::motion::IDriveStraight {
   static void taskLoop(void* params);
 
   // the delayer
-  std::unique_ptr<pvegas::rtos::IDelayer> m_delayer{};
+  std::unique_ptr<driftless::rtos::IDelayer> m_delayer{};
 
   // the mutex
-  std::unique_ptr<pvegas::rtos::IMutex> m_mutex{};
+  std::unique_ptr<driftless::rtos::IMutex> m_mutex{};
 
   // the task
-  std::unique_ptr<pvegas::rtos::ITask> m_task{};
+  std::unique_ptr<driftless::rtos::ITask> m_task{};
 
   // the robot being controlled
-  std::shared_ptr<pvegas::robot::Robot> m_robot{};
+  std::shared_ptr<driftless::robot::Robot> m_robot{};
 
   // the linear pid controller
   PID m_linear_pid{};
@@ -96,7 +96,7 @@ class PIDDriveStraight : public pvegas::control::motion::IDriveStraight {
   void resume() override;
 
   // tell the robot to drive straight for a given distance in inches
-  void driveStraight(std::shared_ptr<pvegas::robot::Robot>& robot,
+  void driveStraight(std::shared_ptr<driftless::robot::Robot>& robot,
                      double velocity, double distance, double theta) override;
 
   // set the velocity to run the control at
@@ -106,13 +106,13 @@ class PIDDriveStraight : public pvegas::control::motion::IDriveStraight {
   bool targetReached() override;
 
   // set the delayer
-  void setDelayer(const std::unique_ptr<pvegas::rtos::IDelayer>& delayer);
+  void setDelayer(const std::unique_ptr<driftless::rtos::IDelayer>& delayer);
 
   // set the mutex
-  void setMutex(std::unique_ptr<pvegas::rtos::IMutex>& mutex);
+  void setMutex(std::unique_ptr<driftless::rtos::IMutex>& mutex);
 
   // set the task
-  void setTask(std::unique_ptr<pvegas::rtos::ITask>& task);
+  void setTask(std::unique_ptr<driftless::rtos::ITask>& task);
 
   // set the linear pid controller
   void setLinearPID(PID linear_pid);

@@ -5,35 +5,35 @@
 
 #include "pvegas/robot/subsystems/odometry/InertialPositionTracker.hpp"
 
-namespace pvegas {
+namespace driftless {
 namespace robot {
 namespace subsystems {
 namespace odometry {
 class InertialPositionTrackerBuilder {
  private:
   // the clock used to build the position tracker
-  std::unique_ptr<pvegas::rtos::IClock> m_clock{};
+  std::unique_ptr<driftless::rtos::IClock> m_clock{};
 
   // the delayer used to build the position tracker
-  std::unique_ptr<pvegas::rtos::IDelayer> m_delayer{};
+  std::unique_ptr<driftless::rtos::IDelayer> m_delayer{};
 
   // the mutex used to build the position tracker
-  std::unique_ptr<pvegas::rtos::IMutex> m_mutex{};
+  std::unique_ptr<driftless::rtos::IMutex> m_mutex{};
 
   // the task used to build the position tracker
-  std::unique_ptr<pvegas::rtos::ITask> m_task{};
+  std::unique_ptr<driftless::rtos::ITask> m_task{};
 
   // the inertial sensor used to build the position tracker
-  std::unique_ptr<pvegas::io::IInertialSensor> m_inertial_sensor{};
+  std::unique_ptr<driftless::io::IInertialSensor> m_inertial_sensor{};
 
   // the linear distance tracker used to build the position tracker
-  std::unique_ptr<pvegas::io::IDistanceTracker> m_linear_distance_tracker{};
+  std::unique_ptr<driftless::io::IDistanceTracker> m_linear_distance_tracker{};
 
   // the offset of the linear distance tracker used to build the position tracker
   double m_linear_distance_tracker_offset{};
 
   // the strafe distance tracker used to build the position tracker
-  std::unique_ptr<pvegas::io::IDistanceTracker> m_strafe_distance_tracker{};
+  std::unique_ptr<driftless::io::IDistanceTracker> m_strafe_distance_tracker{};
 
   // the offset of the strafe distance tracker used to build the position tracker
   double m_strafe_distance_tracker_offset{};
@@ -41,27 +41,27 @@ class InertialPositionTrackerBuilder {
  public:
   // add a clock to the builder
   InertialPositionTrackerBuilder* withClock(
-      std::unique_ptr<pvegas::rtos::IClock>& clock);
+      std::unique_ptr<driftless::rtos::IClock>& clock);
 
   // add a delayer to the builder
   InertialPositionTrackerBuilder* withDelayer(
-      std::unique_ptr<pvegas::rtos::IDelayer>& delayer);
+      std::unique_ptr<driftless::rtos::IDelayer>& delayer);
 
   // add a mutex to the builder
   InertialPositionTrackerBuilder* withMutex(
-      std::unique_ptr<pvegas::rtos::IMutex>& mutex);
+      std::unique_ptr<driftless::rtos::IMutex>& mutex);
 
   // add a task to the builder
   InertialPositionTrackerBuilder* withTask(
-      std::unique_ptr<pvegas::rtos::ITask>& task);
+      std::unique_ptr<driftless::rtos::ITask>& task);
 
   // add an inertial sensor to the builder
   InertialPositionTrackerBuilder* withInertialSensor(
-      std::unique_ptr<pvegas::io::IInertialSensor>& inertial_sensor);
+      std::unique_ptr<driftless::io::IInertialSensor>& inertial_sensor);
 
   // add a linear distance tracker to the builder
   InertialPositionTrackerBuilder* withLinearDistanceTracker(
-      std::unique_ptr<pvegas::io::IDistanceTracker>& linear_distance_tracker);
+      std::unique_ptr<driftless::io::IDistanceTracker>& linear_distance_tracker);
 
   // add a linear distance tracker offset to the builder
   InertialPositionTrackerBuilder* withLinearDistanceTrackerOffset(
@@ -69,7 +69,7 @@ class InertialPositionTrackerBuilder {
 
   // add a strafe distance tracker to the builder
   InertialPositionTrackerBuilder* withStrafeDistanceTracker(
-      std::unique_ptr<pvegas::io::IDistanceTracker>& strafe_distance_tracker);
+      std::unique_ptr<driftless::io::IDistanceTracker>& strafe_distance_tracker);
 
   // add a strafe distance tracker offset to the builder
   InertialPositionTrackerBuilder* withStrafeDistanceTrackerOffset(

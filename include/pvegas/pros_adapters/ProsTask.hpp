@@ -6,7 +6,7 @@
 #include "pros/rtos.hpp"
 #include "pvegas/rtos/ITask.hpp"
 
-namespace pvegas {
+namespace driftless {
 namespace pros_adapters {
 class ProsTask : public rtos::ITask {
  private:

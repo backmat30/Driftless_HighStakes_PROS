@@ -3,7 +3,7 @@
 #include <cstdarg>
 #include <memory>
 
-namespace pvegas {
+namespace driftless {
 namespace control {
 void ControlSystem::addControl(std::unique_ptr<AControl>& control) {
   // moves the specified control from one spot in memory to one allocated to the

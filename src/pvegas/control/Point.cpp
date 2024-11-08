@@ -1,6 +1,6 @@
 #include "pvegas/control/Point.hpp"
 
-namespace pvegas {
+namespace driftless {
 namespace control {
 Point::Point(double x, double y) : m_x{x}, m_y{y} {}
 

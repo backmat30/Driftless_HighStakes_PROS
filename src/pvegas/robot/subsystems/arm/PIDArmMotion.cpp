@@ -1,6 +1,6 @@
 #include "pvegas/robot/subsystems/arm/PIDArmMotion.hpp"
 
-namespace pvegas {
+namespace driftless {
 namespace robot {
 namespace subsystems {
 namespace arm {
@@ -183,41 +183,41 @@ bool PIDArmMotion::isAtScore() { return (state == EState::SCORE); }
 bool PIDArmMotion::isGoingScore() { return (state == EState::SCORE_MOTION); }
 
 void PIDArmMotion::setDelayer(
-    const std::unique_ptr<pvegas::rtos::IDelayer>& delayer) {
+    const std::unique_ptr<driftless::rtos::IDelayer>& delayer) {
   m_delayer = delayer->clone();
 }
 
-void PIDArmMotion::setMutex(std::unique_ptr<pvegas::rtos::IMutex>& mutex) {
+void PIDArmMotion::setMutex(std::unique_ptr<driftless::rtos::IMutex>& mutex) {
   m_mutex = std::move(mutex);
 }
 
-void PIDArmMotion::setTask(std::unique_ptr<pvegas::rtos::ITask>& task) {
+void PIDArmMotion::setTask(std::unique_ptr<driftless::rtos::ITask>& task) {
   m_task = std::move(task);
 }
 
 void PIDArmMotion::setRotationSensor(
-    std::unique_ptr<pvegas::io::IRotationSensor>& rotation_sensor) {
+    std::unique_ptr<driftless::io::IRotationSensor>& rotation_sensor) {
   m_rotation_sensor = std::move(rotation_sensor);
 }
 
 void PIDArmMotion::setPotentiometer(
-    std::unique_ptr<pvegas::io::IPotentiometer>& potentiometer) {
+    std::unique_ptr<driftless::io::IPotentiometer>& potentiometer) {
   m_potentiometer = std::move(potentiometer);
 }
 
-void PIDArmMotion::setRotationMotors(pvegas::hal::MotorGroup& rotation_motors) {
+void PIDArmMotion::setRotationMotors(driftless::hal::MotorGroup& rotation_motors) {
   m_rotation_motors = rotation_motors;
 }
 
-void PIDArmMotion::setLinearMotors(pvegas::hal::MotorGroup& linear_motors) {
+void PIDArmMotion::setLinearMotors(driftless::hal::MotorGroup& linear_motors) {
   m_linear_motors = linear_motors;
 }
 
-void PIDArmMotion::setRotationalPID(pvegas::control::PID rotational_pid) {
+void PIDArmMotion::setRotationalPID(driftless::control::PID rotational_pid) {
   m_rotational_pid = rotational_pid;
 }
 
-void PIDArmMotion::setLinearPID(pvegas::control::PID linear_pid) {
+void PIDArmMotion::setLinearPID(driftless::control::PID linear_pid) {
   m_linear_pid = linear_pid;
 }
 

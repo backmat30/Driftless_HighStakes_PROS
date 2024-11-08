@@ -6,9 +6,9 @@
 #include "pros/adi.hpp"
 #include "pvegas/io/IPiston.hpp"
 
-namespace pvegas {
+namespace driftless {
 namespace pros_adapters {
-class ProsPiston : public pvegas::io::IPiston {
+class ProsPiston : public driftless::io::IPiston {
  private:
   // the ADI port used by the piston
   std::unique_ptr<pros::adi::DigitalOut> m_adi_digital_out{};

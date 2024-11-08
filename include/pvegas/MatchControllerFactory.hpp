@@ -2,11 +2,11 @@
 #define __MATCH_CONTROLLER_FACTORY_HPP__
 
 #include "MatchController.hpp"
-namespace pvegas {
+namespace driftless {
 class MatchControllerFactory {
  public:
   // creates a match controller
-  static pvegas::MatchController createMatchController();
+  static driftless::MatchController createMatchController();
 };
 }  // namespace pvegas
 #endif

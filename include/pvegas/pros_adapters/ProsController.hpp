@@ -10,7 +10,7 @@
 #include "pros/rtos.hpp"
 #include "pvegas/io/IController.hpp"
 
-namespace pvegas {
+namespace driftless {
 namespace pros_adapters {
 class ProsController : public io::IController {
  private:

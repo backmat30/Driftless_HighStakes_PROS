@@ -4,7 +4,7 @@
 
 #include "pvegas/io/IController.hpp"
 #include "pvegas/robot/Robot.hpp"
-namespace pvegas {
+namespace driftless {
 namespace op_control {
 namespace drivetrain {
 void DrivetrainOperator::updateDriveVoltage(double left_voltage,

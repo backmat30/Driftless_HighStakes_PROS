@@ -7,7 +7,7 @@
 #include "pros/rtos.hpp"
 #include "pvegas/rtos/IDelayer.hpp"
 
-namespace pvegas {
+namespace driftless {
 namespace pros_adapters {
 class ProsDelayer : public rtos::IDelayer {
  public:

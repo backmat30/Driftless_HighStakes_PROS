@@ -1,6 +1,6 @@
 #include "pvegas/robot/subsystems/arm/ColorRingSensor.hpp"
 
-namespace pvegas {
+namespace driftless {
 namespace robot {
 namespace subsystems {
 namespace arm {
@@ -17,7 +17,7 @@ bool ColorRingSensor::hasRing() {
 double ColorRingSensor::getHue() { return m_color_sensor->getHue(); }
 
 void ColorRingSensor::setColorSensor(
-    std::unique_ptr<pvegas::io::IColorSensor>& color_sensor) {
+    std::unique_ptr<driftless::io::IColorSensor>& color_sensor) {
   m_color_sensor = std::move(color_sensor);
 }
 

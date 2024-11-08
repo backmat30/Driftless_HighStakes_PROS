@@ -6,7 +6,7 @@
 #include "pvegas/control/Point.hpp"
 #include "pvegas/robot/Robot.hpp"
 
-namespace pvegas {
+namespace driftless {
 namespace control {
 namespace motion {
 class IGoToPoint {
@@ -27,7 +27,7 @@ class IGoToPoint {
   virtual void resume() = 0;
 
   // tell the robot to go to a given point
-  virtual void goToPoint(const std::shared_ptr<pvegas::robot::Robot>& robot, double velocity,
+  virtual void goToPoint(const std::shared_ptr<driftless::robot::Robot>& robot, double velocity,
                          Point point) = 0;
 
   // set the max velocity to move at

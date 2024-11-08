@@ -1,6 +1,6 @@
 #include "pvegas/control/motion/PIDDriveStraight.hpp"
 
-namespace pvegas {
+namespace driftless {
 namespace control {
 namespace motion {
 void PIDDriveStraight::taskLoop(void* params) {
@@ -17,17 +17,17 @@ void PIDDriveStraight::setDriveVelocity(double left, double right) {
   }
 }
 
-pvegas::robot::subsystems::odometry::Position PIDDriveStraight::getPosition() {
-  pvegas::robot::subsystems::odometry::Position position{};
+driftless::robot::subsystems::odometry::Position PIDDriveStraight::getPosition() {
+  driftless::robot::subsystems::odometry::Position position{};
   if (m_robot) {
-    position = *static_cast<pvegas::robot::subsystems::odometry::Position*>(
+    position = *static_cast<driftless::robot::subsystems::odometry::Position*>(
         m_robot->getState("ODOMETRY", "GET POSITION"));
   }
   return position;
 }
 
 double PIDDriveStraight::getVelocity() {
-  pvegas::robot::subsystems::odometry::Position position{getPosition()};
+  driftless::robot::subsystems::odometry::Position position{getPosition()};
   return std::sqrt(std::pow(position.xV, 2) + std::pow(position.yV, 2));
 }
 
@@ -50,7 +50,7 @@ void PIDDriveStraight::taskUpdate() {
   }
 
   if (!target_reached && !paused) {
-    pvegas::robot::subsystems::odometry::Position position{getPosition()};
+    driftless::robot::subsystems::odometry::Position position{getPosition()};
 
     double start_distance{distance(m_starting_point.getX(),
                                    m_starting_point.getY(), position.x,
@@ -119,7 +119,7 @@ void PIDDriveStraight::resume() {
 }
 
 void PIDDriveStraight::driveStraight(
-    std::shared_ptr<pvegas::robot::Robot>& robot, double velocity,
+    std::shared_ptr<driftless::robot::Robot>& robot, double velocity,
     double distance, double theta) {
   if (m_mutex) {
     m_mutex->take();
@@ -129,7 +129,7 @@ void PIDDriveStraight::driveStraight(
   m_rotational_pid.reset();
   m_robot = robot;
   m_max_velocity = velocity;
-  pvegas::robot::subsystems::odometry::Position position{getPosition()};
+  driftless::robot::subsystems::odometry::Position position{getPosition()};
   m_starting_point.setX(position.x);
   m_starting_point.setY(position.y);
   m_target_distance = distance;
@@ -155,15 +155,15 @@ void PIDDriveStraight::setVelocity(double velocity) {
 bool PIDDriveStraight::targetReached() { return target_reached; }
 
 void PIDDriveStraight::setDelayer(
-    const std::unique_ptr<pvegas::rtos::IDelayer>& delayer) {
+    const std::unique_ptr<driftless::rtos::IDelayer>& delayer) {
   m_delayer = delayer->clone();
 }
 
-void PIDDriveStraight::setMutex(std::unique_ptr<pvegas::rtos::IMutex>& mutex) {
+void PIDDriveStraight::setMutex(std::unique_ptr<driftless::rtos::IMutex>& mutex) {
   m_mutex = std::move(mutex);
 }
 
-void PIDDriveStraight::setTask(std::unique_ptr<pvegas::rtos::ITask>& task) {
+void PIDDriveStraight::setTask(std::unique_ptr<driftless::rtos::ITask>& task) {
   m_task = std::move(task);
 }
 

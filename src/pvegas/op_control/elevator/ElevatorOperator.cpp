@@ -1,6 +1,6 @@
 #include "pvegas/op_control/elevator/ElevatorOperator.hpp"
 
-namespace pvegas {
+namespace driftless {
 namespace op_control {
 namespace elevator {
 void ElevatorOperator::updateElevatorVoltage(double voltage) {
@@ -11,12 +11,12 @@ void ElevatorOperator::updateElevatorVoltage(double voltage) {
 }
 
 ElevatorOperator::ElevatorOperator(
-    const std::shared_ptr<pvegas::io::IController>& controller,
-    const std::shared_ptr<pvegas::robot::Robot>& robot)
+    const std::shared_ptr<driftless::io::IController>& controller,
+    const std::shared_ptr<driftless::robot::Robot>& robot)
     : m_controller{controller}, m_robot{robot} {}
 
 void ElevatorOperator::update(
-    const std::unique_ptr<pvegas::profiles::IProfile>& profile) {
+    const std::unique_ptr<driftless::profiles::IProfile>& profile) {
   EControllerDigital spin{
       profile->getDigitalControlMapping(EControl::ELEVATOR_SPIN)};
   EControllerDigital toggle{

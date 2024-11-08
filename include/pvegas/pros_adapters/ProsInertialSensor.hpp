@@ -8,9 +8,9 @@
 #include "pros/imu.hpp"
 #include "pvegas/io/IInertialSensor.hpp"
 
-namespace pvegas {
+namespace driftless {
 namespace pros_adapters {
-class ProsInertialSensor : public pvegas::io::IInertialSensor {
+class ProsInertialSensor : public driftless::io::IInertialSensor {
  private:
   // conversion factor from degrees to radians, also flips direction
   static constexpr double DEGREES_TO_RADIANS{-180 / M_PI};

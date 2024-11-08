@@ -1,9 +1,9 @@
 #include "pvegas/op_control/arm/ArmOperator.hpp"
 
-namespace pvegas {
+namespace driftless {
 namespace op_control {
 namespace arm {
-bool ArmOperator::hasAllianceRing(const pvegas::alliance::Alliance alliance) {
+bool ArmOperator::hasAllianceRing(const driftless::alliance::Alliance alliance) {
   bool has_ring{*static_cast<bool*>(
       m_robot->getState(ARM_SUBSYSTEM_NAME, HAS_RING_STATE_NAME))};
 
@@ -21,7 +21,7 @@ void ArmOperator::updateSplitToggle(EControllerDigital neutral,
                                     EControllerDigital load,
                                     EControllerDigital ready,
                                     EControllerDigital score,
-                                    const pvegas::alliance::Alliance alliance) {
+                                    const driftless::alliance::Alliance alliance) {
   bool go_neutral{m_controller->getNewDigital(neutral)};
   bool go_load{m_controller->getNewDigital(load)};
   bool go_ready{m_controller->getNewDigital(ready)};
@@ -50,7 +50,7 @@ void ArmOperator::updateSplitToggle(EControllerDigital neutral,
 }
 
 void ArmOperator::updateSingleToggle(
-    EControllerDigital toggle, const pvegas::alliance::Alliance alliance) {
+    EControllerDigital toggle, const driftless::alliance::Alliance alliance) {
   bool next_position{m_controller->getNewDigital(toggle)};
 
   bool is_neutral{*static_cast<bool*>(
@@ -86,13 +86,13 @@ void ArmOperator::updateSingleToggle(
 }
 
 ArmOperator::ArmOperator(
-    const std::shared_ptr<pvegas::io::IController>& controller,
-    const std::shared_ptr<pvegas::robot::Robot>& robot)
+    const std::shared_ptr<driftless::io::IController>& controller,
+    const std::shared_ptr<driftless::robot::Robot>& robot)
     : m_controller{controller}, m_robot{robot} {}
 
 void ArmOperator::update(
-    const std::unique_ptr<pvegas::profiles::IProfile>& profile,
-    const pvegas::alliance::Alliance alliance) {
+    const std::unique_ptr<driftless::profiles::IProfile>& profile,
+    const driftless::alliance::Alliance alliance) {
   EControllerDigital neutral{
       profile->getDigitalControlMapping(EControl::ARM_NEUTRAL)};
   EControllerDigital load{

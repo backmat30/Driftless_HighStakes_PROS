@@ -1,6 +1,6 @@
 #include "pvegas/pros_adapters/ProsInertialSensor.hpp"
 
-namespace pvegas {
+namespace driftless {
 namespace pros_adapters {
 ProsInertialSensor::ProsInertialSensor(
     std::unique_ptr<pros::IMU>& inertial_sensor, double tuning_constant)

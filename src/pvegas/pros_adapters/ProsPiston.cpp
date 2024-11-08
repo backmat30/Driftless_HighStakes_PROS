@@ -1,6 +1,6 @@
 #include "pvegas/pros_adapters/ProsPiston.hpp"
 
-namespace pvegas {
+namespace driftless {
 namespace pros_adapters {
 ProsPiston::ProsPiston(std::unique_ptr<pros::adi::DigitalOut>& adi_digital_out)
     : m_adi_digital_out{std::move(adi_digital_out)} {}

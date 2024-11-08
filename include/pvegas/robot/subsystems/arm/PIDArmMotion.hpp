@@ -13,7 +13,7 @@
 #include "pvegas/rtos/IMutex.hpp"
 #include "pvegas/rtos/ITask.hpp"
 
-namespace pvegas {
+namespace driftless {
 namespace robot {
 namespace subsystems {
 namespace arm {
@@ -43,31 +43,31 @@ class PIDArmMotion : public IArmMotion {
   static void taskLoop(void* params);
 
   // the delayer used by the subsystem
-  std::unique_ptr<pvegas::rtos::IDelayer> m_delayer{};
+  std::unique_ptr<driftless::rtos::IDelayer> m_delayer{};
 
   // the mutex used for task-related functions
-  std::unique_ptr<pvegas::rtos::IMutex> m_mutex{};
+  std::unique_ptr<driftless::rtos::IMutex> m_mutex{};
 
   // the task used by the subsystem
-  std::unique_ptr<pvegas::rtos::ITask> m_task{};
+  std::unique_ptr<driftless::rtos::ITask> m_task{};
 
   // rotation sensor for the arm rotation
-  std::unique_ptr<pvegas::io::IRotationSensor> m_rotation_sensor{};
+  std::unique_ptr<driftless::io::IRotationSensor> m_rotation_sensor{};
 
   // potentiometer for arm rotation
-  std::unique_ptr<pvegas::io::IPotentiometer> m_potentiometer{};
+  std::unique_ptr<driftless::io::IPotentiometer> m_potentiometer{};
 
   // the motors used to rotate the arm
-  pvegas::hal::MotorGroup m_rotation_motors{};
+  driftless::hal::MotorGroup m_rotation_motors{};
 
   // the motors used to control the length of the arm
-  pvegas::hal::MotorGroup m_linear_motors{};
+  driftless::hal::MotorGroup m_linear_motors{};
 
   // the rotational PID controller
-  pvegas::control::PID m_rotational_pid{};
+  driftless::control::PID m_rotational_pid{};
 
   // the linear PID controller
-  pvegas::control::PID m_linear_pid{};
+  driftless::control::PID m_linear_pid{};
 
   // the current position of the arm
   EState state{EState::LOAD};
@@ -167,33 +167,33 @@ class PIDArmMotion : public IArmMotion {
   bool isGoingScore() override;
 
   // sets the delayer
-  void setDelayer(const std::unique_ptr<pvegas::rtos::IDelayer>& delayer);
+  void setDelayer(const std::unique_ptr<driftless::rtos::IDelayer>& delayer);
 
   // sets the mutex
-  void setMutex(std::unique_ptr<pvegas::rtos::IMutex>& mutex);
+  void setMutex(std::unique_ptr<driftless::rtos::IMutex>& mutex);
 
   // sets the task
-  void setTask(std::unique_ptr<pvegas::rtos::ITask>& task);
+  void setTask(std::unique_ptr<driftless::rtos::ITask>& task);
 
   // sets the rotation sensor
   void setRotationSensor(
-      std::unique_ptr<pvegas::io::IRotationSensor>& rotation_sensor);
+      std::unique_ptr<driftless::io::IRotationSensor>& rotation_sensor);
 
   // sets the potentiometer
   void setPotentiometer(
-      std::unique_ptr<pvegas::io::IPotentiometer>& potentiometer);
+      std::unique_ptr<driftless::io::IPotentiometer>& potentiometer);
 
   // sets the rotation motors
-  void setRotationMotors(pvegas::hal::MotorGroup& rotation_motors);
+  void setRotationMotors(driftless::hal::MotorGroup& rotation_motors);
 
   // sets the linear motors
-  void setLinearMotors(pvegas::hal::MotorGroup& linear_motors);
+  void setLinearMotors(driftless::hal::MotorGroup& linear_motors);
 
   // sets the rotational PID controller
-  void setRotationalPID(pvegas::control::PID rotational_pid);
+  void setRotationalPID(driftless::control::PID rotational_pid);
 
   // sets the linear PID controller
-  void setLinearPID(pvegas::control::PID linear_pid);
+  void setLinearPID(driftless::control::PID linear_pid);
 
   // sets the rotational neutral position
   void setRotationalNeutralPosition(double rotational_neutral_position);

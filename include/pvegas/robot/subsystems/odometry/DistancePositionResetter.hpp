@@ -8,12 +8,12 @@
 #include "pvegas/robot/subsystems/odometry/IPositionResetter.hpp"
 #include "pvegas/utils/UtilityFunctions.hpp"
 
-namespace pvegas {
+namespace driftless {
 namespace robot {
 namespace subsystems {
 namespace odometry {
 class DistancePositionResetter
-    : public pvegas::robot::subsystems::odometry::IPositionResetter {
+    : public driftless::robot::subsystems::odometry::IPositionResetter {
  private:
   // coordinate of the alliance-side wall
   static constexpr double NEAR_WALL{0};
@@ -22,7 +22,7 @@ class DistancePositionResetter
   static constexpr double FAR_WALL{144};
 
   // the distance sensor used to reset position
-  std::unique_ptr<pvegas::io::IDistanceSensor> m_distance_sensor{};
+  std::unique_ptr<driftless::io::IDistanceSensor> m_distance_sensor{};
 
   // local x offset
   double m_local_x{};
@@ -51,7 +51,7 @@ class DistancePositionResetter
 
   // changes the distance sensor reference
   void setDistanceSensor(
-      std::unique_ptr<pvegas::io::IDistanceSensor>& distance_sensor);
+      std::unique_ptr<driftless::io::IDistanceSensor>& distance_sensor);
 
   // set the local x offset
   void setLocalX(double local_x);

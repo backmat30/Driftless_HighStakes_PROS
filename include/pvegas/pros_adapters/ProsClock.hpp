@@ -7,7 +7,7 @@
 #include "pros/rtos.hpp"
 #include "pvegas/rtos/IClock.hpp"
 
-namespace pvegas {
+namespace driftless {
 namespace pros_adapters {
 class ProsClock : public rtos::IClock {
  public:

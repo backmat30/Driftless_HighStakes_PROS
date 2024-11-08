@@ -3,19 +3,19 @@
 
 #include "pvegas/control/motion/PIDTurn.hpp"
 
-namespace pvegas {
+namespace driftless {
 namespace control {
 namespace motion {
 class PIDTurnBuilder {
  private:
   // the delayer used to build the control
-  std::unique_ptr<pvegas::rtos::IDelayer> m_delayer{};
+  std::unique_ptr<driftless::rtos::IDelayer> m_delayer{};
 
   // the mutex used to build the control
-  std::unique_ptr<pvegas::rtos::IMutex> m_mutex{};
+  std::unique_ptr<driftless::rtos::IMutex> m_mutex{};
 
   // the task used to build the control
-  std::unique_ptr<pvegas::rtos::ITask> m_task{};
+  std::unique_ptr<driftless::rtos::ITask> m_task{};
 
   // the rotational PID controller used to build the control
   PID m_rotational_pid{};
@@ -29,13 +29,13 @@ class PIDTurnBuilder {
  public:
   // add a delayer to the builder
   PIDTurnBuilder* withDelayer(
-      const std::unique_ptr<pvegas::rtos::IDelayer>& delayer);
+      const std::unique_ptr<driftless::rtos::IDelayer>& delayer);
 
   // adds a mutex to the builder
-  PIDTurnBuilder* withMutex(std::unique_ptr<pvegas::rtos::IMutex>& mutex);
+  PIDTurnBuilder* withMutex(std::unique_ptr<driftless::rtos::IMutex>& mutex);
 
   // adds a task to the builder
-  PIDTurnBuilder* withTask(std::unique_ptr<pvegas::rtos::ITask>& task);
+  PIDTurnBuilder* withTask(std::unique_ptr<driftless::rtos::ITask>& task);
 
   // adds a rotational PID controller to the builder
   PIDTurnBuilder* withRotationalPID(PID rotational_pid);

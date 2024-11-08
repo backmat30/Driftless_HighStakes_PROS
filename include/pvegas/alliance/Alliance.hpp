@@ -3,7 +3,7 @@
 
 #include <string>
 
-namespace pvegas {
+namespace driftless {
 namespace alliance {
 struct Alliance {
   // name of the alliance

@@ -1,7 +1,7 @@
 #ifndef __I_RING_SENSOR_HPP__
 #define __I_RING_SENSOR_HPP__
 
-namespace pvegas {
+namespace driftless {
 namespace robot {
 namespace subsystems {
 namespace arm {

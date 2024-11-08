@@ -3,7 +3,7 @@
 
 #include <string>
 #include <vector>
-namespace pvegas {
+namespace driftless {
 namespace menu {
 struct Option {
   std::string name{};

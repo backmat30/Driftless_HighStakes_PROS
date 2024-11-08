@@ -10,10 +10,10 @@
 #include "pvegas/rtos/ITask.hpp"
 #include "pvegas/utils/UtilityFunctions.hpp"
 
-namespace pvegas {
+namespace driftless {
 namespace control {
 namespace path {
-class PIDPathFollower : public pvegas::control::path::IPathFollower {
+class PIDPathFollower : public driftless::control::path::IPathFollower {
  private:
   // delay in ms between each task loop
   static constexpr uint8_t TASK_DELAY{10};
@@ -37,13 +37,13 @@ class PIDPathFollower : public pvegas::control::path::IPathFollower {
   static void taskLoop(void* params);
 
   // delayer
-  std::unique_ptr<pvegas::rtos::IDelayer> m_delayer{};
+  std::unique_ptr<driftless::rtos::IDelayer> m_delayer{};
 
   // mutex
-  std::unique_ptr<pvegas::rtos::IMutex> m_mutex{};
+  std::unique_ptr<driftless::rtos::IMutex> m_mutex{};
 
   // task for the algorithm
-  std::unique_ptr<pvegas::rtos::ITask> m_task{};
+  std::unique_ptr<driftless::rtos::ITask> m_task{};
 
   // linear PID controller
   PID m_linear_pid{};
@@ -61,10 +61,10 @@ class PIDPathFollower : public pvegas::control::path::IPathFollower {
   double m_target_velocity{};
 
   // the robot
-  std::shared_ptr<pvegas::robot::Robot> m_robot{};
+  std::shared_ptr<driftless::robot::Robot> m_robot{};
 
   // the path being followed
-  std::vector<pvegas::control::Point> m_control_path{};
+  std::vector<driftless::control::Point> m_control_path{};
 
   // the index of the latest point found
   uint32_t found_index{};
@@ -83,13 +83,13 @@ class PIDPathFollower : public pvegas::control::path::IPathFollower {
 
   // set the velocity of the drive train
   void setDriveVelocity(
-      pvegas::robot::subsystems::drivetrain::Velocity velocity);
+      driftless::robot::subsystems::drivetrain::Velocity velocity);
 
   // get the radius of the drive train
   double getDriveRadius();
 
   // gets the position of the robot from the odometry subsystem
-  pvegas::robot::subsystems::odometry::Position getPosition();
+  driftless::robot::subsystems::odometry::Position getPosition();
 
   // calculates the distance to the end of the path
   double calculateDistanceToTarget(
@@ -120,7 +120,7 @@ class PIDPathFollower : public pvegas::control::path::IPathFollower {
   void resume() override;
 
   // follow a given path of points
-  void followPath(const std::shared_ptr<pvegas::robot::Robot>& robot,
+  void followPath(const std::shared_ptr<driftless::robot::Robot>& robot,
                   const std::vector<Point>& control_path, double velocity) override;
 
   // sets the velocity to follow the path at
@@ -130,19 +130,19 @@ class PIDPathFollower : public pvegas::control::path::IPathFollower {
   bool targetReached() override;
 
   // set the delayer
-  void setDelayer(const std::unique_ptr<pvegas::rtos::IDelayer>& delayer);
+  void setDelayer(const std::unique_ptr<driftless::rtos::IDelayer>& delayer);
 
   // set the mutex
-  void setMutex(std::unique_ptr<pvegas::rtos::IMutex>& mutex);
+  void setMutex(std::unique_ptr<driftless::rtos::IMutex>& mutex);
 
   // set the task
-  void setTask(std::unique_ptr<pvegas::rtos::ITask>& task);
+  void setTask(std::unique_ptr<driftless::rtos::ITask>& task);
 
   // set the linear PID controller
-  void setLinearPID(pvegas::control::PID linear_pid);
+  void setLinearPID(driftless::control::PID linear_pid);
 
   // set the rotational PID controller
-  void setRotationalPID(pvegas::control::PID rotational_pid);
+  void setRotationalPID(driftless::control::PID rotational_pid);
 
   // set the follow distance
   void setFollowDistance(double follow_distance);

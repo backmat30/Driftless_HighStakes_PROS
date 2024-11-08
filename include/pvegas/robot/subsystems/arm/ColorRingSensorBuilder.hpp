@@ -3,14 +3,14 @@
 
 #include "pvegas/robot/subsystems/arm/ColorRingSensor.hpp"
 
-namespace pvegas {
+namespace driftless {
 namespace robot {
 namespace subsystems {
 namespace arm {
 class ColorRingSensorBuilder {
  private:
   // the color sensor used
-  std::unique_ptr<pvegas::io::IColorSensor> m_color_sensor{};
+  std::unique_ptr<driftless::io::IColorSensor> m_color_sensor{};
 
   // the proximity value from the sensor to be considered "holding a ring"
   uint32_t m_ring_proximity{};
@@ -18,7 +18,7 @@ class ColorRingSensorBuilder {
  public:
   // add a color sensor to the builder
   ColorRingSensorBuilder* withColorSensor(
-      std::unique_ptr<pvegas::io::IColorSensor>& color_sensor);
+      std::unique_ptr<driftless::io::IColorSensor>& color_sensor);
 
   // add a proximity value to the builder
   ColorRingSensorBuilder* withRingProximity(uint32_t ring_proximity);

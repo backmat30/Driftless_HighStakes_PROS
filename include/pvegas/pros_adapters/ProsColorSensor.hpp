@@ -7,9 +7,9 @@
 #include "pros/optical.hpp"
 #include "pvegas/io/IColorSensor.hpp"
 
-namespace pvegas {
+namespace driftless {
 namespace pros_adapters {
-class ProsColorSensor : public pvegas::io::IColorSensor {
+class ProsColorSensor : public driftless::io::IColorSensor {
  private:
   // the default brightness on the LEDs
   static constexpr uint8_t DEFAULT_LED_BRIGHTNESS{100};

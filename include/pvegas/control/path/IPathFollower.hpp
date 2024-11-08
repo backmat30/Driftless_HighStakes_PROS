@@ -7,7 +7,7 @@
 #include "pvegas/control/Point.hpp"
 #include "pvegas/robot/Robot.hpp"
 
-namespace pvegas {
+namespace driftless {
 namespace control {
 namespace path {
 class IPathFollower {
@@ -28,7 +28,7 @@ class IPathFollower {
   virtual void resume() = 0;
 
   // follow a given path
-  virtual void followPath(const std::shared_ptr<pvegas::robot::Robot>& robot,
+  virtual void followPath(const std::shared_ptr<driftless::robot::Robot>& robot,
                           const std::vector<Point>& control_path, double velocity) = 0;
 
   // set the velocity to follow the path at

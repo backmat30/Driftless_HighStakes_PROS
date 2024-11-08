@@ -8,9 +8,9 @@
 #include "pros/rtos.hpp"
 #include "pvegas/io/IPotentiometer.hpp"
 
-namespace pvegas {
+namespace driftless {
 namespace pros_adapters {
-class ProsADIPotentiometer : public pvegas::io::IPotentiometer {
+class ProsADIPotentiometer : public driftless::io::IPotentiometer {
  private:
   // converts decidegrees to radians
   static constexpr double DECIDEGREES_TO_RADIANS{M_PI / 1800.0};

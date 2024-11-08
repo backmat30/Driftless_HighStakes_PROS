@@ -1,7 +1,7 @@
 #ifndef __E_ELEVATOR_CONTROL_MODE_HPP__
 #define __E_ELEVATOR_CONTROL_MODE_HPP__
 
-namespace pvegas {
+namespace driftless {
 namespace op_control {
 namespace elevator {
 enum class EElevatorControlMode { TOGGLE, HOLD };

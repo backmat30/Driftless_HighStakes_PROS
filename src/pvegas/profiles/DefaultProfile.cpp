@@ -1,6 +1,6 @@
 #include "pvegas/profiles/DefaultProfile.hpp"
 
-namespace pvegas {
+namespace driftless {
 namespace profiles {
 std::string DefaultProfile::getName() { return PROFILE_NAME; }
 

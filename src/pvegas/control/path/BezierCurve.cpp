@@ -1,6 +1,6 @@
 #include "pvegas/control/path/BezierCurve.hpp"
 
-namespace pvegas {
+namespace driftless {
 namespace control {
 namespace path {
 BezierCurve::BezierCurve(Point c0, Point c1, Point c2, Point c3, Point c4,

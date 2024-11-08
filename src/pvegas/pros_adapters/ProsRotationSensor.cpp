@@ -1,6 +1,6 @@
 #include "pvegas/pros_adapters/ProsRotationSensor.hpp"
 
-namespace pvegas {
+namespace driftless {
 namespace pros_adapters {
 ProsRotationSensor::ProsRotationSensor(
     std::unique_ptr<pros::Rotation>& rotation_sensor)

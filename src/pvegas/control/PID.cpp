@@ -1,8 +1,8 @@
 #include "pvegas/control/PID.hpp"
 
-namespace pvegas {
+namespace driftless {
 namespace control {
-PID::PID(const std::unique_ptr<pvegas::rtos::IClock>& clock, double kp,
+PID::PID(const std::unique_ptr<driftless::rtos::IClock>& clock, double kp,
          double ki, double kd)
     : m_clock{clock->clone()}, m_kp{kp}, m_ki{ki}, m_kd{kd} {}
 

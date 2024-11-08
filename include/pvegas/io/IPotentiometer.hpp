@@ -1,7 +1,7 @@
 #ifndef __I_POTENTIOMETER_HPP__
 #define __I_POTENTIOMETER_HPP__
 
-namespace pvegas {
+namespace driftless {
 namespace io {
 class IPotentiometer {
  public:

@@ -6,9 +6,9 @@
 #include "pros/distance.hpp"
 #include "pvegas/io/IDistanceSensor.hpp"
 
-namespace pvegas {
+namespace driftless {
 namespace pros_adapters {
-class ProsDistanceSensor : public pvegas::io::IDistanceSensor {
+class ProsDistanceSensor : public driftless::io::IDistanceSensor {
  private:
   // conversion factor from mm to in
   static constexpr double MM_TO_INCHES{1.0 / 25.4};

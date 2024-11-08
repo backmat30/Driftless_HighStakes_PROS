@@ -1,6 +1,6 @@
 #include "pvegas/pros_adapters/ProsMutex.hpp"
 
-namespace pvegas {
+namespace driftless {
 namespace pros_adapters {
 
 void ProsMutex::take() { mutex.take(); }

@@ -1,6 +1,6 @@
 #include "pvegas/control/path/PIDPathFollower.hpp"
 
-namespace pvegas {
+namespace driftless {
 namespace control {
 namespace path {
 void PIDPathFollower::taskLoop(void* params) {
@@ -16,7 +16,7 @@ void PIDPathFollower::taskUpdate() {
   }
 
   if (!paused && !target_reached) {
-    pvegas::robot::subsystems::odometry::Position position{getPosition()};
+    driftless::robot::subsystems::odometry::Position position{getPosition()};
     double distance_to_target{calculateDistanceToTarget(position)};
     double velocity{distance(0, 0, position.xV, position.yV)};
     if (found_index == m_control_path.size() - 1 &&
@@ -69,7 +69,7 @@ robot::subsystems::odometry::Position PIDPathFollower::getPosition() {
 }
 
 double PIDPathFollower::calculateDistanceToTarget(
-    pvegas::robot::subsystems::odometry::Position position) {
+    driftless::robot::subsystems::odometry::Position position) {
   double target_distance{};
   if (!m_control_path.empty()) {
     Point end_point{m_control_path.back()};
@@ -95,7 +95,7 @@ void PIDPathFollower::updateFoundPoints(
 }
 
 Point PIDPathFollower::calculateFollowPoint(
-    pvegas::robot::subsystems::odometry::Position position) {
+    driftless::robot::subsystems::odometry::Position position) {
   Point follow_point{};
   if (!m_control_path.empty()) {
     if (found_index >= m_control_path.size() - 1) {
@@ -179,7 +179,7 @@ Point PIDPathFollower::calculateFollowPoint(
 }
 
 void PIDPathFollower::updateVelocity(
-    pvegas::robot::subsystems::odometry::Position position,
+    driftless::robot::subsystems::odometry::Position position,
     Point follow_point) {
   // difference between target and current position
   double x_error{follow_point.getX() - position.x};

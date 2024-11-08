@@ -3,7 +3,7 @@
 
 #include <cstdint>
 
-namespace pvegas {
+namespace driftless {
 namespace io {
 class IColorSensor {
  public:

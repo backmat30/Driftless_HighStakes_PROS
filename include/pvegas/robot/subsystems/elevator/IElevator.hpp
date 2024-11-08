@@ -1,7 +1,7 @@
 #ifndef __I_ELEVATOR_HPP__
 #define __I_ELEVATOR_HPP__
 
-namespace pvegas {
+namespace driftless {
 namespace robot {
 namespace subsystems {
 namespace elevator {

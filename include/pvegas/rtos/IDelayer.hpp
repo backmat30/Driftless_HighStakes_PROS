@@ -2,7 +2,7 @@
 #define __I_DELAYER_HPP__
 
 #include <memory>
-namespace pvegas {
+namespace driftless {
 namespace rtos {
 class IDelayer {
  public:

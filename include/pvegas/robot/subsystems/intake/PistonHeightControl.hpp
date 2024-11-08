@@ -6,14 +6,14 @@
 #include "pvegas/hal/PistonGroup.hpp"
 #include "pvegas/robot/subsystems/intake/IHeightControl.hpp"
 
-namespace pvegas {
+namespace driftless {
 namespace robot {
 namespace subsystems {
 namespace intake {
 class PistonHeightControl : public IHeightControl {
  private:
   // the group of pistons being used
-  pvegas::hal::PistonGroup m_pistons{};
+  driftless::hal::PistonGroup m_pistons{};
 
   // whether the intake is up or down
   bool raised{};
@@ -32,7 +32,7 @@ class PistonHeightControl : public IHeightControl {
   bool isRaised() override;
 
   // set the pistons
-  void setPistons(pvegas::hal::PistonGroup& pistons);
+  void setPistons(driftless::hal::PistonGroup& pistons);
 };
 }  // namespace intake
 }  // namespace subsystems

@@ -1,6 +1,6 @@
 #include "pvegas/robot/subsystems/clamp/PistonClamp.hpp"
 
-namespace pvegas {
+namespace driftless {
 namespace robot {
 namespace subsystems {
 namespace clamp {
@@ -19,7 +19,7 @@ void PistonClamp::setState(bool clamped) {
 
 bool PistonClamp::getState() { return state; }
 
-void PistonClamp::setPistons(pvegas::hal::PistonGroup& pistons) {
+void PistonClamp::setPistons(driftless::hal::PistonGroup& pistons) {
   m_pistons = std::move(pistons);
 }
 }  // namespace clamp

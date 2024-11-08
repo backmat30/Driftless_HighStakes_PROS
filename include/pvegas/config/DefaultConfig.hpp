@@ -87,7 +87,7 @@
 #include "pvegas/rtos/IMutex.hpp"
 #include "pvegas/rtos/ITask.hpp"
 
-namespace pvegas {
+namespace driftless {
 namespace config {
 class DefaultConfig : public IConfig {
  private:

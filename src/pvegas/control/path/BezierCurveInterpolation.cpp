@@ -1,6 +1,6 @@
 #include "pvegas/control/path/BezierCurveInterpolation.hpp"
 
-namespace pvegas {
+namespace driftless {
 namespace control {
 namespace path {
 std::vector<Point> BezierCurveInterpolation::calculate(

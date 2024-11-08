@@ -3,25 +3,25 @@
 
 #include "PIDPathFollower.hpp"
 
-namespace pvegas {
+namespace driftless {
 namespace control {
 namespace path {
 class PIDPathFollowerBuilder {
  private:
   // the delayer used in the path follower
-  std::unique_ptr<pvegas::rtos::IDelayer> m_delayer{};
+  std::unique_ptr<driftless::rtos::IDelayer> m_delayer{};
 
   // the mutex used in the path follower
-  std::unique_ptr<pvegas::rtos::IMutex> m_mutex{};
+  std::unique_ptr<driftless::rtos::IMutex> m_mutex{};
 
   // the task used in the path follower
-  std::unique_ptr<pvegas::rtos::ITask> m_task{};
+  std::unique_ptr<driftless::rtos::ITask> m_task{};
 
   // the linear PID controller used in the path follower
-  pvegas::control::PID m_linear_pid{};
+  driftless::control::PID m_linear_pid{};
 
   // the rotational PID controller used in the path follower
-  pvegas::control::PID m_rotational_pid{};
+  driftless::control::PID m_rotational_pid{};
 
   // the follow distance used in the path follower
   double m_follow_distance{};
@@ -35,21 +35,21 @@ class PIDPathFollowerBuilder {
  public:
   // add a delayer to the builder
   PIDPathFollowerBuilder* withDelayer(
-      std::unique_ptr<pvegas::rtos::IDelayer>& delayer);
+      std::unique_ptr<driftless::rtos::IDelayer>& delayer);
 
   // add a mutex to the builder
   PIDPathFollowerBuilder* withMutex(
-      std::unique_ptr<pvegas::rtos::IMutex>& mutex);
+      std::unique_ptr<driftless::rtos::IMutex>& mutex);
 
   // add a task to the builder
-  PIDPathFollowerBuilder* withTask(std::unique_ptr<pvegas::rtos::ITask>& task);
+  PIDPathFollowerBuilder* withTask(std::unique_ptr<driftless::rtos::ITask>& task);
 
   // add a linear pid controller to the builder
-  PIDPathFollowerBuilder* withLinearPID(pvegas::control::PID linear_pid);
+  PIDPathFollowerBuilder* withLinearPID(driftless::control::PID linear_pid);
 
   // add a rotational pid controller to the builder
   PIDPathFollowerBuilder* withRotationalPID(
-      pvegas::control::PID rotational_pid);
+      driftless::control::PID rotational_pid);
 
   // add a follow distance to the builder
   PIDPathFollowerBuilder* withFollowDistance(double follow_distance);

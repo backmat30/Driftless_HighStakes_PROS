@@ -1,6 +1,6 @@
 #include "pvegas/OpControlManager.hpp"
 
-namespace pvegas {
+namespace driftless {
 // constructor
 OpControlManager::OpControlManager(
     const std::shared_ptr<rtos::IClock> &clock,
@@ -13,7 +13,7 @@ void OpControlManager::setProfile(
   m_profile = std::move(profile);
 }
 
-void OpControlManager::setAlliance(pvegas::alliance::Alliance alliance) {
+void OpControlManager::setAlliance(driftless::alliance::Alliance alliance) {
   m_alliance = alliance;
 }
 

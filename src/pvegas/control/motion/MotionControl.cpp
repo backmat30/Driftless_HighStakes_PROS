@@ -1,12 +1,12 @@
 #include "pvegas/control/motion/MotionControl.hpp"
 
-namespace pvegas {
+namespace driftless {
 namespace control {
 namespace motion {
 MotionControl::MotionControl(
-    std::unique_ptr<pvegas::control::motion::IDriveStraight>& drive_straight,
-    std::unique_ptr<pvegas::control::motion::IGoToPoint>& go_to_point,
-    std::unique_ptr<pvegas::control::motion::ITurn>& turn)
+    std::unique_ptr<driftless::control::motion::IDriveStraight>& drive_straight,
+    std::unique_ptr<driftless::control::motion::IGoToPoint>& go_to_point,
+    std::unique_ptr<driftless::control::motion::ITurn>& turn)
     : AControl{CONTROL_NAME},
       m_drive_straight{std::move(drive_straight)},
       m_go_to_point{std::move(go_to_point)},
@@ -60,8 +60,8 @@ void MotionControl::command(std::string command_name, va_list& args) {
     }
 
     void* temp_robot{va_arg(args, void*)};
-    std::shared_ptr<pvegas::robot::Robot> robot{
-        *static_cast<std::shared_ptr<pvegas::robot::Robot>*>(temp_robot)};
+    std::shared_ptr<driftless::robot::Robot> robot{
+        *static_cast<std::shared_ptr<driftless::robot::Robot>*>(temp_robot)};
     double velocity{va_arg(args, double)};
     double distance{va_arg(args, double)};
     double theta{va_arg(args, double)};
@@ -75,8 +75,8 @@ void MotionControl::command(std::string command_name, va_list& args) {
     }
 
     void* temp_robot{va_arg(args, void*)};
-    std::shared_ptr<pvegas::robot::Robot> robot{
-        *static_cast<std::shared_ptr<pvegas::robot::Robot>*>(temp_robot)};
+    std::shared_ptr<driftless::robot::Robot> robot{
+        *static_cast<std::shared_ptr<driftless::robot::Robot>*>(temp_robot)};
     double velocity{va_arg(args, double)};
     Point point{*va_arg(args, Point*)};
 
@@ -89,8 +89,8 @@ void MotionControl::command(std::string command_name, va_list& args) {
     }
 
     void* temp_robot{va_arg(args, void*)};
-    std::shared_ptr<pvegas::robot::Robot> robot{
-        *static_cast<std::shared_ptr<pvegas::robot::Robot>*>(temp_robot)};
+    std::shared_ptr<driftless::robot::Robot> robot{
+        *static_cast<std::shared_ptr<driftless::robot::Robot>*>(temp_robot)};
     double velocity{va_arg(args, double)};
     double theta{va_arg(args, double)};
     ETurnDirection direction{va_arg(args, ETurnDirection)};
@@ -104,8 +104,8 @@ void MotionControl::command(std::string command_name, va_list& args) {
     }
 
     void* temp_robot{va_arg(args, void*)};
-    std::shared_ptr<pvegas::robot::Robot> robot{
-        *static_cast<std::shared_ptr<pvegas::robot::Robot>*>(temp_robot)};
+    std::shared_ptr<driftless::robot::Robot> robot{
+        *static_cast<std::shared_ptr<driftless::robot::Robot>*>(temp_robot)};
     double velocity{va_arg(args, double)};
     Point point{*va_arg(args, Point*)};
     ETurnDirection direction{va_arg(args, ETurnDirection)};

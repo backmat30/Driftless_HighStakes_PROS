@@ -3,7 +3,7 @@
 
 #include "pros/rtos.hpp"
 #include "pvegas/rtos/IMutex.hpp"
-namespace pvegas {
+namespace driftless {
 namespace pros_adapters {
 class ProsMutex : public rtos::IMutex {
  private:

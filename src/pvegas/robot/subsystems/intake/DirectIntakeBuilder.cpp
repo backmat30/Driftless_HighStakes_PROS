@@ -1,11 +1,11 @@
 #include "pvegas/robot/subsystems/intake/DirectIntakeBuilder.hpp"
 
-namespace pvegas {
+namespace driftless {
 namespace robot {
 namespace subsystems {
 namespace intake {
 DirectIntakeBuilder* DirectIntakeBuilder::withMotor(
-    std::unique_ptr<pvegas::io::IMotor>& motor) {
+    std::unique_ptr<driftless::io::IMotor>& motor) {
   m_motors.addMotor(motor);
   return this;
 }

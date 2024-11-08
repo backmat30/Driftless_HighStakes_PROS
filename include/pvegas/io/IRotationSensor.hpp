@@ -1,7 +1,7 @@
 #ifndef __I_ROTATION_SENSOR_HPP__
 #define __I_ROTATION_SENSOR_HPP__
 
-namespace pvegas {
+namespace driftless {
 namespace io {
 class IRotationSensor {
  public:

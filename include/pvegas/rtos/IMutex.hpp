@@ -1,7 +1,7 @@
 #ifndef __I_MUTEX_HPP__
 #define __I_MUTEX_HPP__
 
-namespace pvegas {
+namespace driftless {
 namespace rtos {
 class IMutex {
  public:

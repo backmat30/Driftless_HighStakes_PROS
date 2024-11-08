@@ -7,7 +7,7 @@
 #include "pvegas/op_control/EControllerDigital.hpp"
 #include "pvegas/robot/Robot.hpp"
 
-namespace pvegas {
+namespace driftless {
 namespace op_control {
 namespace drivetrain {
 class DrivetrainOperator {

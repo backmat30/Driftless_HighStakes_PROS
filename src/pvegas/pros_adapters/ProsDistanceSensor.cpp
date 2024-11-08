@@ -1,6 +1,6 @@
 #include "pvegas/pros_adapters/ProsDistanceSensor.hpp"
 
-namespace pvegas {
+namespace driftless {
 namespace pros_adapters {
 ProsDistanceSensor::ProsDistanceSensor(
     std::unique_ptr<pros::Distance>& distance_sensor,

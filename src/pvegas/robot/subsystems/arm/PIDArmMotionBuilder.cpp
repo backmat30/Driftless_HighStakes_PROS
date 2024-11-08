@@ -1,59 +1,59 @@
 #include "pvegas/robot/subsystems/arm/PIDArmMotionBuilder.hpp"
 
-namespace pvegas {
+namespace driftless {
 namespace robot {
 namespace subsystems {
 namespace arm {
 PIDArmMotionBuilder* PIDArmMotionBuilder::withDelayer(
-    const std::unique_ptr<pvegas::rtos::IDelayer>& delayer) {
+    const std::unique_ptr<driftless::rtos::IDelayer>& delayer) {
   m_delayer = delayer->clone();
   return this;
 }
 
 PIDArmMotionBuilder* PIDArmMotionBuilder::withMutex(
-    std::unique_ptr<pvegas::rtos::IMutex>& mutex) {
+    std::unique_ptr<driftless::rtos::IMutex>& mutex) {
   m_mutex = std::move(mutex);
   return this;
 }
 
 PIDArmMotionBuilder* PIDArmMotionBuilder::withTask(
-    std::unique_ptr<pvegas::rtos::ITask>& task) {
+    std::unique_ptr<driftless::rtos::ITask>& task) {
   m_task = std::move(task);
   return this;
 }
 
 PIDArmMotionBuilder* PIDArmMotionBuilder::withRotationSensor(
-    std::unique_ptr<pvegas::io::IRotationSensor>& rotation_sensor) {
+    std::unique_ptr<driftless::io::IRotationSensor>& rotation_sensor) {
   m_rotation_sensor = std::move(rotation_sensor);
   return this;
 }
 
 PIDArmMotionBuilder* PIDArmMotionBuilder::withPotentiometer(
-    std::unique_ptr<pvegas::io::IPotentiometer>& potentiometer) {
+    std::unique_ptr<driftless::io::IPotentiometer>& potentiometer) {
   m_potentiometer = std::move(potentiometer);
   return this;
 }
 
 PIDArmMotionBuilder* PIDArmMotionBuilder::withRotationalMotor(
-    std::unique_ptr<pvegas::io::IMotor>& motor) {
+    std::unique_ptr<driftless::io::IMotor>& motor) {
   m_rotation_motors.addMotor(motor);
   return this;
 }
 
 PIDArmMotionBuilder* PIDArmMotionBuilder::withLinearMotor(
-    std::unique_ptr<pvegas::io::IMotor>& motor) {
+    std::unique_ptr<driftless::io::IMotor>& motor) {
   m_linear_motors.addMotor(motor);
   return this;
 }
 
 PIDArmMotionBuilder* PIDArmMotionBuilder::withRotationalPID(
-    pvegas::control::PID rotational_pid) {
+    driftless::control::PID rotational_pid) {
   m_rotational_pid = rotational_pid;
   return this;
 }
 
 PIDArmMotionBuilder* PIDArmMotionBuilder::withLinearPID(
-    pvegas::control::PID linear_pid) {
+    driftless::control::PID linear_pid) {
   m_linear_pid = linear_pid;
   return this;
 }

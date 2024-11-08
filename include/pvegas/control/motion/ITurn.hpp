@@ -7,7 +7,7 @@
 #include "pvegas/control/motion/ETurnDirection.hpp"
 #include "pvegas/robot/Robot.hpp"
 
-namespace pvegas {
+namespace driftless {
 namespace control {
 namespace motion {
 class ITurn {
@@ -28,12 +28,12 @@ class ITurn {
   virtual void resume() = 0;
 
   // tell the robot to turn in to a given angle
-  virtual void turnToAngle(const std::shared_ptr<pvegas::robot::Robot>& robot,
+  virtual void turnToAngle(const std::shared_ptr<driftless::robot::Robot>& robot,
                            double velocity, double theta,
                            ETurnDirection direction = ETurnDirection::AUTO) = 0;
 
   // tell the robot to turn towards a point on the field
-  virtual void turnToPoint(const std::shared_ptr<pvegas::robot::Robot>& robot,
+  virtual void turnToPoint(const std::shared_ptr<driftless::robot::Robot>& robot,
                            double velocity, Point point,
                            ETurnDirection direction = ETurnDirection::AUTO) = 0;
 

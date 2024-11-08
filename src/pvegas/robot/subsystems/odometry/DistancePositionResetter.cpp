@@ -1,6 +1,6 @@
 #include "pvegas/robot/subsystems/odometry/DistancePositionResetter.hpp"
 
-namespace pvegas {
+namespace driftless {
 namespace robot {
 namespace subsystems {
 namespace odometry {
@@ -57,7 +57,7 @@ double DistancePositionResetter::getRawValue() {
 }
 
 void DistancePositionResetter::setDistanceSensor(
-    std::unique_ptr<pvegas::io::IDistanceSensor>& distance_sensor) {
+    std::unique_ptr<driftless::io::IDistanceSensor>& distance_sensor) {
   if (distance_sensor) {
     m_distance_sensor = std::move(distance_sensor);
   }

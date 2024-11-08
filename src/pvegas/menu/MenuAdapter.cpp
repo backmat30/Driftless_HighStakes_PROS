@@ -2,7 +2,7 @@
 
 #include "pvegas/SystemConfig.hpp"
 
-namespace pvegas {
+namespace driftless {
 namespace menu {
 
 void MenuAdapter::addConfig(std::unique_ptr<config::IConfig>& config) {

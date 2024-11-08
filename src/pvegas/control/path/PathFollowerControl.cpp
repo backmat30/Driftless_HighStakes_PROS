@@ -1,10 +1,10 @@
 #include "pvegas/control/path/PathFollowerControl.hpp"
 
-namespace pvegas {
+namespace driftless {
 namespace control {
 namespace path {
 PathFollowerControl::PathFollowerControl(
-    std::unique_ptr<pvegas::control::path::IPathFollower>& path_follower)
+    std::unique_ptr<driftless::control::path::IPathFollower>& path_follower)
     : AControl{CONTROL_NAME}, m_path_follower{std::move(path_follower)} {}
 
 void PathFollowerControl::init() {
@@ -36,13 +36,13 @@ void PathFollowerControl::command(std::string command_name, va_list& args) {
     // get the robot from the va_list
     void* temp_robot{va_arg(args, void*)};
     // cast the robot to the desired type
-    std::shared_ptr<pvegas::robot::Robot> robot{
-        *static_cast<std::shared_ptr<pvegas::robot::Robot>*>(temp_robot)};
+    std::shared_ptr<driftless::robot::Robot> robot{
+        *static_cast<std::shared_ptr<driftless::robot::Robot>*>(temp_robot)};
     // get the control path from the va_list
     void* temp_path{va_arg(args, void*)};
     // cast the path to the desired type
-    std::vector<pvegas::control::Point> control_path{
-        *static_cast<std::vector<pvegas::control::Point>*>(temp_path)};
+    std::vector<driftless::control::Point> control_path{
+        *static_cast<std::vector<driftless::control::Point>*>(temp_path)};
     // get the max velocity from the va_list
     double velocity{va_arg(args, double)};
 

@@ -13,7 +13,7 @@
 #include "pvegas/rtos/ITask.hpp"
 #include "pvegas/utils/UtilityFunctions.hpp"
 
-namespace pvegas {
+namespace driftless {
 namespace control {
 namespace motion {
 class PIDGoToPoint : public IGoToPoint {
@@ -25,16 +25,16 @@ class PIDGoToPoint : public IGoToPoint {
   static void taskLoop(void* params);
 
   // the delayer
-  std::unique_ptr<pvegas::rtos::IDelayer> m_delayer{};
+  std::unique_ptr<driftless::rtos::IDelayer> m_delayer{};
 
   // the mutex
-  std::unique_ptr<pvegas::rtos::IMutex> m_mutex{};
+  std::unique_ptr<driftless::rtos::IMutex> m_mutex{};
 
   // the task
-  std::unique_ptr<pvegas::rtos::ITask> m_task{};
+  std::unique_ptr<driftless::rtos::ITask> m_task{};
 
   // the robot being controlled
-  std::shared_ptr<pvegas::robot::Robot> m_robot{};
+  std::shared_ptr<driftless::robot::Robot> m_robot{};
 
   // the linear PID controller
   PID m_linear_pid{};
@@ -64,7 +64,7 @@ class PIDGoToPoint : public IGoToPoint {
   void setDriveVelocity(double left, double right);
 
   // gets the position of the robot from the odometry
-  pvegas::robot::subsystems::odometry::Position getPosition();
+  driftless::robot::subsystems::odometry::Position getPosition();
 
   // gets the current velocity of the robot
   double getVelocity();
@@ -89,7 +89,7 @@ class PIDGoToPoint : public IGoToPoint {
   void resume() override;
 
   // tell the robot to go to a given point
-  void goToPoint(const std::shared_ptr<pvegas::robot::Robot>& robot, double velocity,
+  void goToPoint(const std::shared_ptr<driftless::robot::Robot>& robot, double velocity,
                  Point point) override;
 
   // set the max velocity to move at
@@ -99,13 +99,13 @@ class PIDGoToPoint : public IGoToPoint {
   bool targetReached() override;
 
   // set the delayer
-  void setDelayer(std::unique_ptr<pvegas::rtos::IDelayer>& delayer);
+  void setDelayer(std::unique_ptr<driftless::rtos::IDelayer>& delayer);
 
   // set the mutex
-  void setMutex(std::unique_ptr<pvegas::rtos::IMutex>& mutex);
+  void setMutex(std::unique_ptr<driftless::rtos::IMutex>& mutex);
 
   // set the task
-  void setTask(std::unique_ptr<pvegas::rtos::ITask>& task);
+  void setTask(std::unique_ptr<driftless::rtos::ITask>& task);
 
   // set the linear pid controller
   void setLinearPID(PID linear_pid);

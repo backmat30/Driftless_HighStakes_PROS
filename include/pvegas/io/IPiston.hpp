@@ -1,7 +1,7 @@
 #ifndef __I_PISTON_HPP__
 #define __I_PISTON_HPP__
 
-namespace pvegas {
+namespace driftless {
 namespace io {
 class IPiston {
  public:

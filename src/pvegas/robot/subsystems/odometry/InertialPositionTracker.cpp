@@ -1,6 +1,6 @@
 #include "pvegas/robot/subsystems/odometry/InertialPositionTracker.hpp"
 
-namespace pvegas {
+namespace driftless {
 namespace robot {
 namespace subsystems {
 namespace odometry {
@@ -173,32 +173,32 @@ void InertialPositionTracker::setTheta(double theta) {
 }
 
 void InertialPositionTracker::setClock(
-    std::unique_ptr<pvegas::rtos::IClock>& clock) {
+    std::unique_ptr<driftless::rtos::IClock>& clock) {
   m_clock = std::move(clock);
 }
 
 void InertialPositionTracker::setDelayer(
-    std::unique_ptr<pvegas::rtos::IDelayer>& delayer) {
+    std::unique_ptr<driftless::rtos::IDelayer>& delayer) {
   m_delayer = std::move(delayer);
 }
 
 void InertialPositionTracker::setMutex(
-    std::unique_ptr<pvegas::rtos::IMutex>& mutex) {
+    std::unique_ptr<driftless::rtos::IMutex>& mutex) {
   m_mutex = std::move(mutex);
 }
 
 void InertialPositionTracker::setTask(
-    std::unique_ptr<pvegas::rtos::ITask>& task) {
+    std::unique_ptr<driftless::rtos::ITask>& task) {
   m_task = std::move(task);
 }
 
 void InertialPositionTracker::setInertialSensor(
-    std::unique_ptr<pvegas::io::IInertialSensor>& inertial_sensor) {
+    std::unique_ptr<driftless::io::IInertialSensor>& inertial_sensor) {
   m_inertial_sensor = std::move(inertial_sensor);
 }
 
 void InertialPositionTracker::setLinearDistanceTracker(
-    std::unique_ptr<pvegas::io::IDistanceTracker>& linear_distance_tracker) {
+    std::unique_ptr<driftless::io::IDistanceTracker>& linear_distance_tracker) {
   m_linear_distance_tracker = std::move(linear_distance_tracker);
 }
 
@@ -208,7 +208,7 @@ void InertialPositionTracker::setLinearDIstanceTrackerOffset(
 }
 
 void InertialPositionTracker::setStrafeDistanceTracker(
-    std::unique_ptr<pvegas::io::IDistanceTracker>& strafe_distance_tracker) {
+    std::unique_ptr<driftless::io::IDistanceTracker>& strafe_distance_tracker) {
   m_strafe_distance_tracker = std::move(strafe_distance_tracker);
 }
 

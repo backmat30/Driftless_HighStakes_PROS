@@ -1,6 +1,6 @@
 #include "pvegas/hal/MotorGroup.hpp"
 
-namespace pvegas {
+namespace driftless {
 namespace hal {
 void MotorGroup::addMotor(std::unique_ptr<io::IMotor> &motor) {
   motors.push_back(std::move(motor));

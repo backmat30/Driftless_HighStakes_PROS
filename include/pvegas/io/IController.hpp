@@ -5,7 +5,7 @@
 
 #include "pvegas/op_control/EControllerAnalog.hpp"
 #include "pvegas/op_control/EControllerDigital.hpp"
-namespace pvegas {
+namespace driftless {
 namespace io {
 class IController {
  public:

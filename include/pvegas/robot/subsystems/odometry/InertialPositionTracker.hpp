@@ -12,7 +12,7 @@
 #include "pvegas/rtos/IMutex.hpp"
 #include "pvegas/rtos/ITask.hpp"
 
-namespace pvegas {
+namespace driftless {
 namespace robot {
 namespace subsystems {
 namespace odometry {
@@ -28,28 +28,28 @@ class InertialPositionTracker : public IPositionTracker {
   static void taskLoop(void* params);
 
   // clock object
-  std::unique_ptr<pvegas::rtos::IClock> m_clock{};
+  std::unique_ptr<driftless::rtos::IClock> m_clock{};
 
   // task delayer
-  std::unique_ptr<pvegas::rtos::IDelayer> m_delayer{};
+  std::unique_ptr<driftless::rtos::IDelayer> m_delayer{};
 
   // mutex
-  std::unique_ptr<pvegas::rtos::IMutex> m_mutex{};
+  std::unique_ptr<driftless::rtos::IMutex> m_mutex{};
 
   // task for updates
-  std::unique_ptr<pvegas::rtos::ITask> m_task{};
+  std::unique_ptr<driftless::rtos::ITask> m_task{};
 
   // inertial sensor to track rotation
-  std::unique_ptr<pvegas::io::IInertialSensor> m_inertial_sensor{};
+  std::unique_ptr<driftless::io::IInertialSensor> m_inertial_sensor{};
 
   // distance tracker on the linear side of the robot
-  std::unique_ptr<pvegas::io::IDistanceTracker> m_linear_distance_tracker{};
+  std::unique_ptr<driftless::io::IDistanceTracker> m_linear_distance_tracker{};
 
   // the offset, from the linear side of the robot, of the linear distance tracker
   double m_linear_distance_tracker_offset{};
 
   // distance tracker on the strafe side of the robot
-  std::unique_ptr<pvegas::io::IDistanceTracker> m_strafe_distance_tracker{};
+  std::unique_ptr<driftless::io::IDistanceTracker> m_strafe_distance_tracker{};
 
   // the offset, from the linear side of the robot, of the strafe distance tracker
   double m_strafe_distance_tracker_offset{};
@@ -101,31 +101,31 @@ class InertialPositionTracker : public IPositionTracker {
   void setTheta(double theta);
 
   // set the clock
-  void setClock(std::unique_ptr<pvegas::rtos::IClock>& clock);
+  void setClock(std::unique_ptr<driftless::rtos::IClock>& clock);
 
   // set the delayer
-  void setDelayer(std::unique_ptr<pvegas::rtos::IDelayer>& delayer);
+  void setDelayer(std::unique_ptr<driftless::rtos::IDelayer>& delayer);
 
   // set the mutex
-  void setMutex(std::unique_ptr<pvegas::rtos::IMutex>& mutex);
+  void setMutex(std::unique_ptr<driftless::rtos::IMutex>& mutex);
 
   // set the task
-  void setTask(std::unique_ptr<pvegas::rtos::ITask>& task);
+  void setTask(std::unique_ptr<driftless::rtos::ITask>& task);
 
   // set the inertial sensor
   void setInertialSensor(
-      std::unique_ptr<pvegas::io::IInertialSensor>& inertial_sensor);
+      std::unique_ptr<driftless::io::IInertialSensor>& inertial_sensor);
 
   // set the linear distance tracker
   void setLinearDistanceTracker(
-      std::unique_ptr<pvegas::io::IDistanceTracker>& linear_distance_tracker);
+      std::unique_ptr<driftless::io::IDistanceTracker>& linear_distance_tracker);
 
   // set the offset of the linear distance tracker
   void setLinearDIstanceTrackerOffset(double linear_distance_tracker_offset);
 
   // set the strafe distance tracker
   void setStrafeDistanceTracker(
-      std::unique_ptr<pvegas::io::IDistanceTracker>& strafe_distance_tracker);
+      std::unique_ptr<driftless::io::IDistanceTracker>& strafe_distance_tracker);
 
   // set the offset of the strafe distance tracker
   void setStrafeDistanceTrackerOffset(double strafe_distance_tracker_offset);

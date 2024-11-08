@@ -1,6 +1,6 @@
 #include "pvegas/pros_adapters/ProsADIPotentiometer.hpp"
 
-namespace pvegas {
+namespace driftless {
 namespace pros_adapters {
 ProsADIPotentiometer::ProsADIPotentiometer(
     std::unique_ptr<pros::adi::AnalogIn>& potentiometer)

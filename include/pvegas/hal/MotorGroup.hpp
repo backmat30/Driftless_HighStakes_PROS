@@ -4,7 +4,7 @@
 #include <vector>
 
 #include "pvegas/io/IMotor.hpp"
-namespace pvegas {
+namespace driftless {
 namespace hal {
 class MotorGroup {
  private:

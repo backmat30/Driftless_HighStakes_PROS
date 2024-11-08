@@ -1,6 +1,6 @@
 #include "pvegas/menu/LvglMenu.hpp"
 
-namespace pvegas {
+namespace driftless {
 namespace menu {
 lv_style_t LvglMenu::button_default_style;
 lv_style_t LvglMenu::button_pressed_style;

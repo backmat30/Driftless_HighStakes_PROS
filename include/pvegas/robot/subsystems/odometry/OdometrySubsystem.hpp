@@ -7,7 +7,7 @@
 #include "pvegas/robot/subsystems/odometry/DistancePositionResetter.hpp"
 #include "pvegas/robot/subsystems/odometry/InertialPositionTracker.hpp"
 
-namespace pvegas {
+namespace driftless {
 namespace robot {
 namespace subsystems {
 namespace odometry {

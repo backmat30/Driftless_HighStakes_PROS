@@ -1,5 +1,5 @@
 #include "pvegas/pros_adapters/ProsV5Motor.hpp"
-namespace pvegas {
+namespace driftless {
 namespace pros_adapters {
 ProsV5Motor::ProsV5Motor(std::unique_ptr<pros::Motor> &motor)
     : m_motor{std::move(motor)} {}

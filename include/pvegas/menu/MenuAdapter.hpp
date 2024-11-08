@@ -10,7 +10,7 @@
 #include "pvegas/config/IConfig.hpp"
 #include "pvegas/profiles/IProfile.hpp"
 
-namespace pvegas {
+namespace driftless {
 namespace menu {
 class MenuAdapter : public IMenu {
  private:

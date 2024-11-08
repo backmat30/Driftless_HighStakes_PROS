@@ -1,6 +1,6 @@
 #include "pvegas/robot/subsystems/odometry/OdometrySubsystem.hpp"
 
-namespace pvegas {
+namespace driftless {
 namespace robot {
 namespace subsystems {
 namespace odometry {

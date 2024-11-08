@@ -13,7 +13,7 @@
 #include "pvegas/rtos/ITask.hpp"
 #include "pvegas/utils/UtilityFunctions.hpp"
 
-namespace pvegas {
+namespace driftless {
 namespace control {
 namespace motion {
 class PIDTurn : public ITurn {
@@ -28,16 +28,16 @@ class PIDTurn : public ITurn {
   static void taskLoop(void* params);
 
   // the delayer
-  std::unique_ptr<pvegas::rtos::IDelayer> m_delayer{};
+  std::unique_ptr<driftless::rtos::IDelayer> m_delayer{};
 
   // the mutex
-  std::unique_ptr<pvegas::rtos::IMutex> m_mutex{};
+  std::unique_ptr<driftless::rtos::IMutex> m_mutex{};
 
   // the task
-  std::unique_ptr<pvegas::rtos::ITask> m_task{};
+  std::unique_ptr<driftless::rtos::ITask> m_task{};
 
   // the robot being controlled
-  std::shared_ptr<pvegas::robot::Robot> m_robot{};
+  std::shared_ptr<driftless::robot::Robot> m_robot{};
 
   // the rotational PID controller
   PID m_rotational_pid{};
@@ -67,17 +67,17 @@ class PIDTurn : public ITurn {
   bool paused{};
 
   // sets the velocity of the drive train
-  void setDriveVelocity(pvegas::robot::subsystems::drivetrain::Velocity velocity);
+  void setDriveVelocity(driftless::robot::subsystems::drivetrain::Velocity velocity);
 
   // gets the position of the robot from the odometry
-  pvegas::robot::subsystems::odometry::Position getPosition();
+  driftless::robot::subsystems::odometry::Position getPosition();
 
   // gets the radius of the drive train
   double getDriveRadius();
 
   // calculates the angle from the given position to the target position
   double calculateAngleToTarget(
-      pvegas::robot::subsystems::odometry::Position position);
+      driftless::robot::subsystems::odometry::Position position);
 
   // calculates the velocity for the drive train
   robot::subsystems::drivetrain::Velocity calculateDriveVelocity(
@@ -100,12 +100,12 @@ class PIDTurn : public ITurn {
   void resume() override;
 
   // tell the robot to turn in to a given angle
-  void turnToAngle(const std::shared_ptr<pvegas::robot::Robot>& robot,
+  void turnToAngle(const std::shared_ptr<driftless::robot::Robot>& robot,
                    double velocity, double theta,
                    ETurnDirection direction = ETurnDirection::AUTO) override;
 
   // tell the robot to turn towards a point on the field
-  void turnToPoint(const std::shared_ptr<pvegas::robot::Robot>& robot,
+  void turnToPoint(const std::shared_ptr<driftless::robot::Robot>& robot,
                    double velocity, Point point,
                    ETurnDirection direction = ETurnDirection::AUTO) override;
 
@@ -113,13 +113,13 @@ class PIDTurn : public ITurn {
   bool targetReached() override;
 
   // set the delayer
-  void setDelayer(const std::unique_ptr<pvegas::rtos::IDelayer>& delayer);
+  void setDelayer(const std::unique_ptr<driftless::rtos::IDelayer>& delayer);
 
   // set the mutex
-  void setMutex(std::unique_ptr<pvegas::rtos::IMutex>& mutex);
+  void setMutex(std::unique_ptr<driftless::rtos::IMutex>& mutex);
 
   // set the task
-  void setTask(std::unique_ptr<pvegas::rtos::ITask>& task);
+  void setTask(std::unique_ptr<driftless::rtos::ITask>& task);
 
   // sets the rotational pid controller
   void setRotationalPID(PID rotational_pid);

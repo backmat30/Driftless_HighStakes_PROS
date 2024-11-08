@@ -5,12 +5,12 @@
 
 #include "pvegas/rtos/IClock.hpp"
 
-namespace pvegas {
+namespace driftless {
 namespace control {
 class PID {
  private:
   // system clock
-  std::unique_ptr<pvegas::rtos::IClock> m_clock{};
+  std::unique_ptr<driftless::rtos::IClock> m_clock{};
 
   // proportional coefficient
   double m_kp{};
@@ -35,7 +35,7 @@ class PID {
   PID() = default;
 
   // constructor
-  PID(const std::unique_ptr<pvegas::rtos::IClock>& clock, double kp, double ki,
+  PID(const std::unique_ptr<driftless::rtos::IClock>& clock, double kp, double ki,
       double kd);
 
   // copy constructor

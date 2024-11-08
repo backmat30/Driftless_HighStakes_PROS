@@ -6,14 +6,14 @@
 #include "pvegas/robot/subsystems/intake/IIntake.hpp"
 #include "pvegas/hal/MotorGroup.hpp"
 
-namespace pvegas {
+namespace driftless {
 namespace robot {
 namespace subsystems {
 namespace intake {
 class DirectIntake : public IIntake {
  private:
   // group of motors used to run the intake
-  pvegas::hal::MotorGroup m_motors{};
+  driftless::hal::MotorGroup m_motors{};
 
  public:
   // initialize the intake
@@ -26,7 +26,7 @@ class DirectIntake : public IIntake {
   void setVoltage(double voltage) override;
 
   // set the motors
-  void setMotors(pvegas::hal::MotorGroup& motors);
+  void setMotors(driftless::hal::MotorGroup& motors);
 };
 }
 }

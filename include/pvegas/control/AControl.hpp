@@ -2,7 +2,7 @@
 #define __A_CONTROL_HPP__
 
 #include <string>
-namespace pvegas {
+namespace driftless {
 namespace control {
 // Abstract class for control algorithms
 class AControl {

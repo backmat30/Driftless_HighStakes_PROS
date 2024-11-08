@@ -5,7 +5,7 @@
 
 #include "pvegas/robot/Robot.hpp"
 
-namespace pvegas {
+namespace driftless {
 namespace control {
 namespace motion {
 class IDriveStraight {
@@ -26,7 +26,7 @@ class IDriveStraight {
   virtual void resume() = 0;
 
   // tell the robot to drive straight for a given distance in inches
-  virtual void driveStraight(std::shared_ptr<pvegas::robot::Robot>& robot,
+  virtual void driveStraight(std::shared_ptr<driftless::robot::Robot>& robot,
                              double velocity, double distance,
                              double theta) = 0;
 

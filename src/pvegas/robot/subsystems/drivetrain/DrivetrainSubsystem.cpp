@@ -1,6 +1,6 @@
 #include "pvegas/robot/subsystems/drivetrain/DrivetrainSubsystem.hpp"
 
-namespace pvegas {
+namespace driftless {
 namespace robot {
 namespace subsystems {
 namespace drivetrain {

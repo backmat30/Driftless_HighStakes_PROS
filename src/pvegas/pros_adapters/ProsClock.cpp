@@ -1,6 +1,6 @@
 #include "pvegas/pros_adapters/ProsClock.hpp"
 
-namespace pvegas {
+namespace driftless {
 namespace pros_adapters {
 std::unique_ptr<rtos::IClock> ProsClock::clone() const {
   return std::unique_ptr<rtos::IClock>(std::make_unique<ProsClock>(*this));

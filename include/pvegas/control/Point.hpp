@@ -1,7 +1,7 @@
 #ifndef __POINT_HPP__
 #define __POINT_HPP__
 
-namespace pvegas {
+namespace driftless {
 namespace control {
 class Point {
  private:

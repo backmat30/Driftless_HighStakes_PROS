@@ -3,7 +3,7 @@
 
 #include <cstdint>
 #include <memory>
-namespace pvegas {
+namespace driftless {
 namespace rtos {
 class IClock {
  public:

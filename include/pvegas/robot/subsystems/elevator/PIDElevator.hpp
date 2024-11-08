@@ -12,11 +12,11 @@
 #include "pvegas/rtos/IMutex.hpp"
 #include "pvegas/rtos/ITask.hpp"
 
-namespace pvegas {
+namespace driftless {
 namespace robot {
 namespace subsystems {
 namespace elevator {
-class PIDElevator : public pvegas::robot::subsystems::elevator::IElevator {
+class PIDElevator : public driftless::robot::subsystems::elevator::IElevator {
  private:
   // the delay between task updates
   static constexpr uint8_t TASK_DELAY{10};
@@ -25,22 +25,22 @@ class PIDElevator : public pvegas::robot::subsystems::elevator::IElevator {
   static void taskLoop(void* params);
 
   // the delayer used by the elevator
-  std::unique_ptr<pvegas::rtos::IDelayer> m_delayer{};
+  std::unique_ptr<driftless::rtos::IDelayer> m_delayer{};
 
   // the mutex used by the elevator
-  std::unique_ptr<pvegas::rtos::IMutex> m_mutex{};
+  std::unique_ptr<driftless::rtos::IMutex> m_mutex{};
 
   // the task used by the elevator
-  std::unique_ptr<pvegas::rtos::ITask> m_task{};
+  std::unique_ptr<driftless::rtos::ITask> m_task{};
 
   // motors used for the elevator
-  pvegas::hal::MotorGroup m_motors{};
+  driftless::hal::MotorGroup m_motors{};
 
   // rotation sensor used for the elevator
-  std::unique_ptr<pvegas::io::IRotationSensor> m_rotation_sensor{};
+  std::unique_ptr<driftless::io::IRotationSensor> m_rotation_sensor{};
 
   // pid controller for elevator motion
-  pvegas::control::PID m_pid{};
+  driftless::control::PID m_pid{};
 
   // ratio of radians to inches moved
   double m_radians_to_inches{};
@@ -74,23 +74,23 @@ class PIDElevator : public pvegas::robot::subsystems::elevator::IElevator {
   double getPosition() override;
 
   // set the delayer
-  void setDelayer(const std::unique_ptr<pvegas::rtos::IDelayer>& delayer);
+  void setDelayer(const std::unique_ptr<driftless::rtos::IDelayer>& delayer);
 
   // set the mutex
-  void setMutex(std::unique_ptr<pvegas::rtos::IMutex>& mutex);
+  void setMutex(std::unique_ptr<driftless::rtos::IMutex>& mutex);
 
   // set the task
-  void setTask(std::unique_ptr<pvegas::rtos::ITask>& task);
+  void setTask(std::unique_ptr<driftless::rtos::ITask>& task);
 
   // sets the motors
-  void setMotors(pvegas::hal::MotorGroup& motors);
+  void setMotors(driftless::hal::MotorGroup& motors);
 
   // sets the rotation sensor
   void setRotationSensor(
-      std::unique_ptr<pvegas::io::IRotationSensor>& rotation_sensor);
+      std::unique_ptr<driftless::io::IRotationSensor>& rotation_sensor);
 
   // sets the pid controller
-  void setPID(pvegas::control::PID pid);
+  void setPID(driftless::control::PID pid);
 
   // sets the ratio between radians and inches travelled
   void setRadiansToInches(double radians_to_inches);

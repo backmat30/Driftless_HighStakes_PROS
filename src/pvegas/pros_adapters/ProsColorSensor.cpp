@@ -1,6 +1,6 @@
 #include "pvegas/pros_adapters/ProsColorSensor.hpp"
 
-namespace pvegas {
+namespace driftless {
 namespace pros_adapters {
 ProsColorSensor::ProsColorSensor(std::unique_ptr<pros::Optical>& optical_sensor)
     : m_optical_sensor{std::move(optical_sensor)} {}

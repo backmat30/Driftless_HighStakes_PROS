@@ -1,6 +1,6 @@
 #include "pvegas/robot/subsystems/arm/ArmSubsystem.hpp"
 
-namespace pvegas {
+namespace driftless {
 namespace robot {
 namespace subsystems {
 namespace arm {

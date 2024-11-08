@@ -9,10 +9,10 @@
 #include "pvegas/control/motion/IGoToPoint.hpp"
 #include "pvegas/control/motion/ITurn.hpp"
 
-namespace pvegas {
+namespace driftless {
 namespace control {
 namespace motion {
-class MotionControl : public pvegas::control::AControl {
+class MotionControl : public driftless::control::AControl {
  private:
   // the name of the control
   static constexpr char CONTROL_NAME[]{"MOTION"};
@@ -49,22 +49,22 @@ class MotionControl : public pvegas::control::AControl {
   static constexpr char TURN_TARGET_REACHED_STATE_NAME[]{"TURN TARGET REACHED"};
 
   // drive straight algorithm
-  std::unique_ptr<pvegas::control::motion::IDriveStraight> m_drive_straight{};
+  std::unique_ptr<driftless::control::motion::IDriveStraight> m_drive_straight{};
 
   // go to point algorithm
-  std::unique_ptr<pvegas::control::motion::IGoToPoint> m_go_to_point{};
+  std::unique_ptr<driftless::control::motion::IGoToPoint> m_go_to_point{};
 
   // turn algorithm
-  std::unique_ptr<pvegas::control::motion::ITurn> m_turn{};
+  std::unique_ptr<driftless::control::motion::ITurn> m_turn{};
 
-  pvegas::control::motion::EMotionType m_motion_type{EMotionType::NONE};
+  driftless::control::motion::EMotionType m_motion_type{EMotionType::NONE};
 
  public:
   // constructor
   MotionControl(
-      std::unique_ptr<pvegas::control::motion::IDriveStraight>& drive_straight,
-      std::unique_ptr<pvegas::control::motion::IGoToPoint>& go_to_point,
-      std::unique_ptr<pvegas::control::motion::ITurn>& turn);
+      std::unique_ptr<driftless::control::motion::IDriveStraight>& drive_straight,
+      std::unique_ptr<driftless::control::motion::IGoToPoint>& go_to_point,
+      std::unique_ptr<driftless::control::motion::ITurn>& turn);
 
   // initialize the control
   void init() override;

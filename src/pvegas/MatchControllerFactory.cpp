@@ -11,8 +11,8 @@
 #include "pvegas/pros_adapters/ProsClock.hpp"
 #include "pvegas/rtos/IClock.hpp"
 
-namespace pvegas {
-pvegas::MatchController MatchControllerFactory::createMatchController() {
+namespace driftless {
+driftless::MatchController MatchControllerFactory::createMatchController() {
   // the display menu
   std::unique_ptr<menu::IMenu> lvgl_menu{std::make_unique<menu::MenuAdapter>()};
   // add alliances

@@ -1,8 +1,8 @@
 #include "main.h"
 
 // create the match controller
-static pvegas::MatchController match_controller{
-    pvegas::MatchControllerFactory::createMatchController()};
+static driftless::MatchController match_controller{
+    driftless::MatchControllerFactory::createMatchController()};
 /**
  * Runs initialization code. This occurs as soon as the program is started.
  *

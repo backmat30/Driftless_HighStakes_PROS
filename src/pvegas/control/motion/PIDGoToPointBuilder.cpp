@@ -1,19 +1,19 @@
 #include "pvegas/control/motion/PIDGoToPointBuilder.hpp"
 
-namespace pvegas {
+namespace driftless {
 namespace control {
 namespace motion {
-PIDGoToPointBuilder* PIDGoToPointBuilder::withDelayer(const std::unique_ptr<pvegas::rtos::IDelayer>& delayer) {
+PIDGoToPointBuilder* PIDGoToPointBuilder::withDelayer(const std::unique_ptr<driftless::rtos::IDelayer>& delayer) {
   m_delayer = delayer->clone();
   return this;
 }
 
-PIDGoToPointBuilder* PIDGoToPointBuilder::withMutex(std::unique_ptr<pvegas::rtos::IMutex>& mutex) {
+PIDGoToPointBuilder* PIDGoToPointBuilder::withMutex(std::unique_ptr<driftless::rtos::IMutex>& mutex) {
   m_mutex = std::move(mutex);
   return this;
 }
 
-PIDGoToPointBuilder* PIDGoToPointBuilder::withTask(std::unique_ptr<pvegas::rtos::ITask>& task) {
+PIDGoToPointBuilder* PIDGoToPointBuilder::withTask(std::unique_ptr<driftless::rtos::ITask>& task) {
   m_task = std::move(task);
   return this;
 }

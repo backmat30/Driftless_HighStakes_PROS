@@ -3,18 +3,18 @@
 
 #include "pvegas/robot/subsystems/intake/DirectIntake.hpp"
 
-namespace pvegas {
+namespace driftless {
 namespace robot {
 namespace subsystems {
 namespace intake {
 class DirectIntakeBuilder {
  private:
   // the motors used for the intake
-  pvegas::hal::MotorGroup m_motors{};
+  driftless::hal::MotorGroup m_motors{};
 
  public:
   // adds motors to the builder
-  DirectIntakeBuilder* withMotor(std::unique_ptr<pvegas::io::IMotor>& motor);
+  DirectIntakeBuilder* withMotor(std::unique_ptr<driftless::io::IMotor>& motor);
 
   // build a new intake
   std::unique_ptr<DirectIntake> build();

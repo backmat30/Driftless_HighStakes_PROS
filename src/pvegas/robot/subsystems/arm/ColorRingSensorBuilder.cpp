@@ -1,11 +1,11 @@
 #include "pvegas/robot/subsystems/arm/ColorRingSensorBuilder.hpp"
 
-namespace pvegas {
+namespace driftless {
 namespace robot {
 namespace subsystems {
 namespace arm {
 ColorRingSensorBuilder* ColorRingSensorBuilder::withColorSensor(
-    std::unique_ptr<pvegas::io::IColorSensor>& color_sensor) {
+    std::unique_ptr<driftless::io::IColorSensor>& color_sensor) {
   m_color_sensor = std::move(color_sensor);
   return this;
 }

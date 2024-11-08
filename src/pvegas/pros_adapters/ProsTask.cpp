@@ -4,7 +4,7 @@
 
 #include "pros/rtos.hpp"
 
-namespace pvegas {
+namespace driftless {
 namespace pros_adapters {
 void ProsTask::start(void (*function)(void *), void *params) {
   // defines the task

@@ -17,7 +17,7 @@
 #include "pvegas/rtos/IClock.hpp"
 #include "pvegas/rtos/IDelayer.hpp"
 
-namespace pvegas {
+namespace driftless {
 class OpControlManager {
  private:
   // loop delay
@@ -30,7 +30,7 @@ class OpControlManager {
   std::unique_ptr<profiles::IProfile> m_profile{};
 
   // the current alliance
-  pvegas::alliance::Alliance m_alliance{};
+  driftless::alliance::Alliance m_alliance{};
 
  public:
   // constructor
@@ -41,7 +41,7 @@ class OpControlManager {
   void setProfile(std::unique_ptr<profiles::IProfile> &profile);
 
   // defines the alliance the robot is on
-  void setAlliance(pvegas::alliance::Alliance alliance);
+  void setAlliance(driftless::alliance::Alliance alliance);
 
   // initializes op control
   void init(std::shared_ptr<control::ControlSystem> control_system,

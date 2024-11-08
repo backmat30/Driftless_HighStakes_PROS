@@ -1,6 +1,6 @@
 #include "pvegas/robot/subsystems/intake/PistonHeightControl.hpp"
 
-namespace pvegas {
+namespace driftless {
 namespace robot {
 namespace subsystems {
 namespace intake {
@@ -19,7 +19,7 @@ void PistonHeightControl::setHeight(bool up) {
 
 bool PistonHeightControl::isRaised() { return raised; }
 
-void PistonHeightControl::setPistons(pvegas::hal::PistonGroup& pistons) {
+void PistonHeightControl::setPistons(driftless::hal::PistonGroup& pistons) {
   m_pistons = std::move(pistons);
 }
 }  // namespace intake

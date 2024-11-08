@@ -5,10 +5,10 @@
 
 #include "pvegas/control/AControl.hpp"
 #include "pvegas/control/path/PIDPathFollowerBuilder.hpp"
-namespace pvegas {
+namespace driftless {
 namespace control {
 namespace path {
-class PathFollowerControl : public pvegas::control::AControl {
+class PathFollowerControl : public driftless::control::AControl {
  private:
   // name of the control
   static constexpr char CONTROL_NAME[]{"PATH FOLLOWING"};
@@ -23,12 +23,12 @@ class PathFollowerControl : public pvegas::control::AControl {
   static constexpr char TARGET_REACHED_STATE_NAME[]{"TARGET REACHED"};
 
   // path follower object
-  std::unique_ptr<pvegas::control::path::IPathFollower> m_path_follower{};
+  std::unique_ptr<driftless::control::path::IPathFollower> m_path_follower{};
 
  public:
   // constructor
   PathFollowerControl(
-      std::unique_ptr<pvegas::control::path::IPathFollower>& path_follower);
+      std::unique_ptr<driftless::control::path::IPathFollower>& path_follower);
 
   // initialize the control
   void init() override;

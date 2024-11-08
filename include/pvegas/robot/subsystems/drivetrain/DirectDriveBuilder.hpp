@@ -8,7 +8,7 @@
 #include "pvegas/io/IMotor.hpp"
 #include "pvegas/robot/subsystems/drivetrain/IDrivetrain.hpp"
 
-namespace pvegas {
+namespace driftless {
 namespace robot {
 namespace subsystems {
 namespace drivetrain {

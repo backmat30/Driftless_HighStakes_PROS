@@ -15,7 +15,7 @@
 #include "pvegas/op_control/intake/EIntakeControlMode.hpp"
 #include "pvegas/profiles/IProfile.hpp"
 
-namespace pvegas {
+namespace driftless {
 namespace profiles {
 class DefaultProfile : public profiles::IProfile {
  private:

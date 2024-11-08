@@ -1,6 +1,6 @@
 #include "pvegas/op_control/clamp/ClampOperator.hpp"
 
-namespace pvegas {
+namespace driftless {
 namespace op_control {
 namespace clamp {
 void ClampOperator::updateHold(EControllerDigital hold) {
@@ -33,12 +33,12 @@ void ClampOperator::updateClampState(bool state) {
 }
 
 ClampOperator::ClampOperator(
-    const std::shared_ptr<pvegas::io::IController>& controller,
-    const std::shared_ptr<pvegas::robot::Robot>& robot)
+    const std::shared_ptr<driftless::io::IController>& controller,
+    const std::shared_ptr<driftless::robot::Robot>& robot)
     : m_controller{std::move(controller)}, m_robot{std::move(robot)} {}
 
 void ClampOperator::update(
-    const std::unique_ptr<pvegas::profiles::IProfile>& profile) {
+    const std::unique_ptr<driftless::profiles::IProfile>& profile) {
   EControllerDigital hold{
       profile->getDigitalControlMapping(EControl::CLAMP_HOLD)};
   EControllerDigital toggle{

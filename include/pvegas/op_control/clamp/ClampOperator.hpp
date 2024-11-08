@@ -9,7 +9,7 @@
 #include "pvegas/profiles/IProfile.hpp"
 #include "pvegas/robot/Robot.hpp"
 
-namespace pvegas {
+namespace driftless {
 namespace op_control {
 namespace clamp {
 class ClampOperator {
@@ -24,10 +24,10 @@ class ClampOperator {
   static constexpr char CLAMP_GET_STATE_STATE_NAME[]{"GET STATE"};
 
   // the controller being used
-  std::shared_ptr<pvegas::io::IController> m_controller{};
+  std::shared_ptr<driftless::io::IController> m_controller{};
 
   // the robot being controlled
-  std::shared_ptr<pvegas::robot::Robot> m_robot{};
+  std::shared_ptr<driftless::robot::Robot> m_robot{};
 
   // update the clamp using hold mode
   void updateHold(EControllerDigital hold);
@@ -43,11 +43,11 @@ class ClampOperator {
 
  public:
   // construct a new ClampOperator object
-  ClampOperator(const std::shared_ptr<pvegas::io::IController>& controller,
-                const std::shared_ptr<pvegas::robot::Robot>& robot);
+  ClampOperator(const std::shared_ptr<driftless::io::IController>& controller,
+                const std::shared_ptr<driftless::robot::Robot>& robot);
 
   // update the clamp based on the profile specifications
-  void update(const std::unique_ptr<pvegas::profiles::IProfile>& profile);
+  void update(const std::unique_ptr<driftless::profiles::IProfile>& profile);
 };
 }  // namespace clamp
 }  // namespace op_control

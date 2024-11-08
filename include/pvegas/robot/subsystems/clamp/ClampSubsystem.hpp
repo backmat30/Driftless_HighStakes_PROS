@@ -6,7 +6,7 @@
 #include "pvegas/robot/subsystems/ASubsystem.hpp"
 #include "pvegas/robot/subsystems/clamp/IClamp.hpp"
 
-namespace pvegas {
+namespace driftless {
 namespace robot {
 namespace subsystems {
 namespace clamp {

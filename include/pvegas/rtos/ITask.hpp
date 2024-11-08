@@ -1,7 +1,7 @@
 #ifndef __I_TASK_HPP__
 #define __I_TASK_HPP__
 
-namespace pvegas {
+namespace driftless {
 namespace rtos {
 class ITask {
  public:

@@ -5,19 +5,19 @@
 
 #include "pvegas/robot/subsystems/intake/PistonHeightControl.hpp"
 
-namespace pvegas {
+namespace driftless {
 namespace robot {
 namespace subsystems {
 namespace intake {
 class PistonHeightControlBuilder {
  private:
   // the pistons used to build the height controller
-  pvegas::hal::PistonGroup m_pistons{};
+  driftless::hal::PistonGroup m_pistons{};
 
  public:
   // add a piston group to the builder
   PistonHeightControlBuilder* withPiston(
-      std::unique_ptr<pvegas::io::IPiston>& piston);
+      std::unique_ptr<driftless::io::IPiston>& piston);
 
   // build a new piston height controller
   std::unique_ptr<PistonHeightControl> build();

@@ -8,7 +8,7 @@
 #include "pros/motors.hpp"
 #include "pvegas/io/IMotor.hpp"
 
-namespace pvegas {
+namespace driftless {
 namespace pros_adapters {
 class ProsV5Motor : public io::IMotor {
  private:

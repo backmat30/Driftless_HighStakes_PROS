@@ -1,6 +1,6 @@
 #ifndef __E_CONTROLLER_DIGITAL_HPP__
 #define __E_CONTROLLER_DIGITAL_HPP__
-namespace pvegas {
+namespace driftless {
 namespace op_control {
 enum class EControllerDigital {
   BUTTON_A,

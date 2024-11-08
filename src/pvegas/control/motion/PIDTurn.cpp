@@ -1,6 +1,6 @@
 #include "pvegas/control/motion/PIDTurn.hpp"
 
-namespace pvegas {
+namespace driftless {
 namespace control {
 namespace motion {
 void PIDTurn::taskLoop(void* params) {
@@ -12,13 +12,13 @@ void PIDTurn::taskLoop(void* params) {
 }
 
 void PIDTurn::setDriveVelocity(
-    pvegas::robot::subsystems::drivetrain::Velocity velocity) {
+    driftless::robot::subsystems::drivetrain::Velocity velocity) {
   m_robot->sendCommand("DIFFERENTIAL DRIVE", "SET VELOCITY", velocity);
 }
 
-pvegas::robot::subsystems::odometry::Position PIDTurn::getPosition() {
-  pvegas::robot::subsystems::odometry::Position position{};
-  position = *static_cast<pvegas::robot::subsystems::odometry::Position*>(
+driftless::robot::subsystems::odometry::Position PIDTurn::getPosition() {
+  driftless::robot::subsystems::odometry::Position position{};
+  position = *static_cast<driftless::robot::subsystems::odometry::Position*>(
       m_robot->getState("ODOMETRY", "GET POSITION"));
   return position;
 }
@@ -31,7 +31,7 @@ double PIDTurn::getDriveRadius() {
 }
 
 double PIDTurn::calculateAngleToTarget(
-    pvegas::robot::subsystems::odometry::Position position) {
+    driftless::robot::subsystems::odometry::Position position) {
   double x_error{m_target_point.getX() - position.x};
   double y_error{m_target_point.getY() - position.y};
   return std::atan2(y_error, x_error);
@@ -72,7 +72,7 @@ void PIDTurn::taskUpdate() {
   }
 
   if (!target_reached && !paused) {
-    pvegas::robot::subsystems::odometry::Position position{getPosition()};
+    driftless::robot::subsystems::odometry::Position position{getPosition()};
     double target_angle{calculateAngleToTarget(position)};
     double angle_error{bindRadians(target_angle - position.theta)};
 
@@ -110,7 +110,7 @@ void PIDTurn::pause() {
   }
 
   paused = true;
-  pvegas::robot::subsystems::drivetrain::Velocity stopped{0, 0};
+  driftless::robot::subsystems::drivetrain::Velocity stopped{0, 0};
   setDriveVelocity(stopped);
 
   if (m_mutex) {
@@ -131,7 +131,7 @@ void PIDTurn::resume() {
   }
 }
 
-void PIDTurn::turnToAngle(const std::shared_ptr<pvegas::robot::Robot>& robot,
+void PIDTurn::turnToAngle(const std::shared_ptr<driftless::robot::Robot>& robot,
                           double velocity, double theta,
                           ETurnDirection direction) {
   if (m_mutex) {
@@ -140,7 +140,7 @@ void PIDTurn::turnToAngle(const std::shared_ptr<pvegas::robot::Robot>& robot,
 
   m_robot = robot;
   double drive_radius{getDriveRadius()};
-  pvegas::robot::subsystems::odometry::Position position{getPosition()};
+  driftless::robot::subsystems::odometry::Position position{getPosition()};
 
   m_turn_direction = direction;
   m_max_velocity = velocity * drive_radius;
@@ -160,7 +160,7 @@ void PIDTurn::turnToAngle(const std::shared_ptr<pvegas::robot::Robot>& robot,
   }
 }
 
-void PIDTurn::turnToPoint(const std::shared_ptr<pvegas::robot::Robot>& robot,
+void PIDTurn::turnToPoint(const std::shared_ptr<driftless::robot::Robot>& robot,
                           double velocity, Point point,
                           ETurnDirection direction) {
   if (m_mutex) {
@@ -188,15 +188,15 @@ void PIDTurn::turnToPoint(const std::shared_ptr<pvegas::robot::Robot>& robot,
 bool PIDTurn::targetReached() { return target_reached; }
 
 void PIDTurn::setDelayer(
-    const std::unique_ptr<pvegas::rtos::IDelayer>& delayer) {
+    const std::unique_ptr<driftless::rtos::IDelayer>& delayer) {
   m_delayer = delayer->clone();
 }
 
-void PIDTurn::setMutex(std::unique_ptr<pvegas::rtos::IMutex>& mutex) {
+void PIDTurn::setMutex(std::unique_ptr<driftless::rtos::IMutex>& mutex) {
   m_mutex = std::move(mutex);
 }
 
-void PIDTurn::setTask(std::unique_ptr<pvegas::rtos::ITask>& task) {
+void PIDTurn::setTask(std::unique_ptr<driftless::rtos::ITask>& task) {
   m_task = std::move(task);
 }
 

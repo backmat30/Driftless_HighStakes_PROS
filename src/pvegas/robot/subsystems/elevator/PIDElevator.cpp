@@ -1,6 +1,6 @@
 #include "pvegas/robot/subsystems/elevator/PIDElevator.hpp"
 
-namespace pvegas {
+namespace driftless {
 namespace robot {
 namespace subsystems {
 namespace elevator {
@@ -78,28 +78,28 @@ double PIDElevator::getPosition() {
 }
 
 void PIDElevator::setDelayer(
-    const std::unique_ptr<pvegas::rtos::IDelayer>& delayer) {
+    const std::unique_ptr<driftless::rtos::IDelayer>& delayer) {
   m_delayer = delayer->clone();
 }
 
-void PIDElevator::setMutex(std::unique_ptr<pvegas::rtos::IMutex>& mutex) {
+void PIDElevator::setMutex(std::unique_ptr<driftless::rtos::IMutex>& mutex) {
   m_mutex = std::move(mutex);
 }
 
-void PIDElevator::setTask(std::unique_ptr<pvegas::rtos::ITask>& task) {
+void PIDElevator::setTask(std::unique_ptr<driftless::rtos::ITask>& task) {
   m_task = std::move(task);
 }
 
-void PIDElevator::setMotors(pvegas::hal::MotorGroup& motors) {
+void PIDElevator::setMotors(driftless::hal::MotorGroup& motors) {
   m_motors = motors;
 }
 
 void PIDElevator::setRotationSensor(
-    std::unique_ptr<pvegas::io::IRotationSensor>& rotation_sensor) {
+    std::unique_ptr<driftless::io::IRotationSensor>& rotation_sensor) {
   m_rotation_sensor = std::move(rotation_sensor);
 }
 
-void PIDElevator::setPID(pvegas::control::PID pid) { m_pid = pid; }
+void PIDElevator::setPID(driftless::control::PID pid) { m_pid = pid; }
 
 void PIDElevator::setRadiansToInches(double radians_to_inches) {
   m_radians_to_inches = radians_to_inches;

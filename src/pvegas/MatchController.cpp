@@ -2,7 +2,7 @@
 
 #include "OpControlManager.hpp"
 #include "SystemConfig.hpp"
-namespace pvegas {
+namespace driftless {
 MatchController::MatchController(std::unique_ptr<menu::IMenu> &new_menu,
                                  std::shared_ptr<rtos::IClock> &clock,
                                  std::unique_ptr<rtos::IDelayer> &delayer)

@@ -4,7 +4,7 @@
 #include "pvegas/SystemConfig.hpp"
 #include "pvegas/config/IConfig.hpp"
 #include "pvegas/profiles/IProfile.hpp"
-namespace pvegas {
+namespace driftless {
 namespace menu {
 class IMenu {
  public:

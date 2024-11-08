@@ -6,14 +6,14 @@
 #include "pvegas/hal/PistonGroup.hpp"
 #include "pvegas/robot/subsystems/clamp/IClamp.hpp"
 
-namespace pvegas {
+namespace driftless {
 namespace robot {
 namespace subsystems {
 namespace clamp {
 class PistonClamp : public IClamp {
  private:
   // the pistons controlling the clamp
-  pvegas::hal::PistonGroup m_pistons{};
+  driftless::hal::PistonGroup m_pistons{};
 
   // whether the clamp is active or idle
   bool state{};
@@ -32,7 +32,7 @@ class PistonClamp : public IClamp {
   bool getState() override;
 
   // set the pistons used
-  void setPistons(pvegas::hal::PistonGroup& pistons);
+  void setPistons(driftless::hal::PistonGroup& pistons);
 };
 }  // namespace clamp
 }  // namespace subsystems

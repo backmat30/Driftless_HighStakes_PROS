@@ -5,7 +5,7 @@
 
 #include "config/IConfig.hpp"
 #include "profiles/IProfile.hpp"
-namespace pvegas {
+namespace driftless {
 struct SystemConfig {
   std::unique_ptr<config::IConfig> config{};
 

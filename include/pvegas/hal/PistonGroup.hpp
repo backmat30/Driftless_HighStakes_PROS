@@ -6,19 +6,19 @@
 
 #include "pvegas/io/IPiston.hpp"
 
-namespace pvegas {
+namespace driftless {
 namespace hal {
 class PistonGroup {
  private:
   // vector of pistons in the group
-  std::vector<std::unique_ptr<pvegas::io::IPiston>> m_pistons{};
+  std::vector<std::unique_ptr<driftless::io::IPiston>> m_pistons{};
 
   // whether the pistons are extended or retracted
   bool extended{};
 
  public:
   // add a piston to the group
-  void addPiston(std::unique_ptr<pvegas::io::IPiston>& piston);
+  void addPiston(std::unique_ptr<driftless::io::IPiston>& piston);
 
   // extend all pistons in the group
   void extend();
