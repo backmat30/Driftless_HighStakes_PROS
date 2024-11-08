@@ -44,6 +44,9 @@ class PIDArmMotionBuilder {
   // the rotational position when loading
   double m_rotational_load_position{};
 
+  // the rotational position when ready to score
+  double m_rotational_ready_position{};
+
   // the rotational position when scoring
   double m_rotational_score_position{};
 
@@ -55,6 +58,9 @@ class PIDArmMotionBuilder {
 
   // the linear position when loading
   double m_linear_load_position{};
+
+  // the linear position when ready to score
+  double m_linear_ready_position{};
 
   // the linear position when scoring
   double m_linear_score_position{};
@@ -103,6 +109,10 @@ class PIDArmMotionBuilder {
   PIDArmMotionBuilder* withRotationalLoadPosition(
       double rotational_load_position);
 
+  // add a rotational ready position to the builder
+  PIDArmMotionBuilder* withRotationalReadyPosition(
+      double rotational_ready_position);
+
   // add a rotational score position to the builder
   PIDArmMotionBuilder* withRotationalScorePosition(
       double rotational_score_position);
@@ -116,6 +126,9 @@ class PIDArmMotionBuilder {
 
   // add a linear load position to the builder
   PIDArmMotionBuilder* withLinearLoadPosition(double linear_load_position);
+
+  // add a linear ready position to the builder
+  PIDArmMotionBuilder* withLinearReadyPosition(double linear_ready_position);
 
   // add a linear score position to the builder
   PIDArmMotionBuilder* withLinearScorePosition(double linear_score_position);

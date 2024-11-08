@@ -45,6 +45,14 @@ void PIDArmMotion::updateState() {
         state = EState::LOAD;
       }
       break;
+    case EState::READY_MOTION:
+      if (std::abs(rotation_position - m_rotational_ready_position) <=
+              m_rotational_tolerance &&
+          std::abs(linear_position - m_linear_ready_position) <=
+              m_linear_tolerance) {
+        state = EState::READY;
+      }
+      break;
     case EState::SCORE_MOTION:
       if (std::abs(rotation_position - m_rotational_score_position) <=
               m_rotational_tolerance &&
@@ -128,6 +136,20 @@ void PIDArmMotion::goLoad() {
   }
 }
 
+void PIDArmMotion::goReady() {
+  if (m_mutex) {
+    m_mutex->take();
+  }
+  if (state != EState::READY) {
+    state = EState::READY_MOTION;
+    rotational_target_position = m_rotational_ready_position;
+    linear_target_position = m_linear_ready_position;
+  }
+  if (m_mutex) {
+    m_mutex->give();
+  }
+}
+
 void PIDArmMotion::goScore() {
   if (m_mutex) {
     m_mutex->take();
@@ -142,17 +164,23 @@ void PIDArmMotion::goScore() {
   }
 }
 
-bool PIDArmMotion::isAtNeutral() {
-  return (state == EState::NEUTRAL || state == EState::NEUTRAL_MOTION);
+bool PIDArmMotion::isAtNeutral() { return (state == EState::NEUTRAL); }
+
+bool PIDArmMotion::isGoingNeutral() {
+  return (state == EState::NEUTRAL_MOTION);
 }
 
-bool PIDArmMotion::isAtLoad() {
-  return (state == EState::LOAD || state == EState::LOAD_MOTION);
-}
+bool PIDArmMotion::isAtLoad() { return (state == EState::LOAD); }
 
-bool PIDArmMotion::isAtScore() {
-  return (state == EState::SCORE || state == EState::SCORE_MOTION);
-}
+bool PIDArmMotion::isGoingLoad() { return (state == EState::LOAD_MOTION); }
+
+bool PIDArmMotion::isAtReady() { return (state == EState::READY); }
+
+bool PIDArmMotion::isGoingReady() { return (state == EState::READY_MOTION); }
+
+bool PIDArmMotion::isAtScore() { return (state == EState::SCORE); }
+
+bool PIDArmMotion::isGoingScore() { return (state == EState::SCORE_MOTION); }
 
 void PIDArmMotion::setDelayer(
     const std::unique_ptr<pvegas::rtos::IDelayer>& delayer) {
@@ -202,6 +230,11 @@ void PIDArmMotion::setRotationalLoadPosition(double rotational_load_position) {
   m_rotational_load_position = rotational_load_position;
 }
 
+void PIDArmMotion::setRotationalReadyPosition(
+    double rotational_ready_position) {
+  m_rotational_ready_position = rotational_ready_position;
+}
+
 void PIDArmMotion::setRotationalScorePosition(
     double rotational_score_position) {
   m_rotational_score_position = rotational_score_position;
@@ -217,6 +250,10 @@ void PIDArmMotion::setLinearNeutralPosition(double linear_neutral_position) {
 
 void PIDArmMotion::setLinearLoadPosition(double linear_load_position) {
   m_linear_load_position = linear_load_position;
+}
+
+void PIDArmMotion::setLinearReadyPosition(double linear_ready_position) {
+  m_linear_ready_position = linear_ready_position;
 }
 
 void PIDArmMotion::setLinearScorePosition(double linear_score_position) {

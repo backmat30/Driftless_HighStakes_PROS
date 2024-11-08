@@ -24,6 +24,9 @@ class ArmSubsystem : public ASubsystem {
   // command to go to the load position
   static constexpr char GO_LOAD_COMMAND_NAME[]{"GO LOAD"};
 
+  // command to go to the ready position
+  static constexpr char GO_READY_COMMAND_NAME[]{"GO READY"};
+
   // command to go to the score position
   static constexpr char GO_SCORE_COMMAND_NAME[]{"GO SCORE"};
 
@@ -32,11 +35,26 @@ class ArmSubsystem : public ASubsystem {
   // state determining if the arm is at neutral position
   static constexpr char IS_NEUTRAL_STATE_NAME[]{"IS NEUTRAL"};
 
+  // state determining if the arm is moving to the neutral position
+  static constexpr char IS_GOING_NEUTRAL_STATE_NAME[]{"IS GOING NEUTRAL"};
+
   // state determining if the arm is at load position
   static constexpr char IS_LOAD_STATE_NAME[]{"IS LOAD"};
 
+  // state determining if the arm is going to the load position
+  static constexpr char IS_GOING_LOAD_STATE_NAME[]{"IS GOING LOAD"};
+
+  // state determining if the arm is at the ready position
+  static constexpr char IS_READY_STATE_NAME[]{"IS READY"};
+
+  // state determining if the arm is going to the ready position
+  static constexpr char IS_GOING_READY_STATE_NAME[]{"IS GOING READY"};
+
   // state determining if the arm is at score position
   static constexpr char IS_SCORE_STATE_NAME[]{"IS SCORE"};
+
+  // state determining if the arm is going to the score position
+  static constexpr char IS_GOING_SCORE_STATE_NAME[]{"IS GOING SCORE"};
 
   // state determining if there is a ring in the loading zone
   static constexpr char HAS_RING_STATE_NAME[]{"HAS RING"};

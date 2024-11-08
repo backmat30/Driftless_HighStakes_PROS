@@ -9,24 +9,10 @@
 #include "pvegas/io/IMotor.hpp"
 
 namespace pvegas {
-/**
- * @brief Namespace for adapters from the pros library to the wisco library
- * @author Nathan Sandvig
- *
- */
 namespace pros_adapters {
-
-/**
- * @brief Pros v5 smart motor adapter for the wisco IMotor interface
- * @author Nathan Sandvig
- *
- */
 class ProsV5Motor : public io::IMotor {
  private:
-  /**
-   * @brief Map from v5 motor cartridges to gear ratios
-   *
-   */
+  // maps pros motor cartridges to the corresponding gear ratios
   const std::map<pros::MotorGears, double> cartridge_map{
       {pros::MotorGears::rpm_100, 36.0},
       {pros::MotorGears::rpm_200, 18.0},

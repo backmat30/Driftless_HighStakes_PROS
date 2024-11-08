@@ -70,6 +70,12 @@ PIDArmMotionBuilder* PIDArmMotionBuilder::withRotationalLoadPosition(
   return this;
 }
 
+PIDArmMotionBuilder* PIDArmMotionBuilder::withRotationalReadyPosition(
+    double rotational_ready_position) {
+  m_rotational_ready_position = rotational_ready_position;
+  return this;
+}
+
 PIDArmMotionBuilder* PIDArmMotionBuilder::withRotationalScorePosition(
     double rotational_score_position) {
   m_rotational_score_position = rotational_score_position;
@@ -91,6 +97,12 @@ PIDArmMotionBuilder* PIDArmMotionBuilder::withLinearNeutralPosition(
 PIDArmMotionBuilder* PIDArmMotionBuilder::withLinearLoadPosition(
     double linear_load_position) {
   m_linear_load_position = linear_load_position;
+  return this;
+}
+
+PIDArmMotionBuilder* PIDArmMotionBuilder::withLinearReadyPosition(
+    double linear_score_position) {
+  m_linear_score_position = linear_score_position;
   return this;
 }
 
@@ -120,10 +132,12 @@ std::unique_ptr<PIDArmMotion> PIDArmMotionBuilder::build() {
   pid_arm_motion->setLinearPID(m_linear_pid);
   pid_arm_motion->setRotationalNeutralPosition(m_rotational_neutral_position);
   pid_arm_motion->setRotationalLoadPosition(m_rotational_load_position);
+  pid_arm_motion->setRotationalReadyPosition(m_rotational_ready_position);
   pid_arm_motion->setRotationalScorePosition(m_rotational_score_position);
   pid_arm_motion->setRotationalTolerance(m_rotational_tolerance);
   pid_arm_motion->setLinearNeutralPosition(m_linear_neutral_position);
   pid_arm_motion->setLinearLoadPosition(m_linear_load_position);
+  pid_arm_motion->setLinearReadyPosition(m_linear_ready_position);
   pid_arm_motion->setLinearScorePosition(m_linear_score_position);
   pid_arm_motion->setLinearTolerance(m_linear_tolerance);
 

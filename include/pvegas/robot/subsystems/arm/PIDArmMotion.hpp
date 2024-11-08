@@ -22,9 +22,11 @@ class PIDArmMotion : public IArmMotion {
   enum class EState {
     NEUTRAL,
     LOAD,
+    READY,
     SCORE,
     NEUTRAL_MOTION,
     LOAD_MOTION,
+    READY_MOTION,
     SCORE_MOTION
   };
   // delay between task updates
@@ -33,7 +35,8 @@ class PIDArmMotion : public IArmMotion {
   // the conversion factor from motor rotations to arm rotations
   static constexpr double MOTOR_TO_ARM_ROTATIONS{1.0 / 4.0};
 
-  // the conversion factor from potentiometer or rotation sensor rotations to arm rotations
+  // the conversion factor from potentiometer or rotation sensor rotations to
+  // arm rotations
   static constexpr double SENSOR_TO_ARM_ROTATIONS{3.0 / 4.0};
 
   // runs task updates on loop
@@ -75,6 +78,9 @@ class PIDArmMotion : public IArmMotion {
   // the rotational position when loading
   double m_rotational_load_position{};
 
+  // the rotational position when ready
+  double m_rotational_ready_position{};
+
   // the rotational position when scoring
   double m_rotational_score_position{};
 
@@ -89,6 +95,9 @@ class PIDArmMotion : public IArmMotion {
 
   // the linear position when loading
   double m_linear_load_position{};
+
+  // the linear position when ready
+  double m_linear_ready_position{};
 
   // the linear position when scoring
   double m_linear_score_position{};
@@ -127,17 +136,35 @@ class PIDArmMotion : public IArmMotion {
   // goes to the loading position
   void goLoad() override;
 
-  // goes to the scoring position
+  // goes to the ready position
+  void goReady() override;
+
+  // goes to the score position
   void goScore() override;
 
   // determines if the arm is in the neutral position
   bool isAtNeutral() override;
 
+  // determines if the arm is going to the neutral position
+  bool isGoingNeutral() override;
+
   // determines if the arm is in the loading position
   bool isAtLoad() override;
 
-  // determines if the arm is in the scoring position
+  // determines if the arm is going to the loading position
+  bool isGoingLoad() override;
+
+  // determines if the arm is in the ready position
+  bool isAtReady() override;
+
+  // determines if the arm is going to the ready position
+  bool isGoingReady() override;
+
+  // determines if the arm is in the score position
   bool isAtScore() override;
+
+  // determines if the arm is going to the score position
+  bool isGoingScore() override;
 
   // sets the delayer
   void setDelayer(const std::unique_ptr<pvegas::rtos::IDelayer>& delayer);
@@ -174,19 +201,25 @@ class PIDArmMotion : public IArmMotion {
   // sets the rotational loading position
   void setRotationalLoadPosition(double rotational_load_position);
 
-  // sets the rotational scoring position
+  // sets the rotational ready position
+  void setRotationalReadyPosition(double rotational_ready_position);
+
+  // sets the rotational score position
   void setRotationalScorePosition(double rotational_score_position);
 
   // sets the rotational position tolerance
   void setRotationalTolerance(double rotational_tolerance);
 
-   // sets the linear neutral position
+  // sets the linear neutral position
   void setLinearNeutralPosition(double linear_neutral_position);
 
   // sets the linear loading position
   void setLinearLoadPosition(double linear_load_position);
 
-  // sets the linear scoring position
+  // sets the linear ready position
+  void setLinearReadyPosition(double linear_ready_position);
+
+  // sets the linear score position
   void setLinearScorePosition(double linear_score_position);
 
   // sets the linear position tolerance

@@ -270,16 +270,20 @@ class DefaultConfig : public IConfig {
   static constexpr double ARM_ROTATIONAL_NEUTRAL_POSITION{0.0};
   // arm rotational load position
   static constexpr double ARM_ROTATIONAL_LOAD_POSITION{0.0};
+  // arm rotational ready position
+  static constexpr double ARM_ROTATIONAL_READY_POSITION{0.3375 * 2 * M_PI};
   // arm rotational score position
-  static constexpr double ARM_ROTATIONAL_SCORE_POSITION{0.3375 * 2 * M_PI};
+  static constexpr double ARM_ROTATIONAL_SCORE_POSITION{};
   // arm rotational position tolerance
   static constexpr double ARM_ROTATIONAL_TOLERANCE{0.5};
   // arm linear neutral position
   static constexpr double ARM_LINEAR_NEUTRAL_POSITION{0.6 * 2 * M_PI};
   // arm linear load position
   static constexpr double ARM_LINEAR_LOAD_POSITION{0.0};
+  // arm linear ready position
+  static constexpr double ARM_LINEAR_READY_POSITION{1.85 * 2 * M_PI};
   // arm linear score position
-  static constexpr double ARM_LINEAR_SCORE_POSITION{1.85 * 2 * M_PI};
+  static constexpr double ARM_LINEAR_SCORE_POSITION{};
   // arm linear position tolerance
   static constexpr double ARM_LINEAR_TOLERANCE{0.5};
   // arm ring proximity

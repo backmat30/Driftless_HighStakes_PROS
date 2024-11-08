@@ -6,6 +6,7 @@ namespace op_control {
 enum EControl {
   ARM_NEUTRAL,
   ARM_LOAD,
+  ARM_READY,
   ARM_SCORE,
   ARM_TOGGLE,
   CLAMP_GRAB,
