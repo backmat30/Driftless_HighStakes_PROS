@@ -7,22 +7,30 @@
 #include "driftless/control/ControlSystem.hpp"
 #include "driftless/io/IController.hpp"
 #include "driftless/robot/Robot.hpp"
+/// @brief Namespace for driftless library code
 namespace driftless {
+/// @brief Namespace for robot configurations
 namespace config {
+/// @brief Interface for a generic robot configuration
 class IConfig {
  public:
+  /// @brief deletes the config object
   virtual ~IConfig() = default;
 
-  // gets the name of the config
+  /// @brief gets the name of the config
+  /// @return the name of the config as a string
   virtual std::string getName() = 0;
 
-  // supplies a new control system built using this config
+  /// @brief Builds a control system using the config values
+  /// @return a new control system
   virtual std::shared_ptr<control::ControlSystem> buildControlSystem() = 0;
 
-  // supplies a new controller built using this config
+  /// @brief Builds a controller object using the config values
+  /// @return a new controller object
   virtual std::shared_ptr<io::IController> buildController() = 0;
 
-  // supplies a new robot built using this config
+  /// @brief Builds a robot object using the config values
+  /// @return a new robot object
   virtual std::shared_ptr<robot::Robot> buildRobot() = 0;
 };
 }  // namespace config

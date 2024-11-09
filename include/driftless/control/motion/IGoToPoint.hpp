@@ -6,34 +6,43 @@
 #include "driftless/control/Point.hpp"
 #include "driftless/robot/Robot.hpp"
 
+/// @brief Namespace for driftless library code
 namespace driftless {
+/// @brief Namespace for control algorithms
 namespace control {
+/// @brief Namespace for basic motion control algorithms
 namespace motion {
+/// @brief Interface for a generic __go to point__ algorithm
 class IGoToPoint {
  public:
-  // destroyer
+  /// @brief Destroys the go to point object
   virtual ~IGoToPoint() = default;
 
-  // initialize the control
+  /// @brief Initializes the go to point algorithm
   virtual void init() = 0;
 
-  // run the control
+  /// @brief Runs the go to point algorithm
   virtual void run() = 0;
 
-  // pause the control
+  /// @brief Pauses the go to point algorithm
   virtual void pause() = 0;
 
-  // resume the control
+  /// @brief Resumes the go to point algorithm
   virtual void resume() = 0;
 
-  // tell the robot to go to a given point
+  /// @brief Drives the given robot to a point
+  /// @param robot - The robot being controlled
+  /// @param velocity - The maximum velocity of the robot
+  /// @param point - The point for the robot to go to
   virtual void goToPoint(const std::shared_ptr<driftless::robot::Robot>& robot, double velocity,
                          Point point) = 0;
 
-  // set the max velocity to move at
+  /// @brief Sets the maximum velocity during motion
+  /// @param velocity - The new maximum velocity
   virtual void setVelocity(double velocity) = 0;
 
-  // determines if the robot has reached the target
+  /// @brief Determines if the robot has reached the desired point
+  /// @return __TRUE__ if the robot reached the desired point, __FALSE__ if not
   virtual bool targetReached() = 0;
 };
 }  // namespace motion
