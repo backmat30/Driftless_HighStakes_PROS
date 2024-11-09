@@ -7,6 +7,8 @@ namespace driftless {
 namespace rtos {
 class IClock {
  public:
+  virtual ~IClock() = default;
+
   virtual std::unique_ptr<IClock> clone() const = 0;
 
   virtual uint32_t getTime() = 0;

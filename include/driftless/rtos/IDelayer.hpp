@@ -6,6 +6,8 @@ namespace driftless {
 namespace rtos {
 class IDelayer {
  public:
+  virtual ~IDelayer() = default;
+  
   virtual std::unique_ptr<IDelayer> clone() const = 0;
 
   virtual void delay(uint32_t millis) = 0;
