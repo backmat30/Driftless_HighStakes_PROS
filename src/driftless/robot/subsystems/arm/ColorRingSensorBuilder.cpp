@@ -17,7 +17,7 @@ ColorRingSensorBuilder* ColorRingSensorBuilder::withRingProximity(
 }
 
 std::unique_ptr<ColorRingSensor> ColorRingSensorBuilder::build() {
-  std::unique_ptr<ColorRingSensor> color_ring_sensor{};
+  std::unique_ptr<ColorRingSensor> color_ring_sensor{std::make_unique<ColorRingSensor>()};
 
   color_ring_sensor->setColorSensor(m_color_sensor);
   color_ring_sensor->setRingProximity(m_ring_proximity);
