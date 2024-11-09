@@ -5,6 +5,8 @@
 #include "driftless/io/IController.hpp"
 #include "driftless/op_control/EControllerAnalog.hpp"
 #include "driftless/op_control/EControllerDigital.hpp"
+#include "driftless/op_control/drivetrain/EDrivetrainControlMode.hpp"
+#include "driftless/profiles/IProfile.hpp"
 #include "driftless/robot/Robot.hpp"
 
 namespace driftless {
@@ -26,11 +28,14 @@ class DrivetrainOperator {
 
   void updateTank();
 
+  ///@brief updates the drive train using arcade drive
+  void updateArcade(EControllerAnalog linear, EControllerAnalog turn);
+
  public:
   DrivetrainOperator(const std::shared_ptr<io::IController> &controller,
                      const std::shared_ptr<robot::Robot> &robot);
 
-  void setDriveVoltage();
+  void setDriveVoltage(std::unique_ptr<driftless::profiles::IProfile> &profile);
 };
 }  // namespace drivetrain
 }  // namespace op_control

@@ -4,7 +4,7 @@
 namespace driftless {
 namespace op_control {
 namespace drivetrain {
-enum EDrivetrainControlMode { TANK };
+enum EDrivetrainControlMode { TANK, ARCADE };
 }
 }  // namespace op_control
 }  // namespace driftless
