@@ -44,12 +44,12 @@ void DrivetrainOperator::setDriveVoltage(
     return;
   }
 
+  EControllerAnalog linear{
+      profile->getAnalogControlMapping(EControl::DRIVE_ARCADE_LINEAR)};
+  EControllerAnalog turn{
+      profile->getAnalogControlMapping(EControl::DRIVE_ARCADE_TURN)};
   switch (static_cast<EDrivetrainControlMode>(
       profile->getControlMode(EControlType::DRIVE))) {
-    EControllerAnalog linear{
-        profile->getAnalogControlMapping(EControl::DRIVE_ARCADE_LINEAR)};
-    EControllerAnalog turn{
-        profile->getAnalogControlMapping(EControl::DRIVE_ARCADE_TURN)};
     case EDrivetrainControlMode::TANK:
       updateTank();
       break;

@@ -5,6 +5,7 @@
 #include "driftless/config/DefaultConfig.hpp"
 #include "driftless/menu/MenuAdapter.hpp"
 #include "driftless/profiles/DefaultProfile.hpp"
+#include "driftless/profiles/EricProfile.hpp"
 
 namespace driftless {
 class MatchControllerFactory {
