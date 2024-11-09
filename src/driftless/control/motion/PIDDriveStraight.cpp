@@ -17,7 +17,8 @@ void PIDDriveStraight::setDriveVelocity(double left, double right) {
   }
 }
 
-driftless::robot::subsystems::odometry::Position PIDDriveStraight::getPosition() {
+driftless::robot::subsystems::odometry::Position
+PIDDriveStraight::getPosition() {
   driftless::robot::subsystems::odometry::Position position{};
   if (m_robot) {
     position = *static_cast<driftless::robot::subsystems::odometry::Position*>(
@@ -159,7 +160,8 @@ void PIDDriveStraight::setDelayer(
   m_delayer = delayer->clone();
 }
 
-void PIDDriveStraight::setMutex(std::unique_ptr<driftless::rtos::IMutex>& mutex) {
+void PIDDriveStraight::setMutex(
+    std::unique_ptr<driftless::rtos::IMutex>& mutex) {
   m_mutex = std::move(mutex);
 }
 
