@@ -46,7 +46,7 @@ PIDElevatorBuilder* PIDElevatorBuilder::withRadiansToInches(
 }
 
 std::unique_ptr<PIDElevator> PIDElevatorBuilder::build() {
-  std::unique_ptr<PIDElevator> elevator{};
+  std::unique_ptr<PIDElevator> elevator{std::make_unique<PIDElevator>()};
 
   elevator->setDelayer(m_delayer);
   elevator->setMutex(m_mutex);

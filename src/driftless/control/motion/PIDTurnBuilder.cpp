@@ -37,7 +37,7 @@ PIDTurnBuilder* PIDTurnBuilder::withTargetVelocity(double target_velocity) {
 }
 
 std::unique_ptr<PIDTurn> PIDTurnBuilder::build() {
-  std::unique_ptr<PIDTurn> pid_turn{};
+  std::unique_ptr<PIDTurn> pid_turn{std::make_unique<PIDTurn>()};
   pid_turn->setDelayer(m_delayer);
   pid_turn->setMutex(m_mutex);
   pid_turn->setTask(m_task);

@@ -52,7 +52,7 @@ PIDPathFollowerBuilder* PIDPathFollowerBuilder::withTargetVelocity(
 }
 
 std::unique_ptr<PIDPathFollower> PIDPathFollowerBuilder::build() {
-  std::unique_ptr<PIDPathFollower> path_follower{};
+  std::unique_ptr<PIDPathFollower> path_follower{std::make_unique<PIDPathFollower>()};
   path_follower->setDelayer(m_delayer);
   path_follower->setMutex(m_mutex);
   path_follower->setTask(m_task);

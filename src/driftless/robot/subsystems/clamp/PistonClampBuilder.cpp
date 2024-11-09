@@ -11,7 +11,7 @@ PistonClampBuilder* PistonClampBuilder::withPiston(
 }
 
 std::unique_ptr<PistonClamp> PistonClampBuilder::build() {
-  std::unique_ptr<PistonClamp> piston_clamp{};
+  std::unique_ptr<PistonClamp> piston_clamp{std::make_unique<PistonClamp>()};
   piston_clamp->setPistons(m_pistons);
 
   return piston_clamp;

@@ -11,7 +11,7 @@ DirectIntakeBuilder* DirectIntakeBuilder::withMotor(
 }
 
 std::unique_ptr<DirectIntake> DirectIntakeBuilder::build() {
-  std::unique_ptr<DirectIntake> intake{};
+  std::unique_ptr<DirectIntake> intake{std::make_unique<DirectIntake>()};
   intake->setMotors(m_motors);
 
   return intake;

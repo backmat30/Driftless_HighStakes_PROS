@@ -39,7 +39,7 @@ PIDGoToPointBuilder* PIDGoToPointBuilder::withTargetVelocity(double target_veloc
 }
 
 std::unique_ptr<PIDGoToPoint> PIDGoToPointBuilder::build() {
-  std::unique_ptr<PIDGoToPoint> pid_go_to_point{};
+  std::unique_ptr<PIDGoToPoint> pid_go_to_point{std::make_unique<PIDGoToPoint>()};
   pid_go_to_point->setDelayer(m_delayer);
   pid_go_to_point->setMutex(m_mutex);
   pid_go_to_point->setTask(m_task);

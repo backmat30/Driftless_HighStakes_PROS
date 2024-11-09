@@ -119,7 +119,7 @@ PIDArmMotionBuilder* PIDArmMotionBuilder::withLinearTolerance(
 }
 
 std::unique_ptr<PIDArmMotion> PIDArmMotionBuilder::build() {
-  std::unique_ptr<PIDArmMotion> pid_arm_motion{};
+  std::unique_ptr<PIDArmMotion> pid_arm_motion{std::make_unique<PIDArmMotion>()};
 
   pid_arm_motion->setDelayer(m_delayer);
   pid_arm_motion->setMutex(m_mutex);

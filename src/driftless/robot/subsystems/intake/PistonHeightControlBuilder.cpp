@@ -11,7 +11,7 @@ PistonHeightControlBuilder* PistonHeightControlBuilder::withPiston(
 }
 
 std::unique_ptr<PistonHeightControl> PistonHeightControlBuilder::build() {
-  std::unique_ptr<PistonHeightControl> height_control{};
+  std::unique_ptr<PistonHeightControl> height_control{std::make_unique<PistonHeightControl>()};
   height_control->setPistons(m_pistons);
 
   return height_control;
