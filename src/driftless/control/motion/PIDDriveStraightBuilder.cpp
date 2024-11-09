@@ -46,7 +46,7 @@ PIDDriveStraightBuilder* PIDDriveStraightBuilder::withTargetVelocity(
 }
 
 std::unique_ptr<PIDDriveStraight> PIDDriveStraightBuilder::build() {
-  std::unique_ptr<PIDDriveStraight> pid_drive_straight{};
+  std::unique_ptr<PIDDriveStraight> pid_drive_straight{std::make_unique<PIDDriveStraight>()};
   pid_drive_straight->setDelayer(m_delayer);
   pid_drive_straight->setMutex(m_mutex);
   pid_drive_straight->setTask(m_task);

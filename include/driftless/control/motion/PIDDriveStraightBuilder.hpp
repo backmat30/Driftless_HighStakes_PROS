@@ -41,7 +41,8 @@ class PIDDriveStraightBuilder {
       std::unique_ptr<driftless::rtos::IMutex>& mutex);
 
   // adds a task to the builder
-  PIDDriveStraightBuilder* withTask(std::unique_ptr<driftless::rtos::ITask>& task);
+  PIDDriveStraightBuilder* withTask(
+      std::unique_ptr<driftless::rtos::ITask>& task);
 
   // adds a linear PID controller to the builder
   PIDDriveStraightBuilder* withLinearPID(PID linear_pid);
