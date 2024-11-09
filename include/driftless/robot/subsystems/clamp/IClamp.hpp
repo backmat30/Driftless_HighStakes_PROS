@@ -17,10 +17,10 @@ class IClamp {
   virtual void run() = 0;
 
   // set the state of the clamp
-  virtual void setState(bool clamped);
+  virtual void setState(bool clamped) = 0;
 
   // get the state of the clamp
-  virtual bool getState();
+  virtual bool getState() = 0;
 };
 }  // namespace clamp
 }  // namespace subsystems

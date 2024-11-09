@@ -11,10 +11,10 @@ class IIntake {
   virtual ~IIntake() = default;
 
   // initialize the intake
-  virtual void init();
+  virtual void init() = 0;
 
   // run the intake
-  virtual void run();
+  virtual void run() = 0;
 
   // set the voltage of the motor
   virtual void setVoltage(double voltage) = 0;
