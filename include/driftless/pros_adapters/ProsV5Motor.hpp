@@ -52,7 +52,7 @@ class ProsV5Motor : public io::IMotor {
    * @brief Converts motor position to radians
    *
    */
-  static constexpr double POSITION_CONVERSION{M_PI / 180.0};
+  static constexpr double POSITION_CONVERSION{M_PI * 2};
 
   /**
    * @brief Converts input voltage to millivolts

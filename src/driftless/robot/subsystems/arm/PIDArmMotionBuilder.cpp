@@ -101,8 +101,8 @@ PIDArmMotionBuilder* PIDArmMotionBuilder::withLinearLoadPosition(
 }
 
 PIDArmMotionBuilder* PIDArmMotionBuilder::withLinearReadyPosition(
-    double linear_score_position) {
-  m_linear_score_position = linear_score_position;
+    double linear_ready_position) {
+  m_linear_ready_position = linear_ready_position;
   return this;
 }
 

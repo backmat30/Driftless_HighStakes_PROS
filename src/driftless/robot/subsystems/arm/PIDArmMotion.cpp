@@ -1,5 +1,6 @@
 #include "driftless/robot/subsystems/arm/PIDArmMotion.hpp"
 
+#include "pros/screen.hpp"
 namespace driftless {
 namespace robot {
 namespace subsystems {
@@ -18,10 +19,15 @@ void PIDArmMotion::taskUpdate() {
   }
   updateState();
   updatePosition();
+  pros::screen::print(pros::E_TEXT_LARGE, 3,
+                      (std::to_string(static_cast<int>(state)).c_str()));
+  pros::screen::print(pros::E_TEXT_LARGE, 4,
+                      (std::to_string(m_linear_motors.getPosition()).c_str()));
 
   if (m_mutex) {
     m_mutex->give();
   }
+  m_delayer->delay(TASK_DELAY);
 }
 
 void PIDArmMotion::updateState() {
@@ -205,7 +211,8 @@ void PIDArmMotion::setPotentiometer(
   m_potentiometer = std::move(potentiometer);
 }
 
-void PIDArmMotion::setRotationMotors(driftless::hal::MotorGroup& rotation_motors) {
+void PIDArmMotion::setRotationMotors(
+    driftless::hal::MotorGroup& rotation_motors) {
   m_rotation_motors = rotation_motors;
 }
 

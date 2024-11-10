@@ -8,6 +8,7 @@ std::shared_ptr<control::ControlSystem> DefaultConfig::buildControlSystem() {
   // creates a new ControlSystem object through the copy constructor
   std::shared_ptr<control::ControlSystem> control_system{
       std::make_shared<control::ControlSystem>()};
+
   // delayer and clock passed to all controls
   std::unique_ptr<driftless::rtos::IClock> clock{
       std::make_unique<driftless::pros_adapters::ProsClock>()};
@@ -15,7 +16,8 @@ std::shared_ptr<control::ControlSystem> DefaultConfig::buildControlSystem() {
       std::make_unique<driftless::pros_adapters::ProsDelayer>()};
 
   // MOTION CONTROL
-  driftless::control::motion::PIDDriveStraightBuilder pid_drive_straight_builder{};
+  driftless::control::motion::PIDDriveStraightBuilder
+      pid_drive_straight_builder{};
   // objects needed for drive straight algorithm
   std::unique_ptr<driftless::rtos::IMutex> pid_drive_straight_mutex{
       std::make_unique<driftless::pros_adapters::ProsMutex>()};
@@ -70,8 +72,8 @@ std::shared_ptr<control::ControlSystem> DefaultConfig::buildControlSystem() {
   std::unique_ptr<driftless::rtos::ITask> pid_turn_task{
       std::make_unique<driftless::pros_adapters::ProsTask>()};
   driftless::control::PID pid_turn_rotational_pid{clock, PID_TURN_ROTATIONAL_KP,
-                                               PID_TURN_ROTATIONAL_KI,
-                                               PID_TURN_ROTATIONAL_KD};
+                                                  PID_TURN_ROTATIONAL_KI,
+                                                  PID_TURN_ROTATIONAL_KD};
 
   // assemble the turn object
   std::unique_ptr<driftless::control::motion::ITurn> turn{
@@ -248,13 +250,14 @@ std::shared_ptr<robot::Robot> DefaultConfig::buildRobot() {
           temp_arm_potentiometer)};
 
   driftless::control::PID arm_rotational_pid{arm_clock, PID_ARM_ROTATIONAL_KP,
-                                          PID_ARM_ROTATIONAL_KI,
-                                          PID_ARM_ROTATIONAL_KD};
+                                             PID_ARM_ROTATIONAL_KI,
+                                             PID_ARM_ROTATIONAL_KD};
   driftless::control::PID arm_linear_pid{arm_clock, PID_ARM_LINEAR_KP,
-                                      PID_ARM_LINEAR_KI, PID_ARM_LINEAR_KD};
+                                         PID_ARM_LINEAR_KI, PID_ARM_LINEAR_KD};
 
   // assemble the subsystem
-  driftless::robot::subsystems::arm::PIDArmMotionBuilder pid_arm_motion_builder{};
+  driftless::robot::subsystems::arm::PIDArmMotionBuilder
+      pid_arm_motion_builder{};
   driftless::robot::subsystems::arm::ColorRingSensorBuilder
       color_ring_sensor_builder{};
 
@@ -265,7 +268,7 @@ std::shared_ptr<robot::Robot> DefaultConfig::buildRobot() {
           ->withRotationalMotor(arm_left_rotation_motor)
           ->withRotationalMotor(arm_right_rotation_motor)
           ->withLinearMotor(arm_linear_motor)
-          ->withPotentiometer(arm_potentiometer)
+          //->withPotentiometer(arm_potentiometer)
           ->withRotationalPID(arm_rotational_pid)
           ->withLinearPID(arm_linear_pid)
           ->withRotationalNeutralPosition(ARM_ROTATIONAL_NEUTRAL_POSITION)
@@ -303,7 +306,8 @@ std::shared_ptr<robot::Robot> DefaultConfig::buildRobot() {
           temp_clamp_left_piston)};
 
   // build the clamp
-  driftless::robot::subsystems::clamp::PistonClampBuilder piston_clamp_builder{};
+  driftless::robot::subsystems::clamp::PistonClampBuilder
+      piston_clamp_builder{};
 
   std::unique_ptr<driftless::robot::subsystems::clamp::IClamp> piston_clamp{
       piston_clamp_builder.withPiston(adapted_clamp_left_piston)->build()};
@@ -340,7 +344,7 @@ std::shared_ptr<robot::Robot> DefaultConfig::buildRobot() {
               temp_elevator_rotation_sensor)};
 
   driftless::control::PID elevator_pid{elevator_clock, PID_ELEVATOR_KP,
-                                    PID_ELEVATOR_KI, PID_ELEVATOR_KD};
+                                       PID_ELEVATOR_KI, PID_ELEVATOR_KD};
 
   // build the elevator
   driftless::robot::subsystems::elevator::PIDElevatorBuilder
@@ -357,8 +361,8 @@ std::shared_ptr<robot::Robot> DefaultConfig::buildRobot() {
           ->build()};
 
   std::unique_ptr<driftless::robot::subsystems::ASubsystem> elevator_subsystem{
-      std::make_unique<driftless::robot::subsystems::elevator::ElevatorSubsystem>(
-          elevator)};
+      std::make_unique<
+          driftless::robot::subsystems::elevator::ElevatorSubsystem>(elevator)};
   robot->addSubsystem(elevator_subsystem);
 
   // INTAKE
@@ -421,14 +425,14 @@ std::shared_ptr<robot::Robot> DefaultConfig::buildRobot() {
           temp_linear_rotation_sensor)};
   std::unique_ptr<driftless::io::IDistanceTracker> linear_tracking_wheel{
       std::make_unique<driftless::hal::TrackingWheel>(linear_rotation_sensor,
-                                                   TRACKING_WHEEL_RADIUS)};
+                                                      TRACKING_WHEEL_RADIUS)};
   // strafe tracking wheel
   std::unique_ptr<driftless::io::IRotationSensor> strafe_rotation_sensor{
       std::make_unique<driftless::pros_adapters::ProsRotationSensor>(
           temp_strafe_rotation_sensor)};
   std::unique_ptr<driftless::io::IDistanceTracker> strafe_tracking_wheel{
       std::make_unique<driftless::hal::TrackingWheel>(strafe_rotation_sensor,
-                                                   TRACKING_WHEEL_RADIUS)};
+                                                      TRACKING_WHEEL_RADIUS)};
   // inertial sensor
   std::unique_ptr<driftless::io::IInertialSensor> inertial_sensor{
       std::make_unique<driftless::pros_adapters::ProsInertialSensor>(
@@ -475,7 +479,8 @@ std::shared_ptr<robot::Robot> DefaultConfig::buildRobot() {
 
   // create and add the subsystem
   std::unique_ptr<driftless::robot::subsystems::ASubsystem> odometry_subsystem{
-      std::make_unique<driftless::robot::subsystems::odometry::OdometrySubsystem>(
+      std::make_unique<
+          driftless::robot::subsystems::odometry::OdometrySubsystem>(
           inertial_position_tracker, distance_position_resetter)};
   robot->addSubsystem(odometry_subsystem);
 

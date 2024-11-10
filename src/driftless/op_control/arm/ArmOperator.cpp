@@ -3,7 +3,8 @@
 namespace driftless {
 namespace op_control {
 namespace arm {
-bool ArmOperator::hasAllianceRing(const driftless::alliance::Alliance alliance) {
+bool ArmOperator::hasAllianceRing(
+    const driftless::alliance::Alliance alliance) {
   bool has_ring{*static_cast<bool*>(
       m_robot->getState(ARM_SUBSYSTEM_NAME, HAS_RING_STATE_NAME))};
 
@@ -17,11 +18,10 @@ bool ArmOperator::hasAllianceRing(const driftless::alliance::Alliance alliance) 
 
   return has_alliance_ring;
 }
-void ArmOperator::updateSplitToggle(EControllerDigital neutral,
-                                    EControllerDigital load,
-                                    EControllerDigital ready,
-                                    EControllerDigital score,
-                                    const driftless::alliance::Alliance alliance) {
+void ArmOperator::updateSplitToggle(
+    EControllerDigital neutral, EControllerDigital load,
+    EControllerDigital ready, EControllerDigital score,
+    const driftless::alliance::Alliance alliance) {
   bool go_neutral{m_controller->getNewDigital(neutral)};
   bool go_load{m_controller->getNewDigital(load)};
   bool go_ready{m_controller->getNewDigital(ready)};
@@ -53,25 +53,41 @@ void ArmOperator::updateSingleToggle(
     EControllerDigital toggle, const driftless::alliance::Alliance alliance) {
   bool next_position{m_controller->getNewDigital(toggle)};
 
-  bool is_neutral{*static_cast<bool*>(
-      m_robot->getState(ARM_SUBSYSTEM_NAME, IS_NEUTRAL_STATE_NAME))};
-  bool is_going_neutral{*static_cast<bool*>(
-      m_robot->getState(ARM_SUBSYSTEM_NAME, IS_GOING_NEUTRAL_STATE_NAME))};
-  bool is_load{*static_cast<bool*>(
-      m_robot->getState(ARM_SUBSYSTEM_NAME, IS_LOAD_STATE_NAME))};
-  bool is_going_load{*static_cast<bool*>(
-      m_robot->getState(ARM_SUBSYSTEM_NAME, IS_GOING_LOAD_STATE_NAME))};
-  bool is_ready{*static_cast<bool*>(
-      m_robot->getState(ARM_SUBSYSTEM_NAME, IS_READY_STATE_NAME))};
-  bool is_score{*static_cast<bool*>(
-      m_robot->getState(ARM_SUBSYSTEM_NAME, IS_SCORE_STATE_NAME))};
+  void* is_neutral_state{
+      m_robot->getState(ARM_SUBSYSTEM_NAME, IS_NEUTRAL_STATE_NAME)};
+  bool is_neutral{is_neutral_state != nullptr &&
+                  *static_cast<bool*>(is_neutral_state)};
+
+  void* is_going_neutral_state{
+      m_robot->getState(ARM_SUBSYSTEM_NAME, IS_GOING_NEUTRAL_STATE_NAME)};
+  bool is_going_neutral{is_going_neutral_state != nullptr &&
+                        *static_cast<bool*>(is_going_neutral_state)};
+
+  void* is_load_state{
+      m_robot->getState(ARM_SUBSYSTEM_NAME, IS_LOAD_STATE_NAME)};
+  bool is_load{is_load_state != nullptr && *static_cast<bool*>(is_load_state)};
+
+  void* is_going_load_state{
+      m_robot->getState(ARM_SUBSYSTEM_NAME, IS_GOING_LOAD_STATE_NAME)};
+  bool is_going_load{is_going_load_state != nullptr &&
+                     *static_cast<bool*>(is_going_load_state)};
+
+  void* is_ready_state{
+      m_robot->getState(ARM_SUBSYSTEM_NAME, IS_READY_STATE_NAME)};
+  bool is_ready{is_ready_state != nullptr &&
+                *static_cast<bool*>(is_ready_state)};
+
+  void* is_score_state{
+      m_robot->getState(ARM_SUBSYSTEM_NAME, IS_SCORE_STATE_NAME)};
+  bool is_score{is_score_state != nullptr &&
+                *static_cast<bool*>(is_score_state)};
 
   if (next_position) {
     if (is_neutral || is_going_neutral) {
       m_robot->sendCommand(ARM_SUBSYSTEM_NAME, GO_LOAD_COMMAND_NAME);
     } else if (is_load) {
       // if (hasAllianceRing(alliance)) {
-      m_robot->sendCommand(ARM_SUBSYSTEM_NAME, GO_SCORE_COMMAND_NAME);
+      m_robot->sendCommand(ARM_SUBSYSTEM_NAME, GO_READY_COMMAND_NAME);
       // } else {
       //   m_robot->sendCommand(ARM_SUBSYSTEM_NAME, GO_NEUTRAL_COMMAND_NAME);
       // }

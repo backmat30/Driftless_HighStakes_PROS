@@ -10,7 +10,8 @@ static driftless::MatchController match_controller{
  * to keep execution time for this mode under a few seconds.
  */
 void initialize() {
-  bool fast_init = false;
+  bool fast_init{pros::competition::is_connected() &&
+                 !pros::competition::is_disabled()};
   match_controller.init(fast_init);
 }
 

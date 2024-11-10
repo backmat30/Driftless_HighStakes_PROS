@@ -9,6 +9,7 @@ void ProsV5Motor::initialize() {
     m_motor->move_voltage(0);
     m_motor->tare_position();
     m_motor->set_brake_mode(pros::E_MOTOR_BRAKE_BRAKE);
+    m_motor->set_encoder_units(pros::motor_encoder_units_e_t::E_MOTOR_ENCODER_ROTATIONS);
   }
 }
 

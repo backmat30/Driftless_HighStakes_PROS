@@ -7,7 +7,8 @@ namespace arm {
 ArmSubsystem::ArmSubsystem(std::unique_ptr<IArmMotion>& arm_motion,
                            std::unique_ptr<IRingSensor>& ring_sensor)
     : m_arm_motion{std::move(arm_motion)},
-      m_ring_sensor{std::move(ring_sensor)} {}
+      m_ring_sensor{std::move(ring_sensor)},
+      ASubsystem{SUBSYSTEM_NAME} {}
 
 void ArmSubsystem::init() {
   m_arm_motion->init();

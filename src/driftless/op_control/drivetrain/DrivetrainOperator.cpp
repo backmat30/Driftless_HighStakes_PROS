@@ -57,7 +57,6 @@ void DrivetrainOperator::setDriveVoltage(
       updateArcade(linear, turn);
       break;
   }
-  updateTank();
 }
 }  // namespace drivetrain
 }  // namespace op_control

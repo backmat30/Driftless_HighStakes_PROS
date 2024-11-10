@@ -197,19 +197,19 @@ class DefaultConfig : public IConfig {
   // ARM PORTS
 
   /// @brief left side arm rotational motor
-  static constexpr int8_t ARM_LEFT_ROTATION_MOTOR{2};
+  static constexpr int8_t ARM_LEFT_ROTATION_MOTOR{9};
 
   /// @brief right side arm rotational motor
-  static constexpr int8_t ARM_RIGHT_ROTATION_MOTOR{-1};
+  static constexpr int8_t ARM_RIGHT_ROTATION_MOTOR{-19};
 
   /// @brief arm linear motor
-  static constexpr int8_t ARM_LINEAR_MOTOR{3};
+  static constexpr int8_t ARM_LINEAR_MOTOR{10};
 
   /// @brief arm color sensor
   static constexpr int8_t ARM_COLOR_SENSOR{UNDEFINED_PORT};
 
   /// @brief arm potentiometer
-  static constexpr int8_t ARM_POTENTIOMETER{UNDEFINED_PORT};
+  static constexpr int8_t ARM_POTENTIOMETER{1};
 
   // CLAMP PORTS
 
@@ -239,7 +239,7 @@ class DefaultConfig : public IConfig {
   /// @brief right tracking wheel
   static constexpr int8_t ODOMETRY_STRAFE_TRACKING_WHEEL{UNDEFINED_PORT};
   /// @brief inertial sensor
-  static constexpr int8_t ODOMETRY_INERTIAL_SENSOR{UNDEFINED_PORT};
+  static constexpr int8_t ODOMETRY_INERTIAL_SENSOR{20};
   /// @brief distance sensor
   static constexpr int8_t ODOMETRY_DISTANCE_SENSOR{UNDEFINED_PORT};
 
@@ -263,13 +263,13 @@ class DefaultConfig : public IConfig {
   /// @brief arm rotational pid controller ki value
   static constexpr double PID_ARM_ROTATIONAL_KI{0.0};
   /// @brief arm rotational pid controller kd value
-  static constexpr double PID_ARM_ROTATIONAL_KD{256.0};
+  static constexpr double PID_ARM_ROTATIONAL_KD{0.0};
   /// @brief arm linear pid controller kp value
   static constexpr double PID_ARM_LINEAR_KP{24.0};
   /// @brief arm linear pid controller ki value
   static constexpr double PID_ARM_LINEAR_KI{0.0};
   /// @brief arm linear pid controller kd value
-  static constexpr double PID_ARM_LINEAR_KD{256.0};
+  static constexpr double PID_ARM_LINEAR_KD{0.0};
   /// @brief arm rotational neutral position
   static constexpr double ARM_ROTATIONAL_NEUTRAL_POSITION{0.0};
   /// @brief arm rotational load position
@@ -277,7 +277,7 @@ class DefaultConfig : public IConfig {
   /// @brief arm rotational ready position
   static constexpr double ARM_ROTATIONAL_READY_POSITION{0.3375 * 2 * M_PI};
   /// @brief arm rotational score position
-  static constexpr double ARM_ROTATIONAL_SCORE_POSITION{};
+  static constexpr double ARM_ROTATIONAL_SCORE_POSITION{0.34375 * 2 * M_PI};
   /// @brief arm rotational position tolerance
   static constexpr double ARM_ROTATIONAL_TOLERANCE{0.5};
   /// @brief arm linear neutral position
@@ -287,7 +287,7 @@ class DefaultConfig : public IConfig {
   /// @brief arm linear ready position
   static constexpr double ARM_LINEAR_READY_POSITION{1.85 * 2 * M_PI};
   /// @brief arm linear score position
-  static constexpr double ARM_LINEAR_SCORE_POSITION{};
+  static constexpr double ARM_LINEAR_SCORE_POSITION{0.0};
   /// @brief arm linear position tolerance
   static constexpr double ARM_LINEAR_TOLERANCE{0.5};
   /// @brief arm ring proximity
