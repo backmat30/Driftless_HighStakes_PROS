@@ -3,19 +3,32 @@
 namespace driftless {
 namespace pros_adapters {
 ProsADIPotentiometer::ProsADIPotentiometer(
-    std::unique_ptr<pros::adi::AnalogIn>& potentiometer)
-    : m_potentiometer{std::move(potentiometer)} {}
+    std::unique_ptr<pros::adi::AnalogIn>& potentiometer, bool reversed)
+    : m_potentiometer{std::move(potentiometer)}, m_reversed{reversed} {}
 
 void ProsADIPotentiometer::init() { calibrate(); }
 
 void ProsADIPotentiometer::calibrate() {
-  m_potentiometer->calibrate();
-  pros::delay(500);
+  double raw_position{m_potentiometer->get_value() * DECIDEGREES_TO_RADIANS};
+
+  if (m_reversed) {
+    position_offset = MAX_VALUE - raw_position;
+  } else {
+    position_offset = raw_position;
+  }
 }
 
 double ProsADIPotentiometer::getAngle() {
-  int32_t decidegrees{m_potentiometer->get_value()};
-  return decidegrees * DECIDEGREES_TO_RADIANS;
+  double position{};
+  double raw_position{m_potentiometer->get_value() * DECIDEGREES_TO_RADIANS};
+
+  if(m_reversed) {
+    position = MAX_VALUE - raw_position;
+  } else {
+    position = raw_position;
+  }
+
+  return position - position_offset;
 }
 }  // namespace pros_adapters
 }  // namespace driftless
