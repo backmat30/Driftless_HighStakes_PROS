@@ -157,11 +157,14 @@ class DefaultConfig : public IConfig {
   static constexpr double PID_PATH_FOLLOWER_LINEAR_KI{0.0};
   /// @brief kd value for the linear PID controller used in the path follower
   static constexpr double PID_PATH_FOLLOWER_LINEAR_KD{640.0};
-  /// @brief kp value for the rotational PID controller used in the path follower
+  /// @brief kp value for the rotational PID controller used in the path
+  /// follower
   static constexpr double PID_PATH_FOLLOWER_ROTATIONAL_KP{640.0};
-  /// @brief ki value for the rotational PID controller used in the path follower
+  /// @brief ki value for the rotational PID controller used in the path
+  /// follower
   static constexpr double PID_PATH_FOLLOWER_ROTATIONAL_KI{0.0};
-  /// @brief kd value for the rotational PID controller used in the path follower
+  /// @brief kd value for the rotational PID controller used in the path
+  /// follower
   static constexpr double PID_PATH_FOLLOWER_ROTATIONAL_KD{10000.0};
   /// @brief path follower follow distance
   static constexpr double PID_PATH_FOLLOWER_FOLLOW_DISTANCE{12.0};
@@ -258,6 +261,14 @@ class DefaultConfig : public IConfig {
 
   // arm
 
+  /// @brief whether the arm potentiometer is reversed or not
+  static constexpr bool ARM_POTENTIOMETER_REVERSED{true};
+  /// @brief the gearset on the arm linear motor
+  static constexpr pros::MotorGearset ARM_LINEAR_GEARSET{
+      pros::E_MOTOR_GEAR_200};
+  /// @brief the gearset on the arm rotation motors
+  static constexpr pros::MotorGearset ARM_ROTATIONAL_GEARSET{
+      pros::E_MOTOR_GEAR_200};
   /// @brief arm rotational pid controller kp value
   static constexpr double PID_ARM_ROTATIONAL_KP{24.0};
   /// @brief arm rotational pid controller ki value
@@ -275,21 +286,38 @@ class DefaultConfig : public IConfig {
   /// @brief arm rotational load position
   static constexpr double ARM_ROTATIONAL_LOAD_POSITION{0.0};
   /// @brief arm rotational ready position
-  static constexpr double ARM_ROTATIONAL_READY_POSITION{0.3375 * 2 * M_PI};
+  static constexpr double ARM_ROTATIONAL_READY_POSITION{1.175 / 4.0 * 2.0 *
+                                                        M_PI};
   /// @brief arm rotational score position
-  static constexpr double ARM_ROTATIONAL_SCORE_POSITION{0.34375 * 2 * M_PI};
+  static constexpr double ARM_ROTATIONAL_SCORE_POSITION{1.45 / 4.0 * 2.0 * M_PI};
+  /// @brief arm rotational rush position
+  static constexpr double ARM_ROTATIONAL_RUSH_POSITION{0.0 / 4.0 * 2.0 * M_PI};
+  /// @brief The intermediate position on the rotation towards the arm ready
+  /// position
+  static constexpr double ARM_ROTATIONAL_READY_INTERMEDIATE_POSITION{
+      0.5 / 4.0 * 2.0 * M_PI};
+  /// @brief The intermediate position on the rotation towards the arm score
+  /// position
+  static constexpr double ARM_ROTATIONAL_SCORE_INTERMEDIATE_POSITION{
+      1.3 / 4.0 * 2.0 * M_PI};
+  /// @brief The intermediate position on the rotation towards the arm rush
+  /// position
+  static constexpr double ARM_ROTATIONAL_RUSH_INTERMEDIATE_POSITION{0.5 / 4.0 *
+                                                                    2.0 * M_PI};
   /// @brief arm rotational position tolerance
-  static constexpr double ARM_ROTATIONAL_TOLERANCE{0.5};
+  static constexpr double ARM_ROTATIONAL_TOLERANCE{0.05};
   /// @brief arm linear neutral position
-  static constexpr double ARM_LINEAR_NEUTRAL_POSITION{0.6 * 2 * M_PI};
+  static constexpr double ARM_LINEAR_NEUTRAL_POSITION{0.6 * 2.0 * M_PI};
   /// @brief arm linear load position
   static constexpr double ARM_LINEAR_LOAD_POSITION{0.0};
   /// @brief arm linear ready position
-  static constexpr double ARM_LINEAR_READY_POSITION{1.85 * 2 * M_PI};
+  static constexpr double ARM_LINEAR_READY_POSITION{5.95};
   /// @brief arm linear score position
-  static constexpr double ARM_LINEAR_SCORE_POSITION{0.0};
+  static constexpr double ARM_LINEAR_SCORE_POSITION{5.0};
+  /// @brief Arm linear rush position
+  static constexpr double ARM_LINEAR_RUSH_POSITION{5.95};
   /// @brief arm linear position tolerance
-  static constexpr double ARM_LINEAR_TOLERANCE{0.5};
+  static constexpr double ARM_LINEAR_TOLERANCE{0.1};
   /// @brief arm ring proximity
   static constexpr uint32_t ARM_RING_PROXIMITY{0};
 

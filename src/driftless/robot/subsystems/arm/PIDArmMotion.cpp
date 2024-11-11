@@ -78,8 +78,7 @@ void PIDArmMotion::updateState() {
       }
       break;
     case EState::READY_INTERMEDIATE:
-      if (std::abs(rotation_position -
-                   m_rotational_rush_intermediate_position) <=
+      if (m_rotational_rush_intermediate_position - rotation_position <=
           m_rotational_tolerance) {
         state = EState::READY_MOTION;
         rotational_target_position = m_rotational_ready_position;
@@ -87,8 +86,7 @@ void PIDArmMotion::updateState() {
       }
       break;
     case EState::SCORE_INTERMEDIATE:
-      if (std::abs(rotation_position -
-                   m_rotational_score_intermediate_position) <=
+      if (m_rotational_score_intermediate_position - rotation_position <=
           m_rotational_tolerance) {
         state = EState::SCORE_MOTION;
         rotational_target_position = m_rotational_score_position;
@@ -96,8 +94,7 @@ void PIDArmMotion::updateState() {
       }
       break;
     case EState::RUSH_INTERMEDIATE:
-      if (std::abs(rotation_position =
-                       m_rotational_rush_intermediate_position) <=
+      if (m_rotational_rush_intermediate_position - rotation_position <=
           m_rotational_tolerance) {
         state = EState::RUSH_MOTION;
         rotational_target_position = m_rotational_rush_position;
@@ -185,7 +182,7 @@ void PIDArmMotion::goReady() {
   }
   if (state != EState::READY && state != EState::READY_MOTION) {
     state = EState::READY_INTERMEDIATE;
-    rotational_target_position = m_rotational_ready_intermediate_position;
+    rotational_target_position = m_rotational_ready_position;
   }
   if (m_mutex) {
     m_mutex->give();
@@ -198,7 +195,7 @@ void PIDArmMotion::goScore() {
   }
   if (state != EState::SCORE && state != EState::SCORE_MOTION) {
     state = EState::SCORE_INTERMEDIATE;
-    rotational_target_position = m_rotational_score_intermediate_position;
+    rotational_target_position = m_rotational_score_position;
   }
   if (m_mutex) {
     m_mutex->give();
@@ -211,7 +208,7 @@ void PIDArmMotion::goRush() {
   }
   if (state != EState::RUSH && state != EState::RUSH_MOTION) {
     state = EState::RUSH_INTERMEDIATE;
-    rotational_target_position = m_rotational_rush_intermediate_position;
+    rotational_target_position = m_rotational_rush_position;
   }
 
   if (m_mutex) {

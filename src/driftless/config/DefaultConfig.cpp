@@ -222,11 +222,11 @@ std::shared_ptr<robot::Robot> DefaultConfig::buildRobot() {
 
   // pros objects
   std::unique_ptr<pros::Motor> temp_arm_left_rotation_motor{
-      std::make_unique<pros::Motor>(ARM_LEFT_ROTATION_MOTOR)};
+      std::make_unique<pros::Motor>(ARM_LEFT_ROTATION_MOTOR, ARM_ROTATIONAL_GEARSET)};
   std::unique_ptr<pros::Motor> temp_arm_right_rotation_motor{
-      std::make_unique<pros::Motor>(ARM_RIGHT_ROTATION_MOTOR)};
+      std::make_unique<pros::Motor>(ARM_RIGHT_ROTATION_MOTOR, ARM_ROTATIONAL_GEARSET)};
   std::unique_ptr<pros::Motor> temp_arm_linear_motor{
-      std::make_unique<pros::Motor>(ARM_LINEAR_MOTOR)};
+      std::make_unique<pros::Motor>(ARM_LINEAR_MOTOR, ARM_LINEAR_GEARSET)};
   std::unique_ptr<pros::Optical> temp_arm_color_sensor{
       std::make_unique<pros::Optical>(ARM_COLOR_SENSOR)};
   std::unique_ptr<pros::adi::AnalogIn> temp_arm_potentiometer{
@@ -247,7 +247,7 @@ std::shared_ptr<robot::Robot> DefaultConfig::buildRobot() {
           temp_arm_color_sensor)};
   std::unique_ptr<driftless::io::IPotentiometer> arm_potentiometer{
       std::make_unique<driftless::pros_adapters::ProsADIPotentiometer>(
-          temp_arm_potentiometer)};
+          temp_arm_potentiometer, ARM_POTENTIOMETER_REVERSED)};
 
   driftless::control::PID arm_rotational_pid{arm_clock, PID_ARM_ROTATIONAL_KP,
                                              PID_ARM_ROTATIONAL_KI,
@@ -268,18 +268,22 @@ std::shared_ptr<robot::Robot> DefaultConfig::buildRobot() {
           ->withRotationalMotor(arm_left_rotation_motor)
           ->withRotationalMotor(arm_right_rotation_motor)
           ->withLinearMotor(arm_linear_motor)
-          //->withPotentiometer(arm_potentiometer)
           ->withRotationalPID(arm_rotational_pid)
           ->withLinearPID(arm_linear_pid)
           ->withRotationalNeutralPosition(ARM_ROTATIONAL_NEUTRAL_POSITION)
           ->withRotationalLoadPosition(ARM_ROTATIONAL_LOAD_POSITION)
           ->withRotationalReadyPosition(ARM_ROTATIONAL_READY_POSITION)
           ->withRotationalScorePosition(ARM_ROTATIONAL_SCORE_POSITION)
+          ->withRotationalRushPosition(ARM_ROTATIONAL_RUSH_POSITION)
+          ->withRotationalReadyIntermediatePosition(ARM_ROTATIONAL_READY_INTERMEDIATE_POSITION)
+          ->withRotationalScoreIntermediatePosition(ARM_ROTATIONAL_SCORE_INTERMEDIATE_POSITION)
+          ->withRotationalRushIntermediatePosition(ARM_ROTATIONAL_RUSH_INTERMEDIATE_POSITION)
           ->withRotationalTolerance(ARM_ROTATIONAL_TOLERANCE)
           ->withLinearNeutralPosition(ARM_LINEAR_NEUTRAL_POSITION)
           ->withLinearLoadPosition(ARM_LINEAR_LOAD_POSITION)
           ->withLinearReadyPosition(ARM_LINEAR_READY_POSITION)
           ->withLinearScorePosition(ARM_LINEAR_SCORE_POSITION)
+          ->withLinearRushPosition(ARM_LINEAR_RUSH_POSITION)
           ->withLinearTolerance(ARM_LINEAR_TOLERANCE)
           ->build()};
 
