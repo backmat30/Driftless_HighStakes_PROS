@@ -29,6 +29,8 @@ void ArmSubsystem::command(std::string command_name, va_list& args) {
     m_arm_motion->goReady();
   } else if (command_name == GO_SCORE_COMMAND_NAME) {
     m_arm_motion->goScore();
+  } else if (command_name == GO_RUSH_COMMAND_NAME) {
+    m_arm_motion->goRush();
   }
 }
 
@@ -51,6 +53,10 @@ void* ArmSubsystem::state(std::string state_name) {
     result = new bool{m_arm_motion->isAtScore()};
   } else if (state_name == IS_GOING_SCORE_STATE_NAME) {
     result = new bool{m_arm_motion->isGoingScore()};
+  } else if (state_name == IS_RUSH_STATE_NAME) {
+    result = new bool{m_arm_motion->isAtRush()};
+  } else if (state_name == IS_GOING_RUSH_STATE_NAME) {
+    result = new bool{m_arm_motion->isGoingRush()};
   } else if (state_name == HAS_RING_STATE_NAME) {
     result = new bool{m_ring_sensor->hasRing()};
   } else if (state_name == GET_HUE_STATE_NAME) {

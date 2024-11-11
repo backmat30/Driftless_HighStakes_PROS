@@ -28,6 +28,9 @@ class ArmOperator {
   // command to go to the score position
   static constexpr char GO_SCORE_COMMAND_NAME[]{"GO SCORE"};
 
+  // command to go to the rush position
+  static constexpr char GO_RUSH_COMMAND_NAME[]{"GO RUSH"};
+
   // state determining if the arm is at neutral position
   static constexpr char IS_NEUTRAL_STATE_NAME[]{"IS NEUTRAL"};
 
@@ -52,6 +55,12 @@ class ArmOperator {
   // state determining if the arm is going to the score position
   static constexpr char IS_GOING_SCORE_STATE_NAME[]{"IS GOING SCORE"};
 
+  // state determining if the arm is in the rush position
+  static constexpr char IS_RUSH_STATE_NAME[]{"IS RUSH"};
+
+  // state determining if the arm is going to the rush position
+  static constexpr char IS_GOING_RUSH_STATE_NAME[]{"IS GOING RUSH"};
+
   // state determining if there is a ring in the loading zone
   static constexpr char HAS_RING_STATE_NAME[]{"HAS RING"};
 
@@ -73,8 +82,8 @@ class ArmOperator {
                          const driftless::alliance::Alliance alliance);
 
   // update the arm using single toggle
-  void updateSmartToggle(EControllerDigital toggle,
-                          const driftless::alliance::Alliance alliance);
+  void updateSmartToggle(EControllerDigital toggle, EControllerDigital rush,
+                         const driftless::alliance::Alliance alliance);
 
  public:
   // constructs a new arm operator

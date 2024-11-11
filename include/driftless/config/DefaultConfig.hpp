@@ -291,7 +291,7 @@ class DefaultConfig : public IConfig {
   /// @brief arm rotational score position
   static constexpr double ARM_ROTATIONAL_SCORE_POSITION{1.45 / 4.0 * 2.0 * M_PI};
   /// @brief arm rotational rush position
-  static constexpr double ARM_ROTATIONAL_RUSH_POSITION{0.0 / 4.0 * 2.0 * M_PI};
+  static constexpr double ARM_ROTATIONAL_RUSH_POSITION{2.15 / 4.0 * 2.0 * M_PI};
   /// @brief The intermediate position on the rotation towards the arm ready
   /// position
   static constexpr double ARM_ROTATIONAL_READY_INTERMEDIATE_POSITION{

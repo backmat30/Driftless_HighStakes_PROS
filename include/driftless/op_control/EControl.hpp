@@ -8,6 +8,7 @@ enum EControl {
   ARM_LOAD,
   ARM_READY,
   ARM_SCORE,
+  ARM_RUSH,
   ARM_TOGGLE,
   CLAMP_GRAB,
   CLAMP_RELEASE,

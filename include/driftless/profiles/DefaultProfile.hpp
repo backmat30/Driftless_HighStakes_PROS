@@ -45,6 +45,8 @@ class DefaultProfile : public profiles::IProfile {
       DIGITAL_CONTROL_MAP{
           {op_control::EControl::ARM_TOGGLE,
            op_control::EControllerDigital::BUTTON_A},
+          {op_control::EControl::ARM_RUSH,
+           op_control::EControllerDigital::BUTTON_Y},
           {op_control::EControl::ELEVATOR_SPIN,
            op_control::EControllerDigital::TRIGGER_RIGHT_BOTTOM},
           {op_control::EControl::INTAKE_TOGGLE_HEIGHT,

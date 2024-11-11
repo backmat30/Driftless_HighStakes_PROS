@@ -50,8 +50,10 @@ void ArmOperator::updateSplitToggle(
 }
 
 void ArmOperator::updateSmartToggle(
-    EControllerDigital toggle, const driftless::alliance::Alliance alliance) {
+    EControllerDigital toggle, EControllerDigital rush,
+    const driftless::alliance::Alliance alliance) {
   bool next_position{m_controller->getNewDigital(toggle)};
+  bool go_rush{m_controller->getNewDigital(rush)};
 
   void* is_neutral_state{
       m_robot->getState(ARM_SUBSYSTEM_NAME, IS_NEUTRAL_STATE_NAME)};
@@ -82,7 +84,11 @@ void ArmOperator::updateSmartToggle(
   bool is_score{is_score_state != nullptr &&
                 *static_cast<bool*>(is_score_state)};
 
-  if (next_position) {
+  void* is_rush_state{
+      m_robot->getState(ARM_SUBSYSTEM_NAME, IS_RUSH_STATE_NAME)};
+  bool is_rush{is_rush_state != nullptr && *static_cast<bool*>(is_rush_state)};
+
+  if (next_position && !go_rush) {
     if (is_neutral || is_going_neutral) {
       m_robot->sendCommand(ARM_SUBSYSTEM_NAME, GO_LOAD_COMMAND_NAME);
     } else if (is_load) {
@@ -94,8 +100,13 @@ void ArmOperator::updateSmartToggle(
     } else if (is_ready) {
       m_robot->sendCommand(ARM_SUBSYSTEM_NAME, GO_SCORE_COMMAND_NAME);
     }
+  } else if (!next_position && go_rush) {
+    if (is_rush) {
+      m_robot->sendCommand(ARM_SUBSYSTEM_NAME, GO_NEUTRAL_COMMAND_NAME);
+    } else {
+      m_robot->sendCommand(ARM_SUBSYSTEM_NAME, GO_RUSH_COMMAND_NAME);
+    }
   }
-
   if (is_score) {
     m_robot->sendCommand(ARM_SUBSYSTEM_NAME, GO_LOAD_COMMAND_NAME);
   }
@@ -119,6 +130,8 @@ void ArmOperator::update(
       profile->getDigitalControlMapping(EControl::ARM_SCORE)};
   EControllerDigital toggle{
       profile->getDigitalControlMapping(EControl::ARM_TOGGLE)};
+  EControllerDigital rush{
+      profile->getDigitalControlMapping(EControl::ARM_RUSH)};
 
   switch (static_cast<EArmControlMode>(
       profile->getControlMode(EControlType::ARM))) {
@@ -126,7 +139,7 @@ void ArmOperator::update(
       updateSplitToggle(neutral, load, ready, score, alliance);
       break;
     case EArmControlMode::SINGLE_TOGGLE:
-      updateSmartToggle(toggle, alliance);
+      updateSmartToggle(toggle, rush, alliance);
       break;
   }
 }
