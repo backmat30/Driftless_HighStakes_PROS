@@ -82,6 +82,7 @@ void PIDArmMotion::updateState() {
                    m_rotational_rush_intermediate_position) <=
           m_rotational_tolerance) {
         state = EState::READY_MOTION;
+        rotational_target_position = m_rotational_ready_position;
         linear_target_position = m_linear_ready_position;
       }
       break;
@@ -90,6 +91,7 @@ void PIDArmMotion::updateState() {
                    m_rotational_score_intermediate_position) <=
           m_rotational_tolerance) {
         state = EState::SCORE_MOTION;
+        rotational_target_position = m_rotational_score_position;
         linear_target_position = m_linear_score_position;
       }
       break;
@@ -98,6 +100,7 @@ void PIDArmMotion::updateState() {
                        m_rotational_rush_intermediate_position) <=
           m_rotational_tolerance) {
         state = EState::RUSH_MOTION;
+        rotational_target_position = m_rotational_rush_position;
         linear_target_position = m_linear_rush_position;
       }
       break;
@@ -182,7 +185,7 @@ void PIDArmMotion::goReady() {
   }
   if (state != EState::READY && state != EState::READY_MOTION) {
     state = EState::READY_INTERMEDIATE;
-    rotational_target_position = m_rotational_ready_position;
+    rotational_target_position = m_rotational_ready_intermediate_position;
   }
   if (m_mutex) {
     m_mutex->give();
@@ -195,7 +198,7 @@ void PIDArmMotion::goScore() {
   }
   if (state != EState::SCORE && state != EState::SCORE_MOTION) {
     state = EState::SCORE_INTERMEDIATE;
-    rotational_target_position = m_rotational_score_position;
+    rotational_target_position = m_rotational_score_intermediate_position;
   }
   if (m_mutex) {
     m_mutex->give();
@@ -208,7 +211,7 @@ void PIDArmMotion::goRush() {
   }
   if (state != EState::RUSH && state != EState::RUSH_MOTION) {
     state = EState::RUSH_INTERMEDIATE;
-    rotational_target_position = m_rotational_rush_position;
+    rotational_target_position = m_rotational_rush_intermediate_position;
   }
 
   if (m_mutex) {
