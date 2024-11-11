@@ -73,7 +73,7 @@ class ArmOperator {
                          const driftless::alliance::Alliance alliance);
 
   // update the arm using single toggle
-  void updateSingleToggle(EControllerDigital toggle,
+  void updateSmartToggle(EControllerDigital toggle,
                           const driftless::alliance::Alliance alliance);
 
  public:

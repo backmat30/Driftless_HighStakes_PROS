@@ -50,6 +50,18 @@ class PIDArmMotionBuilder {
   // the rotational position when scoring
   double m_rotational_score_position{};
 
+  // the rotational position when rushing
+  double m_rotational_rush_position{};
+
+  // the rotational intermediate position during ready motion
+  double m_rotational_ready_intermediate_position{};
+
+  // the rotational intermediate position during score motion
+  double m_rotational_score_intermediate_position{};
+
+  // the rotational intermediate position during the rush motion
+  double m_rotational_rush_intermediate_position{};
+
   // the rotational position tolerance
   double m_rotational_tolerance{};
 
@@ -65,6 +77,9 @@ class PIDArmMotionBuilder {
   // the linear position when scoring
   double m_linear_score_position{};
 
+  // the linear position when rushing
+  double m_linear_rush_position{};
+
   // the linear position tolerance
   double m_linear_tolerance{};
 
@@ -74,7 +89,8 @@ class PIDArmMotionBuilder {
       const std::unique_ptr<driftless::rtos::IDelayer>& delayer);
 
   // add a mutex to the builder
-  PIDArmMotionBuilder* withMutex(std::unique_ptr<driftless::rtos::IMutex>& mutex);
+  PIDArmMotionBuilder* withMutex(
+      std::unique_ptr<driftless::rtos::IMutex>& mutex);
 
   // add a task to the builder
   PIDArmMotionBuilder* withTask(std::unique_ptr<driftless::rtos::ITask>& task);
@@ -96,7 +112,8 @@ class PIDArmMotionBuilder {
       std::unique_ptr<driftless::io::IMotor>& motor);
 
   // add a rotational PID controller to the builder
-  PIDArmMotionBuilder* withRotationalPID(driftless::control::PID rotational_pid);
+  PIDArmMotionBuilder* withRotationalPID(
+      driftless::control::PID rotational_pid);
 
   // add a linear PID controller to the builder
   PIDArmMotionBuilder* withLinearPID(driftless::control::PID linear_pid);
@@ -117,6 +134,30 @@ class PIDArmMotionBuilder {
   PIDArmMotionBuilder* withRotationalScorePosition(
       double rotational_score_position);
 
+  /// @brief Adds a rotational rush position to the builder
+  /// @param rotational_rush_position The position being added
+  /// @return __PIDArmMotionBuilder*__ pointer to the current builder
+  PIDArmMotionBuilder* withRotationalRushPosition(
+      double rotational_rush_position);
+
+  /// @brief Adds a rotational ready intermediate position to the builder
+  /// @param rotational_ready_intermediate_position The position being added
+  /// @return __PIDArmMotionBuilder*__ pointer to the current builder
+  PIDArmMotionBuilder* withRotationalReadyIntermediatePosition(
+      double rotational_ready_intermediate_position);
+
+  /// @brief Adds a rotational score intermediate position to the builder
+  /// @param rotational_score_intermediate_position The position being added
+  /// @return __PIDArmMotionBuilder*__ pointer to the current builder
+  PIDArmMotionBuilder* withRotationalScoreIntermediatePosition(
+      double rotational_score_intermediate_position);
+
+  /// @brief Adds a rotational rush intermediate position to the builder
+  /// @param rotational_rush_intermediate_position The position being added
+  /// @return __PIDArmMotionBuilder*__ pointer to the current builder
+  PIDArmMotionBuilder* withRotationalRushIntermediatePosition(
+      double rotational_rush_intermediate_position);
+
   // add a rotational position tolerance to the builder
   PIDArmMotionBuilder* withRotationalTolerance(double rotational_tolerance);
 
@@ -132,6 +173,11 @@ class PIDArmMotionBuilder {
 
   // add a linear score position to the builder
   PIDArmMotionBuilder* withLinearScorePosition(double linear_score_position);
+
+  /// @brief Adds a linear rush position to the builder
+  /// @param linear_rush_position The position being added
+  /// @return __PIDArmMotionBuilder*__ pointer to the current builder
+  PIDArmMotionBuilder* withLinearRushPosition(double linear_rush_position);
 
   // add a linear position tolerance to the builder
   PIDArmMotionBuilder* withLinearTolerance(double linear_tolerance);

@@ -28,6 +28,9 @@ class IArmMotion {
   // goes to the score position
   virtual void goScore() = 0;
 
+  // goes to the rush position
+  virtual void goRush() = 0;
+
   // determines if the arm is in the neutral position
   virtual bool isAtNeutral() = 0;
 
@@ -51,6 +54,12 @@ class IArmMotion {
 
   // determines if the arm is going to the score position
   virtual bool isGoingScore() = 0;
+
+  // determines if the arm is at the rush position
+  virtual bool isAtRush() = 0;
+
+  // determines if the arm is going to the rush position
+  virtual bool isGoingRush() = 0;
 };
 }  // namespace arm
 }  // namespace subsystems

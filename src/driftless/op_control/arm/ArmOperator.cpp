@@ -49,7 +49,7 @@ void ArmOperator::updateSplitToggle(
   }
 }
 
-void ArmOperator::updateSingleToggle(
+void ArmOperator::updateSmartToggle(
     EControllerDigital toggle, const driftless::alliance::Alliance alliance) {
   bool next_position{m_controller->getNewDigital(toggle)};
 
@@ -126,7 +126,7 @@ void ArmOperator::update(
       updateSplitToggle(neutral, load, ready, score, alliance);
       break;
     case EArmControlMode::SINGLE_TOGGLE:
-      updateSingleToggle(toggle, alliance);
+      updateSmartToggle(toggle, alliance);
       break;
   }
 }

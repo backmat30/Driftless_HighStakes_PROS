@@ -82,6 +82,36 @@ PIDArmMotionBuilder* PIDArmMotionBuilder::withRotationalScorePosition(
   return this;
 }
 
+PIDArmMotionBuilder* PIDArmMotionBuilder::withRotationalRushPosition(
+    double rotational_rush_position) {
+  m_rotational_rush_position = rotational_rush_position;
+  return this;
+}
+
+PIDArmMotionBuilder*
+PIDArmMotionBuilder::withRotationalReadyIntermediatePosition(
+    double rotational_ready_intermediate_position) {
+  m_rotational_ready_intermediate_position =
+      rotational_ready_intermediate_position;
+  return this;
+}
+
+PIDArmMotionBuilder*
+PIDArmMotionBuilder::withRotationalScoreIntermediatePosition(
+    double rotational_score_intermediate_position) {
+  m_rotational_score_intermediate_position =
+      rotational_score_intermediate_position;
+  return this;
+}
+
+PIDArmMotionBuilder*
+PIDArmMotionBuilder::withRotationalRushIntermediatePosition(
+    double rotational_rush_intermediate_position) {
+  m_rotational_rush_intermediate_position =
+      rotational_rush_intermediate_position;
+  return this;
+}
+
 PIDArmMotionBuilder* PIDArmMotionBuilder::withRotationalTolerance(
     double rotational_tolerance) {
   m_rotational_tolerance = rotational_tolerance;
@@ -112,6 +142,12 @@ PIDArmMotionBuilder* PIDArmMotionBuilder::withLinearScorePosition(
   return this;
 }
 
+PIDArmMotionBuilder* PIDArmMotionBuilder::withLinearRushPosition(
+    double linear_rush_position) {
+  m_linear_rush_position = linear_rush_position;
+  return this;
+}
+
 PIDArmMotionBuilder* PIDArmMotionBuilder::withLinearTolerance(
     double linear_tolerance) {
   m_linear_tolerance = linear_tolerance;
@@ -119,7 +155,8 @@ PIDArmMotionBuilder* PIDArmMotionBuilder::withLinearTolerance(
 }
 
 std::unique_ptr<PIDArmMotion> PIDArmMotionBuilder::build() {
-  std::unique_ptr<PIDArmMotion> pid_arm_motion{std::make_unique<PIDArmMotion>()};
+  std::unique_ptr<PIDArmMotion> pid_arm_motion{
+      std::make_unique<PIDArmMotion>()};
 
   pid_arm_motion->setDelayer(m_delayer);
   pid_arm_motion->setMutex(m_mutex);
@@ -134,11 +171,19 @@ std::unique_ptr<PIDArmMotion> PIDArmMotionBuilder::build() {
   pid_arm_motion->setRotationalLoadPosition(m_rotational_load_position);
   pid_arm_motion->setRotationalReadyPosition(m_rotational_ready_position);
   pid_arm_motion->setRotationalScorePosition(m_rotational_score_position);
+  pid_arm_motion->setRotationalRushPosition(m_rotational_rush_position);
+  pid_arm_motion->setRotationalReadyIntermediatePosition(
+      m_rotational_ready_intermediate_position);
+  pid_arm_motion->setRotationalScoreIntermediatePosition(
+      m_rotational_score_intermediate_position);
+  pid_arm_motion->setRotationalRushIntermediatePosition(
+      m_rotational_rush_intermediate_position);
   pid_arm_motion->setRotationalTolerance(m_rotational_tolerance);
   pid_arm_motion->setLinearNeutralPosition(m_linear_neutral_position);
   pid_arm_motion->setLinearLoadPosition(m_linear_load_position);
   pid_arm_motion->setLinearReadyPosition(m_linear_ready_position);
   pid_arm_motion->setLinearScorePosition(m_linear_score_position);
+  pid_arm_motion->setLinearRushPosition(m_linear_rush_position);
   pid_arm_motion->setLinearTolerance(m_linear_tolerance);
 
   return pid_arm_motion;

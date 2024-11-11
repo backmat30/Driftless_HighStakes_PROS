@@ -24,10 +24,15 @@ class PIDArmMotion : public IArmMotion {
     LOAD,
     READY,
     SCORE,
+    RUSH,
+    READY_INTERMEDIATE,
+    SCORE_INTERMEDIATE,
+    RUSH_INTERMEDIATE,
     NEUTRAL_MOTION,
     LOAD_MOTION,
     READY_MOTION,
-    SCORE_MOTION
+    SCORE_MOTION,
+    RUSH_MOTION,
   };
   // delay between task updates
   static constexpr uint8_t TASK_DELAY{10};
@@ -84,6 +89,18 @@ class PIDArmMotion : public IArmMotion {
   // the rotational position when scoring
   double m_rotational_score_position{};
 
+  // the rotational position when rushing
+  double m_rotational_rush_position{};
+
+  // the rotational position of the intermediate ready position
+  double m_rotational_ready_intermediate_position{};
+
+  // the rotational position of the intermediate
+  double m_rotational_score_intermediate_position{};
+
+  // the rotational position of the intermediate rush position
+  double m_rotational_rush_intermediate_position{};
+
   // the rotational position tolerance
   double m_rotational_tolerance{};
 
@@ -101,6 +118,9 @@ class PIDArmMotion : public IArmMotion {
 
   // the linear position when scoring
   double m_linear_score_position{};
+
+  // the linear position when rushing
+  double m_linear_rush_position{};
 
   // the linear position tolerance
   double m_linear_tolerance{};
@@ -142,6 +162,9 @@ class PIDArmMotion : public IArmMotion {
   // goes to the score position
   void goScore() override;
 
+  // goes to the rush position
+  void goRush() override;
+
   // determines if the arm is in the neutral position
   bool isAtNeutral() override;
 
@@ -165,6 +188,12 @@ class PIDArmMotion : public IArmMotion {
 
   // determines if the arm is going to the score position
   bool isGoingScore() override;
+
+  // determines if the arm is at the rush position
+  bool isAtRush() override;
+
+  // determines if the arm is going to the rush position
+  bool isGoingRush() override;
 
   // sets the delayer
   void setDelayer(const std::unique_ptr<driftless::rtos::IDelayer>& delayer);
@@ -207,6 +236,21 @@ class PIDArmMotion : public IArmMotion {
   // sets the rotational score position
   void setRotationalScorePosition(double rotational_score_position);
 
+  // sets the rotational rush position
+  void setRotationalRushPosition(double rotational_rush_position);
+
+  /// @brief Sets the rotational ready intermediate position
+  /// @param rotational_ready_intermediate_position The new position
+  void setRotationalReadyIntermediatePosition(double rotational_ready_intermediate_position);
+
+  /// @brief Sets the rotational score intermediate position
+  /// @param rotational_score_intermediate_position The new position
+  void setRotationalScoreIntermediatePosition(double rotational_score_intermediate_position);
+
+  /// @brief Sets the rotational rush score intermediate position
+  /// @param rotational_rush_intermediate_position The new position
+  void setRotationalRushIntermediatePosition(double rotational_rush_intermediate_position);
+
   // sets the rotational position tolerance
   void setRotationalTolerance(double rotational_tolerance);
 
@@ -221,6 +265,9 @@ class PIDArmMotion : public IArmMotion {
 
   // sets the linear score position
   void setLinearScorePosition(double linear_score_position);
+
+  // sets the linear rush position
+  void setLinearRushPosition(double linear_rush_position);
 
   // sets the linear position tolerance
   void setLinearTolerance(double linear_tolerance);

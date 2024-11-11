@@ -19,10 +19,12 @@ void PIDArmMotion::taskUpdate() {
   }
   updateState();
   updatePosition();
-  pros::screen::print(pros::E_TEXT_LARGE, 3,
+  pros::screen::print(pros::E_TEXT_MEDIUM, 3,
                       (std::to_string(static_cast<int>(state)).c_str()));
-  pros::screen::print(pros::E_TEXT_LARGE, 4,
-                      (std::to_string(m_linear_motors.getPosition()).c_str()));
+  pros::screen::print(pros::E_TEXT_MEDIUM, 4,
+                      (std::to_string(getLinearPosition()).c_str()));
+  pros::screen::print(pros::E_TEXT_MEDIUM, 5,
+                      (std::to_string(getRotationalPosition()).c_str()));
 
   if (m_mutex) {
     m_mutex->give();
@@ -65,6 +67,38 @@ void PIDArmMotion::updateState() {
           std::abs(linear_position - m_linear_score_position) <=
               m_linear_tolerance) {
         state = EState::SCORE;
+      }
+      break;
+    case EState::RUSH_MOTION:
+      if (std::abs(rotation_position - m_rotational_rush_position) <=
+              m_rotational_tolerance &&
+          std::abs(linear_position - m_linear_rush_position) <=
+              m_rotational_tolerance) {
+        state = EState::RUSH;
+      }
+      break;
+    case EState::READY_INTERMEDIATE:
+      if (std::abs(rotation_position -
+                   m_rotational_rush_intermediate_position) <=
+          m_rotational_tolerance) {
+        state = EState::READY_MOTION;
+        linear_target_position = m_linear_ready_position;
+      }
+      break;
+    case EState::SCORE_INTERMEDIATE:
+      if (std::abs(rotation_position -
+                   m_rotational_score_intermediate_position) <=
+          m_rotational_tolerance) {
+        state = EState::SCORE_MOTION;
+        linear_target_position = m_linear_score_position;
+      }
+      break;
+    case EState::RUSH_INTERMEDIATE:
+      if (std::abs(rotation_position =
+                       m_rotational_rush_intermediate_position) <=
+          m_rotational_tolerance) {
+        state = EState::RUSH_MOTION;
+        linear_target_position = m_linear_rush_position;
       }
       break;
   }
@@ -146,10 +180,9 @@ void PIDArmMotion::goReady() {
   if (m_mutex) {
     m_mutex->take();
   }
-  if (state != EState::READY) {
-    state = EState::READY_MOTION;
+  if (state != EState::READY && state != EState::READY_MOTION) {
+    state = EState::READY_INTERMEDIATE;
     rotational_target_position = m_rotational_ready_position;
-    linear_target_position = m_linear_ready_position;
   }
   if (m_mutex) {
     m_mutex->give();
@@ -160,11 +193,24 @@ void PIDArmMotion::goScore() {
   if (m_mutex) {
     m_mutex->take();
   }
-  if (state != EState::SCORE) {
-    state = EState::SCORE_MOTION;
+  if (state != EState::SCORE && state != EState::SCORE_MOTION) {
+    state = EState::SCORE_INTERMEDIATE;
     rotational_target_position = m_rotational_score_position;
-    linear_target_position = m_linear_score_position;
   }
+  if (m_mutex) {
+    m_mutex->give();
+  }
+}
+
+void PIDArmMotion::goRush() {
+  if (m_mutex) {
+    m_mutex->take();
+  }
+  if (state != EState::RUSH && state != EState::RUSH_MOTION) {
+    state = EState::RUSH_INTERMEDIATE;
+    rotational_target_position = m_rotational_rush_position;
+  }
+
   if (m_mutex) {
     m_mutex->give();
   }
@@ -187,6 +233,10 @@ bool PIDArmMotion::isGoingReady() { return (state == EState::READY_MOTION); }
 bool PIDArmMotion::isAtScore() { return (state == EState::SCORE); }
 
 bool PIDArmMotion::isGoingScore() { return (state == EState::SCORE_MOTION); }
+
+bool PIDArmMotion::isAtRush() { return (state == EState::RUSH); }
+
+bool PIDArmMotion::isGoingRush() { return (state == EState::RUSH_MOTION); }
 
 void PIDArmMotion::setDelayer(
     const std::unique_ptr<driftless::rtos::IDelayer>& delayer) {
@@ -247,6 +297,28 @@ void PIDArmMotion::setRotationalScorePosition(
   m_rotational_score_position = rotational_score_position;
 }
 
+void PIDArmMotion::setRotationalRushPosition(double rotational_rush_position) {
+  m_rotational_rush_position = rotational_rush_position;
+}
+
+void PIDArmMotion::setRotationalReadyIntermediatePosition(
+    double rotational_ready_intermediate_position) {
+  m_rotational_ready_intermediate_position =
+      rotational_ready_intermediate_position;
+}
+
+void PIDArmMotion::setRotationalScoreIntermediatePosition(
+    double rotational_score_intermediate_position) {
+  m_rotational_score_intermediate_position =
+      rotational_score_intermediate_position;
+}
+
+void PIDArmMotion::setRotationalRushIntermediatePosition(
+    double rotational_rush_intermediate_position) {
+  m_rotational_rush_intermediate_position =
+      rotational_rush_intermediate_position;
+}
+
 void PIDArmMotion::setRotationalTolerance(double rotational_tolerance) {
   m_rotational_tolerance = rotational_tolerance;
 }
@@ -265,6 +337,10 @@ void PIDArmMotion::setLinearReadyPosition(double linear_ready_position) {
 
 void PIDArmMotion::setLinearScorePosition(double linear_score_position) {
   m_linear_score_position = linear_score_position;
+}
+
+void PIDArmMotion::setLinearRushPosition(double linear_rush_position) {
+  m_linear_rush_position = linear_rush_position;
 }
 
 void PIDArmMotion::setLinearTolerance(double linear_tolerance) {
