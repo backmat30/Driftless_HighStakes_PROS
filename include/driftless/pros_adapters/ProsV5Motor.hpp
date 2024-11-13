@@ -134,6 +134,10 @@ class ProsV5Motor : public io::IMotor {
    */
   double getPosition() override;
 
+  /// @brief Gets the efficiency of the motor as a percentage
+  /// @return __double__ The efficiency
+  double getEfficiency() override;
+
   /**
    * @brief Set the voltage input to the motor in Volts
    *

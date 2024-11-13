@@ -52,6 +52,15 @@ double ProsV5Motor::getPosition() {
   return position;
 }
 
+double ProsV5Motor::getEfficiency() {
+  double efficiency{0.0};
+
+  if(m_motor) {
+    efficiency = m_motor->get_efficiency();
+  }
+  return efficiency;
+}
+
 void ProsV5Motor::setVoltage(double volts) {
   int millivolts{static_cast<int>(volts * VOLTAGE_CONVERSION)};
   millivolts = std::min(millivolts, MAX_MILLIVOLTS);

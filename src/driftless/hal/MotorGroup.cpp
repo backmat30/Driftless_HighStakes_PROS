@@ -70,6 +70,20 @@ double MotorGroup::getPosition() {
   return average_position;
 }
 
+double MotorGroup::getEfficiency() {
+  double average_efficiency{};
+  if (!motors.empty()) {
+    for (auto &motor : motors) {
+      if (motor) {
+        average_efficiency += motor->getEfficiency();
+      }
+    }
+    average_efficiency / motors.size();
+  }
+
+  return average_efficiency;
+}
+
 void MotorGroup::setVoltage(double volts) {
   for (auto &motor : motors)
     if (motor) motor->setVoltage(volts);
