@@ -6,6 +6,7 @@
 #include "driftless/menu/MenuAdapter.hpp"
 #include "driftless/profiles/DefaultProfile.hpp"
 #include "driftless/profiles/EricProfile.hpp"
+#include "driftless/profiles/JohnProfile.hpp"
 
 namespace driftless {
 class MatchControllerFactory {
