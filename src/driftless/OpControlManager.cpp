@@ -30,10 +30,10 @@ void OpControlManager::run(
 
   // set subsystems to driver control
   
-  //op_control::clamp::ClampOperator clamp_operator{controller, robot};
+  op_control::clamp::ClampOperator clamp_operator{controller, robot};
   op_control::drivetrain::DrivetrainOperator drive_operator{controller, robot};
-  // op_control::elevator::ElevatorOperator elevator_operator{controller, robot};
-  // op_control::intake::IntakeOperator intake_operator{controller, robot};
+  op_control::elevator::ElevatorOperator elevator_operator{controller, robot};
+  op_control::intake::IntakeOperator intake_operator{controller, robot};
   op_control::arm::ArmOperator arm_operator{controller, robot};
 
   // variable to hold time for delayer
@@ -45,10 +45,10 @@ void OpControlManager::run(
     current_time = m_clock->getTime();
 
     // updates all subsystems
-    //clamp_operator.update(m_profile);
+    clamp_operator.update(m_profile);
     drive_operator.setDriveVoltage(m_profile);
-    // elevator_operator.update(m_profile);
-    // intake_operator.update(m_profile);
+    elevator_operator.update(m_profile);
+    intake_operator.update(m_profile);
     arm_operator.update(m_profile, m_alliance);
 
     // delay until 10 seconds after loop start
