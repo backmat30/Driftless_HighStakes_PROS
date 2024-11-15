@@ -1,6 +1,5 @@
 #include "driftless/robot/subsystems/intake/IntakeSubsystem.hpp"
 
-#include "pros/screen.hpp"
 namespace driftless {
 namespace robot {
 namespace subsystems {
