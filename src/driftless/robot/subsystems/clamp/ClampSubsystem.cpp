@@ -5,7 +5,7 @@ namespace robot {
 namespace subsystems {
 namespace clamp {
 ClampSubsystem::ClampSubsystem(std::unique_ptr<IClamp>& clamp)
-    : m_clamp{std::move(clamp)} {}
+    : m_clamp{std::move(clamp)}, ASubsystem{SUBSYSTEM_NAME} {}
 
 void ClampSubsystem::init() {
 
