@@ -31,6 +31,15 @@ class ArmOperator {
   // command to go to the rush position
   static constexpr char GO_RUSH_COMMAND_NAME[]{"GO RUSH"};
 
+  // command to go to the alliance stake position
+  static constexpr char GO_ALLIANCE_STAKE_COMMAND_NAME[]{"GO ALLIANCE STAKE"};
+
+  // command to go to the previous position
+  static constexpr char GO_PREVIOUS_COMMAND_NAME[]{"GO PREVIOUS"};
+
+  // command to calibrate the arm
+  static constexpr char CALIBRATE_COMMAND_NAME[]{"CALIBRATE"};
+
   // state determining if the arm is at neutral position
   static constexpr char IS_NEUTRAL_STATE_NAME[]{"IS NEUTRAL"};
 
@@ -61,6 +70,13 @@ class ArmOperator {
   // state determining if the arm is going to the rush position
   static constexpr char IS_GOING_RUSH_STATE_NAME[]{"IS GOING RUSH"};
 
+  // state determining if the arm is at the alliance stake position
+  static constexpr char IS_ALLIANCE_STAKE_STATE_NAME[]{"IS ALLIANCE STAKE"};
+
+  // state determining if the arm is going to the alliance stake position
+  static constexpr char IS_GOING_ALLIANCE_STAKE_STATE_NAME[]{
+      "IS GOING ALLIANCE STAKE"};
+
   // state determining if there is a ring in the loading zone
   static constexpr char HAS_RING_STATE_NAME[]{"HAS RING"};
 
@@ -83,6 +99,8 @@ class ArmOperator {
 
   // update the arm using single toggle
   void updateSmartToggle(EControllerDigital toggle, EControllerDigital rush,
+                         EControllerDigital calibrate,
+                         EControllerDigital alliance_stake,
                          const driftless::alliance::Alliance alliance);
 
  public:

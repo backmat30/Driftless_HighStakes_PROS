@@ -51,9 +51,12 @@ void ArmOperator::updateSplitToggle(
 
 void ArmOperator::updateSmartToggle(
     EControllerDigital toggle, EControllerDigital rush,
+    EControllerDigital calibrate, EControllerDigital alliance_stake,
     const driftless::alliance::Alliance alliance) {
   bool next_position{m_controller->getNewDigital(toggle)};
   bool go_rush{m_controller->getNewDigital(rush)};
+  bool calibrate_arm{m_controller->getNewDigital(calibrate)};
+  bool go_alliance_stake{m_controller->getNewDigital(alliance_stake)};
 
   void* is_neutral_state{
       m_robot->getState(ARM_SUBSYSTEM_NAME, IS_NEUTRAL_STATE_NAME)};
@@ -79,36 +82,55 @@ void ArmOperator::updateSmartToggle(
   bool is_ready{is_ready_state != nullptr &&
                 *static_cast<bool*>(is_ready_state)};
 
+  void* is_going_ready_state{
+      m_robot->getState(ARM_SUBSYSTEM_NAME, IS_GOING_READY_STATE_NAME)};
+  bool is_going_ready{is_going_ready_state != nullptr &&
+                      *static_cast<bool*>(is_going_ready_state)};
+
   void* is_score_state{
       m_robot->getState(ARM_SUBSYSTEM_NAME, IS_SCORE_STATE_NAME)};
   bool is_score{is_score_state != nullptr &&
                 *static_cast<bool*>(is_score_state)};
 
+  void* is_going_score_state{
+      m_robot->getState(ARM_SUBSYSTEM_NAME, IS_GOING_SCORE_STATE_NAME)};
+  bool is_going_score{is_going_score_state != nullptr &&
+                      *static_cast<bool*>(is_going_score_state)};
+
   void* is_rush_state{
       m_robot->getState(ARM_SUBSYSTEM_NAME, IS_RUSH_STATE_NAME)};
   bool is_rush{is_rush_state != nullptr && *static_cast<bool*>(is_rush_state)};
 
-  if (next_position && !go_rush) {
-    if (is_neutral || is_going_neutral) {
+  void* is_going_rush_state{
+      m_robot->getState(ARM_SUBSYSTEM_NAME, IS_GOING_RUSH_STATE_NAME)};
+  bool is_going_rush{is_going_rush_state != nullptr &&
+                     *static_cast<bool*>(is_going_rush_state)};
+
+  if (next_position && !go_rush && !calibrate_arm && !go_alliance_stake) {
+    if (is_neutral) {
       m_robot->sendCommand(ARM_SUBSYSTEM_NAME, GO_LOAD_COMMAND_NAME);
-    } else if (is_load) {
-      // if (hasAllianceRing(alliance)) {
+    } else if (is_load /*&& hasAllianceRing(alliance)*/) {
       m_robot->sendCommand(ARM_SUBSYSTEM_NAME, GO_READY_COMMAND_NAME);
-      // } else {
-      //   m_robot->sendCommand(ARM_SUBSYSTEM_NAME, GO_NEUTRAL_COMMAND_NAME);
-      // }
     } else if (is_ready) {
       m_robot->sendCommand(ARM_SUBSYSTEM_NAME, GO_SCORE_COMMAND_NAME);
-    }
-  } else if (!next_position && go_rush) {
-    if (is_rush) {
+    } else if (is_rush) {
+      m_robot->sendCommand(ARM_SUBSYSTEM_NAME, GO_LOAD_COMMAND_NAME);
+    } else if (is_going_neutral || is_going_load || is_going_ready ||
+               is_going_score || is_going_rush) {
+      m_robot->sendCommand(ARM_SUBSYSTEM_NAME, GO_PREVIOUS_COMMAND_NAME);
+    } else {
       m_robot->sendCommand(ARM_SUBSYSTEM_NAME, GO_NEUTRAL_COMMAND_NAME);
+    }
+  } else if (!next_position && go_rush && !calibrate_arm && !go_alliance_stake) {
+    if (is_rush) {
+      m_robot->sendCommand(ARM_SUBSYSTEM_NAME, GO_LOAD_COMMAND_NAME);
     } else {
       m_robot->sendCommand(ARM_SUBSYSTEM_NAME, GO_RUSH_COMMAND_NAME);
     }
-  }
-  if (is_score) {
-    m_robot->sendCommand(ARM_SUBSYSTEM_NAME, GO_LOAD_COMMAND_NAME);
+  } else if (!next_position && !go_rush && calibrate_arm && !go_alliance_stake) {
+    m_robot->sendCommand(ARM_SUBSYSTEM_NAME, CALIBRATE_COMMAND_NAME);
+  } else if (!next_position && !go_rush && !calibrate_arm && go_alliance_stake) {
+    m_robot->sendCommand(ARM_SUBSYSTEM_NAME, GO_ALLIANCE_STAKE_COMMAND_NAME);
   }
 }
 
@@ -132,14 +154,18 @@ void ArmOperator::update(
       profile->getDigitalControlMapping(EControl::ARM_TOGGLE)};
   EControllerDigital rush{
       profile->getDigitalControlMapping(EControl::ARM_RUSH)};
+  EControllerDigital calibrate{
+      profile->getDigitalControlMapping(EControl::ARM_CALIBRATE)};
+  EControllerDigital alliance_stake{
+      profile->getDigitalControlMapping(EControl::ARM_ALLIANCE_STAKE)};
 
   switch (static_cast<EArmControlMode>(
       profile->getControlMode(EControlType::ARM))) {
     case EArmControlMode::SPLIT_TOGGLE:
       updateSplitToggle(neutral, load, ready, score, alliance);
       break;
-    case EArmControlMode::SINGLE_TOGGLE:
-      updateSmartToggle(toggle, rush, alliance);
+    case EArmControlMode::SMART_TOGGLE:
+      updateSmartToggle(toggle, rush, calibrate, alliance_stake, alliance);
       break;
   }
 }

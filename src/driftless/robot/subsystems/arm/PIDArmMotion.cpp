@@ -17,8 +17,22 @@ void PIDArmMotion::taskUpdate() {
   if (m_mutex) {
     m_mutex->take();
   }
-  updateState();
-  updatePosition();
+  uint32_t time_calibrating{m_clock->getTime() - calibrate_time};
+  if (calibrating && time_calibrating >= 100 &&
+      m_rotation_motors.getAngularVelocity() >= 0.0 &&
+      m_linear_motors.getAngularVelocity() >= 0.0) {
+    m_rotation_motors.setPosition(0.0);
+    m_linear_motors.setPosition(0.0);
+    calibrating = false;
+    state == EState::LOAD;
+    linear_target_position = m_linear_load_position;
+    rotational_target_position = m_rotational_load_position;
+  }
+  if (!calibrating) {
+    updateState();
+    updatePreviousState();
+    updatePosition();
+  }
   pros::screen::print(pros::E_TEXT_MEDIUM, 3,
                       (std::to_string(static_cast<int>(state)).c_str()));
   pros::screen::print(pros::E_TEXT_MEDIUM, 4,
@@ -62,11 +76,12 @@ void PIDArmMotion::updateState() {
       }
       break;
     case EState::SCORE_MOTION:
-      if (std::abs(rotation_position - m_rotational_score_position) <=
+      if ((m_rotational_score_position - rotation_position) <=
               m_rotational_tolerance &&
-          std::abs(linear_position - m_linear_score_position) <=
-              m_linear_tolerance) {
-        state = EState::SCORE;
+          (linear_position - m_linear_score_position) <= m_linear_tolerance) {
+        state = EState::LOAD_MOTION;
+        rotational_target_position = m_rotational_load_position;
+        linear_target_position = m_linear_load_position;
       }
       break;
     case EState::RUSH_MOTION:
@@ -75,6 +90,27 @@ void PIDArmMotion::updateState() {
           std::abs(linear_position - m_linear_rush_position) <=
               m_rotational_tolerance) {
         state = EState::RUSH;
+      }
+      break;
+    case EState::ALLIANCE_STAKE_MOTION:
+      if ((rotation_position - m_rotational_alliance_stake_position) <=
+              m_rotational_tolerance &&
+          (linear_position - m_linear_alliance_stake_position) <=
+              m_linear_tolerance) {
+        state = EState::LOAD_MOTION;
+        rotational_target_position = m_rotational_load_position;
+        linear_target_position = m_linear_load_position;
+      }
+      break;
+    case EState::LOAD_INTERMEDIATE:
+      if (previous_state != EState::NEUTRAL ||
+          (std::abs(m_rotational_load_intermediate_position -
+                    rotation_position) <= m_rotational_tolerance &&
+           std::abs(m_linear_load_intermediate_position - linear_position) <=
+               m_linear_tolerance)) {
+        state = EState::LOAD_MOTION;
+        rotational_target_position = m_rotational_load_position;
+        linear_target_position = m_linear_load_position;
       }
       break;
     case EState::READY_INTERMEDIATE:
@@ -100,6 +136,33 @@ void PIDArmMotion::updateState() {
         rotational_target_position = m_rotational_rush_position;
         linear_target_position = m_linear_rush_position;
       }
+      break;
+    case EState::ALLIANCE_STAKE_INTERMEDIATE:
+      if ((m_rotational_alliance_stake_intermediate_position -
+           rotation_position) <= m_rotational_tolerance &&
+          (m_linear_alliance_stake_intermediate_position - linear_position) <=
+              m_linear_tolerance) {
+        state = EState::ALLIANCE_STAKE_MOTION;
+        rotational_target_position = m_rotational_alliance_stake_position;
+        linear_target_position = m_linear_alliance_stake_position;
+      }
+      break;
+  }
+}
+
+void PIDArmMotion::updatePreviousState() {
+  switch (state) {
+    case EState::NEUTRAL:
+      previous_state = EState::NEUTRAL;
+      break;
+    case EState::LOAD:
+      previous_state = EState::LOAD;
+      break;
+    case EState::READY:
+      previous_state = EState::READY;
+      break;
+    case EState::RUSH:
+      previous_state = EState::RUSH;
       break;
   }
 }
@@ -132,6 +195,14 @@ double PIDArmMotion::getLinearPosition() {
   return m_linear_motors.getPosition();
 }
 
+double PIDArmMotion::getRotationalEfficiency() {
+  return m_rotation_motors.getEfficiency();
+}
+
+double PIDArmMotion::getLinearEfficiency() {
+  return m_linear_motors.getEfficiency();
+}
+
 void PIDArmMotion::init() {
   m_rotation_motors.init();
   m_linear_motors.init();
@@ -147,6 +218,20 @@ void PIDArmMotion::init() {
 }
 
 void PIDArmMotion::run() { m_task->start(&PIDArmMotion::taskLoop, this); }
+
+void PIDArmMotion::calibrate() {
+  if (m_mutex) {
+    m_mutex->take();
+  }
+  calibrating = true;
+  calibrate_time = m_clock->getTime();
+  m_rotation_motors.setVoltage(-12.0);
+  m_linear_motors.setVoltage(-12.0);
+
+  if (m_mutex) {
+    m_mutex->give();
+  }
+}
 
 void PIDArmMotion::goNeutral() {
   if (m_mutex) {
@@ -166,10 +251,10 @@ void PIDArmMotion::goLoad() {
   if (m_mutex) {
     m_mutex->take();
   }
-  if (state != EState::LOAD) {
-    state = EState::LOAD_MOTION;
-    rotational_target_position = m_rotational_load_position;
-    linear_target_position = m_linear_load_position;
+  if (state != EState::LOAD && state != EState::LOAD_MOTION) {
+    state = EState::LOAD_INTERMEDIATE;
+    rotational_target_position = m_rotational_load_intermediate_position;
+    linear_target_position = m_linear_load_intermediate_position;
   }
   if (m_mutex) {
     m_mutex->give();
@@ -216,6 +301,36 @@ void PIDArmMotion::goRush() {
   }
 }
 
+void PIDArmMotion::goAllianceStake() {
+  if (m_mutex) {
+    m_mutex->take();
+  }
+  if (state != EState::ALLIANCE_STAKE &&
+      state != EState::ALLIANCE_STAKE_MOTION) {
+    state == EState::ALLIANCE_STAKE_INTERMEDIATE;
+    rotational_target_position =
+        m_rotational_alliance_stake_intermediate_position;
+    linear_target_position = m_linear_alliance_stake_intermediate_position;
+  }
+}
+
+void PIDArmMotion::goPrevious() {
+  switch (previous_state) {
+    case EState::NEUTRAL:
+      goNeutral();
+      break;
+    case EState::LOAD:
+      goLoad();
+      break;
+    case EState::READY:
+      goReady();
+      break;
+    case EState::RUSH:
+      goRush();
+      break;
+  }
+}
+
 bool PIDArmMotion::isAtNeutral() { return (state == EState::NEUTRAL); }
 
 bool PIDArmMotion::isGoingNeutral() {
@@ -237,6 +352,20 @@ bool PIDArmMotion::isGoingScore() { return (state == EState::SCORE_MOTION); }
 bool PIDArmMotion::isAtRush() { return (state == EState::RUSH); }
 
 bool PIDArmMotion::isGoingRush() { return (state == EState::RUSH_MOTION); }
+
+bool PIDArmMotion::isAtAllianceStake() {
+  return (state == EState::ALLIANCE_STAKE);
+}
+
+bool PIDArmMotion::isGoingAllianceStake() {
+  return (state == EState::ALLIANCE_STAKE_INTERMEDIATE ||
+          state == EState::ALLIANCE_STAKE_MOTION);
+}
+
+void PIDArmMotion::setClock(
+    const std::unique_ptr<driftless::rtos::IClock>& clock) {
+  m_clock = clock->clone();
+}
 
 void PIDArmMotion::setDelayer(
     const std::unique_ptr<driftless::rtos::IDelayer>& delayer) {
@@ -301,6 +430,11 @@ void PIDArmMotion::setRotationalRushPosition(double rotational_rush_position) {
   m_rotational_rush_position = rotational_rush_position;
 }
 
+void PIDArmMotion::setRotationalAllianceStakePosition(
+    double rotational_alliance_stake_position) {
+  m_rotational_alliance_stake_position = rotational_alliance_stake_position;
+}
+
 void PIDArmMotion::setRotationalReadyIntermediatePosition(
     double rotational_ready_intermediate_position) {
   m_rotational_ready_intermediate_position =
@@ -317,6 +451,12 @@ void PIDArmMotion::setRotationalRushIntermediatePosition(
     double rotational_rush_intermediate_position) {
   m_rotational_rush_intermediate_position =
       rotational_rush_intermediate_position;
+}
+
+void PIDArmMotion::setRotationalAllianceStakeIntermediatePosition(
+    double rotational_alliance_stake_intermediate_position) {
+  m_rotational_alliance_stake_intermediate_position =
+      rotational_alliance_stake_intermediate_position;
 }
 
 void PIDArmMotion::setRotationalTolerance(double rotational_tolerance) {
@@ -341,6 +481,17 @@ void PIDArmMotion::setLinearScorePosition(double linear_score_position) {
 
 void PIDArmMotion::setLinearRushPosition(double linear_rush_position) {
   m_linear_rush_position = linear_rush_position;
+}
+
+void PIDArmMotion::setLinearAllianceStakePosition(
+    double linear_alliance_stake_position) {
+  m_linear_alliance_stake_position = linear_alliance_stake_position;
+}
+
+void PIDArmMotion::setLinearAllianceStakeIntermediatePosition(
+    double linear_alliance_stake_intermediate_position) {
+  m_linear_alliance_stake_intermediate_position =
+      linear_alliance_stake_intermediate_position;
 }
 
 void PIDArmMotion::setLinearTolerance(double linear_tolerance) {

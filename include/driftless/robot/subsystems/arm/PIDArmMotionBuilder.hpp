@@ -11,6 +11,9 @@ namespace subsystems {
 namespace arm {
 class PIDArmMotionBuilder {
  private:
+  // the clock used by the subsystem
+  std::unique_ptr<driftless::rtos::IClock> m_clock{};
+
   // the delayer used by the subsystem
   std::unique_ptr<driftless::rtos::IDelayer> m_delayer{};
 
@@ -53,6 +56,9 @@ class PIDArmMotionBuilder {
   // the rotational position when rushing
   double m_rotational_rush_position{};
 
+  // The rotational position when scoring on alliance stake
+  double m_rotational_alliance_stake_position{};
+
   // the rotational intermediate position during ready motion
   double m_rotational_ready_intermediate_position{};
 
@@ -61,6 +67,9 @@ class PIDArmMotionBuilder {
 
   // the rotational intermediate position during the rush motion
   double m_rotational_rush_intermediate_position{};
+
+  // the rotational intermediate position during the alliance stake motion
+  double m_rotational_alliance_stake_intermediate_position{};
 
   // the rotational position tolerance
   double m_rotational_tolerance{};
@@ -80,10 +89,22 @@ class PIDArmMotionBuilder {
   // the linear position when rushing
   double m_linear_rush_position{};
 
+  // the linear position when scoring on the alliance stake
+  double m_linear_alliance_stake_position{};
+
+  // the linear intermediate position during the alliance stake motion
+  double m_linear_alliance_stake_intermediate_position{};
+
   // the linear position tolerance
   double m_linear_tolerance{};
 
  public:
+  /// @brief Adds a clock to the builder
+  /// @param clock The clock being used
+  /// @return __PIDArmMotionBuilder*__ Pointer to the current builder
+  PIDArmMotionBuilder* withClock(
+      const std::unique_ptr<driftless::rtos::IClock>& clock);
+
   // add a delayer to the builder
   PIDArmMotionBuilder* withDelayer(
       const std::unique_ptr<driftless::rtos::IDelayer>& delayer);
@@ -140,6 +161,12 @@ class PIDArmMotionBuilder {
   PIDArmMotionBuilder* withRotationalRushPosition(
       double rotational_rush_position);
 
+  /// @brief Adds a rotational alliance stake position to the builder
+  /// @param rotational_alliance_stake_position The position being added
+  /// @return __PIDArmMotionBuilder*__ pointer to the current builder
+  PIDArmMotionBuilder* withRotationalAllianceStakePosition(
+      double rotational_alliance_stake_position);
+
   /// @brief Adds a rotational ready intermediate position to the builder
   /// @param rotational_ready_intermediate_position The position being added
   /// @return __PIDArmMotionBuilder*__ pointer to the current builder
@@ -157,6 +184,14 @@ class PIDArmMotionBuilder {
   /// @return __PIDArmMotionBuilder*__ pointer to the current builder
   PIDArmMotionBuilder* withRotationalRushIntermediatePosition(
       double rotational_rush_intermediate_position);
+
+  /// @brief Adds a rotational alliance stake intermediate position to the
+  /// builder
+  /// @param rotational_alliance_stake_intermediate_position The position being
+  /// added
+  /// @return __PIDArmMotionBuilder*__ pointer to the current builder
+  PIDArmMotionBuilder* withRotationalAllianceStakeIntermediatePosition(
+      double rotational_alliance_stake_intermediate_position);
 
   // add a rotational position tolerance to the builder
   PIDArmMotionBuilder* withRotationalTolerance(double rotational_tolerance);
@@ -176,8 +211,21 @@ class PIDArmMotionBuilder {
 
   /// @brief Adds a linear rush position to the builder
   /// @param linear_rush_position The position being added
-  /// @return __PIDArmMotionBuilder*__ pointer to the current builder
+  /// @return __PIDArmMotionBuilder*__ Pointer to the current builder
   PIDArmMotionBuilder* withLinearRushPosition(double linear_rush_position);
+
+  /// @brief Adds a linear alliance stake position to the builder
+  /// @param linear_alliance_stake_position The position being added
+  /// @return __PIDArmMotionBuilder*__ Pointer to the current builder
+  PIDArmMotionBuilder* withLinearAllianceStakePosition(
+      double linear_alliance_stake_position);
+
+  /// @brief Adds a linear alliance stake intermediate position to the builder
+  /// @param linear_alliance_stake_intermediate_position The position being
+  /// added
+  /// @return __PIDArmMotionBuilder*__ Pointer to the current builder
+  PIDArmMotionBuilder* withLinearAllianceStakeIntermediatePosition(
+      double linear_alliance_stake_intermediate_position);
 
   // add a linear position tolerance to the builder
   PIDArmMotionBuilder* withLinearTolerance(double linear_tolerance);

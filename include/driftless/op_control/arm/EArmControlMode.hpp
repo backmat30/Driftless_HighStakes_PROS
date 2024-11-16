@@ -4,7 +4,7 @@
 namespace driftless {
 namespace op_control {
 namespace arm {
-enum class EArmControlMode { SPLIT_TOGGLE, SINGLE_TOGGLE };
+enum class EArmControlMode { SPLIT_TOGGLE, SMART_TOGGLE };
 }  // namespace arm
 }  // namespace op_control
 }  // namespace driftless

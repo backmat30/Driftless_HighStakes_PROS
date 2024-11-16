@@ -16,6 +16,9 @@ class IArmMotion {
   // runs the arm motion controller
   virtual void run() = 0;
 
+  // finds the zero-position of the arm and calibrates it
+  virtual void calibrate() = 0;
+
   // goes to the neutral position
   virtual void goNeutral() = 0;
 
@@ -30,6 +33,12 @@ class IArmMotion {
 
   // goes to the rush position
   virtual void goRush() = 0;
+
+  // goes to the alliance position
+  virtual void goAllianceStake() = 0;
+
+  // goes to the previous position
+  virtual void goPrevious() = 0;
 
   // determines if the arm is in the neutral position
   virtual bool isAtNeutral() = 0;
@@ -60,6 +69,12 @@ class IArmMotion {
 
   // determines if the arm is going to the rush position
   virtual bool isGoingRush() = 0;
+
+  // determines if the arm is at the alliance stake position
+  virtual bool isAtAllianceStake() = 0;
+
+  // determines if the arm is going to the alliance stake position
+  virtual bool isGoingAllianceStake() = 0;
 };
 }  // namespace arm
 }  // namespace subsystems

@@ -4,6 +4,11 @@ namespace driftless {
 namespace robot {
 namespace subsystems {
 namespace arm {
+PIDArmMotionBuilder* PIDArmMotionBuilder::withClock(
+    const std::unique_ptr<driftless::rtos::IClock>& clock) {
+  m_clock = clock->clone();
+  return this;
+}
 PIDArmMotionBuilder* PIDArmMotionBuilder::withDelayer(
     const std::unique_ptr<driftless::rtos::IDelayer>& delayer) {
   m_delayer = delayer->clone();
@@ -88,6 +93,12 @@ PIDArmMotionBuilder* PIDArmMotionBuilder::withRotationalRushPosition(
   return this;
 }
 
+PIDArmMotionBuilder* PIDArmMotionBuilder::withRotationalAllianceStakePosition(
+    double rotational_alliance_stake_position) {
+  m_rotational_alliance_stake_position = rotational_alliance_stake_position;
+  return this;
+}
+
 PIDArmMotionBuilder*
 PIDArmMotionBuilder::withRotationalReadyIntermediatePosition(
     double rotational_ready_intermediate_position) {
@@ -109,6 +120,14 @@ PIDArmMotionBuilder::withRotationalRushIntermediatePosition(
     double rotational_rush_intermediate_position) {
   m_rotational_rush_intermediate_position =
       rotational_rush_intermediate_position;
+  return this;
+}
+
+PIDArmMotionBuilder*
+PIDArmMotionBuilder::withRotationalAllianceStakeIntermediatePosition(
+    double rotational_alliance_stake_intermediate_position) {
+  m_rotational_alliance_stake_intermediate_position =
+      rotational_alliance_stake_intermediate_position;
   return this;
 }
 
@@ -148,6 +167,20 @@ PIDArmMotionBuilder* PIDArmMotionBuilder::withLinearRushPosition(
   return this;
 }
 
+PIDArmMotionBuilder* PIDArmMotionBuilder::withLinearAllianceStakePosition(
+    double linear_alliance_stake_position) {
+  m_linear_alliance_stake_position = linear_alliance_stake_position;
+  return this;
+}
+
+PIDArmMotionBuilder*
+PIDArmMotionBuilder::withLinearAllianceStakeIntermediatePosition(
+    double linear_alliance_stake_intermediate_position) {
+  m_linear_alliance_stake_intermediate_position =
+      linear_alliance_stake_intermediate_position;
+  return this;
+}
+
 PIDArmMotionBuilder* PIDArmMotionBuilder::withLinearTolerance(
     double linear_tolerance) {
   m_linear_tolerance = linear_tolerance;
@@ -158,6 +191,7 @@ std::unique_ptr<PIDArmMotion> PIDArmMotionBuilder::build() {
   std::unique_ptr<PIDArmMotion> pid_arm_motion{
       std::make_unique<PIDArmMotion>()};
 
+  pid_arm_motion->setClock(m_clock);
   pid_arm_motion->setDelayer(m_delayer);
   pid_arm_motion->setMutex(m_mutex);
   pid_arm_motion->setTask(m_task);
@@ -172,18 +206,26 @@ std::unique_ptr<PIDArmMotion> PIDArmMotionBuilder::build() {
   pid_arm_motion->setRotationalReadyPosition(m_rotational_ready_position);
   pid_arm_motion->setRotationalScorePosition(m_rotational_score_position);
   pid_arm_motion->setRotationalRushPosition(m_rotational_rush_position);
+  pid_arm_motion->setRotationalAllianceStakePosition(
+      m_rotational_alliance_stake_position);
   pid_arm_motion->setRotationalReadyIntermediatePosition(
       m_rotational_ready_intermediate_position);
   pid_arm_motion->setRotationalScoreIntermediatePosition(
       m_rotational_score_intermediate_position);
   pid_arm_motion->setRotationalRushIntermediatePosition(
       m_rotational_rush_intermediate_position);
+  pid_arm_motion->setRotationalAllianceStakeIntermediatePosition(
+      m_rotational_alliance_stake_intermediate_position);
   pid_arm_motion->setRotationalTolerance(m_rotational_tolerance);
   pid_arm_motion->setLinearNeutralPosition(m_linear_neutral_position);
   pid_arm_motion->setLinearLoadPosition(m_linear_load_position);
   pid_arm_motion->setLinearReadyPosition(m_linear_ready_position);
   pid_arm_motion->setLinearScorePosition(m_linear_score_position);
   pid_arm_motion->setLinearRushPosition(m_linear_rush_position);
+  pid_arm_motion->setLinearAllianceStakePosition(
+      m_linear_alliance_stake_position);
+  pid_arm_motion->setLinearAllianceStakeIntermediatePosition(
+      m_linear_alliance_stake_intermediate_position);
   pid_arm_motion->setLinearTolerance(m_linear_tolerance);
 
   return pid_arm_motion;

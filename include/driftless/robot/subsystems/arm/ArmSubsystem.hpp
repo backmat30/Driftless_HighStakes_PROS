@@ -18,6 +18,9 @@ class ArmSubsystem : public ASubsystem {
 
   // COMMAND NAMES
 
+  // command to calibrate the arm
+  static constexpr char CALIBRATE_COMMAND_NAME[]{"CALIBRATE"};
+
   // command to go to the neutral position
   static constexpr char GO_NEUTRAL_COMMAND_NAME[]{"GO NEUTRAL"};
 
@@ -32,6 +35,12 @@ class ArmSubsystem : public ASubsystem {
 
   // command to go to the rush position
   static constexpr char GO_RUSH_COMMAND_NAME[]{"GO RUSH"};
+
+  // command to go to the alliance stake position
+  static constexpr char GO_ALLIANCE_STAKE_COMMAND_NAME[]{"GO ALLIANCE STAKE"};
+
+  // command to go to the previous position
+  static constexpr char GO_PREVIOUS_COMMAND_NAME[]{"GO PREVIOUS"};
 
   // STATE NAMES
 
@@ -64,6 +73,13 @@ class ArmSubsystem : public ASubsystem {
 
   // state determining if the arm is going to the rush position
   static constexpr char IS_GOING_RUSH_STATE_NAME[]{"IS GOING RUSH"};
+
+  // state determining if the arm is at the alliance stake position
+  static constexpr char IS_ALLIANCE_STAKE_STATE_NAME[]{"IS ALLIANCE STAKE"};
+
+  // state determining if the arm is going to the alliance stake position
+  static constexpr char IS_GOING_ALLIANCE_STAKE_STATE_NAME[]{
+      "IS GOING ALLIANCE STAKE"};
 
   // state determining if there is a ring in the loading zone
   static constexpr char HAS_RING_STATE_NAME[]{"HAS RING"};

@@ -21,7 +21,9 @@ void ArmSubsystem::run() {
 }
 
 void ArmSubsystem::command(std::string command_name, va_list& args) {
-  if (command_name == GO_NEUTRAL_COMMAND_NAME) {
+  if (command_name == CALIBRATE_COMMAND_NAME) {
+    m_arm_motion->calibrate();
+  } else if (command_name == GO_NEUTRAL_COMMAND_NAME) {
     m_arm_motion->goNeutral();
   } else if (command_name == GO_LOAD_COMMAND_NAME) {
     m_arm_motion->goLoad();
@@ -31,6 +33,10 @@ void ArmSubsystem::command(std::string command_name, va_list& args) {
     m_arm_motion->goScore();
   } else if (command_name == GO_RUSH_COMMAND_NAME) {
     m_arm_motion->goRush();
+  } else if (command_name == GO_PREVIOUS_COMMAND_NAME) {
+    m_arm_motion->goPrevious();
+  } else if (command_name == GO_ALLIANCE_STAKE_COMMAND_NAME) {
+    m_arm_motion->goAllianceStake();
   }
 }
 
@@ -57,6 +63,10 @@ void* ArmSubsystem::state(std::string state_name) {
     result = new bool{m_arm_motion->isAtRush()};
   } else if (state_name == IS_GOING_RUSH_STATE_NAME) {
     result = new bool{m_arm_motion->isGoingRush()};
+  } else if (state_name == IS_ALLIANCE_STAKE_STATE_NAME) {
+    result = new bool{m_arm_motion->isAtAllianceStake()};
+  } else if (state_name == IS_GOING_ALLIANCE_STAKE_STATE_NAME) {
+    result = new bool{m_arm_motion->isGoingAllianceStake()};
   } else if (state_name == HAS_RING_STATE_NAME) {
     result = new bool{m_ring_sensor->hasRing()};
   } else if (state_name == GET_HUE_STATE_NAME) {
