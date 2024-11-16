@@ -181,70 +181,65 @@ class DefaultConfig : public IConfig {
   // DRIVE MOTORS
 
   /// @brief first left drive motor
-  static constexpr int8_t DRIVE_LEFT_MOTOR_1{-1};
+  static constexpr int8_t DRIVE_LEFT_MOTOR_1{-2};
   /// @brief second left drive motor
-  static constexpr int8_t DRIVE_LEFT_MOTOR_2{2};
+  static constexpr int8_t DRIVE_LEFT_MOTOR_2{-3};
   /// @brief third left drive motor
-  static constexpr int8_t DRIVE_LEFT_MOTOR_3{-3};
+  static constexpr int8_t DRIVE_LEFT_MOTOR_3{4};
   /// @brief fourth left drive motor
-  static constexpr int8_t DRIVE_LEFT_MOTOR_4{-4};
+  static constexpr int8_t DRIVE_LEFT_MOTOR_4{-5};
   /// @brief first right drive motor
-  static constexpr int8_t DRIVE_RIGHT_MOTOR_1{11};
+  static constexpr int8_t DRIVE_RIGHT_MOTOR_1{7};
   /// @brief second right drive motor
-  static constexpr int8_t DRIVE_RIGHT_MOTOR_2{-12};
+  static constexpr int8_t DRIVE_RIGHT_MOTOR_2{-8};
   /// @brief third right drive motor
-  static constexpr int8_t DRIVE_RIGHT_MOTOR_3{13};
+  static constexpr int8_t DRIVE_RIGHT_MOTOR_3{9};
   /// @brief fourth right drive motor
-  static constexpr int8_t DRIVE_RIGHT_MOTOR_4{14};
+  static constexpr int8_t DRIVE_RIGHT_MOTOR_4{10};
 
   // ARM PORTS
 
   /// @brief left side arm rotational motor
-  static constexpr int8_t ARM_LEFT_ROTATION_MOTOR{9};
+  static constexpr int8_t ARM_LEFT_ROTATION_MOTOR{12};
 
   /// @brief right side arm rotational motor
   static constexpr int8_t ARM_RIGHT_ROTATION_MOTOR{-19};
 
   /// @brief arm linear motor
-  static constexpr int8_t ARM_LINEAR_MOTOR{10};
+  static constexpr int8_t ARM_LINEAR_MOTOR{20};
 
   /// @brief arm color sensor
-  static constexpr int8_t ARM_COLOR_SENSOR{UNDEFINED_PORT};
-
-  /// @brief arm potentiometer
-  static constexpr int8_t ARM_POTENTIOMETER{1};
+  static constexpr int8_t ARM_COLOR_SENSOR{17};
 
   // CLAMP PORTS
 
   /// @brief clamp piston controller
-  static constexpr int8_t CLAMP_PISTON_1{UNDEFINED_PORT};
+  static constexpr int8_t CLAMP_PISTON_1{1};
 
   // ELEVATOR PORTS
 
   /// @brief first elevator motor
-  static constexpr int8_t ELEVATOR_MOTOR_1{UNDEFINED_PORT};
+  static constexpr int8_t ELEVATOR_MOTOR_1{18};
   /// @brief elevator rotational sensor
   static constexpr int8_t ELEVATOR_ROTATIONAL_SENSOR{UNDEFINED_PORT};
 
   // INTAKE PORTS
 
-  /// @brief left intake piston
-  static constexpr int8_t INTAKE_LEFT_PISTON{UNDEFINED_PORT};
-  /// @brief right intake piston
-  static constexpr int8_t INTAKE_RIGHT_PISTON{UNDEFINED_PORT};
+  /// @brief intake piston
+  static constexpr int8_t INTAKE_PISTON{2};
   /// @brief intake motor
-  static constexpr int8_t INTAKE_MOTOR{UNDEFINED_PORT};
+  static constexpr int8_t INTAKE_MOTOR{15};
 
   // ODOMETRY PORTS
 
   /// @brief left tracking wheel
-  static constexpr int8_t ODOMETRY_LINEAR_TRACKING_WHEEL{UNDEFINED_PORT};
+  static constexpr int8_t ODOMETRY_LINEAR_TRACKING_WHEEL{16};
   /// @brief right tracking wheel
-  static constexpr int8_t ODOMETRY_STRAFE_TRACKING_WHEEL{UNDEFINED_PORT};
+  static constexpr int8_t ODOMETRY_STRAFE_TRACKING_WHEEL{6};
   /// @brief inertial sensor
-  static constexpr int8_t ODOMETRY_INERTIAL_SENSOR{20};
+  static constexpr int8_t ODOMETRY_INERTIAL_SENSOR{14};
   /// @brief distance sensor
-  static constexpr int8_t ODOMETRY_DISTANCE_SENSOR{UNDEFINED_PORT};
+  static constexpr int8_t ODOMETRY_DISTANCE_SENSOR{13};
 
   // -----MISC VALUES-----
 
@@ -311,11 +306,11 @@ class DefaultConfig : public IConfig {
   /// @brief arm linear load position
   static constexpr double ARM_LINEAR_LOAD_POSITION{0.0};
   /// @brief arm linear ready position
-  static constexpr double ARM_LINEAR_READY_POSITION{5.95};
+  static constexpr double ARM_LINEAR_READY_POSITION{0.9 * 2 * M_PI};
   /// @brief arm linear score position
-  static constexpr double ARM_LINEAR_SCORE_POSITION{5.0};
+  static constexpr double ARM_LINEAR_SCORE_POSITION{4.0};
   /// @brief Arm linear rush position
-  static constexpr double ARM_LINEAR_RUSH_POSITION{5.95};
+  static constexpr double ARM_LINEAR_RUSH_POSITION{0.9 * 2 * M_PI};
   /// @brief arm linear position tolerance
   static constexpr double ARM_LINEAR_TOLERANCE{0.1};
   /// @brief arm ring proximity

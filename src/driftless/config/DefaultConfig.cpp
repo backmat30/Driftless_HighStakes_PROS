@@ -222,15 +222,15 @@ std::shared_ptr<robot::Robot> DefaultConfig::buildRobot() {
 
   // pros objects
   std::unique_ptr<pros::Motor> temp_arm_left_rotation_motor{
-      std::make_unique<pros::Motor>(ARM_LEFT_ROTATION_MOTOR, ARM_ROTATIONAL_GEARSET)};
+      std::make_unique<pros::Motor>(ARM_LEFT_ROTATION_MOTOR,
+                                    ARM_ROTATIONAL_GEARSET)};
   std::unique_ptr<pros::Motor> temp_arm_right_rotation_motor{
-      std::make_unique<pros::Motor>(ARM_RIGHT_ROTATION_MOTOR, ARM_ROTATIONAL_GEARSET)};
+      std::make_unique<pros::Motor>(ARM_RIGHT_ROTATION_MOTOR,
+                                    ARM_ROTATIONAL_GEARSET)};
   std::unique_ptr<pros::Motor> temp_arm_linear_motor{
       std::make_unique<pros::Motor>(ARM_LINEAR_MOTOR, ARM_LINEAR_GEARSET)};
   std::unique_ptr<pros::Optical> temp_arm_color_sensor{
       std::make_unique<pros::Optical>(ARM_COLOR_SENSOR)};
-  std::unique_ptr<pros::adi::AnalogIn> temp_arm_potentiometer{
-      std::make_unique<pros::adi::AnalogIn>(ARM_POTENTIOMETER)};
 
   // adapted objects
   std::unique_ptr<driftless::io::IMotor> arm_left_rotation_motor{
@@ -245,9 +245,6 @@ std::shared_ptr<robot::Robot> DefaultConfig::buildRobot() {
   std::unique_ptr<driftless::io::IColorSensor> arm_color_sensor{
       std::make_unique<driftless::pros_adapters::ProsColorSensor>(
           temp_arm_color_sensor)};
-  std::unique_ptr<driftless::io::IPotentiometer> arm_potentiometer{
-      std::make_unique<driftless::pros_adapters::ProsADIPotentiometer>(
-          temp_arm_potentiometer, ARM_POTENTIOMETER_REVERSED)};
 
   driftless::control::PID arm_rotational_pid{arm_clock, PID_ARM_ROTATIONAL_KP,
                                              PID_ARM_ROTATIONAL_KI,
@@ -262,7 +259,8 @@ std::shared_ptr<robot::Robot> DefaultConfig::buildRobot() {
       color_ring_sensor_builder{};
 
   std::unique_ptr<driftless::robot::subsystems::arm::IArmMotion> arm_motion{
-      pid_arm_motion_builder.withDelayer(arm_delayer)
+      pid_arm_motion_builder.withClock(arm_clock)
+          ->withDelayer(arm_delayer)
           ->withMutex(arm_mutex)
           ->withTask(arm_task)
           ->withRotationalMotor(arm_left_rotation_motor)
@@ -275,9 +273,12 @@ std::shared_ptr<robot::Robot> DefaultConfig::buildRobot() {
           ->withRotationalReadyPosition(ARM_ROTATIONAL_READY_POSITION)
           ->withRotationalScorePosition(ARM_ROTATIONAL_SCORE_POSITION)
           ->withRotationalRushPosition(ARM_ROTATIONAL_RUSH_POSITION)
-          ->withRotationalReadyIntermediatePosition(ARM_ROTATIONAL_READY_INTERMEDIATE_POSITION)
-          ->withRotationalScoreIntermediatePosition(ARM_ROTATIONAL_SCORE_INTERMEDIATE_POSITION)
-          ->withRotationalRushIntermediatePosition(ARM_ROTATIONAL_RUSH_INTERMEDIATE_POSITION)
+          ->withRotationalReadyIntermediatePosition(
+              ARM_ROTATIONAL_READY_INTERMEDIATE_POSITION)
+          ->withRotationalScoreIntermediatePosition(
+              ARM_ROTATIONAL_SCORE_INTERMEDIATE_POSITION)
+          ->withRotationalRushIntermediatePosition(
+              ARM_ROTATIONAL_RUSH_INTERMEDIATE_POSITION)
           ->withRotationalTolerance(ARM_ROTATIONAL_TOLERANCE)
           ->withLinearNeutralPosition(ARM_LINEAR_NEUTRAL_POSITION)
           ->withLinearLoadPosition(ARM_LINEAR_LOAD_POSITION)
@@ -374,21 +375,16 @@ std::shared_ptr<robot::Robot> DefaultConfig::buildRobot() {
   // pros objects
   std::unique_ptr<pros::Motor> temp_intake_motor_1{
       std::make_unique<pros::Motor>(INTAKE_MOTOR)};
-  std::unique_ptr<pros::adi::DigitalOut> temp_intake_left_piston{
-      std::make_unique<pros::adi::DigitalOut>(INTAKE_LEFT_PISTON)};
-  std::unique_ptr<pros::adi::DigitalOut> temp_intake_right_piston{
-      std::make_unique<pros::adi::DigitalOut>(INTAKE_RIGHT_PISTON)};
+  std::unique_ptr<pros::adi::DigitalOut> temp_intake_piston{
+      std::make_unique<pros::adi::DigitalOut>(INTAKE_PISTON)};
 
   // adapted objects
   std::unique_ptr<driftless::io::IMotor> intake_motor_1{
       std::make_unique<driftless::pros_adapters::ProsV5Motor>(
           temp_intake_motor_1)};
-  std::unique_ptr<driftless::io::IPiston> intake_left_piston{
+  std::unique_ptr<driftless::io::IPiston> intake_piston{
       std::make_unique<driftless::pros_adapters::ProsPiston>(
-          temp_intake_left_piston)};
-  std::unique_ptr<driftless::io::IPiston> intake_right_piston{
-      std::make_unique<driftless::pros_adapters::ProsPiston>(
-          temp_intake_right_piston)};
+          temp_intake_piston)};
 
   // build the intake
   driftless::robot::subsystems::intake::DirectIntakeBuilder
@@ -400,8 +396,7 @@ std::shared_ptr<robot::Robot> DefaultConfig::buildRobot() {
       direct_intake_builder.withMotor(intake_motor_1)->build()};
   std::unique_ptr<driftless::robot::subsystems::intake::IHeightControl>
       piston_height_control{
-          piston_height_control_builder.withPiston(intake_left_piston)
-              ->withPiston(intake_right_piston)
+          piston_height_control_builder.withPiston(intake_piston)
               ->build()};
 
   // create and add the intake subsystem to the robot
