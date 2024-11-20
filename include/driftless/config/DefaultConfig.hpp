@@ -55,7 +55,6 @@
 
 // arm subsystem includes
 #include "driftless/robot/subsystems/arm/ArmSubsystem.hpp"
-#include "driftless/robot/subsystems/arm/ColorRingSensorBuilder.hpp"
 #include "driftless/robot/subsystems/arm/PIDArmMotionBuilder.hpp"
 
 // clamp subsystem includes
@@ -70,6 +69,7 @@
 // elevator subsystem includes
 #include "driftless/robot/subsystems/elevator/ElevatorSubsystem.hpp"
 #include "driftless/robot/subsystems/elevator/PIDElevatorBuilder.hpp"
+#include "driftless/robot/subsystems/elevator/PistonRingRejectionBuilder.hpp"
 
 // intake subsystem includes
 #include "driftless/robot/subsystems/intake/DirectIntakeBuilder.hpp"
@@ -80,6 +80,10 @@
 #include "driftless/robot/subsystems/odometry/DistancePositionResetterBuilder.hpp"
 #include "driftless/robot/subsystems/odometry/InertialPositionTrackerBuilder.hpp"
 #include "driftless/robot/subsystems/odometry/OdometrySubsystem.hpp"
+
+// ring sort subsystem includes
+#include "driftless/robot/subsystems/ring_sort/ColorRingSortBuilder.hpp"
+#include "driftless/robot/subsystems/ring_sort/RingSortSubsystem.hpp"
 
 // rtos includes
 #include "driftless/rtos/IClock.hpp"
@@ -208,9 +212,6 @@ class DefaultConfig : public IConfig {
   /// @brief arm linear motor
   static constexpr int8_t ARM_LINEAR_MOTOR{20};
 
-  /// @brief arm color sensor
-  static constexpr int8_t ARM_COLOR_SENSOR{17};
-
   // CLAMP PORTS
 
   /// @brief clamp piston controller
@@ -222,6 +223,8 @@ class DefaultConfig : public IConfig {
   static constexpr int8_t ELEVATOR_MOTOR_1{18};
   /// @brief elevator rotational sensor
   static constexpr int8_t ELEVATOR_ROTATIONAL_SENSOR{UNDEFINED_PORT};
+
+  static constexpr int8_t ELEVATOR_REJECTION_PISTON{3};
 
   // INTAKE PORTS
 
@@ -240,6 +243,10 @@ class DefaultConfig : public IConfig {
   static constexpr int8_t ODOMETRY_INERTIAL_SENSOR{14};
   /// @brief distance sensor
   static constexpr int8_t ODOMETRY_DISTANCE_SENSOR{13};
+
+  // RING SORT PORTS
+
+  static constexpr int8_t RING_SORT_COLOR_SENSOR{17};
 
   // -----MISC VALUES-----
 
@@ -277,14 +284,14 @@ class DefaultConfig : public IConfig {
   /// @brief arm linear pid controller kd value
   static constexpr double PID_ARM_LINEAR_KD{0.0};
   /// @brief arm rotational neutral position
-  static constexpr double ARM_ROTATIONAL_NEUTRAL_POSITION{0.0};
+  static constexpr double ARM_ROTATIONAL_NEUTRAL_POSITION{0.06};
   /// @brief arm rotational load position
-  static constexpr double ARM_ROTATIONAL_LOAD_POSITION{0.0};
+  static constexpr double ARM_ROTATIONAL_LOAD_POSITION{0.06};
   /// @brief arm rotational ready position
-  static constexpr double ARM_ROTATIONAL_READY_POSITION{1.175 / 4.0 * 2.0 *
-                                                        M_PI};
+  static constexpr double ARM_ROTATIONAL_READY_POSITION{1.3 / 4.0 * 2.0 * M_PI};
   /// @brief arm rotational score position
-  static constexpr double ARM_ROTATIONAL_SCORE_POSITION{1.45 / 4.0 * 2.0 * M_PI};
+  static constexpr double ARM_ROTATIONAL_SCORE_POSITION{1.55 / 4.0 * 2.0 *
+                                                        M_PI};
   /// @brief arm rotational rush position
   static constexpr double ARM_ROTATIONAL_RUSH_POSITION{2.15 / 4.0 * 2.0 * M_PI};
   /// @brief The intermediate position on the rotation towards the arm ready
@@ -294,7 +301,7 @@ class DefaultConfig : public IConfig {
   /// @brief The intermediate position on the rotation towards the arm score
   /// position
   static constexpr double ARM_ROTATIONAL_SCORE_INTERMEDIATE_POSITION{
-      1.3 / 4.0 * 2.0 * M_PI};
+      1.5 / 4.0 * 2.0 * M_PI};
   /// @brief The intermediate position on the rotation towards the arm rush
   /// position
   static constexpr double ARM_ROTATIONAL_RUSH_INTERMEDIATE_POSITION{0.5 / 4.0 *
@@ -302,19 +309,17 @@ class DefaultConfig : public IConfig {
   /// @brief arm rotational position tolerance
   static constexpr double ARM_ROTATIONAL_TOLERANCE{0.05};
   /// @brief arm linear neutral position
-  static constexpr double ARM_LINEAR_NEUTRAL_POSITION{0.6 * 2.0 * M_PI};
+  static constexpr double ARM_LINEAR_NEUTRAL_POSITION{0.32 * 2.0 * M_PI};
   /// @brief arm linear load position
-  static constexpr double ARM_LINEAR_LOAD_POSITION{0.0};
+  static constexpr double ARM_LINEAR_LOAD_POSITION{0.08};
   /// @brief arm linear ready position
-  static constexpr double ARM_LINEAR_READY_POSITION{0.9 * 2 * M_PI};
+  static constexpr double ARM_LINEAR_READY_POSITION{0.965 * 2 * M_PI};
   /// @brief arm linear score position
-  static constexpr double ARM_LINEAR_SCORE_POSITION{4.0};
+  static constexpr double ARM_LINEAR_SCORE_POSITION{0.485 * 2 * M_PI};
   /// @brief Arm linear rush position
-  static constexpr double ARM_LINEAR_RUSH_POSITION{0.9 * 2 * M_PI};
+  static constexpr double ARM_LINEAR_RUSH_POSITION{0.495 * 2 * M_PI};
   /// @brief arm linear position tolerance
   static constexpr double ARM_LINEAR_TOLERANCE{0.1};
-  /// @brief arm ring proximity
-  static constexpr uint32_t ARM_RING_PROXIMITY{0};
 
   // elevator
 
@@ -325,15 +330,17 @@ class DefaultConfig : public IConfig {
   /// @brief elevator pid controller kd value
   static constexpr double PID_ELEVATOR_KD{256.0};
   /// @brief elevator radians to inches travelled
-  static constexpr double ELEVATOR_RADIANS_TO_INCHES{};
+  static constexpr double ELEVATOR_RADIANS_TO_INCHES{3.75 / (2.0 * M_PI)};
+  /// @brief The max distance a ring can be from the color sensor
+  static constexpr uint8_t ELEVATOR_MAX_RING_DISTANCE{50};
 
   // odometry
 
   /// @brief radius of the tracking wheels
   static constexpr double TRACKING_WHEEL_RADIUS{1.0};
-  /// @brief left offset of the left tracking wheel
+  /// @brief left offset of the linear tracking wheel
   static constexpr double LINEAR_TRACKING_WHEEL_OFFSET{4.8};
-  /// @brief left offset of the right tracking wheel
+  /// @brief forwards offset of the strafe tracking wheel
   static constexpr double STRAFE_TRACKING_WHEEL_OFFSET{8.69};
   /// @brief position resetter x offset
   static constexpr double RESETTER_LOCAL_X_OFFSET{7.5};
@@ -341,6 +348,13 @@ class DefaultConfig : public IConfig {
   static constexpr double RESETTER_LOCAL_Y_OFFSET{0.0};
   /// @brief position resetter angular offset
   static constexpr double RESETTER_LOCAL_THETA_OFFSET{0.0};
+
+  // ring sensor
+
+  /// @brief The distance from the color sensor to the end of the elevator
+  static constexpr double RING_SORT_COLOR_SENSOR_TO_END{4.0};
+  /// @brief The minimum proximity value to be considered a ring
+  static constexpr uint8_t RING_SORT_MIN_RING_PROXIMITY{50};
 
  public:
   /// @brief Gets the name of the config

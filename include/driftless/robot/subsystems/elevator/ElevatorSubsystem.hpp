@@ -5,6 +5,7 @@
 
 #include "driftless/robot/subsystems/ASubsystem.hpp"
 #include "driftless/robot/subsystems/elevator/IElevator.hpp"
+#include "driftless/robot/subsystems/elevator/IRingRejection.hpp"
 
 namespace driftless {
 namespace robot {
@@ -23,17 +24,30 @@ class ElevatorSubsystem : public ASubsystem {
   // command to set the voltage of the elevator motors
   static constexpr char SET_VOLTAGE_COMMAND_NAME[]{"SET VOLTAGE"};
 
+  // command to deploy the ring rejector
+  static constexpr char DEPLOY_REJECTOR_COMMAND_NAME[]{"DEPLOY REJECTOR"};
+
+  // command to retract the ring rejector
+  static constexpr char RETRACT_REJECTOR_COMMAND_NAME[]{"RETRACT REJECTOR"};
+
   // STATE NAMES
 
   // position of the elevator
   static constexpr char GET_POSITION_STATE_NAME[]{"GET POSITION"};
 
+  // whether the ring rejector is deployed
+  static constexpr char IS_DEPLOYED_STATE_NAME[]{"IS DEPLOYED"};
+
   // the elevator object being used
   std::unique_ptr<IElevator> m_elevator{};
 
+  /// @brief The ring rejector
+  std::unique_ptr<IRingRejection> m_ring_rejector{};
+
  public:
   // constructor
-  ElevatorSubsystem(std::unique_ptr<IElevator>& elevator);
+  ElevatorSubsystem(std::unique_ptr<IElevator>& elevator,
+                    std::unique_ptr<IRingRejection>& ring_rejector);
 
   // initialize the subsystem
   void init() override;

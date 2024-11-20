@@ -13,7 +13,7 @@ void OpControlManager::setProfile(
   m_profile = std::move(profile);
 }
 
-void OpControlManager::setAlliance(driftless::alliance::Alliance alliance) {
+void OpControlManager::setAlliance(std::shared_ptr<alliance::IAlliance>& alliance) {
   m_alliance = alliance;
 }
 
@@ -47,7 +47,7 @@ void OpControlManager::run(
     // updates all subsystems
     clamp_operator.update(m_profile);
     drive_operator.setDriveVoltage(m_profile);
-    elevator_operator.update(m_profile);
+    elevator_operator.update(m_profile, m_alliance);
     intake_operator.update(m_profile);
     arm_operator.update(m_profile, m_alliance);
 

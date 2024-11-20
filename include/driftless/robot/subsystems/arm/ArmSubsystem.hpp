@@ -5,7 +5,6 @@
 
 #include "driftless/robot/subsystems/ASubsystem.hpp"
 #include "driftless/robot/subsystems/arm/IArmMotion.hpp"
-#include "driftless/robot/subsystems/arm/IRingSensor.hpp"
 
 namespace driftless {
 namespace robot {
@@ -81,22 +80,12 @@ class ArmSubsystem : public ASubsystem {
   static constexpr char IS_GOING_ALLIANCE_STAKE_STATE_NAME[]{
       "IS GOING ALLIANCE STAKE"};
 
-  // state determining if there is a ring in the loading zone
-  static constexpr char HAS_RING_STATE_NAME[]{"HAS RING"};
-
-  // state determining the color of the ring in the loading zone, if applicable
-  static constexpr char GET_HUE_STATE_NAME[]{"GET HUE"};
-
   // the arm motion controller
   std::unique_ptr<IArmMotion> m_arm_motion{};
 
-  // the ring sensor
-  std::unique_ptr<IRingSensor> m_ring_sensor{};
-
  public:
   // constructs a new arm subsystem
-  ArmSubsystem(std::unique_ptr<IArmMotion>& arm_motion,
-               std::unique_ptr<IRingSensor>& ring_sensor);
+  ArmSubsystem(std::unique_ptr<IArmMotion>& arm_motion);
 
   // initialize the subsystem
   void init() override;

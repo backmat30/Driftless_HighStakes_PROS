@@ -2,6 +2,7 @@
 #define __PID_PATH_FOLLOWER_HPP__
 
 #include "driftless/control/PID.hpp"
+#include "driftless/control/Point.hpp"
 #include "driftless/control/path/IPathFollower.hpp"
 #include "driftless/robot/subsystems/drivetrain/Velocity.hpp"
 #include "driftless/robot/subsystems/odometry/Position.hpp"
@@ -22,7 +23,7 @@ class PIDPathFollower : public driftless::control::path::IPathFollower {
   static constexpr char DRIVE_SUBSYSTEM_NAME[]{"DIFFERENTIAL DRIVE"};
 
   // name of the odometry subsystem
-  static constexpr char ODOMETRY_SUBSYSTEM_NAME[]{"POSITION TRACKER"};
+  static constexpr char ODOMETRY_SUBSYSTEM_NAME[]{"ODOMETRY"};
 
   // name of the drive train set velocity command
   static constexpr char DRIVE_SET_VELOCITY_COMMAND_NAME[]{"SET VELOCITY"};
@@ -121,7 +122,8 @@ class PIDPathFollower : public driftless::control::path::IPathFollower {
 
   // follow a given path of points
   void followPath(const std::shared_ptr<driftless::robot::Robot>& robot,
-                  const std::vector<Point>& control_path, double velocity) override;
+                  const std::vector<Point>& control_path,
+                  double velocity) override;
 
   // sets the velocity to follow the path at
   void setVelocity(double velocity) override;

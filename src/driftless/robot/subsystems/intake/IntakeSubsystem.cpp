@@ -23,8 +23,8 @@ void IntakeSubsystem::run() {
 
 void IntakeSubsystem::command(std::string command_name, va_list& args) {
   if (command_name == SPIN_INTAKE_COMMAND_NAME) {
-    bool spin{static_cast<bool>(va_arg(args, int))};
-    m_intake->setVoltage(spin * 12.0);
+    double voltage{static_cast<double>(va_arg(args, double))};
+    m_intake->setVoltage(voltage);
   } else if (command_name == SET_HEIGHT_COMMAND_NAME) {
     bool raised{static_cast<bool>(va_arg(args, int))};
     m_height_control->setHeight(raised);

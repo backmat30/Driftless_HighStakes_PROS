@@ -1,7 +1,7 @@
 #ifndef __ARM_OPERATOR_HPP__
 #define __ARM_OPERATOR_HPP__
 
-#include "driftless/alliance/Alliance.hpp"
+#include "driftless/alliance/IAlliance.hpp"
 #include "driftless/io/IController.hpp"
 #include "driftless/op_control/EControllerDigital.hpp"
 #include "driftless/op_control/arm/EArmControlMode.hpp"
@@ -13,8 +13,17 @@ namespace op_control {
 namespace arm {
 class ArmOperator {
  private:
+  // name of the blue alliance
+  static constexpr char BLUE_ALLIANCE_NAME[]{"BLUE"};
+
+  // name of the red alliance
+  static constexpr char RED_ALLIANCE_NAME[]{"RED"};
+
   // name of the arm subsystem
   static constexpr char ARM_SUBSYSTEM_NAME[]{"ARM"};
+
+  // name of the ring sort subsystem
+  static constexpr char RING_SORT_SUBSYSTEM_NAME[]{"RING SORT"};
 
   // command to go to the neutral position
   static constexpr char GO_NEUTRAL_COMMAND_NAME[]{"GO NEUTRAL"};
@@ -83,6 +92,8 @@ class ArmOperator {
   // state determining the color of the ring in the loading zone, if applicable
   static constexpr char GET_HUE_STATE_NAME[]{"GET HUE"};
 
+  static constexpr char GET_RGB_STATE_NAME[]{"GET RGB"};
+
   // the controller used
   std::shared_ptr<driftless::io::IController> m_controller{};
 
@@ -90,18 +101,20 @@ class ArmOperator {
   std::shared_ptr<driftless::robot::Robot> m_robot{};
 
   // determines if the robot has an alliance ring loaded
-  bool hasAllianceRing(const driftless::alliance::Alliance);
+  bool hasAllianceRing(const std::shared_ptr<alliance::IAlliance>& alliance);
+
+  bool hasOpposingRing(const std::shared_ptr<alliance::IAlliance>& alliance);
 
   // updates the arm using split toggle
   void updateSplitToggle(EControllerDigital neutral, EControllerDigital load,
                          EControllerDigital ready, EControllerDigital score,
-                         const driftless::alliance::Alliance alliance);
+                         const std::shared_ptr<alliance::IAlliance>& alliance);
 
   // update the arm using single toggle
   void updateSmartToggle(EControllerDigital toggle, EControllerDigital rush,
                          EControllerDigital calibrate,
                          EControllerDigital alliance_stake,
-                         const driftless::alliance::Alliance alliance);
+                         const std::shared_ptr<alliance::IAlliance>& alliance);
 
  public:
   // constructs a new arm operator
@@ -110,7 +123,7 @@ class ArmOperator {
 
   // update the arm
   void update(const std::unique_ptr<driftless::profiles::IProfile>& profile,
-              const driftless::alliance::Alliance alliance);
+              const std::shared_ptr<alliance::IAlliance>& alliance);
 };
 }  // namespace arm
 }  // namespace op_control

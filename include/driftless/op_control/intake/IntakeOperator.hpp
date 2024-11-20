@@ -42,7 +42,7 @@ class IntakeOperator {
   void updateHoldUp(EControllerDigital up);
 
   // update the intake spinner
-  void updateSpinner(EControllerDigital spin);
+  void updateSpinner(EControllerDigital spin, EControllerDigital reverse);
 
  public:
   // create a new intake operator object

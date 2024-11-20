@@ -4,7 +4,7 @@
 #include <cstdint>
 #include <memory>
 
-#include "driftless/alliance/Alliance.hpp"
+#include "driftless/alliance/IAlliance.hpp"
 #include "driftless/control/ControlSystem.hpp"
 #include "driftless/io/IController.hpp"
 #include "driftless/op_control/arm/ArmOperator.hpp"
@@ -30,7 +30,7 @@ class OpControlManager {
   std::unique_ptr<profiles::IProfile> m_profile{};
 
   // the current alliance
-  driftless::alliance::Alliance m_alliance{};
+  std::shared_ptr<alliance::IAlliance> m_alliance{};
 
  public:
   // constructor
@@ -41,7 +41,7 @@ class OpControlManager {
   void setProfile(std::unique_ptr<profiles::IProfile> &profile);
 
   // defines the alliance the robot is on
-  void setAlliance(driftless::alliance::Alliance alliance);
+  void setAlliance(std::shared_ptr<alliance::IAlliance>& alliance);
 
   // initializes op control
   void init(std::shared_ptr<control::ControlSystem> control_system,

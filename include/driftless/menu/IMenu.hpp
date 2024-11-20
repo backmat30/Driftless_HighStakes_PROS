@@ -2,6 +2,7 @@
 #define __I_MENU_HPP__
 
 #include "driftless/SystemConfig.hpp"
+#include "driftless/auton/IAuton.hpp"
 #include "driftless/config/IConfig.hpp"
 #include "driftless/profiles/IProfile.hpp"
 namespace driftless {
@@ -15,6 +16,10 @@ class IMenu {
   virtual bool isStarted() = 0;
 
   virtual SystemConfig getSystemConfig(bool read_only = false) = 0;
+
+  virtual void addAlliance(std::shared_ptr<alliance::IAlliance>& alliance) = 0;
+
+  virtual void addAuton(std::unique_ptr<auton::IAuton>& auton) = 0;
 
   virtual void addConfig(std::unique_ptr<config::IConfig>& config) = 0;
 

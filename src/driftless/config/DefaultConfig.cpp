@@ -229,8 +229,6 @@ std::shared_ptr<robot::Robot> DefaultConfig::buildRobot() {
                                     ARM_ROTATIONAL_GEARSET)};
   std::unique_ptr<pros::Motor> temp_arm_linear_motor{
       std::make_unique<pros::Motor>(ARM_LINEAR_MOTOR, ARM_LINEAR_GEARSET)};
-  std::unique_ptr<pros::Optical> temp_arm_color_sensor{
-      std::make_unique<pros::Optical>(ARM_COLOR_SENSOR)};
 
   // adapted objects
   std::unique_ptr<driftless::io::IMotor> arm_left_rotation_motor{
@@ -242,9 +240,6 @@ std::shared_ptr<robot::Robot> DefaultConfig::buildRobot() {
   std::unique_ptr<driftless::io::IMotor> arm_linear_motor{
       std::make_unique<driftless::pros_adapters::ProsV5Motor>(
           temp_arm_linear_motor)};
-  std::unique_ptr<driftless::io::IColorSensor> arm_color_sensor{
-      std::make_unique<driftless::pros_adapters::ProsColorSensor>(
-          temp_arm_color_sensor)};
 
   driftless::control::PID arm_rotational_pid{arm_clock, PID_ARM_ROTATIONAL_KP,
                                              PID_ARM_ROTATIONAL_KI,
@@ -255,8 +250,6 @@ std::shared_ptr<robot::Robot> DefaultConfig::buildRobot() {
   // assemble the subsystem
   driftless::robot::subsystems::arm::PIDArmMotionBuilder
       pid_arm_motion_builder{};
-  driftless::robot::subsystems::arm::ColorRingSensorBuilder
-      color_ring_sensor_builder{};
 
   std::unique_ptr<driftless::robot::subsystems::arm::IArmMotion> arm_motion{
       pid_arm_motion_builder.withClock(arm_clock)
@@ -288,14 +281,9 @@ std::shared_ptr<robot::Robot> DefaultConfig::buildRobot() {
           ->withLinearTolerance(ARM_LINEAR_TOLERANCE)
           ->build()};
 
-  std::unique_ptr<driftless::robot::subsystems::arm::IRingSensor> ring_sensor{
-      color_ring_sensor_builder.withColorSensor(arm_color_sensor)
-          ->withRingProximity(ARM_RING_PROXIMITY)
-          ->build()};
-
   std::unique_ptr<driftless::robot::subsystems::ASubsystem> arm_subsystem{
       std::make_unique<driftless::robot::subsystems::arm::ArmSubsystem>(
-          arm_motion, ring_sensor)};
+          arm_motion)};
 
   robot->addSubsystem(arm_subsystem);
 
@@ -336,17 +324,16 @@ std::shared_ptr<robot::Robot> DefaultConfig::buildRobot() {
   // pros objects
   std::unique_ptr<pros::Motor> temp_elevator_motor_1{
       std::make_unique<pros::Motor>(ELEVATOR_MOTOR_1)};
-  std::unique_ptr<pros::Rotation> temp_elevator_rotation_sensor{
-      std::make_unique<pros::Rotation>(ELEVATOR_ROTATIONAL_SENSOR)};
+  std::unique_ptr<pros::adi::DigitalOut> temp_elevator_rejection_piston{
+      std::make_unique<pros::adi::DigitalOut>(ELEVATOR_REJECTION_PISTON)};
 
   // adapted objects
   std::unique_ptr<driftless::io::IMotor> adapted_elevator_motor_1{
       std::make_unique<driftless::pros_adapters::ProsV5Motor>(
           temp_elevator_motor_1)};
-  std::unique_ptr<driftless::io::IRotationSensor>
-      adapted_elevator_rotational_sensor{
-          std::make_unique<driftless::pros_adapters::ProsRotationSensor>(
-              temp_elevator_rotation_sensor)};
+  std::unique_ptr<driftless::io::IPiston> adapted_elevator_rejection_piston{
+      std::make_unique<driftless::pros_adapters::ProsPiston>(
+          temp_elevator_rejection_piston)};
 
   driftless::control::PID elevator_pid{elevator_clock, PID_ELEVATOR_KP,
                                        PID_ELEVATOR_KI, PID_ELEVATOR_KD};
@@ -360,14 +347,22 @@ std::shared_ptr<robot::Robot> DefaultConfig::buildRobot() {
           ->withMutex(elevator_mutex)
           ->withTask(elevator_task)
           ->withMotor(adapted_elevator_motor_1)
-          ->withRotationSensor(adapted_elevator_rotational_sensor)
           ->withPID(elevator_pid)
           ->withRadiansToInches(ELEVATOR_RADIANS_TO_INCHES)
           ->build()};
 
+  driftless::robot::subsystems::elevator::PistonRingRejectionBuilder
+      piston_ring_rejection_builder{};
+
+  std::unique_ptr<robot::subsystems::elevator::IRingRejection> ring_rejection{
+      piston_ring_rejection_builder
+          .withPiston(adapted_elevator_rejection_piston)
+          ->build()};
+
   std::unique_ptr<driftless::robot::subsystems::ASubsystem> elevator_subsystem{
       std::make_unique<
-          driftless::robot::subsystems::elevator::ElevatorSubsystem>(elevator)};
+          driftless::robot::subsystems::elevator::ElevatorSubsystem>(
+          elevator, ring_rejection)};
   robot->addSubsystem(elevator_subsystem);
 
   // INTAKE
@@ -396,8 +391,7 @@ std::shared_ptr<robot::Robot> DefaultConfig::buildRobot() {
       direct_intake_builder.withMotor(intake_motor_1)->build()};
   std::unique_ptr<driftless::robot::subsystems::intake::IHeightControl>
       piston_height_control{
-          piston_height_control_builder.withPiston(intake_piston)
-              ->build()};
+          piston_height_control_builder.withPiston(intake_piston)->build()};
 
   // create and add the intake subsystem to the robot
   std::unique_ptr<driftless::robot::subsystems::ASubsystem> intake_subsystem{
@@ -482,6 +476,28 @@ std::shared_ptr<robot::Robot> DefaultConfig::buildRobot() {
           driftless::robot::subsystems::odometry::OdometrySubsystem>(
           inertial_position_tracker, distance_position_resetter)};
   robot->addSubsystem(odometry_subsystem);
+
+  // RING SORT
+
+  std::unique_ptr<pros::Optical> ring_sort_temp_optical{
+      std::make_unique<pros::Optical>(RING_SORT_COLOR_SENSOR)};
+
+  std::unique_ptr<io::IColorSensor> ring_sort_adapted_color_sensor{
+      std::make_unique<pros_adapters::ProsColorSensor>(ring_sort_temp_optical)};
+
+  robot::subsystems::ring_sort::ColorRingSortBuilder color_ring_sort_builder{};
+
+  std::unique_ptr<robot::subsystems::ring_sort::IRingSort> ring_sort{
+      color_ring_sort_builder.withColorSensor(ring_sort_adapted_color_sensor)
+          ->withMaxRingDistance(RING_SORT_MIN_RING_PROXIMITY)
+          ->withDistanceToElevatorEnd(RING_SORT_COLOR_SENSOR_TO_END)
+          ->build()};
+
+  std::unique_ptr<robot::subsystems::ASubsystem> ring_sort_subsystem{
+      std::make_unique<robot::subsystems::ring_sort::RingSortSubsystem>(
+          ring_sort)};
+
+  robot->addSubsystem(ring_sort_subsystem);
 
   // send out the finalized robot
   return robot;

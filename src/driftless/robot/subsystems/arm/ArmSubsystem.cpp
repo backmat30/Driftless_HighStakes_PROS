@@ -4,21 +4,12 @@ namespace driftless {
 namespace robot {
 namespace subsystems {
 namespace arm {
-ArmSubsystem::ArmSubsystem(std::unique_ptr<IArmMotion>& arm_motion,
-                           std::unique_ptr<IRingSensor>& ring_sensor)
-    : m_arm_motion{std::move(arm_motion)},
-      m_ring_sensor{std::move(ring_sensor)},
-      ASubsystem{SUBSYSTEM_NAME} {}
+ArmSubsystem::ArmSubsystem(std::unique_ptr<IArmMotion>& arm_motion)
+    : m_arm_motion{std::move(arm_motion)}, ASubsystem{SUBSYSTEM_NAME} {}
 
-void ArmSubsystem::init() {
-  m_arm_motion->init();
-  m_ring_sensor->init();
-}
+void ArmSubsystem::init() { m_arm_motion->init(); }
 
-void ArmSubsystem::run() {
-  m_arm_motion->run();
-  m_ring_sensor->run();
-}
+void ArmSubsystem::run() { m_arm_motion->run(); }
 
 void ArmSubsystem::command(std::string command_name, va_list& args) {
   if (command_name == CALIBRATE_COMMAND_NAME) {
@@ -67,10 +58,6 @@ void* ArmSubsystem::state(std::string state_name) {
     result = new bool{m_arm_motion->isAtAllianceStake()};
   } else if (state_name == IS_GOING_ALLIANCE_STAKE_STATE_NAME) {
     result = new bool{m_arm_motion->isGoingAllianceStake()};
-  } else if (state_name == HAS_RING_STATE_NAME) {
-    result = new bool{m_ring_sensor->hasRing()};
-  } else if (state_name == GET_HUE_STATE_NAME) {
-    result = new double{m_ring_sensor->getHue()};
   }
 
   return result;

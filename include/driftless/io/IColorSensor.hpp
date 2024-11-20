@@ -3,6 +3,8 @@
 
 #include <cstdint>
 
+#include "driftless/io/RGBValue.hpp"
+
 namespace driftless {
 namespace io {
 class IColorSensor {
@@ -18,6 +20,10 @@ class IColorSensor {
 
   // gets the current hue from the color sensor
   virtual double getHue() = 0;
+
+  /// @brief Gets the RGB value from the color sensor
+  /// @return __RGBValue__ The rgb value of the color sensor
+  virtual RGBValue getRGB() = 0;
 
   // gets the proximity of the nearest object to the sensor
   virtual uint32_t getProximity() = 0;

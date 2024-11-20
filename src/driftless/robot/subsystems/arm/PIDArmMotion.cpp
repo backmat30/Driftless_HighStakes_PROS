@@ -1,6 +1,5 @@
 #include "driftless/robot/subsystems/arm/PIDArmMotion.hpp"
 
-#include "pros/screen.hpp"
 namespace driftless {
 namespace robot {
 namespace subsystems {
@@ -33,13 +32,6 @@ void PIDArmMotion::taskUpdate() {
     updatePreviousState();
     updatePosition();
   }
-  pros::screen::print(pros::E_TEXT_MEDIUM, 3,
-                      (std::to_string(static_cast<int>(state)).c_str()));
-  pros::screen::print(pros::E_TEXT_MEDIUM, 4,
-                      (std::to_string(getLinearPosition()).c_str()));
-  pros::screen::print(pros::E_TEXT_MEDIUM, 5,
-                      (std::to_string(getRotationalPosition()).c_str()));
-
   if (m_mutex) {
     m_mutex->give();
   }
@@ -312,6 +304,9 @@ void PIDArmMotion::goAllianceStake() {
         m_rotational_alliance_stake_intermediate_position;
     linear_target_position = m_linear_alliance_stake_intermediate_position;
   }
+  if (m_mutex) {
+    m_mutex->give();
+  }
 }
 
 void PIDArmMotion::goPrevious() {
@@ -339,19 +334,27 @@ bool PIDArmMotion::isGoingNeutral() {
 
 bool PIDArmMotion::isAtLoad() { return (state == EState::LOAD); }
 
-bool PIDArmMotion::isGoingLoad() { return (state == EState::LOAD_MOTION); }
+bool PIDArmMotion::isGoingLoad() {
+  return (state == EState::LOAD_MOTION || state == EState::LOAD_INTERMEDIATE);
+}
 
 bool PIDArmMotion::isAtReady() { return (state == EState::READY); }
 
-bool PIDArmMotion::isGoingReady() { return (state == EState::READY_MOTION); }
+bool PIDArmMotion::isGoingReady() {
+  return (state == EState::READY_MOTION || state == EState::READY_INTERMEDIATE);
+}
 
 bool PIDArmMotion::isAtScore() { return (state == EState::SCORE); }
 
-bool PIDArmMotion::isGoingScore() { return (state == EState::SCORE_MOTION); }
+bool PIDArmMotion::isGoingScore() {
+  return (state == EState::SCORE_MOTION || state == EState::SCORE_INTERMEDIATE);
+}
 
 bool PIDArmMotion::isAtRush() { return (state == EState::RUSH); }
 
-bool PIDArmMotion::isGoingRush() { return (state == EState::RUSH_MOTION); }
+bool PIDArmMotion::isGoingRush() {
+  return (state == EState::RUSH_MOTION || state == EState::RUSH_INTERMEDIATE);
+}
 
 bool PIDArmMotion::isAtAllianceStake() {
   return (state == EState::ALLIANCE_STAKE);

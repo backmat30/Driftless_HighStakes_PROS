@@ -84,12 +84,14 @@ void PIDPathFollower::updateFoundPoints(
   bool continue_loop{true};
   while (continue_loop && found_index < m_control_path.size() - 1) {
     continue_loop = false;
-    Point next_point{m_control_path[found_index + 1]};
-    double next_distance{
-        distance(position.x, position.y, next_point.getX(), next_point.getY())};
-    if (next_distance <= m_follow_distance) {
-      ++found_index;
-      continue_loop = true;
+    if (!m_control_path.empty()) {
+      control::Point next_point{m_control_path[found_index + 1]};
+      double next_distance{distance(position.x, position.y, next_point.getX(),
+                                    next_point.getY())};
+      if (next_distance <= m_follow_distance) {
+        ++found_index;
+        continue_loop = true;
+      }
     }
   }
 }

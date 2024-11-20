@@ -4,14 +4,15 @@
 // includes
 #include <memory>
 
-#include "driftless/control/ControlSystem.hpp"
-#include "menu/IMenu.hpp"
-#include "pros/misc.hpp"
+#include "driftless/AutonManager.hpp"
 #include "driftless/OpControlManager.hpp"
+#include "driftless/control/ControlSystem.hpp"
 #include "driftless/io/IController.hpp"
 #include "driftless/robot/Robot.hpp"
 #include "driftless/rtos/IClock.hpp"
 #include "driftless/rtos/IDelayer.hpp"
+#include "menu/IMenu.hpp"
+#include "pros/misc.hpp"
 
 namespace driftless {
 class MatchController {
@@ -25,6 +26,8 @@ class MatchController {
   std::unique_ptr<rtos::IDelayer> m_delayer{};
 
   OpControlManager op_control_manager{m_clock, m_delayer};
+
+  AutonManager auton_manager{m_clock, m_delayer};
 
   std::shared_ptr<control::ControlSystem> control_system{};
 

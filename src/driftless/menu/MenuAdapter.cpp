@@ -1,6 +1,35 @@
 #include "driftless/menu/MenuAdapter.hpp"
 namespace driftless {
 namespace menu {
+void MenuAdapter::addAlliance(std::shared_ptr<alliance::IAlliance>& alliance) {
+  bool unique{true};
+
+  for (std::shared_ptr<alliance::IAlliance>& current_alliance : alliances) {
+    if (current_alliance->getName() == alliance->getName()) {
+      unique = false;
+      break;
+    }
+  }
+
+  if (unique) {
+    alliances.push_back(std::move(alliance));
+  }
+}
+
+void MenuAdapter::addAuton(std::unique_ptr<auton::IAuton>& auton) {
+  bool unique{true};
+
+  for (std::unique_ptr<auton::IAuton>& current_auton : autons) {
+    if (current_auton->getName() == auton->getName()) {
+      unique = false;
+      break;
+    }
+  }
+
+  if (unique) {
+    autons.push_back(std::move(auton));
+  }
+}
 
 void MenuAdapter::addConfig(std::unique_ptr<config::IConfig>& config) {
   bool unique{true};
@@ -34,6 +63,24 @@ void MenuAdapter::addProfile(std::unique_ptr<profiles::IProfile>& profile) {
 }
 
 void MenuAdapter::display() {
+  std::vector<std::string> alliance_options{};
+
+  for (auto& alliance : alliances) {
+    alliance_options.push_back(alliance->getName());
+  }
+
+  Option alliance_option{ALLIANCE_OPTION_NAME, alliance_options};
+  lvgl_menu.addOption(alliance_option);
+
+  std::vector<std::string> auton_options{};
+
+  for (auto& auton : autons) {
+    auton_options.push_back(auton->getName());
+  }
+
+  Option auton_option{AUTON_OPTION_NAME, auton_options};
+  lvgl_menu.addOption(auton_option);
+
   // list of config names
   std::vector<std::string> config_options{};
   // fills list of config names
@@ -63,6 +110,17 @@ SystemConfig MenuAdapter::getSystemConfig(bool read_only) {
     lvgl_menu.readConfiguration();
   }
 
+  for (auto& alliance : alliances) {
+    if (lvgl_menu.getSelection(ALLIANCE_OPTION_NAME) == alliance->getName()) {
+      system_config.alliance = std::move(alliance);
+    }
+  }
+
+  for (auto& auton : autons) {
+    if (lvgl_menu.getSelection(AUTON_OPTION_NAME) == auton->getName()) {
+      system_config.auton = std::move(auton);
+    }
+  }
   // finds the config that matches the chosen config from the display
   for (auto& config : configs) {
     if (lvgl_menu.getSelection(CONFIG_OPTION_NAME) == config->getName()) {

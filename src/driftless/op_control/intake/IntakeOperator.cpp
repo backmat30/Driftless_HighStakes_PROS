@@ -34,10 +34,16 @@ void IntakeOperator::updateHoldUp(EControllerDigital up) {
   m_robot->sendCommand(INTAKE_SUBSYSTEM_NAME, SET_HEIGHT_COMMAND_NAME, move_up);
 }
 
-void IntakeOperator::updateSpinner(EControllerDigital spin) {
+void IntakeOperator::updateSpinner(EControllerDigital spin, EControllerDigital reverse) {
   bool spin_motors{m_controller->getDigital(spin)};
-
-  m_robot->sendCommand(INTAKE_SUBSYSTEM_NAME, SPIN_COMMAND_NAME, spin_motors);
+  bool reverse_motors{m_controller->getDigital(reverse)};
+  if (spin_motors && !reverse_motors) {
+    m_robot->sendCommand(INTAKE_SUBSYSTEM_NAME, SPIN_COMMAND_NAME, 12.0);
+  } else if (!spin_motors && reverse_motors) {
+    m_robot->sendCommand(INTAKE_SUBSYSTEM_NAME, SPIN_COMMAND_NAME, -12.0);
+  } else {
+    m_robot->sendCommand(INTAKE_SUBSYSTEM_NAME, SPIN_COMMAND_NAME, 0.0);
+  }
 }
 
 IntakeOperator::IntakeOperator(
@@ -45,18 +51,27 @@ IntakeOperator::IntakeOperator(
     const std::shared_ptr<driftless::robot::Robot>& robot)
     : m_controller{controller}, m_robot{robot} {}
 
-void IntakeOperator::update(const std::unique_ptr<driftless::profiles::IProfile>& profile) {
-  EControllerDigital toggle_up{profile->getDigitalControlMapping(EControl::INTAKE_RAISE)};
-  EControllerDigital toggle_down{profile->getDigitalControlMapping(EControl::INTAKE_LOWER)};
-  EControllerDigital toggle_states{profile->getDigitalControlMapping(EControl::INTAKE_TOGGLE_HEIGHT)};
-  EControllerDigital hold_up{profile->getDigitalControlMapping(EControl::INTAKE_HOLD_UP)};
-  EControllerDigital spin{profile->getDigitalControlMapping(EControl::INTAKE_SPIN)};
+void IntakeOperator::update(
+    const std::unique_ptr<driftless::profiles::IProfile>& profile) {
+  EControllerDigital toggle_up{
+      profile->getDigitalControlMapping(EControl::INTAKE_RAISE)};
+  EControllerDigital toggle_down{
+      profile->getDigitalControlMapping(EControl::INTAKE_LOWER)};
+  EControllerDigital toggle_states{
+      profile->getDigitalControlMapping(EControl::INTAKE_TOGGLE_HEIGHT)};
+  EControllerDigital hold_up{
+      profile->getDigitalControlMapping(EControl::INTAKE_HOLD_UP)};
+  EControllerDigital spin{
+      profile->getDigitalControlMapping(EControl::INTAKE_SPIN)};
+  EControllerDigital reverse{
+      profile->getDigitalControlMapping(EControl::INTAKE_REVERSE)};
 
-  if(!m_controller) {
+  if (!m_controller) {
     return;
   }
 
-  switch (static_cast<EIntakeControlMode>(profile->getControlMode(EControlType::INTAKE))) {
+  switch (static_cast<EIntakeControlMode>(
+      profile->getControlMode(EControlType::INTAKE))) {
     case EIntakeControlMode::SPLIT_TOGGLE:
       updateSplitToggle(toggle_up, toggle_down);
       break;
@@ -68,7 +83,7 @@ void IntakeOperator::update(const std::unique_ptr<driftless::profiles::IProfile>
       break;
   }
 
-  updateSpinner(spin);
+  updateSpinner(spin, reverse);
 }
 }  // namespace intake
 }  // namespace op_control

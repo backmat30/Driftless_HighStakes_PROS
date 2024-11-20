@@ -45,18 +45,25 @@ class JohnProfile : public driftless::profiles::IProfile {
 
   /// @brief Maps subsystem controls to digital inputs
   const std::map<op_control::EControl, op_control::EControllerDigital>
-      DIGITAL_CONTROL_MAP{{op_control::EControl::ARM_TOGGLE,
-                           op_control::EControllerDigital::TRIGGER_LEFT_TOP},
-                          {op_control::EControl::ARM_RUSH,
-                           op_control::EControllerDigital::BUTTON_B},
-                          {op_control::EControl::ARM_CALIBRATE,
-                           op_control::EControllerDigital::BUTTON_Y},
-                          {op_control::EControl::CLAMP_TOGGLE,
-                           op_control::EControllerDigital::TRIGGER_LEFT_BOTTOM},
-                          {op_control::EControl::ELEVATOR_SPIN,
-                           op_control::EControllerDigital::TRIGGER_RIGHT_TOP},
-                          {op_control::EControl::INTAKE_SPIN,
-                           op_control::EControllerDigital::TRIGGER_RIGHT_TOP}};
+      DIGITAL_CONTROL_MAP{
+          {op_control::EControl::ARM_TOGGLE,
+           op_control::EControllerDigital::TRIGGER_LEFT_TOP},
+          {op_control::EControl::ARM_RUSH,
+           op_control::EControllerDigital::BUTTON_B},
+          {op_control::EControl::ARM_CALIBRATE,
+           op_control::EControllerDigital::DPAD_RIGHT},
+          {op_control::EControl::CLAMP_TOGGLE,
+           op_control::EControllerDigital::BUTTON_Y},
+          {op_control::EControl::ELEVATOR_SPIN,
+           op_control::EControllerDigital::TRIGGER_RIGHT_TOP},
+          {op_control::EControl::ELEVATOR_REVERSE,
+           op_control::EControllerDigital::TRIGGER_RIGHT_BOTTOM},
+          {op_control::EControl::INTAKE_SPIN,
+           op_control::EControllerDigital::TRIGGER_RIGHT_TOP},
+          {op_control::EControl::INTAKE_REVERSE,
+           op_control::EControllerDigital::TRIGGER_RIGHT_BOTTOM},
+          {op_control::EControl::INTAKE_TOGGLE_HEIGHT,
+           op_control::EControllerDigital::TRIGGER_LEFT_BOTTOM}};
 
  public:
   /// @brief Gets the name of the profile

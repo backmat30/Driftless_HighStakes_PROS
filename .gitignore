@@ -16,6 +16,6 @@ temp.errors
 *.ini
 .d/
 
-# documentation
+# DOCUMENTATION
 html/
 latex/

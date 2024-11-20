@@ -1,27 +1,57 @@
 #include "driftless/op_control/arm/ArmOperator.hpp"
 
+#include "pros/screen.hpp"
 namespace driftless {
 namespace op_control {
 namespace arm {
 bool ArmOperator::hasAllianceRing(
-    const driftless::alliance::Alliance alliance) {
+    const std::shared_ptr<alliance::IAlliance>& alliance) {
   bool has_ring{*static_cast<bool*>(
-      m_robot->getState(ARM_SUBSYSTEM_NAME, HAS_RING_STATE_NAME))};
+      m_robot->getState(RING_SORT_SUBSYSTEM_NAME, HAS_RING_STATE_NAME))};
 
-  double ring_hue{*static_cast<double*>(
-      m_robot->getState(ARM_SUBSYSTEM_NAME, GET_HUE_STATE_NAME))};
+  io::RGBValue ring_rgb{*static_cast<io::RGBValue*>(
+      m_robot->getState(RING_SORT_SUBSYSTEM_NAME, GET_RGB_STATE_NAME))};
 
   bool has_alliance_ring{};
-  if (ring_hue >= alliance.hue_range[0] && ring_hue <= alliance.hue_range[1]) {
-    has_alliance_ring = has_ring;
+
+  if (has_ring) {
+    if ((alliance->getName() == BLUE_ALLIANCE_NAME &&
+         ring_rgb.blue >= ring_rgb.red) ||
+        (alliance->getName() == RED_ALLIANCE_NAME &&
+         ring_rgb.red >= ring_rgb.blue)) {
+      has_alliance_ring = true;
+    }
   }
 
   return has_alliance_ring;
 }
+
+bool ArmOperator::hasOpposingRing(
+    const std::shared_ptr<alliance::IAlliance>& alliance) {
+  bool has_ring{*static_cast<bool*>(
+      m_robot->getState(RING_SORT_SUBSYSTEM_NAME, HAS_RING_STATE_NAME))};
+
+  io::RGBValue ring_rgb{*static_cast<io::RGBValue*>(
+      m_robot->getState(RING_SORT_SUBSYSTEM_NAME, GET_RGB_STATE_NAME))};
+
+  bool has_opposing_ring{};
+
+  if (has_ring) {
+    if ((alliance->getName() == BLUE_ALLIANCE_NAME &&
+         ring_rgb.red >= ring_rgb.blue) ||
+        (alliance->getName() == RED_ALLIANCE_NAME &&
+         ring_rgb.blue >= ring_rgb.red)) {
+      has_opposing_ring = true;
+    }
+  }
+
+  return has_opposing_ring;
+}
+
 void ArmOperator::updateSplitToggle(
     EControllerDigital neutral, EControllerDigital load,
     EControllerDigital ready, EControllerDigital score,
-    const driftless::alliance::Alliance alliance) {
+    const std::shared_ptr<alliance::IAlliance>& alliance) {
   bool go_neutral{m_controller->getNewDigital(neutral)};
   bool go_load{m_controller->getNewDigital(load)};
   bool go_ready{m_controller->getNewDigital(ready)};
@@ -52,7 +82,7 @@ void ArmOperator::updateSplitToggle(
 void ArmOperator::updateSmartToggle(
     EControllerDigital toggle, EControllerDigital rush,
     EControllerDigital calibrate, EControllerDigital alliance_stake,
-    const driftless::alliance::Alliance alliance) {
+    const std::shared_ptr<alliance::IAlliance>& alliance) {
   bool next_position{m_controller->getNewDigital(toggle)};
   bool go_rush{m_controller->getNewDigital(rush)};
   bool calibrate_arm{m_controller->getNewDigital(calibrate)};
@@ -106,31 +136,44 @@ void ArmOperator::updateSmartToggle(
   bool is_going_rush{is_going_rush_state != nullptr &&
                      *static_cast<bool*>(is_going_rush_state)};
 
-  if (next_position && !go_rush && !calibrate_arm && !go_alliance_stake) {
-    if (is_neutral) {
-      m_robot->sendCommand(ARM_SUBSYSTEM_NAME, GO_LOAD_COMMAND_NAME);
-    } else if (is_load /*&& hasAllianceRing(alliance)*/) {
-      m_robot->sendCommand(ARM_SUBSYSTEM_NAME, GO_READY_COMMAND_NAME);
-    } else if (is_ready) {
-      m_robot->sendCommand(ARM_SUBSYSTEM_NAME, GO_SCORE_COMMAND_NAME);
-    } else if (is_rush) {
-      m_robot->sendCommand(ARM_SUBSYSTEM_NAME, GO_LOAD_COMMAND_NAME);
-    } else if (is_going_neutral || is_going_load || is_going_ready ||
-               is_going_score || is_going_rush) {
-      m_robot->sendCommand(ARM_SUBSYSTEM_NAME, GO_PREVIOUS_COMMAND_NAME);
-    } else {
+  bool has_alliance_ring{hasAllianceRing(alliance)};
+
+  bool has_opposing_ring{hasOpposingRing(alliance)};
+
+  if (has_opposing_ring) {
+    if (is_load) {
       m_robot->sendCommand(ARM_SUBSYSTEM_NAME, GO_NEUTRAL_COMMAND_NAME);
     }
-  } else if (!next_position && go_rush && !calibrate_arm && !go_alliance_stake) {
-    if (is_rush) {
-      m_robot->sendCommand(ARM_SUBSYSTEM_NAME, GO_LOAD_COMMAND_NAME);
-    } else {
-      m_robot->sendCommand(ARM_SUBSYSTEM_NAME, GO_RUSH_COMMAND_NAME);
+  } else {
+    if (next_position && !go_rush && !calibrate_arm && !go_alliance_stake) {
+      if (is_neutral) {
+        m_robot->sendCommand(ARM_SUBSYSTEM_NAME, GO_LOAD_COMMAND_NAME);
+      } else if (is_load && has_alliance_ring) {
+        m_robot->sendCommand(ARM_SUBSYSTEM_NAME, GO_READY_COMMAND_NAME);
+      } else if (is_ready) {
+        m_robot->sendCommand(ARM_SUBSYSTEM_NAME, GO_SCORE_COMMAND_NAME);
+      } else if (is_rush) {
+        m_robot->sendCommand(ARM_SUBSYSTEM_NAME, GO_LOAD_COMMAND_NAME);
+      } else if (is_going_neutral || is_going_load || is_going_ready ||
+                 is_going_score || is_going_rush) {
+        m_robot->sendCommand(ARM_SUBSYSTEM_NAME, GO_PREVIOUS_COMMAND_NAME);
+      } else {
+        m_robot->sendCommand(ARM_SUBSYSTEM_NAME, GO_NEUTRAL_COMMAND_NAME);
+      }
+    } else if (!next_position && go_rush && !calibrate_arm &&
+               !go_alliance_stake) {
+      if (is_rush) {
+        m_robot->sendCommand(ARM_SUBSYSTEM_NAME, GO_LOAD_COMMAND_NAME);
+      } else {
+        m_robot->sendCommand(ARM_SUBSYSTEM_NAME, GO_RUSH_COMMAND_NAME);
+      }
+    } else if (!next_position && !go_rush && !calibrate_arm &&
+               go_alliance_stake) {
+      m_robot->sendCommand(ARM_SUBSYSTEM_NAME, GO_ALLIANCE_STAKE_COMMAND_NAME);
     }
-  } else if (!next_position && !go_rush && calibrate_arm && !go_alliance_stake) {
+  }
+  if (!next_position && !go_rush && calibrate_arm && !go_alliance_stake) {
     m_robot->sendCommand(ARM_SUBSYSTEM_NAME, CALIBRATE_COMMAND_NAME);
-  } else if (!next_position && !go_rush && !calibrate_arm && go_alliance_stake) {
-    m_robot->sendCommand(ARM_SUBSYSTEM_NAME, GO_ALLIANCE_STAKE_COMMAND_NAME);
   }
 }
 
@@ -141,7 +184,7 @@ ArmOperator::ArmOperator(
 
 void ArmOperator::update(
     const std::unique_ptr<driftless::profiles::IProfile>& profile,
-    const driftless::alliance::Alliance alliance) {
+    const std::shared_ptr<alliance::IAlliance>& alliance) {
   EControllerDigital neutral{
       profile->getDigitalControlMapping(EControl::ARM_NEUTRAL)};
   EControllerDigital load{

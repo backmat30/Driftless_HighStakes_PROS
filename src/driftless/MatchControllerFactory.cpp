@@ -5,9 +5,19 @@ driftless::MatchController MatchControllerFactory::createMatchController() {
   // the display menu
   std::unique_ptr<menu::IMenu> lvgl_menu{std::make_unique<menu::MenuAdapter>()};
   // add alliances
+  std::shared_ptr<alliance::IAlliance> blue_alliance{
+      std::make_shared<alliance::BlueAlliance>()};
+  lvgl_menu->addAlliance(blue_alliance);
+
+  std::shared_ptr<alliance::IAlliance> red_alliance{
+      std::make_shared<alliance::RedAlliance>()};
+  lvgl_menu->addAlliance(red_alliance);
 
   // add auton routes
-
+  std::unique_ptr<auton::IAuton> blue_rush_auton{
+      std::make_unique<auton::BlueRushAuton>()};
+  lvgl_menu->addAuton(blue_rush_auton);
+  
   // add configs
   std::unique_ptr<config::IConfig> default_config{
       std::make_unique<config::DefaultConfig>()};
@@ -25,6 +35,10 @@ driftless::MatchController MatchControllerFactory::createMatchController() {
   std::unique_ptr<profiles::IProfile> john_profile{
       std::make_unique<driftless::profiles::JohnProfile>()};
   lvgl_menu->addProfile(john_profile);
+
+  std::unique_ptr<profiles::IProfile> john_but_arcade{
+      std::make_unique<driftless::profiles::JohnButArcade>()};
+  lvgl_menu->addProfile(john_but_arcade);
 
   // create RTOS
   std::shared_ptr<rtos::IClock> clock{

@@ -30,6 +30,10 @@ class ProsColorSensor : public driftless::io::IColorSensor {
   // get the hue from the color sensor
   double getHue() override;
 
+  /// @brief Gets the RGB value from the color sensor
+  /// @return __RGBValue__ The rgb value of the color sensor
+  io::RGBValue getRGB() override;
+
   // get the proximity from the color sensor
   uint32_t getProximity() override;
 };
