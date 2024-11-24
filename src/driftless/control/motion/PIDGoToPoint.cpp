@@ -39,12 +39,12 @@ void PIDGoToPoint::updateVelocity(double distance, double target_angle,
   if (angular_offset < 0) {
     angular_error = ((2 / M_PI) * std::abs(angular_offset + (M_PI / 2))) - 1;
   } else if (angular_offset > 0) {
-    angular_error = ((2 / M_PI) * std::abs(angular_offset - (M_PI / 2))) + 1;
+    angular_error = ((-2 / M_PI) * std::abs(angular_offset - (M_PI / 2))) + 1;
   } else {
     angular_error = 0;
   }
 
-  double rotational_control{m_rotational_pid.getControlValue(0, angular_error)};
+  double rotational_control{m_rotational_pid.getControlValue(angular_error, 0)};
 
   double left_velocity{linear_control * (1 + rotational_control)};
   double right_velocity{linear_control * (1 - rotational_control)};
@@ -117,8 +117,9 @@ void PIDGoToPoint::resume() {
   }
 }
 
-void PIDGoToPoint::goToPoint(const std::shared_ptr<driftless::robot::Robot>& robot,
-                             double velocity, Point target) {
+void PIDGoToPoint::goToPoint(
+    const std::shared_ptr<driftless::robot::Robot>& robot, double velocity,
+    Point target) {
   if (m_mutex) {
     m_mutex->take();
   }

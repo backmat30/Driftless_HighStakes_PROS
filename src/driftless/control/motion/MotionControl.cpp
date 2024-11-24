@@ -1,5 +1,6 @@
 #include "driftless/control/motion/MotionControl.hpp"
 
+#include "pros/screen.hpp"
 namespace driftless {
 namespace control {
 namespace motion {
@@ -78,7 +79,9 @@ void MotionControl::command(std::string command_name, va_list& args) {
     std::shared_ptr<driftless::robot::Robot> robot{
         *static_cast<std::shared_ptr<driftless::robot::Robot>*>(temp_robot)};
     double velocity{va_arg(args, double)};
-    Point point{*va_arg(args, Point*)};
+    double x{va_arg(args, double)};
+    double y{va_arg(args, double)};
+    Point point{x, y};
 
     m_go_to_point->goToPoint(robot, velocity, point);
 

@@ -13,7 +13,7 @@ namespace pros_adapters {
 class ProsInertialSensor : public driftless::io::IInertialSensor {
  private:
   // conversion factor from degrees to radians, also flips direction
-  static constexpr double DEGREES_TO_RADIANS{-180 / M_PI};
+  static constexpr double DEGREES_TO_RADIANS{-M_PI / 180};
 
   // inertial sensor being adapted
   std::unique_ptr<pros::IMU> m_inertial_sensor{};

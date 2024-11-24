@@ -1,5 +1,6 @@
 #include "driftless/robot/subsystems/odometry/InertialPositionTracker.hpp"
 
+#include "pros/screen.hpp"
 namespace driftless {
 namespace robot {
 namespace subsystems {
@@ -38,6 +39,9 @@ void InertialPositionTracker::updatePosition() {
   if (m_strafe_distance_tracker) {
     current_strafe_distance = m_strafe_distance_tracker->getDistance();
   }
+  if (m_clock) {
+    current_time = m_clock->getTime();
+  }
 
   double rotation_change{current_rotation - last_heading};
   double linear_change{current_linear_distance - last_linear_distance};
@@ -67,12 +71,13 @@ void InertialPositionTracker::updatePosition() {
   double global_x{(local_x * std::sin(local_theta)) +
                   (local_y * std::cos(local_theta))};
   double global_y{(local_y * std::sin(local_theta)) +
-                  (local_x * std::cos(local_theta))};
+                  (-local_x * std::cos(local_theta))};
 
   // add the global changes in position to the robot's position
   m_position.x += global_x;
   m_position.y += global_y;
   m_position.theta = current_rotation;
+  pros::screen::print(pros::E_TEXT_MEDIUM_CENTER, 1, "X: %7.2f, Y: %7.2f", m_position.x, m_position.y);
 
   // calculate velocities
   if (time_change) {

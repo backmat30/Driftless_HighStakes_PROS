@@ -16,7 +16,7 @@ class PistonHeightControl : public IHeightControl {
   driftless::hal::PistonGroup m_pistons{};
 
   // whether the intake is up or down
-  bool raised{};
+  bool raised{true};
 
  public:
   // initialize the height controller

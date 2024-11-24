@@ -1,6 +1,5 @@
 #include "driftless/op_control/arm/ArmOperator.hpp"
 
-#include "pros/screen.hpp"
 namespace driftless {
 namespace op_control {
 namespace arm {

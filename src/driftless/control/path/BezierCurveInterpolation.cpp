@@ -33,8 +33,8 @@ std::vector<Point> BezierCurveInterpolation::calculate(
   }
   // calculate last smoothing point for last curve
   bezier_curves[bezier_curves.size() - 1].k4 =
-      (bezier_curves[bezier_curves.size() - 1].k1 +
-       bezier_curves[bezier_curves.size() - 1].k3) /
+      (bezier_curves[bezier_curves.size() - 1].k5 +
+       bezier_curves[bezier_curves.size() - 1].k4) /
       2.0;
 
   // calculate points along the line

@@ -50,7 +50,7 @@ class AControl {
   AControl &operator=(const AControl &rhs) = default;
 
   // move assignment operator override
-  // AControl& operator=(const AControl &&rhs) = default;
+  AControl &operator=(AControl &&rhs) = default;
 };
 }  // namespace control
 }  // namespace driftless

@@ -7,6 +7,7 @@ ProsColorSensor::ProsColorSensor(std::unique_ptr<pros::Optical>& optical_sensor)
 
 void ProsColorSensor::init() {
   m_optical_sensor->disable_gesture();
+  m_optical_sensor->set_integration_time(20);
   m_optical_sensor->set_led_pwm(100);
 }
 

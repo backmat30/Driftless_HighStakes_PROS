@@ -1,6 +1,5 @@
 #include "driftless/op_control/elevator/ElevatorOperator.hpp"
 
-#include "pros/screen.hpp"
 namespace driftless {
 namespace op_control {
 namespace elevator {
@@ -52,14 +51,6 @@ void ElevatorOperator::updateRingSensor(
       RING_SORT_SUBSYSTEM_NAME, GET_SENSOR_DISTANCE_TO_END_STATE_NAME)};
   double distance_to_end{*static_cast<double*>(distance_to_end_state)};
 
-  pros::screen::erase();
-  pros::screen::print(pros::E_TEXT_MEDIUM, 3,
-                      (std::to_string(has_ring).c_str()));
-  pros::screen::print(
-      pros::E_TEXT_MEDIUM, 4,
-      ((std::to_string(ring_rgb.red)) + " " + (std::to_string(ring_rgb.blue)))
-          .c_str());
-
   if (has_ring) {
     if ((alliance->getName() == BLUE_ALLIANCE_NAME &&
          ring_rgb.red >= ring_rgb.blue) ||
@@ -69,7 +60,8 @@ void ElevatorOperator::updateRingSensor(
     }
   }
 
-  if (position <= latest_ring_pos + distance_to_end && position >= latest_ring_pos - distance_to_end) {
+  if (position <= latest_ring_pos + distance_to_end &&
+      position >= latest_ring_pos - distance_to_end) {
     m_robot->sendCommand(ELEVATOR_SUBSYSTEM_NAME, DEPLOY_REJECTOR_COMMAND_NAME);
   } else {
     m_robot->sendCommand(ELEVATOR_SUBSYSTEM_NAME,

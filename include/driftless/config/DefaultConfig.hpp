@@ -124,21 +124,21 @@ class DefaultConfig : public IConfig {
   // go to point
 
   /// @brief kp value for the go to point linear pid controller
-  static constexpr double PID_GO_TO_POINT_LINEAR_KP{12.0};
+  static constexpr double PID_GO_TO_POINT_LINEAR_KP{5.5};
   /// @brief ki value for the go to point linear pid controller
   static constexpr double PID_GO_TO_POINT_LINEAR_KI{0};
   /// @brief kd value of the go to point linear pid controller
-  static constexpr double PID_GO_TO_POINT_LINEAR_KD{800};
+  static constexpr double PID_GO_TO_POINT_LINEAR_KD{200};
   /// @brief kp value for the go to point rotational pid controller
-  static constexpr double PID_GO_TO_POINT_ROTATIONAL_KP{128.0};
+  static constexpr double PID_GO_TO_POINT_ROTATIONAL_KP{2.5};
   /// @brief ki value for the go to point rotational pid controller
   static constexpr double PID_GO_TO_POINT_ROTATIONAL_KI{0.001};
   /// @brief kd value for the go to point rotational pid controller
-  static constexpr double PID_GO_TO_POINT_ROTATIONAL_KD{800};
+  static constexpr double PID_GO_TO_POINT_ROTATIONAL_KD{100};
   /// @brief the target tolerance of the go to point algorithm
-  static constexpr double PID_GO_TO_POINT_TARGET_TOLERANCE{2.0};
+  static constexpr double PID_GO_TO_POINT_TARGET_TOLERANCE{1.0};
   /// @brief the target velocity of the go to point algorithm
-  static constexpr double PID_GO_TO_POINT_TARGET_VELOCITY{1.0};
+  static constexpr double PID_GO_TO_POINT_TARGET_VELOCITY{5.0};
 
   // turn
 
@@ -163,19 +163,19 @@ class DefaultConfig : public IConfig {
   static constexpr double PID_PATH_FOLLOWER_LINEAR_KD{640.0};
   /// @brief kp value for the rotational PID controller used in the path
   /// follower
-  static constexpr double PID_PATH_FOLLOWER_ROTATIONAL_KP{640.0};
+  static constexpr double PID_PATH_FOLLOWER_ROTATIONAL_KP{300.0};
   /// @brief ki value for the rotational PID controller used in the path
   /// follower
   static constexpr double PID_PATH_FOLLOWER_ROTATIONAL_KI{0.0};
   /// @brief kd value for the rotational PID controller used in the path
   /// follower
-  static constexpr double PID_PATH_FOLLOWER_ROTATIONAL_KD{10000.0};
+  static constexpr double PID_PATH_FOLLOWER_ROTATIONAL_KD{1000.0};
   /// @brief path follower follow distance
   static constexpr double PID_PATH_FOLLOWER_FOLLOW_DISTANCE{12.0};
   /// @brief path follower target tolerance
   static constexpr double PID_PATH_FOLLOWER_TARGET_TOLERANCE{3.0};
   /// @brief path follower target velocity
-  static constexpr double PID_PATH_FOLLOWER_TARGET_VELOCITY{1.0};
+  static constexpr double PID_PATH_FOLLOWER_TARGET_VELOCITY{12.0};
 
   // -----PORT NUMBERS-----
 
@@ -236,7 +236,7 @@ class DefaultConfig : public IConfig {
   // ODOMETRY PORTS
 
   /// @brief left tracking wheel
-  static constexpr int8_t ODOMETRY_LINEAR_TRACKING_WHEEL{16};
+  static constexpr int8_t ODOMETRY_LINEAR_TRACKING_WHEEL{-16};
   /// @brief right tracking wheel
   static constexpr int8_t ODOMETRY_STRAFE_TRACKING_WHEEL{6};
   /// @brief inertial sensor
@@ -255,7 +255,7 @@ class DefaultConfig : public IConfig {
   /// @brief drive gearset
   static constexpr pros::MotorGearset DRIVE_GEARSET{pros::E_MOTOR_GEAR_BLUE};
   /// @brief drive ratio of motor voltage to velocity
-  static constexpr double DRIVE_VELOCITY_TO_VOLTAGE{1.0};
+  static constexpr double DRIVE_VELOCITY_TO_VOLTAGE{12.0 / 48.0};
   /// @brief radius of the robot
   static constexpr double ROBOT_RADIUS{7.25};
   /// @brief radius of the drive wheels
@@ -337,15 +337,15 @@ class DefaultConfig : public IConfig {
   // odometry
 
   /// @brief radius of the tracking wheels
-  static constexpr double TRACKING_WHEEL_RADIUS{1.0};
+  static constexpr double TRACKING_WHEEL_RADIUS{1.125};
   /// @brief left offset of the linear tracking wheel
-  static constexpr double LINEAR_TRACKING_WHEEL_OFFSET{4.8};
+  static constexpr double LINEAR_TRACKING_WHEEL_OFFSET{0.0};
   /// @brief forwards offset of the strafe tracking wheel
-  static constexpr double STRAFE_TRACKING_WHEEL_OFFSET{8.69};
+  static constexpr double STRAFE_TRACKING_WHEEL_OFFSET{-2.26};
   /// @brief position resetter x offset
-  static constexpr double RESETTER_LOCAL_X_OFFSET{7.5};
+  static constexpr double RESETTER_LOCAL_X_OFFSET{13.5 / 2.0};
   /// @brief position resetter y offset
-  static constexpr double RESETTER_LOCAL_Y_OFFSET{0.0};
+  static constexpr double RESETTER_LOCAL_Y_OFFSET{10.865};
   /// @brief position resetter angular offset
   static constexpr double RESETTER_LOCAL_THETA_OFFSET{0.0};
 
