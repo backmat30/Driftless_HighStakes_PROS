@@ -110,9 +110,11 @@ void MotionControl::command(std::string command_name, va_list& args) {
     std::shared_ptr<driftless::robot::Robot> robot{
         *static_cast<std::shared_ptr<driftless::robot::Robot>*>(temp_robot)};
     double velocity{va_arg(args, double)};
-    Point point{*va_arg(args, Point*)};
+    double x{va_arg(args, double)};
+    double y{va_arg(args, double)};
     ETurnDirection direction{va_arg(args, ETurnDirection)};
 
+    Point point{x, y};
     m_turn->turnToPoint(robot, velocity, point, direction);
 
   } else if (command_name == SET_DRIVE_STRAIGHT_VELOCITY_COMMAND_NAME) {

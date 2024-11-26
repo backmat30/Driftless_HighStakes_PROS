@@ -25,3 +25,8 @@ int16_t binomialCoefficient(int8_t n, int8_t k) {
   // math is funky beta function goes over my head frfr
   return 1 / ((n + 1) * std::beta(n - k + 1, k + 1));
 }
+
+double mirrorValue(double target, double mirror) {
+  double result{mirror * 2 - target};
+  return result;
+}

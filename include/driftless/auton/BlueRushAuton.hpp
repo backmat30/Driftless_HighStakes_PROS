@@ -3,6 +3,7 @@
 
 #include "driftless/auton/IAuton.hpp"
 #include "driftless/control/Point.hpp"
+#include "driftless/control/motion/ETurnDirection.hpp"
 #include "driftless/control/path/BezierCurveInterpolation.hpp"
 #include "driftless/control/path/IPathFollower.hpp"
 #include "driftless/robot/subsystems/odometry/Position.hpp"
@@ -28,7 +29,7 @@ class BlueRushAuton : public IAuton {
 
   static constexpr char ODOMETRY_SUBSYSTEM_NAME[]{"ODOMETRY"};
 
-  static constexpr char RING_SORT_SUBSYSTEM_NAME[]{"RING_SORT"};
+  static constexpr char RING_SORT_SUBSYSTEM_NAME[]{"RING SORT"};
 
   // CONTROL NAMES
 
@@ -66,7 +67,7 @@ class BlueRushAuton : public IAuton {
 
   static constexpr char ELEVATOR_SET_POSITION[]{"SET POSITION"};
 
-  static constexpr char ELEVATOR_SET_VELOCITY[]{"SET VELOCITY"};
+  static constexpr char ELEVATOR_SET_VOLTAGE[]{"SET VOLTAGE"};
 
   static constexpr char ELEVATOR_DEPLOY_REJECTOR_COMMAND[]{"DEPLOY REJECTOR"};
 
@@ -75,6 +76,8 @@ class BlueRushAuton : public IAuton {
   // intake commands
 
   static constexpr char INTAKE_SPIN_COMMAND[]{"SPIN"};
+
+  static constexpr char INTAKE_SET_HEIGHT_COMMAND[]{"SET HEIGHT"};
 
   // odometry commands
 
@@ -92,6 +95,12 @@ class BlueRushAuton : public IAuton {
 
   static constexpr char SET_GO_TO_POINT_VELOCITY_COMMAND[]{
       "SET GO TO POINT VELOCITY"};
+
+  static constexpr char TURN_TO_POINT_COMMAND[]{"TURN TO POINT"};
+
+  static constexpr char TURN_TO_ANGLE_COMMAND[]{"TURN TO ANGLE"};
+
+  static constexpr char DRIVE_STRAIGHT_COMMAND[]{"DRIVE STRAIGHT"};
 
   // STATE NAMES
 
@@ -126,8 +135,10 @@ class BlueRushAuton : public IAuton {
 
   // motion states
 
-  static constexpr char GO_TO_POINT_TARGET_REACHED[]{
+  static constexpr char GO_TO_POINT_TARGET_REACHED_STATE[]{
       "GO TO POINT TARGET REACHED"};
+
+  static constexpr char TURN_TARGET_REACHED_STATE[]{"TURN TARGET REACHED"};
 
   // MISC VALUES
 
@@ -141,17 +152,27 @@ class BlueRushAuton : public IAuton {
 
   std::shared_ptr<control::ControlSystem> m_control_system{};
 
-  double ring_sort_latest_ring_pos{};
+  std::shared_ptr<alliance::IAlliance> m_alliance{};
+
+  double ring_sort_latest_ring_pos{-__DBL_MAX__};
 
   void calibrateArm();
+
+  void armGoNeutral();
 
   void setClamp(bool clamped);
 
   void setElevatorVoltage(double voltage);
 
-  void updateRingSort(const std::shared_ptr<alliance::IAlliance>& alliance);
+  void updateRingSort();
+
+  void waitForAllianceRing(uint32_t timeout);
+
+  void waitForOpposingRing(uint32_t timeout);
 
   void spinIntake(double voltage);
+
+  void setIntakeHeight(bool high);
 
   void setOdomPosition(double x, double y, double theta);
 
@@ -161,10 +182,20 @@ class BlueRushAuton : public IAuton {
 
   void goToPoint(double x, double y, double velocity);
 
+  void setGoToPointVelocity(double velocity);
+
   void waitForGoToPoint(double target_x, double target_y, uint32_t timeout,
                         double tolerance);
 
-  void setGoToPointVelocity(double velocity);
+  void turnToPoint(double x, double y, double velocity,
+                   control::motion::ETurnDirection direction);
+
+  void waitForTurnToPoint(double x, double y, uint32_t timeout,
+                          double tolerance);
+
+  void turnToAngle(double theta, double velocity, control::motion::ETurnDirection direction);
+
+  void waitForTurnToAngle(double theta, uint32_t timeout, double tolerance);
 
   uint32_t getTime();
 
@@ -175,6 +206,12 @@ class BlueRushAuton : public IAuton {
   bool followPathTargetReached();
 
   bool goToPointTargetReached();
+
+  bool turnTargetReached();
+
+  bool hasAllianceRing();
+
+  bool hasOpposingRing();
 
  public:
   std::string getName() override;
