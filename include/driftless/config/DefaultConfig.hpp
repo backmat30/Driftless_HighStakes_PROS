@@ -111,7 +111,7 @@ class DefaultConfig : public IConfig {
   /// @brief kd value for the drive straight linear pid controller
   static constexpr double PID_DRIVE_STRAIGHT_LINEAR_KD{800};
   /// @brief kp value for the drive straight rotational pid controller
-  static constexpr double PID_DRIVE_STRAIGHT_ROTATIONAL_KP{2.5};
+  static constexpr double PID_DRIVE_STRAIGHT_ROTATIONAL_KP{100.0};
   /// @brief ki value for the drive straight rotational pid controller
   static constexpr double PID_DRIVE_STRAIGHT_ROTATIONAL_KI{0.001};
   /// @brief kd value for the drive straight rotational pid controller

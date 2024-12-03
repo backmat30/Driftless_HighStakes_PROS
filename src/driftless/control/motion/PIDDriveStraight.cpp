@@ -1,5 +1,6 @@
 #include "driftless/control/motion/PIDDriveStraight.hpp"
 
+#include "pros/screen.hpp"
 namespace driftless {
 namespace control {
 namespace motion {
@@ -35,13 +36,16 @@ double PIDDriveStraight::getVelocity() {
 void PIDDriveStraight::updateVelocity(double distance, double theta) {
   double linear_control{m_linear_pid.getControlValue(0, distance)};
   double angular_control{
-      m_rotational_pid.getControlValue(0, bindRadians(theta))};
+      m_rotational_pid.getControlValue(0, bindRadians(m_target_angle - theta))};
 
   if (std::abs(linear_control) > m_max_velocity) {
     linear_control *= m_max_velocity / std::abs(linear_control);
   }
   double left_velocity{linear_control - angular_control};
   double right_velocity{linear_control + angular_control};
+
+  pros::screen::print(pros::E_TEXT_LARGE_CENTER, 7, "L: %7.2f, R: %7.2f",
+                      left_velocity, right_velocity);
   setDriveVelocity(left_velocity, right_velocity);
 }
 
