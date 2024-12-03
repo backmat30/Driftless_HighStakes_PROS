@@ -161,6 +161,43 @@ void BlueRushAuton::waitForTurnToAngle(double theta, uint32_t timeout,
   }
 }
 
+void BlueRushAuton::driveStraight(double distance, double velocity,
+                                  double theta) {
+  m_control_system->sendCommand(MOTION_CONTROL_NAME, DRIVE_STRAIGHT_COMMAND,
+                                &m_robot, velocity, distance, theta);
+}
+
+void BlueRushAuton::waitForDriveStraight(double target_distance,
+                                         uint32_t timeout, double tolerance) {
+  uint32_t current_time{getTime()};
+  uint32_t end_time{current_time + timeout};
+  robot::subsystems::odometry::Position start_position{getOdomPosition()};
+  robot::subsystems::odometry::Position current_position{start_position};
+  double current_distance{distance(start_position.x, start_position.y,
+                                   current_position.x, current_position.y)};
+
+  while (!driveStraightTargetReached() && current_time < end_time &&
+         std::abs(current_distance - target_distance) > tolerance) {
+    current_time = getTime();
+    current_position = getOdomPosition();
+    current_distance = distance(start_position.x, start_position.y,
+                                current_position.x, current_position.y);
+    updateRingSort();
+    m_delayer->delay(LOOP_DELAY);
+  }
+}
+
+void BlueRushAuton::delay(uint32_t delay_time) {
+  uint32_t current_time{getTime()};
+  uint32_t end_time{current_time + delay_time};
+
+  while (current_time < end_time) {
+    current_time = getTime();
+    updateRingSort();
+    m_delayer->delay(LOOP_DELAY);
+  }
+}
+
 uint32_t BlueRushAuton::getTime() {
   uint32_t current_time{};
   if (m_clock) {
@@ -202,6 +239,12 @@ bool BlueRushAuton::goToPointTargetReached() {
 bool BlueRushAuton::turnTargetReached() {
   bool target_reached{*static_cast<bool*>(m_control_system->getState(
       MOTION_CONTROL_NAME, TURN_TARGET_REACHED_STATE))};
+  return target_reached;
+}
+
+bool BlueRushAuton::driveStraightTargetReached() {
+  bool target_reached{*static_cast<bool*>(m_control_system->getState(
+      MOTION_CONTROL_NAME, DRIVE_STRAIGHT_TARGET_REACHED_STATE))};
   return target_reached;
 }
 
@@ -274,6 +317,7 @@ void BlueRushAuton::run(
   robot::subsystems::odometry::Position position{getOdomPosition()};
   double velocity{getOdomVelocity()};
 
+  uint32_t current_time{start_time};
   control::Point target_point{};
   double target_distance{};
   double target_velocity{};
@@ -298,7 +342,7 @@ void BlueRushAuton::run(
   position = getOdomPosition();
   target_distance = distance(position.x, position.y, target_point.getX(),
                              target_point.getY());
-  while (target_distance > 31.0) {
+  while (target_distance > 30.5) {
     m_delayer->delay(LOOP_DELAY);
     position = getOdomPosition();
     target_distance = distance(position.x, position.y, target_point.getX(),
@@ -334,7 +378,7 @@ void BlueRushAuton::run(
   waitForTurnToPoint(target_point.getX() - 3.0, target_point.getY(), 500,
                      M_PI / 10.0);
   setElevatorVoltage(12.0);
-  m_delayer->delay(250);
+  delay(400);
   target_velocity = 16.0;
   goToPoint(target_point.getX(), target_point.getY(), target_velocity);
   while (target_distance > 6.0) {
@@ -345,14 +389,21 @@ void BlueRushAuton::run(
   }
   setGoToPointVelocity(8.0);
   setIntakeHeight(false);
+  setElevatorVoltage(6.0);
   waitForGoToPoint(target_point.getX(), target_point.getY(), 1000, 0.5);
   setClamp(false);
   m_control_system->pause();
 
   // wait until the robot sees an alliance ring to continue the path
-  m_robot->sendCommand(DRIVE_SUBSYSTEM_NAME, DRIVE_SET_VOLTAGE_COMMAND, 1.0,
-                       1.0);
-  waitForAllianceRing(3000);
+  waitForAllianceRing(500);
+  if (!hasAllianceRing()) {
+    position = getOdomPosition();
+    target_velocity = 24.0;
+    driveStraight(15.0, target_velocity, position.theta);
+    waitForDriveStraight(15.0, 1000, 0.5);
+    m_control_system->pause();
+    waitForAllianceRing(3000);
+  }
 
   setElevatorVoltage(0.0);
   spinIntake(-12.0);
@@ -382,7 +433,7 @@ void BlueRushAuton::run(
                                target_point.getY());
   }
   // slow down near the target
-  target_velocity = 12.0;
+  target_velocity = 10.0;
   setGoToPointVelocity(target_velocity);
   waitForGoToPoint(target_point.getX(), target_point.getY(), 3000, 0.5);
   setClamp(true);
@@ -401,7 +452,7 @@ void BlueRushAuton::run(
     target_distance = distance(position.x, position.y, target_point.getX(),
                                target_point.getY());
   }
-  target_velocity = 24.0;
+  target_velocity = 16.0;
   setElevatorVoltage(0.0);
   turnToPoint(target_point.getX(), target_point.getY(), target_velocity,
               control::motion::ETurnDirection::COUNTERCLOCKWISE);
@@ -415,9 +466,12 @@ void BlueRushAuton::run(
   setElevatorVoltage(12.0);
   waitForGoToPoint(target_point.getX(), target_point.getY(), 2500, 1.0);
   setIntakeHeight(false);
+
+  waitForOpposingRing(400);
+  position = getOdomPosition();
+  driveStraight(15.0, target_velocity, position.theta);
+  waitForDriveStraight(15.0, 1000, 0.5);
   m_control_system->pause();
-  m_robot->sendCommand(DRIVE_SUBSYSTEM_NAME, DRIVE_SET_VOLTAGE_COMMAND, 1.0,
-                       1.0);
   waitForOpposingRing(3000);
 
   // move to next rings (cont.)
@@ -434,53 +488,74 @@ void BlueRushAuton::run(
   goToPoint(target_point.getX(), target_point.getY(), target_velocity);
   waitForGoToPoint(target_point.getX(), target_point.getY(), 2500, 1.0);
   setIntakeHeight(false);
+
+  waitForAllianceRing(400);
+  position = getOdomPosition();
+  target_velocity = 24.0;
+  driveStraight(15.0, target_velocity, position.theta);
+  waitForDriveStraight(15.0, 1000, 0.5);
   m_control_system->pause();
-  m_robot->sendCommand(DRIVE_SUBSYSTEM_NAME, DRIVE_SET_VOLTAGE_COMMAND, 1.0,
-                       0.7);
   waitForAllianceRing(5000);
 
   // Go to orange preload
-  target_point = control::Point{43.0, 130.0};
+  target_point = control::Point{45.0, 130.0};
+  target_velocity = 10.0;
+  turnToPoint(target_point.getX(), target_point.getY(), target_velocity,
+              control::motion::ETurnDirection::AUTO);
+  waitForTurnToPoint(target_point.getX(), target_point.getY(), 1000,
+                     M_PI / 25.0);
   goToPoint(target_point.getX(), target_point.getY(), target_velocity);
   waitForGoToPoint(target_point.getX(), target_point.getY(), 1000, 0.5);
-  m_robot->sendCommand(DRIVE_SUBSYSTEM_NAME, DRIVE_SET_VOLTAGE_COMMAND, 1.0,
-                       1.0);
-  m_delayer->delay(100);
-  waitForAllianceRing(3000);
-  m_robot->sendCommand(DRIVE_SUBSYSTEM_NAME, DRIVE_SET_VOLTAGE_COMMAND, 0.0,
-                       0.0);
+  position = getOdomPosition();
+  target_velocity = 24.0;
+  driveStraight(10.0, target_velocity, position.theta);
+  waitForDriveStraight(10.0, 700, 0.5);
+  m_control_system->pause();
+  waitForAllianceRing(1000);
 
   // attempt to clear corner :)
-  for (int i = 0; i < 3; ++i) {
-    target_point = control::Point{40.0, 115.0};
-    target_velocity = 12.0;
-    goToPoint(target_point.getX(), target_point.getY(), target_velocity);
-    setIntakeHeight(true);
-    waitForGoToPoint(target_point.getX(), target_point.getY(), 1500, 0.5);
-    target_velocity = 32.0;
-    turnToAngle(M_PI * 3.0 / 4.0, target_velocity,
-                control::motion::ETurnDirection::AUTO);
-    waitForTurnToAngle(M_PI * 3.0 / 4.0, 2000, M_PI / 25.0);
+  target_point = control::Point{45.0, 125.0};
+  goToPoint(target_point.getX(), target_point.getY(), target_velocity);
+  waitForGoToPoint(target_point.getX(), target_point.getY(), 750, 0.5);
+  
+  setIntakeHeight(true);
+
+  target_point = control::Point{0.0, 140.0};
+  turnToPoint(target_point.getX(), target_point.getY(), target_velocity,
+              control::motion::ETurnDirection::COUNTERCLOCKWISE);
+  waitForTurnToPoint(target_point.getX(), target_point.getY(), 3000,
+                     M_PI / 25.0);
+
+  target_velocity = 16.0;
+  goToPoint(target_point.getX(), target_point.getY(), target_velocity);
+  waitForGoToPoint(target_point.getX(), target_point.getY(), 1750, 0.5);
+
+  setIntakeHeight(false);
+
+  target_velocity = 10.0;
+  while (current_time < start_time + 25000) {
+    driveStraight(2.0, target_velocity, M_PI);
+    waitForDriveStraight(2.0, 500, 0.5);
     m_control_system->pause();
-    m_robot->sendCommand(DRIVE_SUBSYSTEM_NAME, DRIVE_SET_VOLTAGE_COMMAND, 5.0,
-                         5.0);
-    m_delayer->delay(1000);
-    setIntakeHeight(false);
-    waitForAllianceRing(1000);
+    delay(100);
+    driveStraight(-2.0, target_velocity, M_PI);
+    waitForDriveStraight(-2.0, 500, 0.5);
+    m_control_system->pause();
+    delay(100);
+    current_time = getTime();
   }
+  driveStraight(-10.0, target_velocity, M_PI);
+  waitForDriveStraight(-10.0, 1000, 0.5);
+  driveStraight(15.0, target_velocity, M_PI);
+  waitForDriveStraight(15.0, 1000, 0.5);
+  driveStraight(-25.0, target_velocity, 3.0 * M_PI / 4.0);
+  waitForDriveStraight(-25.0, 2000, 0.5);
+  turnToAngle(-M_PI / 4.0, target_velocity,
+              control::motion::ETurnDirection::AUTO);
+  waitForTurnToAngle(-M_PI / 4.0, 1000, M_PI / 25.0);
   m_control_system->pause();
-  // run the elevator/ring sort for 2 seconds to score any rings left in the
-  // robot
-  m_robot->sendCommand(DRIVE_SUBSYSTEM_NAME, DRIVE_SET_VOLTAGE_COMMAND, -3.0,
-                       -3.0);
-  for (int i = 0; i < 200; ++i) {
-    m_delayer->delay(LOOP_DELAY);
-    updateRingSort();
-  }
   setElevatorVoltage(0.0);
   spinIntake(0.0);
-  m_robot->sendCommand(DRIVE_SUBSYSTEM_NAME, DRIVE_SET_VOLTAGE_COMMAND, 0.0,
-                       0.0);
 
   // Print the run-time for routing purposes, determine how much more can be
   // done after current tasks

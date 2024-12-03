@@ -140,9 +140,12 @@ class BlueRushAuton : public IAuton {
 
   static constexpr char TURN_TARGET_REACHED_STATE[]{"TURN TARGET REACHED"};
 
+  static constexpr char DRIVE_STRAIGHT_TARGET_REACHED_STATE[]{
+      "DRIVE STRAIGHT TARGET REACHED"};
+
   // MISC VALUES
 
-  static constexpr uint8_t LOOP_DELAY{10};
+  static constexpr uint8_t LOOP_DELAY{5};
 
   std::shared_ptr<rtos::IClock> m_clock{};
 
@@ -193,9 +196,17 @@ class BlueRushAuton : public IAuton {
   void waitForTurnToPoint(double x, double y, uint32_t timeout,
                           double tolerance);
 
-  void turnToAngle(double theta, double velocity, control::motion::ETurnDirection direction);
+  void turnToAngle(double theta, double velocity,
+                   control::motion::ETurnDirection direction);
 
   void waitForTurnToAngle(double theta, uint32_t timeout, double tolerance);
+
+  void driveStraight(double distance, double velocity, double theta);
+
+  void waitForDriveStraight(double target_distance, uint32_t timeout,
+                            double tolerance);
+
+  void delay(uint32_t delay_time);
 
   uint32_t getTime();
 
@@ -208,6 +219,8 @@ class BlueRushAuton : public IAuton {
   bool goToPointTargetReached();
 
   bool turnTargetReached();
+
+  bool driveStraightTargetReached();
 
   bool hasAllianceRing();
 
