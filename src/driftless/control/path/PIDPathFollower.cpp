@@ -226,55 +226,6 @@ void PIDPathFollower::updateVelocity(
   setDriveVelocity(velocity);
 }
 
-// void PIDPathFollower::updateVelocity(
-//     driftless::robot::subsystems::odometry::Position position,
-//     Point follow_point) {
-//   // difference between target and current position
-//   double x_error{follow_point.getX() - position.x};
-//   double y_error{follow_point.getY() - position.y};
-
-//   // difference in angle between current direction and the direction the
-//   target
-//   // is in
-//   double rotational_error{
-//       bindRadians(std::atan2(y_error, x_error) - position.theta)};
-//   // length of the vector perpendicular to the robot direction that
-//   intersects
-//   // with the target position
-//   double linear_error{std::cos(rotational_error) *
-//                       std::sqrt(std::pow(x_error, 2) + std::pow(y_error,
-//                       2))};
-//   // if the linear error is negative, reverse the rotational error
-//   if (linear_error < 0) rotational_error = bindRadians(rotational_error +
-//   M_PI);
-//   // get the control value from the pid
-//   double linear_control{m_linear_pid.getControlValue(0, linear_error)};
-//   // if the control value is out of the bounds of the max velocity, set it to
-//   // the (+/-)max velocity
-//   if (std::abs(linear_control) > m_max_velocity)
-//     linear_control *= m_max_velocity / std::abs(linear_control);
-
-//   // get the control from PID
-//   double rotational_control{};
-//   // if the robot has to turn more than 45 degrees, use PID
-//   // otherwise, use the linear control to find the control value
-//   if (std::abs(rotational_error) > M_PI / 4)
-//     rotational_control = m_rotational_pid.getControlValue(0,
-//     rotational_error);
-//   else
-//     rotational_control = (2 * getDriveRadius() * std::sin(rotational_error) /
-//                           m_follow_distance) *
-//                          std::abs(linear_control);
-
-//   // define the velocity for each side of the robot and pass into velocity
-//   // struct
-//   double left_velocity{linear_control - rotational_control};
-//   double right_velocity{linear_control + rotational_control};
-//   robot::subsystems::drivetrain::Velocity velocity{left_velocity,
-//                                                    right_velocity};
-//   setDriveVelocity(velocity);
-// }
-
 void PIDPathFollower::init() {
   m_linear_pid.reset();
   m_rotational_pid.reset();
