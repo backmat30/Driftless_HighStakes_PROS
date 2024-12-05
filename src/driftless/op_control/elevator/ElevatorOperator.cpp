@@ -61,11 +61,12 @@ void ElevatorOperator::updateRingSensor(
   }
 
   if (position <= latest_ring_pos + distance_to_end &&
-      position >= latest_ring_pos - distance_to_end) {
+      position >= latest_ring_pos - 0.1) {
     m_robot->sendCommand(ELEVATOR_SUBSYSTEM_NAME, DEPLOY_REJECTOR_COMMAND_NAME);
   } else {
     m_robot->sendCommand(ELEVATOR_SUBSYSTEM_NAME,
                          RETRACT_REJECTOR_COMMAND_NAME);
+    latest_ring_pos = -__DBL_MAX__;
   }
 }
 
