@@ -84,16 +84,6 @@ void PIDArmMotion::updateState() {
         state = EState::RUSH;
       }
       break;
-    case EState::ALLIANCE_STAKE_MOTION:
-      if ((rotation_position - m_rotational_alliance_stake_position) <=
-              m_rotational_tolerance &&
-          (linear_position - m_linear_alliance_stake_position) <=
-              m_linear_tolerance) {
-        state = EState::LOAD_MOTION;
-        rotational_target_position = m_rotational_load_position;
-        linear_target_position = m_linear_load_position;
-      }
-      break;
     case EState::LOAD_INTERMEDIATE:
       if (previous_state != EState::NEUTRAL ||
           (std::abs(m_rotational_load_intermediate_position -
@@ -131,9 +121,7 @@ void PIDArmMotion::updateState() {
       break;
     case EState::ALLIANCE_STAKE_INTERMEDIATE:
       if ((m_rotational_alliance_stake_intermediate_position -
-           rotation_position) <= m_rotational_tolerance &&
-          (m_linear_alliance_stake_intermediate_position - linear_position) <=
-              m_linear_tolerance) {
+           rotation_position) <= m_rotational_tolerance) {
         state = EState::ALLIANCE_STAKE_MOTION;
         rotational_target_position = m_rotational_alliance_stake_position;
         linear_target_position = m_linear_alliance_stake_position;
@@ -299,10 +287,9 @@ void PIDArmMotion::goAllianceStake() {
   }
   if (state != EState::ALLIANCE_STAKE &&
       state != EState::ALLIANCE_STAKE_MOTION) {
-    state == EState::ALLIANCE_STAKE_INTERMEDIATE;
+    state = EState::ALLIANCE_STAKE_INTERMEDIATE;
     rotational_target_position =
         m_rotational_alliance_stake_intermediate_position;
-    linear_target_position = m_linear_alliance_stake_intermediate_position;
   }
   if (m_mutex) {
     m_mutex->give();
@@ -489,12 +476,6 @@ void PIDArmMotion::setLinearRushPosition(double linear_rush_position) {
 void PIDArmMotion::setLinearAllianceStakePosition(
     double linear_alliance_stake_position) {
   m_linear_alliance_stake_position = linear_alliance_stake_position;
-}
-
-void PIDArmMotion::setLinearAllianceStakeIntermediatePosition(
-    double linear_alliance_stake_intermediate_position) {
-  m_linear_alliance_stake_intermediate_position =
-      linear_alliance_stake_intermediate_position;
 }
 
 void PIDArmMotion::setLinearTolerance(double linear_tolerance) {

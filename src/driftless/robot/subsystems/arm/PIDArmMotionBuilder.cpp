@@ -173,14 +173,6 @@ PIDArmMotionBuilder* PIDArmMotionBuilder::withLinearAllianceStakePosition(
   return this;
 }
 
-PIDArmMotionBuilder*
-PIDArmMotionBuilder::withLinearAllianceStakeIntermediatePosition(
-    double linear_alliance_stake_intermediate_position) {
-  m_linear_alliance_stake_intermediate_position =
-      linear_alliance_stake_intermediate_position;
-  return this;
-}
-
 PIDArmMotionBuilder* PIDArmMotionBuilder::withLinearTolerance(
     double linear_tolerance) {
   m_linear_tolerance = linear_tolerance;
@@ -224,8 +216,6 @@ std::unique_ptr<PIDArmMotion> PIDArmMotionBuilder::build() {
   pid_arm_motion->setLinearRushPosition(m_linear_rush_position);
   pid_arm_motion->setLinearAllianceStakePosition(
       m_linear_alliance_stake_position);
-  pid_arm_motion->setLinearAllianceStakeIntermediatePosition(
-      m_linear_alliance_stake_intermediate_position);
   pid_arm_motion->setLinearTolerance(m_linear_tolerance);
 
   return pid_arm_motion;

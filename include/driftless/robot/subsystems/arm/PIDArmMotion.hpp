@@ -138,9 +138,6 @@ class PIDArmMotion : public IArmMotion {
   // the linear position of the intermediate load position
   double m_linear_load_intermediate_position{};
 
-  // the linear position of the intermediate alliance stake position
-  double m_linear_alliance_stake_intermediate_position{};
-
   // the linear position tolerance
   double m_linear_tolerance{};
 
@@ -352,11 +349,6 @@ class PIDArmMotion : public IArmMotion {
   /// @brief Sets the linear alliance stake position
   /// @param linear_alliance_stake_position The new position
   void setLinearAllianceStakePosition(double linear_alliance_stake_position);
-
-  /// @brief Sets the linear alliance stake intermediate position
-  /// @param linear_alliance_stake_intermediate_position The new position
-  void setLinearAllianceStakeIntermediatePosition(
-      double linear_alliance_stake_intermediate_position);
 
   // sets the linear position tolerance
   void setLinearTolerance(double linear_tolerance);

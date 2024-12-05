@@ -92,9 +92,6 @@ class PIDArmMotionBuilder {
   // the linear position when scoring on the alliance stake
   double m_linear_alliance_stake_position{};
 
-  // the linear intermediate position during the alliance stake motion
-  double m_linear_alliance_stake_intermediate_position{};
-
   // the linear position tolerance
   double m_linear_tolerance{};
 
@@ -219,13 +216,6 @@ class PIDArmMotionBuilder {
   /// @return __PIDArmMotionBuilder*__ Pointer to the current builder
   PIDArmMotionBuilder* withLinearAllianceStakePosition(
       double linear_alliance_stake_position);
-
-  /// @brief Adds a linear alliance stake intermediate position to the builder
-  /// @param linear_alliance_stake_intermediate_position The position being
-  /// added
-  /// @return __PIDArmMotionBuilder*__ Pointer to the current builder
-  PIDArmMotionBuilder* withLinearAllianceStakeIntermediatePosition(
-      double linear_alliance_stake_intermediate_position);
 
   // add a linear position tolerance to the builder
   PIDArmMotionBuilder* withLinearTolerance(double linear_tolerance);
