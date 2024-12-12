@@ -67,7 +67,11 @@ class EricProfile : public driftless::profiles::IProfile {
           {op_control::EControl::INTAKE_REVERSE,
            op_control::EControllerDigital::TRIGGER_RIGHT_BOTTOM},
           {op_control::EControl::INTAKE_TOGGLE_HEIGHT,
-           op_control::EControllerDigital::TRIGGER_LEFT_BOTTOM}};
+           op_control::EControllerDigital::TRIGGER_LEFT_BOTTOM},
+          {op_control::EControl::ELEVATOR_TOGGLE_COLOR_SORT,
+           op_control::EControllerDigital::DPAD_LEFT},
+          {op_control::EControl::ARM_ALLIANCE_STAKE,
+           op_control::EControllerDigital::DPAD_DOWN}};
 
  public:
   /// @brief Gets the name of the profile

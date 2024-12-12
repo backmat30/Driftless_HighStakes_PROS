@@ -5,11 +5,11 @@
 
 #include "driftless/alliance/IAlliance.hpp"
 #include "driftless/io/IController.hpp"
+#include "driftless/io/RGBValue.hpp"
 #include "driftless/op_control/EControllerDigital.hpp"
 #include "driftless/op_control/elevator/EElevatorControlMode.hpp"
 #include "driftless/profiles/IProfile.hpp"
 #include "driftless/robot/Robot.hpp"
-#include "driftless/io/RGBValue.hpp"
 
 namespace driftless {
 namespace op_control {
@@ -21,7 +21,7 @@ class ElevatorOperator {
 
   // name of the red alliance
   static constexpr char RED_ALLIANCE_NAME[]{"RED"};
-  
+
   /// @brief the name of the elevator subsystem
   static constexpr char ELEVATOR_SUBSYSTEM_NAME[]{"ELEVATOR"};
 
@@ -77,6 +77,9 @@ class ElevatorOperator {
   /// opposing ring
   double latest_ring_pos{-__DBL_MAX__};
 
+  /// @brief Whether or not the color sort is active
+  bool color_sort_active{true};
+
   // updates the voltage of the elevator motors
   void updateElevatorVoltage(double voltage);
 
@@ -91,7 +94,8 @@ class ElevatorOperator {
   void updateToggle(EControllerDigital spin, EControllerDigital reverse);
 
   /// @brief Updates the ring sensor and ring rejector
-  void updateRingSensor(const std::shared_ptr<alliance::IAlliance>& alliance);
+  void updateRingSensor(EControllerDigital toggle,
+                        const std::shared_ptr<alliance::IAlliance>& alliance);
 
  public:
   // constructor

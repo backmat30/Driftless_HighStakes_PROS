@@ -40,6 +40,9 @@ void OrangeRushAuton::updateRingSort() {
   if (hasOpposingRing()) {
     ring_sort_latest_ring_pos = position;
   }
+  if (hasAllianceRing()) {
+    ring_sort_latest_ring_pos = -__DBL_MAX__;
+  }
 
   if (position <= ring_sort_latest_ring_pos + distance_to_end &&
       position >= ring_sort_latest_ring_pos - 0.1) {
@@ -322,7 +325,10 @@ void OrangeRushAuton::run(
 
   // Set the robots starting values
   uint32_t start_time{getTime()};
-  setOdomPosition(35.0, 114.5, M_PI / 2.0);
+  if (alliance->getName() == "RED")
+    setOdomPosition(35.0, 114.5, M_PI / 2.0);
+  else if (alliance->getName() == "BLUE")
+    setOdomPosition(144.0 - 35.0, 114.5, M_PI / 2.0);
   robot::subsystems::odometry::Position position{getOdomPosition()};
   double velocity{getOdomVelocity()};
 
@@ -332,9 +338,17 @@ void OrangeRushAuton::run(
   double target_velocity{};
 
   // Start the rush path
-  std::vector<control::Point> rush_control_points{
-      control::Point{35.0, 114.5}, control::Point{32.0, 97.0},
-      control::Point{31.5, 96.0}, control::Point{24.25, 82.0}};
+  std::vector<control::Point> rush_control_points{};
+  if (alliance->getName() == "RED")
+    rush_control_points = std::vector<control::Point>{
+        control::Point{35.0, 114.5}, control::Point{32.0, 97.0},
+        control::Point{31.5, 96.0}, control::Point{24.25, 82.0}};
+  else if (alliance->getName() == "BLUE")
+    rush_control_points = std::vector<control::Point>{
+        control::Point{144.0 - 35.0, 114.5}, control::Point{144.0 - 32.0, 97.0},
+        control::Point{144.0 - 31.5, 96.0},
+        control::Point{144.0 - 23.75, 81.75}};
+
   std::vector<control::Point> rush_path{
       control::path::BezierCurveInterpolation::calculate(rush_control_points)};
   target_point = rush_control_points.back();
@@ -345,17 +359,17 @@ void OrangeRushAuton::run(
   // Set up subsystems while moving to the path
   calibrateArm();
 
-  delay(50);
+  delay(75);
   target_velocity = 24.0;
   setFollowPathVelocity(target_velocity);
-  delay(50);
-  target_velocity = 48.0;
+  delay(75);
+  target_velocity = 40.0;
   setFollowPathVelocity(target_velocity);
 
   position = getOdomPosition();
   target_distance = distance(position.x, position.y, target_point.getX(),
                              target_point.getY());
-  while (target_distance > 30.5) {
+  while (target_distance > 28.5) {
     m_delayer->delay(LOOP_DELAY);
     position = getOdomPosition();
     target_distance = distance(position.x, position.y, target_point.getX(),
@@ -381,12 +395,22 @@ void OrangeRushAuton::run(
   armGoNeutral();
 
   // Set up the path under the ladder
-
-  std::vector<control::Point> under_ladder_control_points{
-      control::Point{24.0, 82.25},  control::Point{46.0, 97.0},
-      control::Point{72.0, 70.0},   control::Point{88.0, 96.0},
-      control::Point{101.5, 112.0}, control::Point{122.0, 102.5},
-      control::Point{123.0, 80.25}};
+  std::vector<control::Point> under_ladder_control_points{};
+  if (alliance->getName() == "RED")
+    under_ladder_control_points = std::vector<control::Point>{
+        control::Point{24.0, 82.25},  control::Point{46.0, 97.0},
+        control::Point{72.0, 70.0},   control::Point{88.0, 96.0},
+        control::Point{101.5, 112.0}, control::Point{122.0, 102.5},
+        control::Point{123.0, 80.25}};
+  else if (alliance->getName() == "BLUE")
+    under_ladder_control_points =
+        std::vector<control::Point>{control::Point{144.0 - 24.0, 82.25},
+                                    control::Point{144.0 - 46.0, 97.0},
+                                    control::Point{144.0 - 72.0, 70.0},
+                                    control::Point{144.0 - 88.0, 96.0},
+                                    control::Point{144.0 - 101.5, 112.0},
+                                    control::Point{144.0 - 122.0, 102.5},
+                                    control::Point{144.0 - 123.0, 77.0}};
 
   std::vector<control::Point> under_ladder_path{
       control::path::BezierCurveInterpolation::calculate(
@@ -402,7 +426,7 @@ void OrangeRushAuton::run(
   spinIntake(12.0);
   setElevatorVoltage(12.0);
   delay(100);
-  target_velocity = 40.0;
+  target_velocity = 30.0;
   setFollowPathVelocity(target_velocity);
 
   target_distance = distance(position.x, position.y, target_point.getX(),
@@ -417,7 +441,7 @@ void OrangeRushAuton::run(
   setFollowPathVelocity(target_velocity);
 
   bool elevator_running{true};
-  while (target_distance > 14.0) {
+  while (target_distance > 16.0) {
     m_delayer->delay(LOOP_DELAY);
     position = getOdomPosition();
     target_distance = distance(position.x, position.y, target_point.getX(),
@@ -431,7 +455,7 @@ void OrangeRushAuton::run(
   }
   target_velocity = 10.0;
   setFollowPathVelocity(target_velocity);
-  delay(250);
+  delay(200);
   m_control_system->pause();
   // Wait for the blue robot to leave, robot is too zoomy
   current_time = getTime();
@@ -454,13 +478,15 @@ void OrangeRushAuton::run(
   target_velocity = 20.0;
   setFollowPathVelocity(target_velocity);
 
-  while (target_distance > 28.0) {
-    m_delayer->delay(LOOP_DELAY);
-    position = getOdomPosition();
-    target_distance = distance(position.x, position.y, target_point.getX(),
-                               target_point.getY());
+  if (alliance->getName() == "RED") {
+    while (target_distance > 28.0) {
+      m_delayer->delay(LOOP_DELAY);
+      position = getOdomPosition();
+      target_distance = distance(position.x, position.y, target_point.getX(),
+                                 target_point.getY());
+    }
+    setIntakeHeight(true);
   }
-  setIntakeHeight(true);
 
   while (target_distance > 12.0) {
     m_delayer->delay(LOOP_DELAY);
@@ -479,16 +505,22 @@ void OrangeRushAuton::run(
   waitForAllianceRing(1000);
   driveStraight(-7.0, target_velocity, position.theta);
   waitForDriveStraight(-7.0, 500, 0.5);
-  driveStraight(7.0, target_velocity, position.theta);
-  waitForDriveStraight(7.0, 500, 0.5);
+  waitForAllianceRing(500);
+  if (alliance->getName() == "RED" && !hasAllianceRing()) {
+    driveStraight(7.0, target_velocity, position.theta);
+    waitForDriveStraight(7.0, 500, 0.5);
+  }
   m_control_system->pause();
-  waitForAllianceRing(1000);
 
   spinIntake(0.0);
   setElevatorVoltage(0.0);
 
   // Go towards next ring stack
-  target_point = control::Point{117.0, 114.0};
+  if (alliance->getName() == "RED")
+    target_point = control::Point{112.0, 114.0};
+  else if (alliance->getName() == "BLUE")
+    target_point = control::Point{144.0 - 112.0, 114.0};
+
   target_velocity = 24.0;
   goToPoint(target_point.getX(), target_point.getY(), target_velocity);
 
@@ -504,8 +536,12 @@ void OrangeRushAuton::run(
 
   // point intake towards rings
   target_velocity = 12.0;
-  turnToPoint(target_point.getX(), target_point.getY(), target_velocity,
-              control::motion::ETurnDirection::AUTO);
+  if (alliance->getName() == "RED")
+    turnToPoint(target_point.getX(), target_point.getY(), target_velocity,
+                control::motion::ETurnDirection::COUNTERCLOCKWISE);
+  else if (alliance->getName() == "BLUE")
+    turnToPoint(target_point.getX(), target_point.getY(), target_velocity,
+                control::motion::ETurnDirection::CLOCKWISE);
   waitForTurnToPoint(target_point.getX(), target_point.getY(), 2000,
                      M_PI / 20.0);
 
@@ -524,13 +560,17 @@ void OrangeRushAuton::run(
   waitForOpposingRing(600);
   position = getOdomPosition();
   target_velocity = 24.0;
-  driveStraight(17.0, target_velocity, position.theta);
-  waitForDriveStraight(17.0, 1000, 0.5);
+  driveStraight(15.0, target_velocity, position.theta);
+  waitForDriveStraight(15.0, 1000, 0.5);
   m_control_system->pause();
   waitForOpposingRing(500);
 
   // turn to corner
-  target_point = control::Point{144.0, 144.0};
+  if (alliance->getName() == "RED")
+    target_point = control::Point{144.0, 144.0};
+  else if (alliance->getName() == "BLUE")
+    target_point = control::Point{144.0 - 150.0, 144.0};
+
   turnToPoint(target_point.getX(), target_point.getY(), target_velocity,
               control::motion::ETurnDirection::AUTO);
   waitForTurnToPoint(target_point.getX(), target_point.getY(), 3000,
@@ -543,19 +583,20 @@ void OrangeRushAuton::run(
 
   target_velocity = 16.0;
   goToPoint(target_point.getX(), target_point.getY(), target_velocity);
-  waitForGoToPoint(target_point.getX(), target_point.getY(), 1750, 0.5);
+  waitForGoToPoint(target_point.getX(), target_point.getY(), 1200, 0.5);
   position = getOdomPosition();
 
   setIntakeHeight(false);
 
+  // clear corner
   target_velocity = 12.0;
-  while (current_time < start_time + 22000) {
-    driveStraight(5.0, target_velocity, position.theta);
-    waitForDriveStraight(5.0, 600, 0.25);
+  while (current_time < start_time + 19500) {
+    driveStraight(4.5, target_velocity, position.theta);
+    waitForDriveStraight(4.5, 600, 0.25);
     m_control_system->pause();
     delay(100);
-    driveStraight(-4.5, target_velocity, position.theta);
-    waitForDriveStraight(-4.5, 500, 0.25);
+    driveStraight(-4.0, target_velocity, position.theta);
+    waitForDriveStraight(-4.0, 500, 0.25);
     m_control_system->pause();
     delay(100);
     current_time = getTime();
@@ -564,20 +605,24 @@ void OrangeRushAuton::run(
   // go to the rings by alliance stake
 
   target_velocity = 12.0;
-  target_point = control::Point{73.25, 134.5};
+  if (alliance->getName() == "RED")
+    target_point = control::Point{66.5, 128.0};
+  else if (alliance->getName() == "BLUE")
+    target_point = control::Point{144.0 - 68.5, 127.5};
 
   turnToPoint(target_point.getX(), target_point.getY(), target_velocity,
               control::motion::ETurnDirection::AUTO);
   waitForTurnToPoint(target_point.getX(), target_point.getY(), 1500,
                      M_PI / 25.0);
-
-  armGoLoad();
+  setElevatorVoltage(8.0);
 
   goToPoint(target_point.getX(), target_point.getY(), target_velocity);
-  delay(50);
+  delay(75);
   target_velocity = 36.0;
   setGoToPointVelocity(target_velocity);
-  waitForGoToPoint(target_point.getX(), target_point.getY(), 1500, 0.5);
+  waitForGoToPoint(target_point.getX(), target_point.getY(), 1700, 0.5);
+  waitForAllianceRing(500);
+  armGoLoad();
 
   // turn to face alliance stake
   turnToAngle(M_PI / 2.0, target_velocity,
@@ -586,10 +631,10 @@ void OrangeRushAuton::run(
 
   target_velocity = 12.0;
   driveStraight(12.0, target_velocity, M_PI / 2.0);
-  waitForDriveStraight(12.0, 200, 0.5);
+  waitForDriveStraight(12.0, 500, 0.5);
   m_control_system->pause();
 
-  delay(200);
+  delay(750);
   setElevatorVoltage(0.0);
   spinIntake(0.0);
 
@@ -601,15 +646,17 @@ void OrangeRushAuton::run(
   delay(600);
   armGoNeutral();
   waitForDriveStraight(-16.0, 1000, 0.5);
+  /*
+    turnToAngle(3.0 * M_PI / 2.0, target_velocity,
+                control::motion::ETurnDirection::AUTO);
+    waitForTurnToAngle(3.0 * M_PI / 2.0, 700, M_PI / 25.0);
 
-  turnToAngle(3.0 * M_PI / 2.0, target_velocity,
-              control::motion::ETurnDirection::AUTO);
-  waitForTurnToAngle(3.0 * M_PI / 2.0, 700, M_PI / 25.0);
+    driveStraight(24.0, target_velocity, 3.0 * M_PI / 2.0);
+    delay(1000);
+    armGoAllianceStake();
+    m_control_system->pause();
 
-  driveStraight(24.0, target_velocity, 3.0 * M_PI / 2.0);
-  delay(500);
-  armGoAllianceStake();
-  m_control_system->pause();
+    */
   // display the runtime at the end
   current_time = getTime();
   pros::screen::print(pros::E_TEXT_LARGE_CENTER, 3, "Runtime: %7.2f",

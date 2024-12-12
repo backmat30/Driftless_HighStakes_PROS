@@ -17,11 +17,19 @@ driftless::MatchController MatchControllerFactory::createMatchController() {
   std::unique_ptr<auton::IAuton> blue_rush_auton{
       std::make_unique<auton::BlueRushAuton>()};
   lvgl_menu->addAuton(blue_rush_auton);
-  
+
+  std::unique_ptr<auton::IAuton> orange_rush_auton{
+      std::make_unique<auton::OrangeRushAuton>()};
+  lvgl_menu->addAuton(orange_rush_auton);
+
   // add configs
   std::unique_ptr<config::IConfig> default_config{
       std::make_unique<config::DefaultConfig>()};
   lvgl_menu->addConfig(default_config);
+
+  std::unique_ptr<config::IConfig> orange_config{
+      std::make_unique<config::OrangeConfig>()};
+  lvgl_menu->addConfig(orange_config);
 
   // add profiles
   std::unique_ptr<profiles::IProfile> default_profile{

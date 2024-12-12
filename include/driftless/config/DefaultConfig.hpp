@@ -98,7 +98,7 @@ namespace config {
 class DefaultConfig : public IConfig {
  private:
   /// @brief the name of the config
-  static constexpr char CONFIG_NAME[]{"DEFAULT CONFIG"};
+  static constexpr char CONFIG_NAME[]{"DEFAULT_CONFIG"};
 
   // --CONTROL SYSTEM CONSTANTS--
   // motion control
@@ -290,10 +290,15 @@ class DefaultConfig : public IConfig {
   /// @brief arm rotational ready position
   static constexpr double ARM_ROTATIONAL_READY_POSITION{1.3 / 4.0 * 2.0 * M_PI};
   /// @brief arm rotational score position
-  static constexpr double ARM_ROTATIONAL_SCORE_POSITION{1.55 / 4.0 * 2.0 *
+  static constexpr double ARM_ROTATIONAL_SCORE_POSITION{1.50 / 4.0 * 2.0 *
                                                         M_PI};
   /// @brief arm rotational rush position
-  static constexpr double ARM_ROTATIONAL_RUSH_POSITION{2.15 / 4.0 * 2.0 * M_PI};
+  static constexpr double ARM_ROTATIONAL_RUSH_POSITION{2.475 / 4.0 * 2.0 *
+                                                       M_PI};
+
+  static constexpr double ARM_ROTATIONAL_ALLIANCE_STAKE_POSITION{2.0 / 4.0 *
+                                                                 2.0 * M_PI};
+
   /// @brief The intermediate position on the rotation towards the arm ready
   /// position
   static constexpr double ARM_ROTATIONAL_READY_INTERMEDIATE_POSITION{
@@ -318,6 +323,8 @@ class DefaultConfig : public IConfig {
   static constexpr double ARM_LINEAR_SCORE_POSITION{0.485 * 2 * M_PI};
   /// @brief Arm linear rush position
   static constexpr double ARM_LINEAR_RUSH_POSITION{0.495 * 2 * M_PI};
+
+  static constexpr double ARM_LINEAR_ALLIANCE_STAKE_POSITION{0.175 * 2 * M_PI};
   /// @brief arm linear position tolerance
   static constexpr double ARM_LINEAR_TOLERANCE{0.1};
 
@@ -330,7 +337,7 @@ class DefaultConfig : public IConfig {
   /// @brief elevator pid controller kd value
   static constexpr double PID_ELEVATOR_KD{256.0};
   /// @brief elevator radians to inches travelled
-  static constexpr double ELEVATOR_RADIANS_TO_INCHES{3.75 / (2.0 * M_PI)};
+  static constexpr double ELEVATOR_RADIANS_TO_INCHES{2.35 / (2.0 * M_PI)};
   /// @brief The max distance a ring can be from the color sensor
   static constexpr uint8_t ELEVATOR_MAX_RING_DISTANCE{50};
 
@@ -352,7 +359,7 @@ class DefaultConfig : public IConfig {
   // ring sensor
 
   /// @brief The distance from the color sensor to the end of the elevator
-  static constexpr double RING_SORT_COLOR_SENSOR_TO_END{3.25};
+  static constexpr double RING_SORT_COLOR_SENSOR_TO_END{2.5};
   /// @brief The minimum proximity value to be considered a ring
   static constexpr uint8_t RING_SORT_MIN_RING_PROXIMITY{50};
 

@@ -13,7 +13,7 @@ namespace driftless {
 namespace auton {
 class BlueRushAuton : public IAuton {
  private:
-  static constexpr char AUTON_NAME[]{"BLUE RUSH"};
+  static constexpr char AUTON_NAME[]{"BLUE_RUSH"};
 
   // SUBSYSTEM NAMES
 

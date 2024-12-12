@@ -33,36 +33,49 @@ void ElevatorOperator::updateToggle(EControllerDigital spin,
 }
 
 void ElevatorOperator::updateRingSensor(
+    EControllerDigital toggle,
     const std::shared_ptr<alliance::IAlliance>& alliance) {
-  void* has_ring_state{
-      m_robot->getState(RING_SORT_SUBSYSTEM_NAME, HAS_RING_STATE_NAME)};
-  bool has_ring{has_ring_state != nullptr &&
-                *static_cast<bool*>(has_ring_state)};
-
-  void* ring_rgb_state{
-      m_robot->getState(RING_SORT_SUBSYSTEM_NAME, GET_RGB_STATE_NAME)};
-  io::RGBValue ring_rgb{*static_cast<io::RGBValue*>(ring_rgb_state)};
-
-  void* position_state{
-      m_robot->getState(ELEVATOR_SUBSYSTEM_NAME, GET_POSITION_STATE_NAME)};
-  double position{*static_cast<double*>(position_state)};
-
-  void* distance_to_end_state{m_robot->getState(
-      RING_SORT_SUBSYSTEM_NAME, GET_SENSOR_DISTANCE_TO_END_STATE_NAME)};
-  double distance_to_end{*static_cast<double*>(distance_to_end_state)};
-
-  if (has_ring) {
-    if ((alliance->getName() == BLUE_ALLIANCE_NAME &&
-         ring_rgb.red >= ring_rgb.blue) ||
-        (alliance->getName() == RED_ALLIANCE_NAME &&
-         ring_rgb.blue >= ring_rgb.red)) {
-      latest_ring_pos = position;
-    }
+  bool toggle_color_sort{m_controller->getNewDigital(toggle)};
+  if (toggle_color_sort) {
+    color_sort_active = !color_sort_active;
   }
 
-  if (position <= latest_ring_pos + distance_to_end &&
-      position >= latest_ring_pos - 0.1) {
-    m_robot->sendCommand(ELEVATOR_SUBSYSTEM_NAME, DEPLOY_REJECTOR_COMMAND_NAME);
+  if (color_sort_active) {
+    void* has_ring_state{
+        m_robot->getState(RING_SORT_SUBSYSTEM_NAME, HAS_RING_STATE_NAME)};
+    bool has_ring{has_ring_state != nullptr &&
+                  *static_cast<bool*>(has_ring_state)};
+
+    void* ring_rgb_state{
+        m_robot->getState(RING_SORT_SUBSYSTEM_NAME, GET_RGB_STATE_NAME)};
+    io::RGBValue ring_rgb{*static_cast<io::RGBValue*>(ring_rgb_state)};
+
+    void* position_state{
+        m_robot->getState(ELEVATOR_SUBSYSTEM_NAME, GET_POSITION_STATE_NAME)};
+    double position{*static_cast<double*>(position_state)};
+
+    void* distance_to_end_state{m_robot->getState(
+        RING_SORT_SUBSYSTEM_NAME, GET_SENSOR_DISTANCE_TO_END_STATE_NAME)};
+    double distance_to_end{*static_cast<double*>(distance_to_end_state)};
+
+    if (has_ring) {
+      if ((alliance->getName() == BLUE_ALLIANCE_NAME &&
+           ring_rgb.red >= ring_rgb.blue) ||
+          (alliance->getName() == RED_ALLIANCE_NAME &&
+           ring_rgb.blue >= ring_rgb.red)) {
+        latest_ring_pos = position;
+      }
+    }
+
+    if (position <= latest_ring_pos + distance_to_end &&
+        position >= latest_ring_pos - 0.1) {
+      m_robot->sendCommand(ELEVATOR_SUBSYSTEM_NAME,
+                           DEPLOY_REJECTOR_COMMAND_NAME);
+    } else {
+      m_robot->sendCommand(ELEVATOR_SUBSYSTEM_NAME,
+                           RETRACT_REJECTOR_COMMAND_NAME);
+      latest_ring_pos = -__DBL_MAX__;
+    }
   } else {
     m_robot->sendCommand(ELEVATOR_SUBSYSTEM_NAME,
                          RETRACT_REJECTOR_COMMAND_NAME);
@@ -84,6 +97,8 @@ void ElevatorOperator::update(
       profile->getDigitalControlMapping(EControl::ELEVATOR_REVERSE)};
   EControllerDigital toggle{
       profile->getDigitalControlMapping(EControl::ELEVATOR_TOGGLE)};
+  EControllerDigital toggle_color_sort{
+      profile->getDigitalControlMapping(EControl::ELEVATOR_TOGGLE_COLOR_SORT)};
 
   if (!m_controller) {
     updateElevatorVoltage(0);
@@ -100,8 +115,7 @@ void ElevatorOperator::update(
       updateToggle(spin, reverse);
       break;
   }
-
-  updateRingSensor(alliance);
+  updateRingSensor(toggle_color_sort, alliance);
 }
 }  // namespace elevator
 }  // namespace op_control
