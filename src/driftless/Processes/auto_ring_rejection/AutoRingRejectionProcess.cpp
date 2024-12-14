@@ -5,7 +5,7 @@ namespace processes {
 namespace auto_ring_rejection {
 AutoRingRejectionProcess::AutoRingRejectionProcess(
     std::unique_ptr<IAutoRingRejector>& ring_rejector)
-    : m_ring_rejector{std::move(ring_rejector)} {}
+    : m_ring_rejector{std::move(ring_rejector)}, AProcess{PROCESS_NAME} {}
 
 void AutoRingRejectionProcess::init() { m_ring_rejector->init(); }
 

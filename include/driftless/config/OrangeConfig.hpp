@@ -90,6 +90,11 @@
 #include "driftless/rtos/IDelayer.hpp"
 #include "driftless/rtos/IMutex.hpp"
 #include "driftless/rtos/ITask.hpp"
+
+// auto ring rejection process includes
+#include "driftless/processes/auto_ring_rejection/AutoRingRejectionProcess.hpp"
+#include "driftless/processes/auto_ring_rejection/ElevatorAutoRingRejectorBuilder.hpp"
+
 /// @brief Namespace for driftless library code
 namespace driftless {
 /// @brief Namespace for robot configurations

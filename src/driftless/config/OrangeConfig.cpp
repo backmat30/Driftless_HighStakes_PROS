@@ -511,6 +511,29 @@ std::shared_ptr<robot::Robot> OrangeConfig::buildRobot() {
 std::shared_ptr<processes::ProcessSystem> OrangeConfig::buildProcessSystem() {
   std::shared_ptr<processes::ProcessSystem> process_system{};
 
+  std::unique_ptr<rtos::IDelayer> ring_rejector_delayer{
+      std::make_unique<pros_adapters::ProsDelayer>()};
+  std::unique_ptr<rtos::IMutex> ring_rejector_mutex{
+      std::make_unique<pros_adapters::ProsMutex>()};
+  std::unique_ptr<rtos::ITask> ring_rejector_task{
+      std::make_unique<pros_adapters::ProsTask>()};
+
+  processes::auto_ring_rejection::ElevatorAutoRingRejectorBuilder
+      elevator_auto_ring_rejector_builder{};
+
+  std::unique_ptr<processes::auto_ring_rejection::IAutoRingRejector>
+      auto_ring_rejector{elevator_auto_ring_rejector_builder
+                             .withDelayer(ring_rejector_delayer)
+                             ->withMutex(ring_rejector_mutex)
+                             ->withTask(ring_rejector_task)
+                             ->build()};
+
+  std::unique_ptr<processes::AProcess> auto_ring_rejection_process{
+      std::make_unique<
+          processes::auto_ring_rejection::AutoRingRejectionProcess>(
+          auto_ring_rejector)};
+  process_system->addProcess(auto_ring_rejection_process);
+
   return process_system;
 }
 }  // namespace config
