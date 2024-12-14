@@ -379,6 +379,10 @@ class DefaultConfig : public IConfig {
   /// @brief Builds a robot object using the config values
   /// @return a new robot object
   std::shared_ptr<robot::Robot> buildRobot() override;
+
+  /// @brief Builds a process system using config values
+  /// @return __shared_ptr<ProcessSystem>__ The new process system
+  std::shared_ptr<processes::ProcessSystem> buildProcessSystem() override;
 };
 }  // namespace config
 }  // namespace driftless

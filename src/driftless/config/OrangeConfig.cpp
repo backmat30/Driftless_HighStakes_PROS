@@ -507,5 +507,11 @@ std::shared_ptr<robot::Robot> OrangeConfig::buildRobot() {
   // send out the finalized robot
   return robot;
 }
+
+std::shared_ptr<processes::ProcessSystem> OrangeConfig::buildProcessSystem() {
+  std::shared_ptr<processes::ProcessSystem> process_system{};
+
+  return process_system;
+}
 }  // namespace config
 }  // namespace driftless

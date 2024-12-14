@@ -505,5 +505,11 @@ std::shared_ptr<robot::Robot> DefaultConfig::buildRobot() {
   // send out the finalized robot
   return robot;
 }
+
+std::shared_ptr<processes::ProcessSystem> DefaultConfig::buildProcessSystem() {
+  std::shared_ptr<processes::ProcessSystem> process_system{};
+
+  return process_system;
+}
 }  // namespace config
 }  // namespace driftless
