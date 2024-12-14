@@ -155,6 +155,8 @@ class OrangeRushAuton : public IAuton {
 
   std::shared_ptr<control::ControlSystem> m_control_system{};
 
+  std::shared_ptr<processes::ProcessSystem> m_process_system{};
+
   std::shared_ptr<alliance::IAlliance> m_alliance{};
 
   double ring_sort_latest_ring_pos{-__DBL_MAX__};
@@ -234,10 +236,13 @@ class OrangeRushAuton : public IAuton {
   std::string getName() override;
 
   void init(std::shared_ptr<robot::Robot>& robot,
-            std::shared_ptr<control::ControlSystem>& control_system) override;
+            std::shared_ptr<control::ControlSystem>& control_system,
+            std::shared_ptr<driftless::processes::ProcessSystem>&
+                process_system) override;
 
   void run(std::shared_ptr<driftless::robot::Robot>& robot,
            std::shared_ptr<driftless::control::ControlSystem>& control_system,
+           std::shared_ptr<driftless::processes::ProcessSystem>& process_system,
            std::shared_ptr<driftless::alliance::IAlliance>& alliance,
            std::shared_ptr<rtos::IClock>& clock,
            std::unique_ptr<rtos::IDelayer>& delayer) override;

@@ -27,12 +27,15 @@ class AutonManager {
 
   void setAuton(std::unique_ptr<auton::IAuton>& auton);
 
-  void initAuton(std::shared_ptr<robot::Robot>& robot,
-                 std::shared_ptr<control::ControlSystem>& control_system);
+  void initAuton(
+      std::shared_ptr<robot::Robot>& robot,
+      std::shared_ptr<control::ControlSystem>& control_system,
+      std::shared_ptr<driftless::processes::ProcessSystem>& process_system);
 
   void runAuton(
       std::shared_ptr<driftless::robot::Robot>& robot,
-      std::shared_ptr<driftless::control::ControlSystem>& control_system);
+      std::shared_ptr<driftless::control::ControlSystem>& control_system,
+      std::shared_ptr<driftless::processes::ProcessSystem>& process_system);
 };
 }  // namespace driftless
 #endif

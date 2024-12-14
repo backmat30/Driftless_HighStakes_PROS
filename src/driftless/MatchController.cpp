@@ -6,7 +6,8 @@ MatchController::MatchController(std::unique_ptr<menu::IMenu> &new_menu,
     : m_menu{std::move(new_menu)},
       m_clock{clock},
       m_delayer{std::move(delayer)},
-      op_control_manager(m_clock, m_delayer) {}
+      auton_manager{m_clock, m_delayer},
+      op_control_manager{m_clock, m_delayer} {}
 
 void MatchController::init(bool fast_init) {
   // if the menu exists, display the menu
@@ -32,6 +33,7 @@ void MatchController::init(bool fast_init) {
   control_system = system_config.config->buildControlSystem();
   controller = system_config.config->buildController();
   robot = system_config.config->buildRobot();
+  process_system = system_config.config->buildProcessSystem();
 
   // if fast init isn't being used, take time to initialize the parts of the
   // robot
@@ -45,6 +47,9 @@ void MatchController::init(bool fast_init) {
     if (controller) {
       controller->init();
     }
+    if (process_system) {
+      process_system->init();
+    }
   }
 
   // run the robot
@@ -57,8 +62,12 @@ void MatchController::init(bool fast_init) {
   if (controller) {
     controller->run();
   }
+  if (process_system) {
+    process_system->run();
+  }
 
   // initialize the auton and op control managers
+  auton_manager.initAuton(robot, control_system, process_system);
   op_control_manager.init(control_system, controller, robot);
 }
 
@@ -67,7 +76,7 @@ void MatchController::disabled() {}
 void MatchController::competitionInit() {}
 
 void MatchController::autonomous() {
-  auton_manager.runAuton(robot, control_system);
+  auton_manager.runAuton(robot, control_system, process_system);
 }
 
 void MatchController::operatorControl() {

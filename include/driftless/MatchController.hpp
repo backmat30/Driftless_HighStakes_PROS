@@ -8,10 +8,11 @@
 #include "driftless/OpControlManager.hpp"
 #include "driftless/control/ControlSystem.hpp"
 #include "driftless/io/IController.hpp"
+#include "driftless/menu/IMenu.hpp"
+#include "driftless/processes/ProcessSystem.hpp"
 #include "driftless/robot/Robot.hpp"
 #include "driftless/rtos/IClock.hpp"
 #include "driftless/rtos/IDelayer.hpp"
-#include "menu/IMenu.hpp"
 #include "pros/misc.hpp"
 
 namespace driftless {
@@ -34,6 +35,8 @@ class MatchController {
   std::shared_ptr<io::IController> controller{};
 
   std::shared_ptr<robot::Robot> robot{};
+
+  std::shared_ptr<processes::ProcessSystem> process_system{};
 
  public:
   MatchController(std::unique_ptr<menu::IMenu> &new_menu,
