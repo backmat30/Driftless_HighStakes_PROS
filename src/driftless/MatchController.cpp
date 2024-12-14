@@ -68,7 +68,7 @@ void MatchController::init(bool fast_init) {
 
   // initialize the auton and op control managers
   auton_manager.initAuton(robot, control_system, process_system);
-  op_control_manager.init(control_system, controller, robot);
+  op_control_manager.init(control_system, process_system, controller, robot);
 }
 
 void MatchController::disabled() {}
@@ -80,7 +80,7 @@ void MatchController::autonomous() {
 }
 
 void MatchController::operatorControl() {
-  op_control_manager.run(control_system, controller, robot);
+  op_control_manager.run(control_system, process_system, controller, robot);
 }
 
 }  // namespace driftless

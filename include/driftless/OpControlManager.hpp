@@ -12,6 +12,7 @@
 #include "driftless/op_control/drivetrain/DrivetrainOperator.hpp"
 #include "driftless/op_control/elevator/ElevatorOperator.hpp"
 #include "driftless/op_control/intake/IntakeOperator.hpp"
+#include "driftless/processes/ProcessSystem.hpp"
 #include "driftless/profiles/IProfile.hpp"
 #include "driftless/robot/Robot.hpp"
 #include "driftless/rtos/IClock.hpp"
@@ -34,22 +35,25 @@ class OpControlManager {
 
  public:
   // constructor
-  OpControlManager(const std::shared_ptr<rtos::IClock> &clock,
-                   const std::unique_ptr<rtos::IDelayer> &delayer);
+  OpControlManager(const std::shared_ptr<rtos::IClock>& clock,
+                   const std::unique_ptr<rtos::IDelayer>& delayer);
 
   // defines the controller profile to use
-  void setProfile(std::unique_ptr<profiles::IProfile> &profile);
+  void setProfile(std::unique_ptr<profiles::IProfile>& profile);
 
   // defines the alliance the robot is on
   void setAlliance(std::shared_ptr<alliance::IAlliance>& alliance);
 
   // initializes op control
-  void init(std::shared_ptr<control::ControlSystem> control_system,
-            std::shared_ptr<io::IController> controller,
-            std::shared_ptr<robot::Robot> robot);
+  void init(
+      std::shared_ptr<control::ControlSystem> control_system,
+      std::shared_ptr<driftless::processes::ProcessSystem>& process_system,
+      std::shared_ptr<io::IController> controller,
+      std::shared_ptr<robot::Robot> robot);
 
   // runs op control
   void run(std::shared_ptr<control::ControlSystem> control_system,
+           std::shared_ptr<driftless::processes::ProcessSystem>& process_system,
            std::shared_ptr<io::IController> controller,
            std::shared_ptr<robot::Robot> robot);
 };
