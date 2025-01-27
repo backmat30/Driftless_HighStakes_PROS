@@ -30,7 +30,11 @@ void AutoRingRejectionProcess::command(std::string command_name,
   }
 }
 
-void* AutoRingRejectionProcess::state(std::string state_name) {}
+void* AutoRingRejectionProcess::state(std::string state_name) {
+  void* result;
+
+  return result;
+}
 }  // namespace auto_ring_rejection
 }  // namespace processes
 }  // namespace driftless

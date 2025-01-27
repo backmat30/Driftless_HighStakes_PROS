@@ -85,6 +85,8 @@ void* ProcessSystem::getState(std::string process_name,
       break;
     }
   }
+
+  return result;
 }
 }  // namespace processes
 }  // namespace driftless
