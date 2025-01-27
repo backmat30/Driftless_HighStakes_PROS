@@ -20,12 +20,12 @@ void OpControlManager::setAlliance(
 
 void OpControlManager::init(
     std::shared_ptr<control::ControlSystem> control_system,
-    std::shared_ptr<driftless::processes::ProcessSystem>& process_system,
+    std::shared_ptr<driftless::processes::ProcessSystem> process_system,
     std::shared_ptr<io::IController> controller,
     std::shared_ptr<robot::Robot> robot) {}
 void OpControlManager::run(
     std::shared_ptr<control::ControlSystem> control_system,
-    std::shared_ptr<driftless::processes::ProcessSystem>& process_system,
+    std::shared_ptr<driftless::processes::ProcessSystem> process_system,
     std::shared_ptr<io::IController> controller,
     std::shared_ptr<robot::Robot> robot) {
   // pause control system to allow operator takeover
@@ -39,6 +39,8 @@ void OpControlManager::run(
   op_control::elevator::ElevatorOperator elevator_operator{controller, robot};
   op_control::intake::IntakeOperator intake_operator{controller, robot};
   op_control::arm::ArmOperator arm_operator{controller, robot};
+  op_control::color_sort::ColorSortOperator color_sort_operator{controller,
+                                                                process_system};
 
   // variable to hold time for delayer
   uint32_t current_time{};
@@ -54,6 +56,7 @@ void OpControlManager::run(
     elevator_operator.update(m_profile, m_alliance);
     intake_operator.update(m_profile);
     arm_operator.update(m_profile, m_alliance);
+    color_sort_operator.updateRingRejection(m_profile, m_alliance);
 
     // delay until 10 seconds after loop start
     // keeps time per loop consistent rather than delaying 10 seconds AFTER

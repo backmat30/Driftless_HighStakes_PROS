@@ -3,7 +3,7 @@
 
 namespace driftless {
 namespace op_control {
-enum EControlType { ARM, CLAMP, CLIMB, DRIVE, ELEVATOR, INTAKE };
+enum EControlType { ARM, CLAMP, CLIMB, DRIVE, ELEVATOR, INTAKE, COLOR_SORT };
 }  // namespace op_control
 }  // namespace driftless
 #endif

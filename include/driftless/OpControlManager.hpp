@@ -9,6 +9,7 @@
 #include "driftless/io/IController.hpp"
 #include "driftless/op_control/arm/ArmOperator.hpp"
 #include "driftless/op_control/clamp/ClampOperator.hpp"
+#include "driftless/op_control/color_sort/ColorSortOperator.hpp"
 #include "driftless/op_control/drivetrain/DrivetrainOperator.hpp"
 #include "driftless/op_control/elevator/ElevatorOperator.hpp"
 #include "driftless/op_control/intake/IntakeOperator.hpp"
@@ -45,15 +46,14 @@ class OpControlManager {
   void setAlliance(std::shared_ptr<alliance::IAlliance>& alliance);
 
   // initializes op control
-  void init(
-      std::shared_ptr<control::ControlSystem> control_system,
-      std::shared_ptr<driftless::processes::ProcessSystem>& process_system,
-      std::shared_ptr<io::IController> controller,
-      std::shared_ptr<robot::Robot> robot);
+  void init(std::shared_ptr<control::ControlSystem> control_system,
+            std::shared_ptr<driftless::processes::ProcessSystem> process_system,
+            std::shared_ptr<io::IController> controller,
+            std::shared_ptr<robot::Robot> robot);
 
   // runs op control
   void run(std::shared_ptr<control::ControlSystem> control_system,
-           std::shared_ptr<driftless::processes::ProcessSystem>& process_system,
+           std::shared_ptr<driftless::processes::ProcessSystem> process_system,
            std::shared_ptr<io::IController> controller,
            std::shared_ptr<robot::Robot> robot);
 };
