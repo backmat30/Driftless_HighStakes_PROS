@@ -46,12 +46,12 @@ class AProcess {
   /// @brief Sends a command to the process
   /// @param command_name The name of the command
   /// @param args Arguments for the command, if any
-  virtual void command(std::string command_name, va_list& args);
+  virtual void command(std::string command_name, va_list& args) = 0;
 
   /// @brief Gets a state of the process
   /// @param state_name The desired state to get
   /// @return __void*__ Information on the desired state, if any
-  virtual void* state(std::string state_name);
+  virtual void* state(std::string state_name) = 0;
 
   /// @brief Copies a given process object
   /// @param rhs The process to copy

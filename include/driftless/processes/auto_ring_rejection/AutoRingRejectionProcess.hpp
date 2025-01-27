@@ -29,7 +29,7 @@ class AutoRingRejectionProcess : public AProcess {
 
   void command(std::string command_name, va_list& args) override;
 
-  void* state(std::string state_name);
+  void* state(std::string state_name) override;
 };
 }  // namespace auto_ring_rejection
 }  // namespace processes
