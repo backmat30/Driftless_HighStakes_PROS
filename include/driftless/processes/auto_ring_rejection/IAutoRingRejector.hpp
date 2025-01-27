@@ -23,6 +23,8 @@ class IAutoRingRejector {
 
   virtual void rejectRings(std::shared_ptr<robot::Robot>& robot,
                            std::shared_ptr<alliance::IAlliance>& alliance) = 0;
+
+  virtual bool isPaused() = 0;
 };
 }  // namespace auto_ring_rejection
 }  // namespace processes

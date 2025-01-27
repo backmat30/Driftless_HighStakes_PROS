@@ -13,6 +13,8 @@ class AutoRingRejectionProcess : public AProcess {
 
   static constexpr char REJECT_RINGS_COMMAND_NAME[]{"REJECT RINGS"};
 
+  static constexpr char IS_PAUSED_STATE_NAME[]{"IS PAUSED"};
+
   std::unique_ptr<auto_ring_rejection::IAutoRingRejector> m_ring_rejector{};
 
  public:

@@ -72,6 +72,9 @@ class ElevatorAutoRingRejector : public IAutoRingRejector {
   void rejectRings(std::shared_ptr<robot::Robot>& robot,
                    std::shared_ptr<alliance::IAlliance>& alliance) override;
 
+  /// @brief Determines if the automatic ring rejector is paused
+  bool isPaused() override;
+
   /// @brief Sets the delayer to be used
   /// @param delayer The new delayer
   void setDelayer(std::unique_ptr<rtos::IDelayer>& delayer);

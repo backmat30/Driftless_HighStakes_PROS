@@ -33,6 +33,10 @@ void AutoRingRejectionProcess::command(std::string command_name,
 void* AutoRingRejectionProcess::state(std::string state_name) {
   void* result;
 
+  if(state_name == IS_PAUSED_STATE_NAME) {
+    result = new bool(m_ring_rejector->isPaused());
+  }
+  
   return result;
 }
 }  // namespace auto_ring_rejection

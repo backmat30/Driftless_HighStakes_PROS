@@ -118,18 +118,18 @@ void ElevatorAutoRingRejector::rejectRings(
   }
 }
 
+bool ElevatorAutoRingRejector::isPaused() { return paused; }
+
 void ElevatorAutoRingRejector::setDelayer(
     std::unique_ptr<rtos::IDelayer>& delayer) {
   m_delayer = std::move(delayer);
 }
 
-void ElevatorAutoRingRejector::setMutex(
-    std::unique_ptr<rtos::IMutex>& mutex) {
+void ElevatorAutoRingRejector::setMutex(std::unique_ptr<rtos::IMutex>& mutex) {
   m_mutex = std::move(mutex);
 }
 
-void ElevatorAutoRingRejector::setTask(
-    std::unique_ptr<rtos::ITask>& task) {
+void ElevatorAutoRingRejector::setTask(std::unique_ptr<rtos::ITask>& task) {
   m_task = std::move(task);
 }
 }  // namespace auto_ring_rejection
