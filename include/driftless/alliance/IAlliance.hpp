@@ -3,6 +3,7 @@
 
 #include <string>
 
+#include "driftless/alliance/EAlliance.hpp"
 #include "driftless/io/RGBValue.hpp"
 #include "driftless/utils/Range.hpp"
 
@@ -16,8 +17,8 @@ class IAlliance {
   virtual ~IAlliance() = default;
 
   /// @brief Gets the name of the alliance
-  /// @return __std::string__ The name of the alliance
-  virtual std::string getName() = 0;
+  /// @return __EAlliance__ The name of the alliance
+  virtual EAlliance getName() = 0;
 
   /// @brief Gets the color range of alliance rings
   /// @return __utils::Range<double>__ The range of color values
