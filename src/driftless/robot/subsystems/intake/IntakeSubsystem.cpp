@@ -7,7 +7,7 @@ namespace intake {
 IntakeSubsystem::IntakeSubsystem(
     std::unique_ptr<IIntake>& intake,
     std::unique_ptr<IHeightControl>& height_control)
-    : ASubsystem{SUBSYSTEM_NAME},
+    : ASubsystem{ESubsystem::INTAKE},
       m_intake{std::move(intake)},
       m_height_control{std::move(height_control)} {}
 
@@ -21,19 +21,19 @@ void IntakeSubsystem::run() {
   m_height_control->run();
 }
 
-void IntakeSubsystem::command(std::string command_name, va_list& args) {
-  if (command_name == SPIN_INTAKE_COMMAND_NAME) {
+void IntakeSubsystem::command(ESubsystemCommand command_name, va_list& args) {
+  if (command_name == ESubsystemCommand::INTAKE_SET_VOLTAGE) {
     double voltage{static_cast<double>(va_arg(args, double))};
     m_intake->setVoltage(voltage);
-  } else if (command_name == SET_HEIGHT_COMMAND_NAME) {
+  } else if (command_name == ESubsystemCommand::INTAKE_SET_HEIGHT) {
     bool raised{static_cast<bool>(va_arg(args, int))};
     m_height_control->setHeight(raised);
   }
 }
 
-void* IntakeSubsystem::state(std::string state_name) {
+void* IntakeSubsystem::state(ESubsystemState state_name) {
   void* result{nullptr};
-  if (state_name == GET_HEIGHT_STATE_NAME) {
+  if (state_name == ESubsystemState::INTAKE_GET_HEIGHT) {
     result = new bool{m_height_control->isRaised()};
   }
   return result;
