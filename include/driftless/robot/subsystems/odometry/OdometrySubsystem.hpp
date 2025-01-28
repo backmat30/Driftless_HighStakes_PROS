@@ -13,36 +13,6 @@ namespace subsystems {
 namespace odometry {
 class OdometrySubsystem : public ASubsystem {
  private:
-  // name of the subsystem
-  static constexpr char SUBSYSTEM_NAME[]{"ODOMETRY"};
-
-  // --- COMMAND NAMES ---
-
-  // command to set the position
-  static constexpr char SET_POSITION_COMMAND_NAME[]{"SET POSITION"};
-
-  // command to set the x position
-  static constexpr char SET_X_COMMAND_NAME[]{"SET X"};
-
-  // command to set the y position
-  static constexpr char SET_Y_COMMAND_NAME[]{"SET Y"};
-
-  // command to set the angle
-  static constexpr char SET_THETA_COMMAND_NAME[]{"SET THETA"};
-
-  // command to reset the x position
-  static constexpr char RESET_X_COMMAND_NAME[]{"RESET X"};
-
-  // command to reset the y position
-  static constexpr char RESET_Y_COMMAND_NAME[]{"RESET Y"};
-
-  // command to get the robot's position
-  static constexpr char GET_POSITION_STATE_NAME[]{"GET POSITION"};
-
-  // command to get the raw value of the position resetter
-  static constexpr char GET_RESETTER_RAW_VALUE_STATE_NAME[]{
-      "GET RESETTER RAW VALUE"};
-
   // the position tracker being used
   std::unique_ptr<IPositionTracker> m_position_tracker{};
 
@@ -61,10 +31,10 @@ class OdometrySubsystem : public ASubsystem {
   void run() override;
 
   // send a command to the subsystem
-  void command(std::string command_name, va_list& args) override;
+  void command(ESubsystemCommand command_name, va_list& args) override;
 
   // get a specified state of the subsystem
-  void* state(std::string state_name) override;
+  void* state(ESubsystemState state_name) override;
 };
 }  // namespace odometry
 }  // namespace subsystems

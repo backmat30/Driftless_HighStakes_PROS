@@ -13,31 +13,6 @@ namespace subsystems {
 namespace elevator {
 class ElevatorSubsystem : public ASubsystem {
  private:
-  // name of the subsystem
-  static constexpr char SUBSYSTEM_NAME[]{"ELEVATOR"};
-
-  // COMMAND NAMES
-
-  // command to set the position of the elevator
-  static constexpr char SET_POSITION_COMMAND_NAME[]{"SET POSITION"};
-
-  // command to set the voltage of the elevator motors
-  static constexpr char SET_VOLTAGE_COMMAND_NAME[]{"SET VOLTAGE"};
-
-  // command to deploy the ring rejector
-  static constexpr char DEPLOY_REJECTOR_COMMAND_NAME[]{"DEPLOY REJECTOR"};
-
-  // command to retract the ring rejector
-  static constexpr char RETRACT_REJECTOR_COMMAND_NAME[]{"RETRACT REJECTOR"};
-
-  // STATE NAMES
-
-  // position of the elevator
-  static constexpr char GET_POSITION_STATE_NAME[]{"GET POSITION"};
-
-  // whether the ring rejector is deployed
-  static constexpr char IS_DEPLOYED_STATE_NAME[]{"IS DEPLOYED"};
-
   // the elevator object being used
   std::unique_ptr<IElevator> m_elevator{};
 
@@ -56,10 +31,10 @@ class ElevatorSubsystem : public ASubsystem {
   void run() override;
 
   // send a command to the subsystem
-  void command(std::string command_name, va_list& args) override;
+  void command(ESubsystemCommand command_name, va_list& args) override;
 
   // get a state of the subsystem
-  void* state(std::string state_name) override;
+  void* state(ESubsystemState state_name) override;
 };
 }  // namespace elevator
 }  // namespace subsystems

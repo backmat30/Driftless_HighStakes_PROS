@@ -12,15 +12,6 @@ namespace subsystems {
 namespace clamp {
 class ClampSubsystem : public ASubsystem {
  private:
-  // the name of the subsystem
-  static constexpr char SUBSYSTEM_NAME[]{"CLAMP"};
-
-  // the name of the set state command
-  static constexpr char SET_STATE_COMMAND_NAME[]{"SET STATE"};
-
-  // the name of the clamp state
-  static constexpr char GET_STATE_STATE_NAME[]{"GET STATE"};
-
   // the clamp used by the subsystem
   std::unique_ptr<IClamp> m_clamp{};
 
@@ -35,10 +26,10 @@ class ClampSubsystem : public ASubsystem {
   void run() override;
 
   // execute a given command
-  void command(std::string command_name, va_list& args) override;
+  void command(ESubsystemCommand command_name, va_list& args) override;
 
   // get a state of the subsystem
-  void* state(std::string state_name) override;
+  void* state(ESubsystemState state_name) override;
 };
 }  // namespace clamp
 }  // namespace subsystems

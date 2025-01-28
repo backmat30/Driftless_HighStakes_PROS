@@ -13,22 +13,6 @@ namespace subsystems {
 namespace intake {
 class IntakeSubsystem : public ASubsystem {
  private:
-  // name of the subsystem
-  static constexpr char SUBSYSTEM_NAME[]{"INTAKE"};
-
-  // COMMAND NAMES
-
-  // command to spin the intake wheels
-  static constexpr char SPIN_INTAKE_COMMAND_NAME[]{"SPIN"};
-
-  // command to set the height of the intake
-  static constexpr char SET_HEIGHT_COMMAND_NAME[]{"SET HEIGHT"};
-
-  // STATE NAMES
-
-  // gets the position of the intake
-  static constexpr char GET_HEIGHT_STATE_NAME[]{"GET HEIGHT"};
-
   // the intake object
   std::unique_ptr<IIntake> m_intake{};
 
@@ -47,10 +31,10 @@ class IntakeSubsystem : public ASubsystem {
   void run() override;
 
   // send a command to the subsystem
-  void command(std::string command_name, va_list& args) override;
+  void command(ESubsystemCommand command_name, va_list& args) override;
 
   // get a state of the subsystem
-  void* state(std::string state_name) override;
+  void* state(ESubsystemState state_name) override;
 };
 }  // namespace intake
 }  // namespace subsystems
