@@ -3,6 +3,7 @@
 
 #include <memory>
 
+#include "driftless/alliance/EAlliance.hpp"
 #include "driftless/alliance/IAlliance.hpp"
 #include "driftless/io/IController.hpp"
 #include "driftless/io/RGBValue.hpp"

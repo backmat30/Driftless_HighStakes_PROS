@@ -1,6 +1,7 @@
 #ifndef __ARM_OPERATOR_HPP__
 #define __ARM_OPERATOR_HPP__
 
+#include "driftless/alliance/EAlliance.hpp"
 #include "driftless/alliance/IAlliance.hpp"
 #include "driftless/io/IController.hpp"
 #include "driftless/op_control/EControllerDigital.hpp"
@@ -15,12 +16,6 @@ namespace op_control {
 namespace arm {
 class ArmOperator {
  private:
-  // name of the blue alliance
-  static constexpr char BLUE_ALLIANCE_NAME[]{"BLUE"};
-
-  // name of the red alliance
-  static constexpr char RED_ALLIANCE_NAME[]{"RED"};
-
   // the controller used
   std::shared_ptr<driftless::io::IController> m_controller{};
 
