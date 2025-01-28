@@ -16,9 +16,13 @@ class IAlliance {
   /// @brief Deletes the current alliance object
   virtual ~IAlliance() = default;
 
+  /// @brief Gets the enumerated value of the alliance
+  /// @return __EAlliance__ The alliance
+  virtual EAlliance getAlliance() = 0;
+
   /// @brief Gets the name of the alliance
-  /// @return __EAlliance__ The name of the alliance
-  virtual EAlliance getName() = 0;
+  /// @return __std::string__ The name of the alliance
+  virtual std::string getName() = 0;
 
   /// @brief Gets the color range of alliance rings
   /// @return __utils::Range<double>__ The range of color values

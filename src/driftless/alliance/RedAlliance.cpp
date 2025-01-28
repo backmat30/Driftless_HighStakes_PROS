@@ -2,7 +2,9 @@
 
 namespace driftless {
 namespace alliance {
-EAlliance RedAlliance::getName() { return EAlliance::RED; }
+EAlliance RedAlliance::getAlliance() { return EAlliance::RED; }
+
+std::string RedAlliance::getName() { return "RED"; }
 
 io::RGBValue RedAlliance::getAllianceColor() { return ALLIANCE_COLOR; }
 

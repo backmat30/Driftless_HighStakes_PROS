@@ -12,9 +12,13 @@ class RedAlliance : public IAlliance {
   static constexpr io::RGBValue OPPOSING_COLOR{500.0, 0.0, 1500.0, 0.0};
 
  public:
+  /// @brief Gets the enumerated value of the alliance
+  /// @return __EAlliance__ The alliance
+  EAlliance getAlliance() override;
+
   /// @brief Gets the name of the alliance
-  /// @return __EAlliance__ The name of the alliance
-  EAlliance getName() override;
+  /// @return __std::string__ The name of the alliance
+  std::string getName() override;
 
   /// @brief Gets the color range of alliance rings
   /// @return __utils::Range<double>__ The range of color values
