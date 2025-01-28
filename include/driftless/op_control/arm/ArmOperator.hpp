@@ -100,9 +100,11 @@ class ArmOperator {
   // the robot being controlled
   std::shared_ptr<driftless::robot::Robot> m_robot{};
 
-  // determines if the robot has an alliance ring loaded
+  /// @brief determines if the robot has an alliance ring loaded
   bool hasAllianceRing(const std::shared_ptr<alliance::IAlliance>& alliance);
 
+  /// @depricated: Use color sort process
+  /// @brief determines if the robot has an opposing alliance ring loaded
   bool hasOpposingRing(const std::shared_ptr<alliance::IAlliance>& alliance);
 
   // updates the arm using split toggle

@@ -137,40 +137,41 @@ void ArmOperator::updateSmartToggle(
 
   bool has_alliance_ring{hasAllianceRing(alliance)};
 
-  bool has_opposing_ring{hasOpposingRing(alliance)};
+  // Opposing ring logic moved to a process
+  // bool has_opposing_ring{hasOpposingRing(alliance)};
 
-  if (has_opposing_ring) {
+  /*if (has_opposing_ring) {
     if (is_load) {
       m_robot->sendCommand(ARM_SUBSYSTEM_NAME, GO_NEUTRAL_COMMAND_NAME);
     }
-  } else {
-    if (next_position && !go_rush && !calibrate_arm && !go_alliance_stake) {
-      if (is_neutral) {
-        m_robot->sendCommand(ARM_SUBSYSTEM_NAME, GO_LOAD_COMMAND_NAME);
-      } else if (is_load && has_alliance_ring) {
-        m_robot->sendCommand(ARM_SUBSYSTEM_NAME, GO_READY_COMMAND_NAME);
-      } else if (is_ready) {
-        m_robot->sendCommand(ARM_SUBSYSTEM_NAME, GO_SCORE_COMMAND_NAME);
-      } else if (is_rush) {
-        m_robot->sendCommand(ARM_SUBSYSTEM_NAME, GO_LOAD_COMMAND_NAME);
-      } else if (is_going_neutral || is_going_load || is_going_ready ||
-                 is_going_score || is_going_rush) {
-        m_robot->sendCommand(ARM_SUBSYSTEM_NAME, GO_PREVIOUS_COMMAND_NAME);
-      } else {
-        m_robot->sendCommand(ARM_SUBSYSTEM_NAME, GO_NEUTRAL_COMMAND_NAME);
-      }
-    } else if (!next_position && go_rush && !calibrate_arm &&
-               !go_alliance_stake) {
-      if (is_rush) {
-        m_robot->sendCommand(ARM_SUBSYSTEM_NAME, GO_LOAD_COMMAND_NAME);
-      } else {
-        m_robot->sendCommand(ARM_SUBSYSTEM_NAME, GO_RUSH_COMMAND_NAME);
-      }
-    } else if (!next_position && !go_rush && !calibrate_arm &&
-               go_alliance_stake) {
-      m_robot->sendCommand(ARM_SUBSYSTEM_NAME, GO_ALLIANCE_STAKE_COMMAND_NAME);
+  } else {*/
+  if (next_position && !go_rush && !calibrate_arm && !go_alliance_stake) {
+    if (is_neutral) {
+      m_robot->sendCommand(ARM_SUBSYSTEM_NAME, GO_LOAD_COMMAND_NAME);
+    } else if (is_load && has_alliance_ring) {
+      m_robot->sendCommand(ARM_SUBSYSTEM_NAME, GO_READY_COMMAND_NAME);
+    } else if (is_ready) {
+      m_robot->sendCommand(ARM_SUBSYSTEM_NAME, GO_SCORE_COMMAND_NAME);
+    } else if (is_rush) {
+      m_robot->sendCommand(ARM_SUBSYSTEM_NAME, GO_LOAD_COMMAND_NAME);
+    } else if (is_going_neutral || is_going_load || is_going_ready ||
+               is_going_score || is_going_rush) {
+      m_robot->sendCommand(ARM_SUBSYSTEM_NAME, GO_PREVIOUS_COMMAND_NAME);
+    } else {
+      m_robot->sendCommand(ARM_SUBSYSTEM_NAME, GO_NEUTRAL_COMMAND_NAME);
     }
+  } else if (!next_position && go_rush && !calibrate_arm &&
+             !go_alliance_stake) {
+    if (is_rush) {
+      m_robot->sendCommand(ARM_SUBSYSTEM_NAME, GO_LOAD_COMMAND_NAME);
+    } else {
+      m_robot->sendCommand(ARM_SUBSYSTEM_NAME, GO_RUSH_COMMAND_NAME);
+    }
+  } else if (!next_position && !go_rush && !calibrate_arm &&
+             go_alliance_stake) {
+    m_robot->sendCommand(ARM_SUBSYSTEM_NAME, GO_ALLIANCE_STAKE_COMMAND_NAME);
   }
+  //}
   if (!next_position && !go_rush && calibrate_arm && !go_alliance_stake) {
     m_robot->sendCommand(ARM_SUBSYSTEM_NAME, CALIBRATE_COMMAND_NAME);
   }

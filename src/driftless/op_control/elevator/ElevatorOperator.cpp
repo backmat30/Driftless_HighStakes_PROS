@@ -115,7 +115,8 @@ void ElevatorOperator::update(
       updateToggle(spin, reverse);
       break;
   }
-  updateRingSensor(toggle_color_sort, alliance);
+  // moved to color sort process
+  // updateRingSensor(toggle_color_sort, alliance);
 }
 }  // namespace elevator
 }  // namespace op_control

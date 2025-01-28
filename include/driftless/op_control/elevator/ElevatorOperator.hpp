@@ -93,6 +93,7 @@ class ElevatorOperator {
   /// @param reverse The button to spin the intake reverse
   void updateToggle(EControllerDigital spin, EControllerDigital reverse);
 
+  /// @deprecated: Use color sort process
   /// @brief Updates the ring sensor and ring rejector
   void updateRingSensor(EControllerDigital toggle,
                         const std::shared_ptr<alliance::IAlliance>& alliance);
