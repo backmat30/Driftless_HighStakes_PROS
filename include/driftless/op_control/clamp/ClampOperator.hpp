@@ -8,21 +8,15 @@
 #include "driftless/op_control/clamp/EClampControlMode.hpp"
 #include "driftless/profiles/IProfile.hpp"
 #include "driftless/robot/Robot.hpp"
+#include "driftless/robot/subsystems/ESubsystem.hpp"
+#include "driftless/robot/subsystems/ESubsystemCommand.hpp"
+#include "driftless/robot/subsystems/ESubsystemState.hpp"
 
 namespace driftless {
 namespace op_control {
 namespace clamp {
 class ClampOperator {
  private:
-  // name of the clamp subsystem
-  static constexpr char CLAMP_SUBSYSTEM_NAME[]{"CLAMP"};
-
-  // name of the command to set the state of the clamp
-  static constexpr char CLAMP_SET_STATE_COMMAND_NAME[]{"SET STATE"};
-
-  // name of the state of the clamp
-  static constexpr char CLAMP_GET_STATE_STATE_NAME[]{"GET STATE"};
-
   // the controller being used
   std::shared_ptr<driftless::io::IController> m_controller{};
 

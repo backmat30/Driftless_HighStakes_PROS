@@ -9,8 +9,9 @@ void ClampOperator::updateHold(EControllerDigital hold) {
 
 void ClampOperator::updateSingleToggle(EControllerDigital toggle) {
   if (m_controller->getNewDigital(toggle)) {
-    bool current_state{*static_cast<bool*>(
-        m_robot->getState(CLAMP_SUBSYSTEM_NAME, CLAMP_GET_STATE_STATE_NAME))};
+    bool current_state{*static_cast<bool*>(m_robot->getState(
+        robot::subsystems::ESubsystem::CLAMP,
+        robot::subsystems::ESubsystemState::CLAMP_GET_STATE))};
     updateClampState(!current_state);
   }
 }
@@ -28,7 +29,8 @@ void ClampOperator::updateSplitToggle(EControllerDigital grab,
 }
 
 void ClampOperator::updateClampState(bool state) {
-  m_robot->sendCommand(CLAMP_SUBSYSTEM_NAME, CLAMP_SET_STATE_COMMAND_NAME,
+  m_robot->sendCommand(robot::subsystems::ESubsystem::CLAMP,
+                       robot::subsystems::ESubsystemCommand::CLAMP_SET_STATE,
                        state);
 }
 
