@@ -1,0 +1,36 @@
+#ifndef __E_SUBSYSTEM_COMMAND_HPP__
+#define __E_SUBSYSTEM_COMMAND_HPP__
+
+namespace driftless {
+namespace robot {
+namespace subsystems {
+enum class ESubsystemCommand {
+  ARM_GO_NEUTRAL,
+  ARM_GO_LOAD,
+  ARM_GO_READY,
+  ARM_GO_SCORE,
+  ARM_GO_RUSH,
+  ARM_GO_ALLIANCE_STAKE,
+  ARM_GO_PREVIOUS,
+  ARM_CALIBRATE,
+  CLAMP_SET_STATE,
+  DRIVETRAIN_SET_VELOCITY,
+  DRIVETRAIN_SET_VOLTAGE,
+  ELEVATOR_SET_VOLTAGE,
+  ELEVATOR_SET_POSITION,
+  ELEVATOR_DEPLOY_REJECTOR,
+  ELEVATOR_RETRACT_REJECTOR,
+  INTAKE_SPIN,
+  INTAKE_SET_HEIGHT,
+  ODOMETRY_SET_POSITION,
+  ODOMETRY_SET_X,
+  ODOMETRY_SET_Y,
+  ODOMETRY_SET_THETA,
+  ODOMETRY_RESET_X,
+  ODOMETRY_RESET_Y
+
+};
+}  // namespace subsystems
+}  // namespace robot
+}  // namespace driftless
+#endif
