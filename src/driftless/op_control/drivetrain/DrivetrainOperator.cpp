@@ -5,8 +5,10 @@ namespace drivetrain {
 void DrivetrainOperator::updateDriveVoltage(double left_voltage,
                                             double right_voltage) {
   if (m_robot) {
-    m_robot->sendCommand(DRIVE_SUBSYSTEM_NAME, SET_VOLTAGE_COMMAND,
-                         left_voltage, right_voltage);
+    m_robot->sendCommand(
+        robot::subsystems::ESubsystem::DRIVETRAIN,
+        robot::subsystems::ESubsystemCommand::DRIVETRAIN_SET_VOLTAGE,
+        left_voltage, right_voltage);
   }
 }
 

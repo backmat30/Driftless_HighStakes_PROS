@@ -8,16 +8,15 @@
 #include "driftless/op_control/drivetrain/EDrivetrainControlMode.hpp"
 #include "driftless/profiles/IProfile.hpp"
 #include "driftless/robot/Robot.hpp"
+#include "driftless/robot/subsystems/ESubsystem.hpp"
+#include "driftless/robot/subsystems/ESubsystemCommand.hpp"
+#include "driftless/robot/subsystems/ESubsystemState.hpp"
 
 namespace driftless {
 namespace op_control {
 namespace drivetrain {
 class DrivetrainOperator {
  private:
-  static constexpr char DRIVE_SUBSYSTEM_NAME[]{"DIFFERENTIAL DRIVE"};
-
-  static constexpr char SET_VOLTAGE_COMMAND[]{"SET VOLTAGE"};
-
   static constexpr double VOLTAGE_CONVERSION{12.0 / 127.0};
 
   std::shared_ptr<io::IController> m_controller{};
