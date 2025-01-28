@@ -6,7 +6,7 @@ void Robot::addSubsystem(std::unique_ptr<subsystems::ASubsystem>& subsystem) {
   subsystems.push_back(std::move(subsystem));
 }
 
-bool Robot::removeSubsystem(std::string subsystem) {
+bool Robot::removeSubsystem(subsystems::ESubsystem subsystem) {
   // iterate through addresses rather than subsystems to know location to erase
   for (auto i{subsystems.begin()}; i != subsystems.end(); ++i) {
     // ptr to a ptr, only want single ptr
@@ -32,7 +32,7 @@ void Robot::run() {
   }
 }
 
-void Robot::sendCommand(std::string subsystem_name, std::string command_name,
+void Robot::sendCommand(subsystems::ESubsystem subsystem_name, subsystems::ESubsystemCommand command_name,
                         ...) {
   // variable list to store any extra parameters to be passed to the command
   va_list args;
@@ -51,7 +51,7 @@ void Robot::sendCommand(std::string subsystem_name, std::string command_name,
   va_end(args);
 }
 
-void* Robot::getState(std::string subsystem_name, std::string state_name) {
+void* Robot::getState(subsystems::ESubsystem subsystem_name, subsystems::ESubsystemState state_name) {
   // basic ptr init
   void* state{nullptr};
   // find correct subsystem

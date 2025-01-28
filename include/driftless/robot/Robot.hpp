@@ -5,6 +5,10 @@
 #include <vector>
 
 #include "driftless/robot/subsystems/ASubsystem.hpp"
+#include "driftless/robot/subsystems/ESubsystem.hpp"
+#include "driftless/robot/subsystems/ESubsystemCommand.hpp"
+#include "driftless/robot/subsystems/ESubsystemState.hpp"
+
 namespace driftless {
 namespace robot {
 class Robot {
@@ -14,15 +18,17 @@ class Robot {
  public:
   void addSubsystem(std::unique_ptr<subsystems::ASubsystem> &subsystem);
 
-  bool removeSubsystem(std::string subsystem);
+  bool removeSubsystem(subsystems::ESubsystem subsystem);
 
   void init();
 
   void run();
 
-  void sendCommand(std::string subsystem_name, std::string command_name, ...);
+  void sendCommand(subsystems::ESubsystem subsystem_name,
+                   subsystems::ESubsystemCommand command_name, ...);
 
-  void *getState(std::string subsystem_name, std::string state_name);
+  void *getState(subsystems::ESubsystem subsystem_name,
+                 subsystems::ESubsystemState state_name);
 };
 }  // namespace robot
 }  // namespace driftless
