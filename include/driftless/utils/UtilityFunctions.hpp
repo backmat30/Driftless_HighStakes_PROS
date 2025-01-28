@@ -1,7 +1,7 @@
 #ifndef __UTILITY_FUNCTIONS_HPP__
 #define __UTILITY_FUNCTIONS_HPP__
 
-#include <algorithm>
+#include <stdint.h>
 #include <cmath>
 
 #include "driftless/control/Point.hpp"
