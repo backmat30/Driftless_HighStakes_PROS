@@ -64,9 +64,9 @@ void ElevatorOperator::updateRingSensor(
     double distance_to_end{*static_cast<double*>(distance_to_end_state)};
 
     if (has_ring) {
-      if ((alliance->getName() == alliance::EAlliance::BLUE &&
+      if ((alliance->getAlliance() == alliance::EAlliance::BLUE &&
            ring_rgb.red >= ring_rgb.blue) ||
-          (alliance->getName() == alliance::EAlliance::RED &&
+          (alliance->getAlliance() == alliance::EAlliance::RED &&
            ring_rgb.blue >= ring_rgb.red)) {
         latest_ring_pos = position;
       }

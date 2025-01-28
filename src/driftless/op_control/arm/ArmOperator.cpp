@@ -16,9 +16,9 @@ bool ArmOperator::hasAllianceRing(
   bool has_alliance_ring{};
 
   if (has_ring) {
-    if ((alliance->getName() == alliance::EAlliance::BLUE &&
+    if ((alliance->getAlliance() == alliance::EAlliance::BLUE &&
          ring_rgb.blue >= ring_rgb.red) ||
-        (alliance->getName() == alliance::EAlliance::RED &&
+        (alliance->getAlliance() == alliance::EAlliance::RED &&
          ring_rgb.red >= ring_rgb.blue)) {
       has_alliance_ring = true;
     }
@@ -40,9 +40,9 @@ bool ArmOperator::hasOpposingRing(
   bool has_opposing_ring{};
 
   if (has_ring) {
-    if ((alliance->getName() == alliance::EAlliance::BLUE &&
+    if ((alliance->getAlliance() == alliance::EAlliance::BLUE &&
          ring_rgb.red >= ring_rgb.blue) ||
-        (alliance->getName() == alliance::EAlliance::RED &&
+        (alliance->getAlliance() == alliance::EAlliance::RED &&
          ring_rgb.blue >= ring_rgb.red)) {
       has_opposing_ring = true;
     }
