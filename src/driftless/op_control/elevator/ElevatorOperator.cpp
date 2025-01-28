@@ -5,7 +5,7 @@ namespace op_control {
 namespace elevator {
 void ElevatorOperator::updateElevatorVoltage(double voltage) {
   if (m_robot) {
-    m_robot->sendCommand(ELEVATOR_SUBSYSTEM_NAME, SET_VOLTAGE_COMMAND_NAME,
+    m_robot->sendCommand(robot::subsystems::ESubsystem::ELEVATOR, robot::subsystems::ESubsystemCommand::ELEVATOR_SET_VOLTAGE,
                          voltage);
   }
 }
@@ -42,20 +42,20 @@ void ElevatorOperator::updateRingSensor(
 
   if (color_sort_active) {
     void* has_ring_state{
-        m_robot->getState(RING_SORT_SUBSYSTEM_NAME, HAS_RING_STATE_NAME)};
+        m_robot->getState(robot::subsystems::ESubsystem::RING_SORT, robot::subsystems::ESubsystemState::RING_SORT_HAS_RING)};
     bool has_ring{has_ring_state != nullptr &&
                   *static_cast<bool*>(has_ring_state)};
 
     void* ring_rgb_state{
-        m_robot->getState(RING_SORT_SUBSYSTEM_NAME, GET_RGB_STATE_NAME)};
+        m_robot->getState(robot::subsystems::ESubsystem::RING_SORT, robot::subsystems::ESubsystemState::RING_SORT_GET_RGB)};
     io::RGBValue ring_rgb{*static_cast<io::RGBValue*>(ring_rgb_state)};
 
     void* position_state{
-        m_robot->getState(ELEVATOR_SUBSYSTEM_NAME, GET_POSITION_STATE_NAME)};
+        m_robot->getState(robot::subsystems::ESubsystem::ELEVATOR, robot::subsystems::ESubsystemState::ELEVATOR_GET_POSITION)};
     double position{*static_cast<double*>(position_state)};
 
     void* distance_to_end_state{m_robot->getState(
-        RING_SORT_SUBSYSTEM_NAME, GET_SENSOR_DISTANCE_TO_END_STATE_NAME)};
+        robot::subsystems::ESubsystem::RING_SORT, robot::subsystems::ESubsystemState::RING_SORT_GET_DISTANCE_TO_END)};
     double distance_to_end{*static_cast<double*>(distance_to_end_state)};
 
     if (has_ring) {
@@ -69,16 +69,16 @@ void ElevatorOperator::updateRingSensor(
 
     if (position <= latest_ring_pos + distance_to_end &&
         position >= latest_ring_pos - 0.1) {
-      m_robot->sendCommand(ELEVATOR_SUBSYSTEM_NAME,
-                           DEPLOY_REJECTOR_COMMAND_NAME);
+      m_robot->sendCommand(robot::subsystems::ESubsystem::ELEVATOR,
+                           robot::subsystems::ESubsystemCommand::ELEVATOR_DEPLOY_REJECTOR);
     } else {
-      m_robot->sendCommand(ELEVATOR_SUBSYSTEM_NAME,
-                           RETRACT_REJECTOR_COMMAND_NAME);
+      m_robot->sendCommand(robot::subsystems::ESubsystem::ELEVATOR,
+                           robot::subsystems::ESubsystemCommand::ELEVATOR_RETRACT_REJECTOR);
       latest_ring_pos = -__DBL_MAX__;
     }
   } else {
-    m_robot->sendCommand(ELEVATOR_SUBSYSTEM_NAME,
-                         RETRACT_REJECTOR_COMMAND_NAME);
+    m_robot->sendCommand(robot::subsystems::ESubsystem::ELEVATOR,
+                         robot::subsystems::ESubsystemCommand::ELEVATOR_RETRACT_REJECTOR);
     latest_ring_pos = -__DBL_MAX__;
   }
 }
