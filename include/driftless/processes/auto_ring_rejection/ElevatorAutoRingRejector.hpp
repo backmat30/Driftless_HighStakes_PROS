@@ -27,6 +27,8 @@ class ElevatorAutoRingRejector : public IAutoRingRejector {
 
   double last_opposing_ring_pos{-__DBL_MAX__};
 
+  bool was_arm_moved{false};
+
   std::unique_ptr<rtos::IDelayer> m_delayer{};
 
   std::unique_ptr<rtos::IMutex> m_mutex{};
@@ -52,6 +54,10 @@ class ElevatorAutoRingRejector : public IAutoRingRejector {
   /// @brief Sets the position of the ring rejector
   /// @param active The desired position, True for deployed, false for retracted
   void setRejectorPosition(bool active);
+
+  /// @brief Moves the arm out of the way of the elevator if needed
+  /// @param go_neutral whether to go to the neutral position
+  void setArmPosition(bool go_neutral);
 
  public:
   /// @brief Initializes the automatic ring rejector

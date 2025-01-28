@@ -28,8 +28,10 @@ void ElevatorAutoRingRejector::taskUpdate() {
     if (elevator_pos > last_opposing_ring_pos + 0.25 &&
         elevator_pos < last_opposing_ring_pos + elevator_distance_to_sensor) {
       setRejectorPosition(true);
+      setArmPosition(true);
     } else {
       setRejectorPosition(false);
+      setArmPosition(false);
       last_opposing_ring_pos = -__DBL_MAX__;
     }
   }
@@ -76,6 +78,18 @@ void ElevatorAutoRingRejector::setRejectorPosition(bool active) {
     m_robot->sendCommand("ELEVATOR", "DEPLOY REJECTOR");
   } else {
     m_robot->sendCommand("ELEVATOR", "RETRACT REJECTOR");
+  }
+}
+
+void ElevatorAutoRingRejector::setArmPosition(bool go_neutral) {
+  bool is_load{*static_cast<bool*>(m_robot->getState("ARM", "IS LOAD"))};
+
+  if (go_neutral && is_load) {
+    m_robot->sendCommand("ARM", "GO NEUTRAL");
+    was_arm_moved = true;
+  } else if (was_arm_moved) {
+    m_robot->sendCommand("ARM", "GO LOAD");
+    was_arm_moved = false;
   }
 }
 
