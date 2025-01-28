@@ -18,13 +18,14 @@ void ColorSortOperator::updateRingRejection(
       m_controller->getNewDigital(toggle_ring_rejection)};
 
   bool is_ring_rejection_paused{*static_cast<bool*>(m_process_system->getState(
-      AUTO_RING_REJECTION_PROCESS_NAME, IS_PAUSED_STATE_NAME))};
+      processes::EProcess::AUTO_RING_REJECTION,
+      processes::EProcessState::AUTO_RING_REJECTION_IS_PAUSED))};
 
   if (do_toggle_ring_rejection) {
     if (is_ring_rejection_paused) {
-      m_process_system->resume(AUTO_RING_REJECTION_PROCESS_NAME);
+      m_process_system->resume(processes::EProcess::AUTO_RING_REJECTION);
     } else {
-      m_process_system->pause(AUTO_RING_REJECTION_PROCESS_NAME);
+      m_process_system->pause(processes::EProcess::AUTO_RING_REJECTION);
     }
   }
 }

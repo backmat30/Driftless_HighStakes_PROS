@@ -5,6 +5,9 @@
 #include "driftless/io/IController.hpp"
 #include "driftless/op_control/EControllerAnalog.hpp"
 #include "driftless/op_control/EControllerDigital.hpp"
+#include "driftless/processes/EProcess.hpp"
+#include "driftless/processes/EProcessCommand.hpp"
+#include "driftless/processes/EProcessState.hpp"
 #include "driftless/processes/ProcessSystem.hpp"
 #include "driftless/profiles/IProfile.hpp"
 
@@ -13,13 +16,6 @@ namespace op_control {
 namespace color_sort {
 class ColorSortOperator {
  private:
-  static constexpr char AUTO_RING_REJECTION_PROCESS_NAME[]{
-      "AUTO RING REJECTION"};
-
-  static constexpr char REJECT_RINGS_COMMAND_NAME[]{"REJECT RINGS"};
-
-  static constexpr char IS_PAUSED_STATE_NAME[]{"IS PAUSED"};
-
   std::shared_ptr<io::IController> m_controller{};
 
   std::shared_ptr<processes::ProcessSystem> m_process_system{};
