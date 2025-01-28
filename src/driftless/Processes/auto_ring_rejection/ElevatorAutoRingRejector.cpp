@@ -42,14 +42,16 @@ void ElevatorAutoRingRejector::taskUpdate() {
 }
 
 double ElevatorAutoRingRejector::getElevatorPosition() {
-  double elevator_position{
-      *static_cast<double*>(m_robot->getState("ELEVATOR", "GET POSITION"))};
+  double elevator_position{*static_cast<double*>(m_robot->getState(
+      robot::subsystems::ESubsystem::ELEVATOR,
+      robot::subsystems::ESubsystemState::ELEVATOR_GET_POSITION))};
   return elevator_position;
 }
 
 double ElevatorAutoRingRejector::getElevatorDistanceToSensor() {
-  double distance_to_sensor{*static_cast<double*>(
-      m_robot->getState("RING SORT", "GET DISTANCE TO END"))};
+  double distance_to_sensor{*static_cast<double*>(m_robot->getState(
+      robot::subsystems::ESubsystem::RING_SORT,
+      robot::subsystems::ESubsystemState::RING_SORT_GET_DISTANCE_TO_END))};
 
   return distance_to_sensor;
 }
@@ -57,17 +59,23 @@ double ElevatorAutoRingRejector::getElevatorDistanceToSensor() {
 bool ElevatorAutoRingRejector::hasOpposingRing() {
   bool has_opposing_ring{};
 
-  void* has_ring_state{m_robot->getState("RING_SORT", "HAS RING")};
+  void* has_ring_state{m_robot->getState(
+      robot::subsystems::ESubsystem::RING_SORT,
+      robot::subsystems::ESubsystemState::RING_SORT_HAS_RING)};
   bool has_ring{has_ring_state != nullptr &&
                 *static_cast<bool*>(has_ring_state)};
 
-  void* ring_rgb_state{m_robot->getState("RING SORT", "GET RGB")};
+  void* ring_rgb_state{
+      m_robot->getState(robot::subsystems::ESubsystem::RING_SORT,
+                        robot::subsystems::ESubsystemState::RING_SORT_GET_RGB)};
   io::RGBValue ring_rgb{*static_cast<io::RGBValue*>(ring_rgb_state)};
 
   if (has_ring) {
     has_opposing_ring =
-        ((m_alliance->getName() == "RED" && ring_rgb.red < ring_rgb.blue) ||
-         (m_alliance->getName() == "BLUE" && ring_rgb.blue < ring_rgb.red));
+        ((m_alliance->getAlliance() == alliance::EAlliance::RED &&
+          ring_rgb.red < ring_rgb.blue) ||
+         (m_alliance->getAlliance() == alliance::EAlliance::BLUE &&
+          ring_rgb.blue < ring_rgb.red));
   }
 
   return has_opposing_ring;
@@ -75,20 +83,28 @@ bool ElevatorAutoRingRejector::hasOpposingRing() {
 
 void ElevatorAutoRingRejector::setRejectorPosition(bool active) {
   if (active) {
-    m_robot->sendCommand("ELEVATOR", "DEPLOY REJECTOR");
+    m_robot->sendCommand(
+        robot::subsystems::ESubsystem::ELEVATOR,
+        robot::subsystems::ESubsystemCommand::ELEVATOR_DEPLOY_REJECTOR);
   } else {
-    m_robot->sendCommand("ELEVATOR", "RETRACT REJECTOR");
+    m_robot->sendCommand(
+        robot::subsystems::ESubsystem::ELEVATOR,
+        robot::subsystems::ESubsystemCommand::ELEVATOR_RETRACT_REJECTOR);
   }
 }
 
 void ElevatorAutoRingRejector::setArmPosition(bool go_neutral) {
-  bool is_load{*static_cast<bool*>(m_robot->getState("ARM", "IS LOAD"))};
+  bool is_load{*static_cast<bool*>(
+      m_robot->getState(robot::subsystems::ESubsystem::ARM,
+                        robot::subsystems::ESubsystemState::ARM_IS_LOAD))};
 
   if (go_neutral && is_load) {
-    m_robot->sendCommand("ARM", "GO NEUTRAL");
+    m_robot->sendCommand(robot::subsystems::ESubsystem::ARM,
+                         robot::subsystems::ESubsystemCommand::ARM_GO_NEUTRAL);
     was_arm_moved = true;
   } else if (was_arm_moved) {
-    m_robot->sendCommand("ARM", "GO LOAD");
+    m_robot->sendCommand(robot::subsystems::ESubsystem::ARM,
+                         robot::subsystems::ESubsystemCommand::ARM_GO_LOAD);
     was_arm_moved = false;
   }
 }
