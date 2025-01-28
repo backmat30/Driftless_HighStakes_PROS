@@ -9,9 +9,9 @@ void IntakeOperator::updateSplitToggle(EControllerDigital up,
   bool move_down{m_controller->getNewDigital(down)};
 
   if (move_up && !move_down) {
-    m_robot->sendCommand(INTAKE_SUBSYSTEM_NAME, SET_HEIGHT_COMMAND_NAME, true);
+    m_robot->sendCommand(robot::subsystems::ESubsystem::INTAKE, robot::subsystems::ESubsystemCommand::INTAKE_SET_HEIGHT, true);
   } else if (!move_up && move_down) {
-    m_robot->sendCommand(INTAKE_SUBSYSTEM_NAME, SET_HEIGHT_COMMAND_NAME, false);
+    m_robot->sendCommand(robot::subsystems::ESubsystem::INTAKE, robot::subsystems::ESubsystemCommand::INTAKE_SET_HEIGHT, false);
   }
 }
 
@@ -20,10 +20,10 @@ void IntakeOperator::updateSingleToggle(EControllerDigital toggle) {
 
   if (toggle_position) {
     void* intake_state{
-        m_robot->getState(INTAKE_SUBSYSTEM_NAME, GET_HEIGHT_STATE_NAME)};
+        m_robot->getState(robot::subsystems::ESubsystem::INTAKE, robot::subsystems::ESubsystemState::INTAKE_GET_HEIGHT)};
     bool current_height{*static_cast<bool*>(intake_state)};
 
-    m_robot->sendCommand(INTAKE_SUBSYSTEM_NAME, SET_HEIGHT_COMMAND_NAME,
+    m_robot->sendCommand(robot::subsystems::ESubsystem::INTAKE, robot::subsystems::ESubsystemCommand::INTAKE_SET_HEIGHT,
                          !current_height);
   }
 }
@@ -31,18 +31,18 @@ void IntakeOperator::updateSingleToggle(EControllerDigital toggle) {
 void IntakeOperator::updateHoldUp(EControllerDigital up) {
   bool move_up{m_controller->getDigital(up)};
 
-  m_robot->sendCommand(INTAKE_SUBSYSTEM_NAME, SET_HEIGHT_COMMAND_NAME, move_up);
+  m_robot->sendCommand(robot::subsystems::ESubsystem::INTAKE, robot::subsystems::ESubsystemCommand::INTAKE_SET_HEIGHT, move_up);
 }
 
 void IntakeOperator::updateSpinner(EControllerDigital spin, EControllerDigital reverse) {
   bool spin_motors{m_controller->getDigital(spin)};
   bool reverse_motors{m_controller->getDigital(reverse)};
   if (spin_motors && !reverse_motors) {
-    m_robot->sendCommand(INTAKE_SUBSYSTEM_NAME, SPIN_COMMAND_NAME, 12.0);
+    m_robot->sendCommand(robot::subsystems::ESubsystem::INTAKE, robot::subsystems::ESubsystemCommand::INTAKE_SET_VOLTAGE, 12.0);
   } else if (!spin_motors && reverse_motors) {
-    m_robot->sendCommand(INTAKE_SUBSYSTEM_NAME, SPIN_COMMAND_NAME, -12.0);
+    m_robot->sendCommand(robot::subsystems::ESubsystem::INTAKE, robot::subsystems::ESubsystemCommand::INTAKE_SET_VOLTAGE, -12.0);
   } else {
-    m_robot->sendCommand(INTAKE_SUBSYSTEM_NAME, SPIN_COMMAND_NAME, 0.0);
+    m_robot->sendCommand(robot::subsystems::ESubsystem::INTAKE, robot::subsystems::ESubsystemCommand::INTAKE_SET_VOLTAGE, 0.0);
   }
 }
 

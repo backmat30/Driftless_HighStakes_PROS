@@ -8,24 +8,15 @@
 #include "driftless/op_control/intake/EIntakeControlMode.hpp"
 #include "driftless/profiles/IProfile.hpp"
 #include "driftless/robot/Robot.hpp"
+#include "driftless/robot/subsystems/ESubsystem.hpp"
+#include "driftless/robot/subsystems/ESubsystemCommand.hpp"
+#include "driftless/robot/subsystems/ESubsystemState.hpp"
 
 namespace driftless {
 namespace op_control {
 namespace intake {
 class IntakeOperator {
  private:
-  // name of the intake subsystem
-  static constexpr char INTAKE_SUBSYSTEM_NAME[]{"INTAKE"};
-
-  // name of the command to spin the intake motors
-  static constexpr char SPIN_COMMAND_NAME[]{"SPIN"};
-
-  // name of the command to set the height of the intake
-  static constexpr char SET_HEIGHT_COMMAND_NAME[]{"SET HEIGHT"};
-
-  // name of the state of the intake height
-  static constexpr char GET_HEIGHT_STATE_NAME[]{"GET HEIGHT"};
-
   // the controller used
   std::shared_ptr<driftless::io::IController> m_controller{};
 
