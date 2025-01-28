@@ -16,11 +16,11 @@ class ProcessSystem {
  public:
   void addProcess(std::unique_ptr<AProcess>& process);
 
-  bool removeProcess(std::string process_name);
+  bool removeProcess(EProcess process_name);
 
-  void pause(std::string process_name);
+  void pause(EProcess process_name);
 
-  void resume(std::string process_name);
+  void resume(EProcess process_name);
 
   void pauseAll();
 
@@ -30,9 +30,9 @@ class ProcessSystem {
 
   void run();
 
-  void sendCommand(std::string process_name, std::string command_name, ...);
+  void sendCommand(EProcess process_name, EProcessCommand command_name, ...);
 
-  void* getState(std::string process_name, std::string state_name);
+  void* getState(EProcess process_name, EProcessState state_name);
 };
 }  // namespace processes
 }  // namespace driftless

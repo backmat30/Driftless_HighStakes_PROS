@@ -2,6 +2,11 @@
 #define __A_PROCESS_HPP__
 
 #include <string>
+
+#include "driftless/processes/EProcess.hpp"
+#include "driftless/processes/EProcessCommand.hpp"
+#include "driftless/processes/EProcessState.hpp"
+
 /// @brief Namespace for all driftless library code
 namespace driftless {
 /// @brief Namespace for all background processes between subsystems
@@ -10,7 +15,7 @@ namespace processes {
 class AProcess {
  private:
   /// @brief The name of the process
-  std::string m_name{};
+  EProcess m_name{};
 
  public:
   /// @brief Constructs a new process object
@@ -22,14 +27,14 @@ class AProcess {
 
   /// @brief Constructs a new process object with a given name
   /// @param name The name of the new process
-  AProcess(std::string name) : m_name{name} {}
+  AProcess(EProcess name) : m_name{name} {}
 
   /// @brief Destroys the current process object
   virtual ~AProcess() = default;
 
   /// @brief Gets the name of the process
   /// @return The process name
-  std::string getName() { return m_name; }
+  EProcess getName() { return m_name; }
 
   /// @brief Initializes the process
   virtual void init() = 0;
@@ -46,12 +51,12 @@ class AProcess {
   /// @brief Sends a command to the process
   /// @param command_name The name of the command
   /// @param args Arguments for the command, if any
-  virtual void command(std::string command_name, va_list& args) = 0;
+  virtual void command(EProcessCommand command_name, va_list& args) = 0;
 
   /// @brief Gets a state of the process
   /// @param state_name The desired state to get
   /// @return __void*__ Information on the desired state, if any
-  virtual void* state(std::string state_name) = 0;
+  virtual void* state(EProcessState state_name) = 0;
 
   /// @brief Copies a given process object
   /// @param rhs The process to copy

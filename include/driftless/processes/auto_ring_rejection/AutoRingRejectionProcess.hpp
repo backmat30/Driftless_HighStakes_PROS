@@ -9,12 +9,6 @@ namespace processes {
 namespace auto_ring_rejection {
 class AutoRingRejectionProcess : public AProcess {
  private:
-  static constexpr char PROCESS_NAME[]{"AUTO RING REJECTION"};
-
-  static constexpr char REJECT_RINGS_COMMAND_NAME[]{"REJECT RINGS"};
-
-  static constexpr char IS_PAUSED_STATE_NAME[]{"IS PAUSED"};
-
   std::unique_ptr<auto_ring_rejection::IAutoRingRejector> m_ring_rejector{};
 
  public:
@@ -29,9 +23,9 @@ class AutoRingRejectionProcess : public AProcess {
 
   void resume() override;
 
-  void command(std::string command_name, va_list& args) override;
+  void command(EProcessCommand command_name, va_list& args) override;
 
-  void* state(std::string state_name) override;
+  void* state(EProcessState state_name) override;
 };
 }  // namespace auto_ring_rejection
 }  // namespace processes

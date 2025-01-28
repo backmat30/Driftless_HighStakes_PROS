@@ -6,7 +6,7 @@ void ProcessSystem::addProcess(std::unique_ptr<AProcess>& process) {
   m_processes.push_back(std::move(process));
 }
 
-bool ProcessSystem::removeProcess(std::string process_name) {
+bool ProcessSystem::removeProcess(EProcess process_name) {
   bool removed{};
 
   for (auto i{m_processes.begin()}; i != m_processes.end(); ++i) {
@@ -20,7 +20,7 @@ bool ProcessSystem::removeProcess(std::string process_name) {
   return removed;
 }
 
-void ProcessSystem::pause(std::string process_name) {
+void ProcessSystem::pause(EProcess process_name) {
   for (auto& process : m_processes) {
     if (process->getName() == process_name) {
       process->pause();
@@ -28,7 +28,7 @@ void ProcessSystem::pause(std::string process_name) {
   }
 }
 
-void ProcessSystem::resume(std::string process_name) {
+void ProcessSystem::resume(EProcess process_name) {
   for (auto& process : m_processes) {
     if (process->getName() == process_name) {
       process->resume();
@@ -60,8 +60,8 @@ void ProcessSystem::run() {
   }
 }
 
-void ProcessSystem::sendCommand(std::string process_name,
-                                std::string command_name, ...) {
+void ProcessSystem::sendCommand(EProcess process_name,
+                                EProcessCommand command_name, ...) {
   va_list args;
   va_start(args, command_name);
 
@@ -75,8 +75,7 @@ void ProcessSystem::sendCommand(std::string process_name,
   va_end(args);
 }
 
-void* ProcessSystem::getState(std::string process_name,
-                              std::string state_name) {
+void* ProcessSystem::getState(EProcess process_name, EProcessState state_name) {
   void* result{nullptr};
 
   for (auto& process : m_processes) {

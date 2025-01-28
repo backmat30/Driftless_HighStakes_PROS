@@ -5,7 +5,7 @@ namespace processes {
 namespace auto_ring_rejection {
 AutoRingRejectionProcess::AutoRingRejectionProcess(
     std::unique_ptr<IAutoRingRejector>& ring_rejector)
-    : m_ring_rejector{std::move(ring_rejector)}, AProcess{PROCESS_NAME} {}
+    : AProcess{EProcess::AUTO_RING_REJECTION}, m_ring_rejector{std::move(ring_rejector)} {}
 
 void AutoRingRejectionProcess::init() { m_ring_rejector->init(); }
 
@@ -15,9 +15,9 @@ void AutoRingRejectionProcess::pause() { m_ring_rejector->pause(); }
 
 void AutoRingRejectionProcess::resume() { m_ring_rejector->resume(); }
 
-void AutoRingRejectionProcess::command(std::string command_name,
+void AutoRingRejectionProcess::command(EProcessCommand command_name,
                                        va_list& args) {
-  if (command_name == REJECT_RINGS_COMMAND_NAME) {
+  if (command_name == EProcessCommand::AUTO_RING_REJECTION_REJECT_RINGS) {
     void* temp_robot{va_arg(args, void*)};
     std::shared_ptr<driftless::robot::Robot> robot{
         *static_cast<std::shared_ptr<driftless::robot::Robot>*>(temp_robot)};
@@ -30,10 +30,10 @@ void AutoRingRejectionProcess::command(std::string command_name,
   }
 }
 
-void* AutoRingRejectionProcess::state(std::string state_name) {
+void* AutoRingRejectionProcess::state(EProcessState state_name) {
   void* result;
 
-  if(state_name == IS_PAUSED_STATE_NAME) {
+  if(state_name == EProcessState::AUTO_RING_REJECTION_IS_PAUSED) { 
     result = new bool(m_ring_rejector->isPaused());
   }
   
