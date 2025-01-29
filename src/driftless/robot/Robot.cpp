@@ -3,65 +3,48 @@
 namespace driftless {
 namespace robot {
 void Robot::addSubsystem(std::unique_ptr<subsystems::ASubsystem>& subsystem) {
-  subsystems.push_back(std::move(subsystem));
+  subsystems.emplace(subsystem->getName(), std::move(subsystem));
 }
 
 bool Robot::removeSubsystem(subsystems::ESubsystem subsystem) {
-  // iterate through addresses rather than subsystems to know location to erase
-  for (auto i{subsystems.begin()}; i != subsystems.end(); ++i) {
-    // ptr to a ptr, only want single ptr
-    if ((*i)->getName() == subsystem) {
-      subsystems.erase(i);
-      return true;
-    }
-  }
+  subsystems.erase(subsystem);
   return false;
 }
 
 void Robot::init() {
   // init all subsystems
-  for (auto& subsystem : subsystems) {
-    subsystem->init();
+  for (auto i{subsystems.begin()}; i != subsystems.end(); ++i) {
+    // second gets the value at the address instead of the key
+    i->second->init();
   }
 }
 
 void Robot::run() {
   // run all subsystems
-  for (auto& subsystem : subsystems) {
-    subsystem->run();
+  for (auto i{subsystems.begin()}; i != subsystems.end(); ++i) {
+    // second gets the value at the address instead of the key
+    i->second->run();
   }
 }
 
-void Robot::sendCommand(subsystems::ESubsystem subsystem_name, subsystems::ESubsystemCommand command_name,
-                        ...) {
+void Robot::sendCommand(subsystems::ESubsystem subsystem_name,
+                        subsystems::ESubsystemCommand command_name, ...) {
   // variable list to store any extra parameters to be passed to the command
   va_list args;
   // tells the list to store anything past command_name
   va_start(args, command_name);
   // find correct subsystem
-  for (auto& subsystem : subsystems) {
-    if (subsystem->getName() == subsystem_name) {
-      // tells subsystem to run specified command using params held in the
-      // variable list
-      subsystem->command(command_name, args);
-      break;
-    }
-  }
+  subsystems.at(subsystem_name)->command(command_name, args);
   // closes the variable list
   va_end(args);
 }
 
-void* Robot::getState(subsystems::ESubsystem subsystem_name, subsystems::ESubsystemState state_name) {
+void* Robot::getState(subsystems::ESubsystem subsystem_name,
+                      subsystems::ESubsystemState state_name) {
   // basic ptr init
   void* state{nullptr};
   // find correct subsystem
-  for (auto& subsystem : subsystems) {
-    if (subsystem->getName() == subsystem_name) {
-      // gather state info then exit loop
-      state = subsystem->state(state_name);
-      break;
-    }
-  }
+  subsystems.at(subsystem_name)->state(state_name);
   return state;
 }
 }  // namespace robot

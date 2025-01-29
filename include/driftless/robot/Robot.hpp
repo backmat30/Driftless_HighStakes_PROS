@@ -1,5 +1,6 @@
 #ifndef __ROBOT_HPP__
 #define __ROBOT_HPP__
+#include <map>
 #include <memory>
 #include <string>
 #include <vector>
@@ -13,7 +14,7 @@ namespace driftless {
 namespace robot {
 class Robot {
  private:
-  std::vector<std::unique_ptr<subsystems::ASubsystem>> subsystems{};
+  std::map<subsystems::ESubsystem, std::unique_ptr<subsystems::ASubsystem>> subsystems{};
 
  public:
   void addSubsystem(std::unique_ptr<subsystems::ASubsystem> &subsystem);
