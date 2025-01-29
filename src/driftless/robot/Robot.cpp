@@ -7,8 +7,9 @@ void Robot::addSubsystem(std::unique_ptr<subsystems::ASubsystem>& subsystem) {
 }
 
 bool Robot::removeSubsystem(subsystems::ESubsystem subsystem) {
-  subsystems.erase(subsystem);
-  return false;
+  bool removed{false};
+  removed = subsystems.erase(subsystem) > 0;
+  return removed;
 }
 
 void Robot::init() {
@@ -44,7 +45,7 @@ void* Robot::getState(subsystems::ESubsystem subsystem_name,
   // basic ptr init
   void* state{nullptr};
   // find correct subsystem
-  subsystems.at(subsystem_name)->state(state_name);
+  state = subsystems.at(subsystem_name)->state(state_name);
   return state;
 }
 }  // namespace robot
