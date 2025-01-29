@@ -5,7 +5,8 @@ namespace control {
 namespace path {
 PathFollowerControl::PathFollowerControl(
     std::unique_ptr<driftless::control::path::IPathFollower>& path_follower)
-    : AControl{CONTROL_NAME}, m_path_follower{std::move(path_follower)} {}
+    : AControl{EControl::PATH_FOLLOWER},
+      m_path_follower{std::move(path_follower)} {}
 
 void PathFollowerControl::init() {
   if (m_path_follower) {
@@ -31,8 +32,8 @@ void PathFollowerControl::resume() {
   }
 }
 
-void PathFollowerControl::command(std::string command_name, va_list& args) {
-  if (command_name == FOLLOW_PATH_COMMAND_NAME) {
+void PathFollowerControl::command(EControlCommand command_name, va_list& args) {
+  if (command_name == EControlCommand::FOLLOW_PATH) {
     // get the robot from the va_list
     void* temp_robot{va_arg(args, void*)};
     // cast the robot to the desired type
@@ -48,15 +49,15 @@ void PathFollowerControl::command(std::string command_name, va_list& args) {
 
     // pass inputs to the follow path command
     m_path_follower->followPath(robot, control_path, velocity);
-  } else if (command_name == SET_VELOCITY_COMMAND_NAME) {
+  } else if (command_name == EControlCommand::PATH_FOLLOWER_SET_VELOCITY) {
     double velocity{va_arg(args, double)};
     m_path_follower->setVelocity(velocity);
   }
 }
 
-void* PathFollowerControl::state(std::string state_name) {
+void* PathFollowerControl::state(EControlState state_name) {
   void* result{nullptr};
-  if (state_name == TARGET_REACHED_STATE_NAME) {
+  if (state_name == EControlState::PATH_FOLLOWER_TARGET_REACHED) {
     result = new bool(m_path_follower->targetReached());
   }
   return result;

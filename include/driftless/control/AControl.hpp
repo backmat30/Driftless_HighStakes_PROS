@@ -2,12 +2,17 @@
 #define __A_CONTROL_HPP__
 
 #include <string>
+
+#include "driftless/control/EControl.hpp"
+#include "driftless/control/EControlCommand.hpp"
+#include "driftless/control/EControlState.hpp"
+
 namespace driftless {
 namespace control {
 // Abstract class for control algorithms
 class AControl {
  private:
-  std::string m_name{};
+  EControl m_name{};
 
  public:
   // basic constructor
@@ -20,13 +25,13 @@ class AControl {
   AControl(AControl &&other) = default;
 
   // constructor
-  AControl(std::string name) : m_name{name} {}
+  AControl(EControl name) : m_name{name} {}
 
   // basic deconstructor
   virtual ~AControl() = default;
 
   // gets the name of the control system
-  const std::string &getName() const { return m_name; }
+  const EControl &getName() const { return m_name; }
 
   // init the system
   virtual void init() = 0;
@@ -41,10 +46,10 @@ class AControl {
   virtual void resume() = 0;
 
   // runs a command for the control system
-  virtual void command(std::string command_name, va_list &args) = 0;
+  virtual void command(EControlCommand command_name, va_list &args) = 0;
 
   // gets the current state of the control
-  virtual void *state(std::string state_name) = 0;
+  virtual void *state(EControlState state_name) = 0;
 
   // copy assignment operator ovveride
   AControl &operator=(const AControl &rhs) = default;

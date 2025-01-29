@@ -15,14 +15,14 @@ class ControlSystem {
   std::vector<std::unique_ptr<AControl>> controls{};
 
   // the name of the active control
-  std::string active_control{};
+  EControl active_control{};
 
  public:
   // adds a control type to the robot
   void addControl(std::unique_ptr<AControl> &control);
 
   // removes a control type
-  bool removeControl(std::string control);
+  bool removeControl(EControl control);
 
   // pauses the control system
   void pause();
@@ -37,10 +37,10 @@ class ControlSystem {
   void run();
 
   // sends a command to a specified control
-  void sendCommand(std::string control_name, std::string command_name, ...);
+  void sendCommand(EControl control_name, EControlCommand command_name, ...);
 
   // gets a state of a specified control
-  void *getState(std::string control_name, std::string state_name);
+  void *getState(EControl control_name, EControlState state_name);
 };
 }  // namespace control
 }  // namespace driftless

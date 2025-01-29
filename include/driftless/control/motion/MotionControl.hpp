@@ -18,45 +18,6 @@ namespace motion {
 /// @brief Class to hold and control all motion algorithms
 class MotionControl : public driftless::control::AControl {
  private:
-  /// @brief The name of the control
-  static constexpr char CONTROL_NAME[]{"MOTION"};
-
-  /// @brief The name of the command to drive straight
-  static constexpr char DRIVE_STRAIGHT_COMMAND_NAME[]{"DRIVE STRAIGHT"};
-
-  /// @brief The name of the command to go to a point
-  static constexpr char GO_TO_POINT_COMMAND_NAME[]{"GO TO POINT"};
-
-  /// @brief The name of the command to turn to an angle
-  static constexpr char TURN_TO_ANGLE_COMMAND_NAME[]{"TURN TO ANGLE"};
-
-  /// @brief The name of the command to turn to a point
-  static constexpr char TURN_TO_POINT_COMMAND_NAME[]{"TURN TO POINT"};
-
-  /// @brief The name of the command to set the max velocity of the __drive
-  /// straight__ algorithm
-  static constexpr char SET_DRIVE_STRAIGHT_VELOCITY_COMMAND_NAME[]{
-      "SET DRIVE STRAIGHT VELOCITY"};
-
-  /// @brief The name of the command to set the max velocity of the __go to
-  /// point__ algorithm
-  static constexpr char SET_GO_TO_POINT_VELOCITY_COMMAND_NAME[]{
-      "SET GO TO POINT VELOCITY"};
-
-  /// @brief The name of the state determining if the __drive straight__
-  /// algorithm has reached the target
-  static constexpr char DRIVE_STRAIGHT_TARGET_REACHED_STATE_NAME[]{
-      "DRIVE STRAIGHT TARGET REACHED"};
-
-  /// @brief The name of the state determining if the __go to point__ algorithm
-  /// has reached the target
-  static constexpr char GO_TO_POINT_TARGET_REACHED_STATE_NAME[]{
-      "GO TO POINT TARGET REACHED"};
-
-  /// @brief The name of the state determining if the __turn__ algorithm has
-  /// reached the target
-  static constexpr char TURN_TARGET_REACHED_STATE_NAME[]{"TURN TARGET REACHED"};
-
   /// @brief The algorithm to drive straight
   std::unique_ptr<driftless::control::motion::IDriveStraight>
       m_drive_straight{};
@@ -96,12 +57,12 @@ class MotionControl : public driftless::control::AControl {
   /// @brief Sends a command to the motion control
   /// @param command_name - The name of the command to run
   /// @param args - Any arguments needed for the command
-  void command(std::string command_name, va_list& args) override;
+  void command(EControlCommand command_name, va_list& args) override;
 
   /// @brief Gets a state of the motion control
   /// @param state_name - The name of the state desired
   /// @return The desired state of the motion control
-  void* state(std::string state_name) override;
+  void* state(EControlState state_name) override;
 };
 }  // namespace motion
 }  // namespace control

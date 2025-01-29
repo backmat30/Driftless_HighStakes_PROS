@@ -11,7 +11,7 @@ void ControlSystem::addControl(std::unique_ptr<AControl>& control) {
   controls.push_back(std::move(control));
 }
 
-bool ControlSystem::removeControl(std::string control) {
+bool ControlSystem::removeControl(EControl control) {
   // defines the return variable
   bool removed{false};
   // loops through the list of controls until the specified control is found
@@ -59,8 +59,8 @@ void ControlSystem::resume() {
   }
 }
 
-void ControlSystem::sendCommand(std::string control_name,
-                                std::string command_name, ...) {
+void ControlSystem::sendCommand(EControl control_name,
+                                EControlCommand command_name, ...) {
   // pauseis the current control if its not the desired control, then sets the
   // active control to the desired one
   if (control_name != active_control) {
@@ -84,8 +84,7 @@ void ControlSystem::sendCommand(std::string control_name,
   va_end(args);
 }
 
-void* ControlSystem::getState(std::string control_name,
-                              std::string state_name) {
+void* ControlSystem::getState(EControl control_name, EControlState state_name) {
   // defines the return variable
   void* state{nullptr};
   // find the desired control and returns the status of the given state

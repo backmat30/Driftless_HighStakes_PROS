@@ -8,7 +8,7 @@ MotionControl::MotionControl(
     std::unique_ptr<driftless::control::motion::IDriveStraight>& drive_straight,
     std::unique_ptr<driftless::control::motion::IGoToPoint>& go_to_point,
     std::unique_ptr<driftless::control::motion::ITurn>& turn)
-    : AControl{CONTROL_NAME},
+    : AControl{EControl::MOTION},
       m_drive_straight{std::move(drive_straight)},
       m_go_to_point{std::move(go_to_point)},
       m_turn{std::move(turn)} {}
@@ -53,8 +53,8 @@ void MotionControl::resume() {
   }
 }
 
-void MotionControl::command(std::string command_name, va_list& args) {
-  if (command_name == DRIVE_STRAIGHT_COMMAND_NAME) {
+void MotionControl::command(EControlCommand command_name, va_list& args) {
+  if (command_name == EControlCommand::DRIVE_STRAIGHT) {
     if (m_motion_type != EMotionType::DRIVE_STRAIGHT) {
       pause();
       m_motion_type = EMotionType::DRIVE_STRAIGHT;
@@ -69,7 +69,7 @@ void MotionControl::command(std::string command_name, va_list& args) {
 
     m_drive_straight->driveStraight(robot, velocity, distance, theta);
 
-  } else if (command_name == GO_TO_POINT_COMMAND_NAME) {
+  } else if (command_name == EControlCommand::GO_TO_POINT) {
     if (m_motion_type != EMotionType::GO_TO_POINT) {
       pause();
       m_motion_type = EMotionType::GO_TO_POINT;
@@ -85,7 +85,7 @@ void MotionControl::command(std::string command_name, va_list& args) {
 
     m_go_to_point->goToPoint(robot, velocity, point);
 
-  } else if (command_name == TURN_TO_ANGLE_COMMAND_NAME) {
+  } else if (command_name == EControlCommand::TURN_TO_ANGLE) {
     if (m_motion_type != EMotionType::TURN) {
       pause();
       m_motion_type = EMotionType::TURN;
@@ -100,7 +100,7 @@ void MotionControl::command(std::string command_name, va_list& args) {
 
     m_turn->turnToAngle(robot, velocity, theta, direction);
 
-  } else if (command_name == TURN_TO_POINT_COMMAND_NAME) {
+  } else if (command_name == EControlCommand::TURN_TO_POINT) {
     if (m_motion_type != EMotionType::TURN) {
       pause();
       m_motion_type = EMotionType::TURN;
@@ -117,23 +117,23 @@ void MotionControl::command(std::string command_name, va_list& args) {
     Point point{x, y};
     m_turn->turnToPoint(robot, velocity, point, direction);
 
-  } else if (command_name == SET_DRIVE_STRAIGHT_VELOCITY_COMMAND_NAME) {
+  } else if (command_name == EControlCommand::DRIVE_STRAIGHT_SET_VELOCITY) {
     double velocity{va_arg(args, double)};
     m_drive_straight->setVelocity(velocity);
 
-  } else if (command_name == SET_GO_TO_POINT_VELOCITY_COMMAND_NAME) {
+  } else if (command_name == EControlCommand::GO_TO_POINT_SET_VELOCITY) {
     double velocity{va_arg(args, double)};
     m_go_to_point->setVelocity(velocity);
   }
 }
 
-void* MotionControl::state(std::string state_name) {
+void* MotionControl::state(EControlState state_name) {
   void* result{};
-  if (state_name == DRIVE_STRAIGHT_TARGET_REACHED_STATE_NAME) {
+  if (state_name == EControlState::DRIVE_STRAIGHT_TARGET_REACHED) {
     result = new bool{m_drive_straight->targetReached()};
-  } else if (state_name == GO_TO_POINT_TARGET_REACHED_STATE_NAME) {
+  } else if (state_name == EControlState::GO_TO_POINT_TARGET_REACHED) {
     result = new bool{m_go_to_point->targetReached()};
-  } else if (state_name == TURN_TARGET_REACHED_STATE_NAME) {
+  } else if (state_name == EControlState::TURN_TARGET_REACHED) {
     result = new bool{m_turn->targetReached()};
   }
 
