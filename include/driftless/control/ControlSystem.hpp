@@ -2,6 +2,7 @@
 #define __CONTROL_SYSTEM_HPP__
 
 #include <cstdarg>
+#include <map>
 #include <memory>
 #include <string>
 #include <vector>
@@ -12,7 +13,7 @@ namespace control {
 class ControlSystem {
  private:
   // possible controls for the robot
-  std::vector<std::unique_ptr<AControl>> controls{};
+  std::map<EControl, std::unique_ptr<AControl>> controls{};
 
   // the name of the active control
   EControl active_control{};

@@ -8,55 +8,38 @@ namespace control {
 void ControlSystem::addControl(std::unique_ptr<AControl>& control) {
   // moves the specified control from one spot in memory to one allocated to the
   // controls list
-  controls.push_back(std::move(control));
+  controls.emplace(control->getName(), std::move(control));
 }
 
 bool ControlSystem::removeControl(EControl control) {
   // defines the return variable
   bool removed{false};
   // loops through the list of controls until the specified control is found
-  for (auto i{controls.begin()}; i != controls.end(); ++i) {
-    if ((*i)->getName() == control) {
-      // removes the control from the list and clears the memory allocated
-      controls.erase(i);
-      removed = true;
-      break;
-    }
-  }
+  removed = controls.erase(control) > 0;
   return removed;
 }
 
 void ControlSystem::init() {
   // loop through list of controls and initializes them
-  for (auto& control : controls) {
-    control->init();
+  for (auto i{controls.begin()}; i != controls.end(); ++i) {
+    i->second->init();
   }
 }
 
 void ControlSystem::run() {
-  for (auto& control : controls) {
-    control->run();
+  for (auto i{controls.begin()}; i != controls.end(); ++i) {
+    i->second->run();
   }
 }
 
 void ControlSystem::pause() {
   // searches through the controls to find the active control and pauses it
-  for (auto& control : controls) {
-    if (control->getName() == active_control) {
-      control->pause();
-      break;
-    }
-  }
+  controls.at(active_control)->pause();
 }
 
 void ControlSystem::resume() {
   // searches through the controls to find the active control and resumes it
-  for (auto& control : controls) {
-    if (control->getName() == active_control) {
-      control->resume();
-      break;
-    }
-  }
+  controls.at(active_control)->resume();
 }
 
 void ControlSystem::sendCommand(EControl control_name,
@@ -72,14 +55,7 @@ void ControlSystem::sendCommand(EControl control_name,
   va_list args;
   va_start(args, command_name);
   // finds desired control and sends the specified command
-  for (auto& control : controls) {
-    if (control->getName() == control_name) {
-      control->command(command_name, args);
-      // resumes the given task
-      control->resume();
-      break;
-    }
-  }
+  controls.at(control_name)->command(command_name, args);
   // ends the variable list
   va_end(args);
 }
@@ -88,12 +64,7 @@ void* ControlSystem::getState(EControl control_name, EControlState state_name) {
   // defines the return variable
   void* state{nullptr};
   // find the desired control and returns the status of the given state
-  for (auto& control : controls) {
-    if (control->getName() == control_name) {
-      state = control->state(state_name);
-      break;
-    }
-  }
+  state = controls.at(control_name)->state(state_name);
   return state;
 }
 }  // namespace control
