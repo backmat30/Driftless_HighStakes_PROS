@@ -2,6 +2,7 @@
 #define __PROCESS_SYSTEM_HPP__
 
 #include <cstdarg>
+#include <map>
 #include <memory>
 #include <vector>
 
@@ -11,7 +12,7 @@ namespace driftless {
 namespace processes {
 class ProcessSystem {
  private:
-  std::vector<std::unique_ptr<AProcess>> m_processes{};
+  std::map<EProcess, std::unique_ptr<AProcess>> m_processes{};
 
  public:
   void addProcess(std::unique_ptr<AProcess>& process);
