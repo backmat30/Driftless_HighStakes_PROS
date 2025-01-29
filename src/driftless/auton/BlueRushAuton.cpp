@@ -5,28 +5,36 @@
 namespace driftless {
 namespace auton {
 void BlueRushAuton::calibrateArm() {
-  m_robot->sendCommand(ARM_SUBSYSTEM_NAME, ARM_CALIBRATE_COMMAND);
+  m_robot->sendCommand(robot::subsystems::ESubsystem::ARM,
+                       robot::subsystems::ESubsystemCommand::ARM_CALIBRATE);
 }
 
 void BlueRushAuton::armGoNeutral() {
-  m_robot->sendCommand(ARM_SUBSYSTEM_NAME, ARM_GO_NEUTRAL_COMMAND);
+  m_robot->sendCommand(robot::subsystems::ESubsystem::ARM,
+                       robot::subsystems::ESubsystemCommand::ARM_GO_NEUTRAL);
 }
 
 void BlueRushAuton::setClamp(bool clamped) {
-  m_robot->sendCommand(CLAMP_SUBSYSTEM_NAME, CLAMP_SET_STATE_COMMAND, clamped);
+  m_robot->sendCommand(robot::subsystems::ESubsystem::CLAMP,
+                       robot::subsystems::ESubsystemCommand::CLAMP_SET_STATE,
+                       clamped);
 }
 
 void BlueRushAuton::setElevatorVoltage(double voltage) {
-  m_robot->sendCommand(ELEVATOR_SUBSYSTEM_NAME, ELEVATOR_SET_VOLTAGE, voltage);
+  m_robot->sendCommand(
+      robot::subsystems::ESubsystem::ELEVATOR,
+      robot::subsystems::ESubsystemCommand::ELEVATOR_SET_VOLTAGE, voltage);
 }
 
 void BlueRushAuton::updateRingSort() {
-  void* position_state{
-      m_robot->getState(ELEVATOR_SUBSYSTEM_NAME, ELEVATOR_POSITION_STATE)};
+  void* position_state{m_robot->getState(
+      robot::subsystems::ESubsystem::ELEVATOR,
+      robot::subsystems::ESubsystemState::ELEVATOR_GET_POSITION)};
   double position{*static_cast<double*>(position_state)};
 
   void* distance_to_end_state{m_robot->getState(
-      RING_SORT_SUBSYSTEM_NAME, RING_SORT_GET_DISTANCE_TO_END_STATE)};
+      robot::subsystems::ESubsystem::RING_SORT,
+      robot::subsystems::ESubsystemState::RING_SORT_GET_DISTANCE_TO_END)};
   double distance_to_end{*static_cast<double*>(distance_to_end_state)};
 
   if (hasOpposingRing()) {
@@ -35,11 +43,13 @@ void BlueRushAuton::updateRingSort() {
 
   if (position <= ring_sort_latest_ring_pos + distance_to_end &&
       position >= ring_sort_latest_ring_pos - distance_to_end) {
-    m_robot->sendCommand(ELEVATOR_SUBSYSTEM_NAME,
-                         ELEVATOR_DEPLOY_REJECTOR_COMMAND);
+    m_robot->sendCommand(
+        robot::subsystems::ESubsystem::ELEVATOR,
+        robot::subsystems::ESubsystemCommand::ELEVATOR_DEPLOY_REJECTOR);
   } else {
-    m_robot->sendCommand(ELEVATOR_SUBSYSTEM_NAME,
-                         ELEVATOR_RETRACT_REJECTOR_COMMAND);
+    m_robot->sendCommand(
+        robot::subsystems::ESubsystem::ELEVATOR,
+        robot::subsystems::ESubsystemCommand::ELEVATOR_RETRACT_REJECTOR);
   }
 }
 
@@ -64,37 +74,46 @@ void BlueRushAuton::waitForOpposingRing(uint32_t timeout) {
 }
 
 void BlueRushAuton::spinIntake(double voltage) {
-  m_robot->sendCommand(INTAKE_SUBSYSTEM_NAME, INTAKE_SPIN_COMMAND, voltage);
+  m_robot->sendCommand(robot::subsystems::ESubsystem::INTAKE,
+                       robot::subsystems::ESubsystemCommand::INTAKE_SET_VOLTAGE,
+                       voltage);
 }
 
 void BlueRushAuton::setIntakeHeight(bool high) {
-  m_robot->sendCommand(INTAKE_SUBSYSTEM_NAME, INTAKE_SET_HEIGHT_COMMAND, high);
+  m_robot->sendCommand(robot::subsystems::ESubsystem::INTAKE,
+                       robot::subsystems::ESubsystemCommand::INTAKE_SET_HEIGHT,
+                       high);
 }
 
 void BlueRushAuton::setOdomPosition(double x, double y, double theta) {
-  m_robot->sendCommand(ODOMETRY_SUBSYSTEM_NAME, ODOMETRY_SET_POSITION_COMMAND,
-                       x, y, theta);
+  m_robot->sendCommand(
+      robot::subsystems::ESubsystem::ODOMETRY,
+      robot::subsystems::ESubsystemCommand::ODOMETRY_SET_POSITION, x, y, theta);
 }
 
 void BlueRushAuton::followPath(std::vector<control::Point>& path,
                                double velocity) {
-  m_control_system->sendCommand(PATH_FOLLOWER_CONTROL_NAME, FOLLOW_PATH_COMMAND,
-                                &m_robot, path, velocity);
+  m_control_system->sendCommand(control::EControl::PATH_FOLLOWER,
+                                control::EControlCommand::FOLLOW_PATH, &m_robot,
+                                path, velocity);
 }
 
 void BlueRushAuton::setFollowPathVelocity(double velocity) {
-  m_control_system->sendCommand(PATH_FOLLOWER_CONTROL_NAME,
-                                SET_PATH_FOLLOWER_VELOCTY_COMMAND, velocity);
+  m_control_system->sendCommand(
+      control::EControl::PATH_FOLLOWER,
+      control::EControlCommand::PATH_FOLLOWER_SET_VELOCITY, velocity);
 }
 
 void BlueRushAuton::goToPoint(double x, double y, double velocity) {
-  m_control_system->sendCommand(MOTION_CONTROL_NAME, GO_TO_POINT_COMMAND,
-                                &m_robot, velocity, x, y);
+  m_control_system->sendCommand(control::EControl::MOTION,
+                                control::EControlCommand::GO_TO_POINT, &m_robot,
+                                velocity, x, y);
 }
 
 void BlueRushAuton::setGoToPointVelocity(double velocity) {
-  m_control_system->sendCommand(MOTION_CONTROL_NAME,
-                                SET_GO_TO_POINT_VELOCITY_COMMAND, velocity);
+  m_control_system->sendCommand(
+      control::EControl::MOTION,
+      control::EControlCommand::GO_TO_POINT_SET_VELOCITY, velocity);
 }
 
 void BlueRushAuton::waitForGoToPoint(double target_x, double target_y,
@@ -117,7 +136,8 @@ void BlueRushAuton::waitForGoToPoint(double target_x, double target_y,
 
 void BlueRushAuton::turnToPoint(double x, double y, double velocity,
                                 control::motion::ETurnDirection direction) {
-  m_control_system->sendCommand(MOTION_CONTROL_NAME, TURN_TO_POINT_COMMAND,
+  m_control_system->sendCommand(control::EControl::MOTION,
+                                control::EControlCommand::TURN_TO_POINT,
                                 &m_robot, velocity, x, y, direction);
 }
 
@@ -143,7 +163,8 @@ void BlueRushAuton::waitForTurnToPoint(double x, double y, uint32_t timeout,
 
 void BlueRushAuton::turnToAngle(double theta, double velocity,
                                 control::motion::ETurnDirection direction) {
-  m_control_system->sendCommand(MOTION_CONTROL_NAME, TURN_TO_ANGLE_COMMAND,
+  m_control_system->sendCommand(control::EControl::MOTION,
+                                control::EControlCommand::TURN_TO_ANGLE,
                                 &m_robot, velocity, theta, direction);
 }
 
@@ -163,7 +184,8 @@ void BlueRushAuton::waitForTurnToAngle(double theta, uint32_t timeout,
 
 void BlueRushAuton::driveStraight(double distance, double velocity,
                                   double theta) {
-  m_control_system->sendCommand(MOTION_CONTROL_NAME, DRIVE_STRAIGHT_COMMAND,
+  m_control_system->sendCommand(control::EControl::MOTION,
+                                control::EControlCommand::DRIVE_STRAIGHT,
                                 &m_robot, velocity, distance, theta);
 }
 
@@ -209,7 +231,8 @@ uint32_t BlueRushAuton::getTime() {
 robot::subsystems::odometry::Position BlueRushAuton::getOdomPosition() {
   robot::subsystems::odometry::Position position{
       *static_cast<robot::subsystems::odometry::Position*>(m_robot->getState(
-          ODOMETRY_SUBSYSTEM_NAME, ODOMETRY_GET_POSITION_STATE))};
+          robot::subsystems::ESubsystem::ODOMETRY,
+          robot::subsystems::ESubsystemState::ODOMETRY_GET_POSITION))};
 
   return position;
 }
@@ -217,7 +240,8 @@ robot::subsystems::odometry::Position BlueRushAuton::getOdomPosition() {
 double BlueRushAuton::getOdomVelocity() {
   robot::subsystems::odometry::Position position{
       *static_cast<robot::subsystems::odometry::Position*>(m_robot->getState(
-          ODOMETRY_SUBSYSTEM_NAME, ODOMETRY_GET_POSITION_STATE))};
+          robot::subsystems::ESubsystem::ODOMETRY,
+          robot::subsystems::ESubsystemState::ODOMETRY_GET_POSITION))};
 
   double velocity{
       std::sqrt(std::pow(position.xV, 2) + std::pow(position.yV, 2))};
@@ -226,44 +250,51 @@ double BlueRushAuton::getOdomVelocity() {
 
 bool BlueRushAuton::followPathTargetReached() {
   bool target_reached{*static_cast<bool*>(m_control_system->getState(
-      PATH_FOLLOWER_CONTROL_NAME, PATH_FOLLOWER_TARGET_REACHED_STATE))};
+      control::EControl::PATH_FOLLOWER,
+      control::EControlState::PATH_FOLLOWER_TARGET_REACHED))};
   return target_reached;
 }
 
 bool BlueRushAuton::goToPointTargetReached() {
   bool target_reached{*static_cast<bool*>(m_control_system->getState(
-      MOTION_CONTROL_NAME, GO_TO_POINT_TARGET_REACHED_STATE))};
+      control::EControl::MOTION,
+      control::EControlState::GO_TO_POINT_TARGET_REACHED))};
   return target_reached;
 }
 
 bool BlueRushAuton::turnTargetReached() {
   bool target_reached{*static_cast<bool*>(m_control_system->getState(
-      MOTION_CONTROL_NAME, TURN_TARGET_REACHED_STATE))};
+      control::EControl::MOTION, control::EControlState::TURN_TARGET_REACHED))};
   return target_reached;
 }
 
 bool BlueRushAuton::driveStraightTargetReached() {
   bool target_reached{*static_cast<bool*>(m_control_system->getState(
-      MOTION_CONTROL_NAME, DRIVE_STRAIGHT_TARGET_REACHED_STATE))};
+      control::EControl::MOTION,
+      control::EControlState::DRIVE_STRAIGHT_TARGET_REACHED))};
   return target_reached;
 }
 
 bool BlueRushAuton::hasAllianceRing() {
   bool has_alliance_ring{};
 
-  void* has_ring_state{
-      m_robot->getState(RING_SORT_SUBSYSTEM_NAME, RING_SORT_HAS_RING_STATE)};
+  void* has_ring_state{m_robot->getState(
+      robot::subsystems::ESubsystem::RING_SORT,
+      robot::subsystems::ESubsystemState::RING_SORT_HAS_RING)};
   bool has_ring{has_ring_state != nullptr &&
                 *static_cast<bool*>(has_ring_state)};
 
   void* ring_rgb_state{
-      m_robot->getState(RING_SORT_SUBSYSTEM_NAME, RING_SORT_GET_RGB_STATE)};
+      m_robot->getState(robot::subsystems::ESubsystem::RING_SORT,
+                        robot::subsystems::ESubsystemState::RING_SORT_GET_RGB)};
   io::RGBValue ring_rgb{*static_cast<io::RGBValue*>(ring_rgb_state)};
 
   if (has_ring) {
     has_alliance_ring =
-        ((m_alliance->getName() == "RED" && ring_rgb.red > ring_rgb.blue) ||
-         (m_alliance->getName() == "BLUE" && ring_rgb.blue > ring_rgb.red));
+        ((m_alliance->getAlliance() == alliance::EAlliance::RED &&
+          ring_rgb.red > ring_rgb.blue) ||
+         (m_alliance->getAlliance() == alliance::EAlliance::BLUE &&
+          ring_rgb.blue > ring_rgb.red));
   }
 
   return has_alliance_ring;
@@ -272,19 +303,23 @@ bool BlueRushAuton::hasAllianceRing() {
 bool BlueRushAuton::hasOpposingRing() {
   bool has_opposing_ring{};
 
-  void* has_ring_state{
-      m_robot->getState(RING_SORT_SUBSYSTEM_NAME, RING_SORT_HAS_RING_STATE)};
+  void* has_ring_state{m_robot->getState(
+      robot::subsystems::ESubsystem::RING_SORT,
+      robot::subsystems::ESubsystemState::RING_SORT_HAS_RING)};
   bool has_ring{has_ring_state != nullptr &&
                 *static_cast<bool*>(has_ring_state)};
 
   void* ring_rgb_state{
-      m_robot->getState(RING_SORT_SUBSYSTEM_NAME, RING_SORT_GET_RGB_STATE)};
+      m_robot->getState(robot::subsystems::ESubsystem::RING_SORT,
+                        robot::subsystems::ESubsystemState::RING_SORT_GET_RGB)};
   io::RGBValue ring_rgb{*static_cast<io::RGBValue*>(ring_rgb_state)};
 
   if (has_ring) {
     has_opposing_ring =
-        ((m_alliance->getName() == "RED" && ring_rgb.red < ring_rgb.blue) ||
-         (m_alliance->getName() == "BLUE" && ring_rgb.blue < ring_rgb.red));
+        ((m_alliance->getAlliance() == alliance::EAlliance::RED &&
+          ring_rgb.red < ring_rgb.blue) ||
+         (m_alliance->getAlliance() == alliance::EAlliance::BLUE &&
+          ring_rgb.blue < ring_rgb.red));
   }
 
   return has_opposing_ring;
@@ -317,9 +352,9 @@ void BlueRushAuton::run(
 
   // Set the robots starting values
   uint32_t start_time{getTime()};
-  if (alliance->getName() == "RED")
+  if (alliance->getAlliance() == alliance::EAlliance::RED)
     setOdomPosition(109.0, 125.0, M_PI / 2.0);
-  else if (alliance->getName() == "BLUE")
+  else if (alliance->getAlliance() == alliance::EAlliance::BLUE)
     setOdomPosition(144.0 - 109.0, 125.0, M_PI / 2.0);
   robot::subsystems::odometry::Position position{getOdomPosition()};
   double velocity{getOdomVelocity()};
@@ -331,12 +366,12 @@ void BlueRushAuton::run(
 
   // Start the rush path
   std::vector<control::Point> rush_control_points{};
-  if (alliance->getName() == "RED") {
+  if (alliance->getAlliance() == alliance::EAlliance::RED) {
     rush_control_points = std::vector<control::Point>{
         control::Point{109.0, 125.0}, control::Point{112.0, 97.0},
         control::Point{112.5, 96.0}, control::Point{120.75, 84.75}};
 
-  } else if (alliance->getName() == "BLUE") {
+  } else if (alliance->getAlliance() == alliance::EAlliance::BLUE) {
     rush_control_points =
         std::vector<control::Point>{control::Point{144.0 - 109.0, 125.0},
                                     control::Point{144.0 - 112.0, 97.0},
