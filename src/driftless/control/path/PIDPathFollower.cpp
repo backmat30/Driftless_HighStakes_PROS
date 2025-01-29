@@ -42,7 +42,7 @@ void PIDPathFollower::taskUpdate() {
 void PIDPathFollower::setDriveVelocity(
     robot::subsystems::drivetrain::Velocity velocity) {
   if (m_robot) {
-    m_robot->sendCommand(DRIVE_SUBSYSTEM_NAME, DRIVE_SET_VELOCITY_COMMAND_NAME,
+    m_robot->sendCommand(robot::subsystems::ESubsystem::DRIVETRAIN, robot::subsystems::ESubsystemCommand::DRIVETRAIN_SET_VELOCITY,
                          velocity);
   }
 }
@@ -51,7 +51,7 @@ double PIDPathFollower::getDriveRadius() {
   double radius{};
   if (m_robot) {
     radius = *(static_cast<double*>(m_robot->getState(
-        DRIVE_SUBSYSTEM_NAME, DRIVE_GET_RADIUS_COMMAND_NAME)));
+        robot::subsystems::ESubsystem::DRIVETRAIN, robot::subsystems::ESubsystemState::DRIVETRAIN_GET_RADIUS)));
   }
   return radius;
 }
@@ -62,7 +62,7 @@ robot::subsystems::odometry::Position PIDPathFollower::getPosition() {
   if (m_robot) {
     position =
         *(static_cast<robot::subsystems::odometry::Position*>(m_robot->getState(
-            ODOMETRY_SUBSYSTEM_NAME, ODOMETRY_GET_POSITION_COMMAND_NAME)));
+            robot::subsystems::ESubsystem::ODOMETRY, robot::subsystems::ESubsystemState::ODOMETRY_GET_POSITION)));
   }
 
   return position;

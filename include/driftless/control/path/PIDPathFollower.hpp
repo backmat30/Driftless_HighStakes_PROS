@@ -4,6 +4,9 @@
 #include "driftless/control/PID.hpp"
 #include "driftless/control/Point.hpp"
 #include "driftless/control/path/IPathFollower.hpp"
+#include "driftless/robot/subsystems/ESubsystem.hpp"
+#include "driftless/robot/subsystems/ESubsystemCommand.hpp"
+#include "driftless/robot/subsystems/ESubsystemState.hpp"
 #include "driftless/robot/subsystems/drivetrain/Velocity.hpp"
 #include "driftless/robot/subsystems/odometry/Position.hpp"
 #include "driftless/rtos/IDelayer.hpp"
@@ -18,22 +21,7 @@ class PIDPathFollower : public driftless::control::path::IPathFollower {
  private:
   // delay in ms between each task loop
   static constexpr uint8_t TASK_DELAY{10};
-
-  // name of the drive train subsystem
-  static constexpr char DRIVE_SUBSYSTEM_NAME[]{"DIFFERENTIAL DRIVE"};
-
-  // name of the odometry subsystem
-  static constexpr char ODOMETRY_SUBSYSTEM_NAME[]{"ODOMETRY"};
-
-  // name of the drive train set velocity command
-  static constexpr char DRIVE_SET_VELOCITY_COMMAND_NAME[]{"SET VELOCITY"};
-
-  // name of the drive train get drive radius command
-  static constexpr char DRIVE_GET_RADIUS_COMMAND_NAME[]{"GET RADIUS"};
-
-  // name of the odometry get position command
-  static constexpr char ODOMETRY_GET_POSITION_COMMAND_NAME[]{"GET POSITION"};
-
+  
   // background task loop to update algorithm
   static void taskLoop(void* params);
 
