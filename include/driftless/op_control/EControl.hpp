@@ -1,5 +1,5 @@
-#ifndef __E_CONTROL_HPP__
-#define __E_CONTROL_HPP__
+#ifndef __OP_CONTROL_E_CONTROL_HPP__
+#define __OP_CONTROL_E_CONTROL_HPP__
 
 namespace driftless {
 namespace op_control {
