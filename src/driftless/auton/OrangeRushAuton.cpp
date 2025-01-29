@@ -438,13 +438,13 @@ void OrangeRushAuton::run(
 
   // Set up the path under the ladder
   std::vector<control::Point> under_ladder_control_points{};
-  if (alliance->getName() == "RED")
+  if (alliance->getAlliance() == alliance::EAlliance::RED)
     under_ladder_control_points = std::vector<control::Point>{
         control::Point{24.0, 82.25},  control::Point{46.0, 97.0},
         control::Point{72.0, 70.0},   control::Point{88.0, 96.0},
         control::Point{101.5, 112.0}, control::Point{122.0, 102.5},
         control::Point{123.0, 80.25}};
-  else if (alliance->getName() == "BLUE")
+  else if (alliance->getAlliance() == alliance::EAlliance::BLUE)
     under_ladder_control_points =
         std::vector<control::Point>{control::Point{144.0 - 24.0, 82.25},
                                     control::Point{144.0 - 46.0, 97.0},
@@ -520,7 +520,7 @@ void OrangeRushAuton::run(
   target_velocity = 20.0;
   setFollowPathVelocity(target_velocity);
 
-  if (alliance->getName() == "RED") {
+  if (alliance->getAlliance() == alliance::EAlliance::RED) {
     while (target_distance > 28.0) {
       m_delayer->delay(LOOP_DELAY);
       position = getOdomPosition();
@@ -548,7 +548,7 @@ void OrangeRushAuton::run(
   driveStraight(-7.0, target_velocity, position.theta);
   waitForDriveStraight(-7.0, 500, 0.5);
   waitForAllianceRing(500);
-  if (alliance->getName() == "RED" && !hasAllianceRing()) {
+  if (alliance->getAlliance() == alliance::EAlliance::RED && !hasAllianceRing()) {
     driveStraight(7.0, target_velocity, position.theta);
     waitForDriveStraight(7.0, 500, 0.5);
   }
@@ -558,9 +558,9 @@ void OrangeRushAuton::run(
   setElevatorVoltage(0.0);
 
   // Go towards next ring stack
-  if (alliance->getName() == "RED")
+  if (alliance->getAlliance() == alliance::EAlliance::RED)
     target_point = control::Point{112.0, 114.0};
-  else if (alliance->getName() == "BLUE")
+  else if (alliance->getAlliance() == alliance::EAlliance::BLUE)
     target_point = control::Point{144.0 - 112.0, 114.0};
 
   target_velocity = 24.0;
@@ -578,10 +578,10 @@ void OrangeRushAuton::run(
 
   // point intake towards rings
   target_velocity = 12.0;
-  if (alliance->getName() == "RED")
+  if (alliance->getAlliance() == alliance::EAlliance::RED)
     turnToPoint(target_point.getX(), target_point.getY(), target_velocity,
                 control::motion::ETurnDirection::COUNTERCLOCKWISE);
-  else if (alliance->getName() == "BLUE")
+  else if (alliance->getAlliance() == alliance::EAlliance::BLUE)
     turnToPoint(target_point.getX(), target_point.getY(), target_velocity,
                 control::motion::ETurnDirection::CLOCKWISE);
   waitForTurnToPoint(target_point.getX(), target_point.getY(), 2000,
@@ -608,9 +608,9 @@ void OrangeRushAuton::run(
   waitForOpposingRing(500);
 
   // turn to corner
-  if (alliance->getName() == "RED")
+  if (alliance->getAlliance() == alliance::EAlliance::RED)
     target_point = control::Point{144.0, 144.0};
-  else if (alliance->getName() == "BLUE")
+  else if (alliance->getAlliance() == alliance::EAlliance::BLUE)
     target_point = control::Point{144.0 - 150.0, 144.0};
 
   turnToPoint(target_point.getX(), target_point.getY(), target_velocity,
@@ -647,9 +647,9 @@ void OrangeRushAuton::run(
   // go to the rings by alliance stake
 
   target_velocity = 12.0;
-  if (alliance->getName() == "RED")
+  if (alliance->getAlliance() == alliance::EAlliance::RED)
     target_point = control::Point{66.5, 128.0};
-  else if (alliance->getName() == "BLUE")
+  else if (alliance->getAlliance() == alliance::EAlliance::BLUE)
     target_point = control::Point{144.0 - 68.5, 127.5};
 
   turnToPoint(target_point.getX(), target_point.getY(), target_velocity,

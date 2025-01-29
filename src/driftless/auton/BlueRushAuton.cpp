@@ -430,11 +430,11 @@ void BlueRushAuton::run(
   m_delayer->delay(50);
 
   // Go to first ring stack
-  if (alliance->getName() == "RED") {
+  if (alliance->getAlliance() == alliance::EAlliance::RED) {
     target_point = control::Point{124.0, 92.0};
     turnToPoint(target_point.getX(), target_point.getY(), target_velocity,
                 control::motion::ETurnDirection::CLOCKWISE);
-  } else if (alliance->getName() == "BLUE") {
+  } else if (alliance->getAlliance() == alliance::EAlliance::BLUE) {
     target_point = control::Point{144.0 - 126.0, 97.75};
     turnToPoint(target_point.getX(), target_point.getY(), target_velocity,
                 control::motion::ETurnDirection::COUNTERCLOCKWISE);
@@ -472,9 +472,9 @@ void BlueRushAuton::run(
   }
 
   // go to the next mobile goal
-  if (alliance->getName() == "RED")
+  if (alliance->getAlliance() == alliance::EAlliance::RED)
     target_point = control::Point{84.0, 121.5};
-  else if (alliance->getName() == "BLUE")
+  else if (alliance->getAlliance() == alliance::EAlliance::BLUE)
     target_point = control::Point{144.0 - 82.0, 121.5};
 
   target_velocity = 12.0;
@@ -508,9 +508,9 @@ void BlueRushAuton::run(
   delay(75);
 
   // get orange preload
-  if (alliance->getName() == "RED")
+  if (alliance->getAlliance() == alliance::EAlliance::RED)
     target_point = control::Point{61.0, 118.0};
-  else if (alliance->getName() == "BLUE")
+  else if (alliance->getAlliance() == alliance::EAlliance::BLUE)
     target_point = control::Point{144.0 - 61.0, 118.0};
   target_velocity = 48.0;
   goToPoint(target_point.getX(), target_point.getY(), target_velocity);
@@ -525,10 +525,10 @@ void BlueRushAuton::run(
   }
   target_velocity = 16.0;
   setElevatorVoltage(0.0);
-  if (alliance->getName() == "RED")
+  if (alliance->getAlliance() == alliance::EAlliance::RED)
     turnToPoint(target_point.getX(), target_point.getY(), target_velocity,
                 control::motion::ETurnDirection::COUNTERCLOCKWISE);
-  else if (alliance->getName() == "BLUE")
+  else if (alliance->getAlliance() == alliance::EAlliance::BLUE)
     turnToPoint(target_point.getX(), target_point.getY(), target_velocity,
                 control::motion::ETurnDirection::CLOCKWISE);
 
@@ -543,9 +543,9 @@ void BlueRushAuton::run(
   waitForAllianceRing(3000);
 
   // move towards next rings
-  if (alliance->getName() == "RED")
+  if (alliance->getAlliance() == alliance::EAlliance::RED)
     target_point = control::Point{32.0, 101.0};
-  else if (alliance->getName() == "BLUE")
+  else if (alliance->getAlliance() == alliance::EAlliance::BLUE)
     target_point = control::Point{144.0 - 32.0, 101.0};
   goToPoint(target_point.getX(), target_point.getY(), target_velocity);
   spinIntake(12.0);
@@ -572,9 +572,9 @@ void BlueRushAuton::run(
 
   setIntakeHeight(true);
   setElevatorVoltage(0.0);
-  if (alliance->getName() == "RED")
+  if (alliance->getAlliance() == alliance::EAlliance::RED)
     target_point = control::Point{30.5, 116.0};
-  else if (alliance->getName() == "BLUE")
+  else if (alliance->getAlliance() == alliance::EAlliance::BLUE)
     target_point = control::Point{144.0 - 30.0, 110.0};
   target_velocity = 10.0;
   turnToPoint(target_point.getX(), target_point.getY(), target_velocity,
@@ -596,9 +596,9 @@ void BlueRushAuton::run(
   setElevatorVoltage(0.0);
 
   // Line up for corner
-  if (alliance->getName() == "RED")
+  if (alliance->getAlliance() == alliance::EAlliance::RED)
     target_point = control::Point{45.0, 130.0};
-  else if (alliance->getName() == "BLUE")
+  else if (alliance->getAlliance() == alliance::EAlliance::BLUE)
     target_point = control::Point{144.0 - 45.0, 130.0};
   target_velocity = 10.0;
   turnToPoint(target_point.getX(), target_point.getY(), target_velocity,
@@ -618,11 +618,11 @@ void BlueRushAuton::run(
   // attempt to clear corner :)
   setIntakeHeight(true);
 
-  if (alliance->getName() == "RED") {
+  if (alliance->getAlliance() == alliance::EAlliance::RED) {
     target_point = control::Point{0.0, 140.0};
     turnToPoint(target_point.getX(), target_point.getY(), target_velocity,
                 control::motion::ETurnDirection::COUNTERCLOCKWISE);
-  } else if (alliance->getName() == "BLUE") {
+  } else if (alliance->getAlliance() == alliance::EAlliance::BLUE) {
     target_point = control::Point{144.0 - 0.0, 140.0};
     turnToPoint(target_point.getX(), target_point.getY(), target_velocity,
                 control::motion::ETurnDirection::CLOCKWISE);
@@ -654,7 +654,7 @@ void BlueRushAuton::run(
   waitForDriveStraight(-10.0, 1000, 0.5);
   driveStraight(15.0, target_velocity, position.theta);
   waitForDriveStraight(15.0, 1000, 0.5);
-  if (alliance->getName() == "RED") {
+  if (alliance->getAlliance() == alliance::EAlliance::RED) {
     driveStraight(-10.0, target_velocity, 3.0 * M_PI / 4.0);
     waitForDriveStraight(-25.0, 2000, 0.5);
     turnToAngle(-M_PI / 4.0, target_velocity,
@@ -665,7 +665,7 @@ void BlueRushAuton::run(
     waitForDriveStraight(-10.0, 500, 0.5);
     driveStraight(25.0, target_velocity, -M_PI / 4.0);
     waitForDriveStraight(25.0, 1000, 0.5);
-  } else if (alliance->getName() == "BLUE") {
+  } else if (alliance->getAlliance() == alliance::EAlliance::BLUE) {
     driveStraight(-10.0, target_velocity, M_PI / 4.0);
     waitForDriveStraight(-25.0, 2000, 0.5);
     turnToAngle(-3.0 * M_PI / 4.0, target_velocity,
