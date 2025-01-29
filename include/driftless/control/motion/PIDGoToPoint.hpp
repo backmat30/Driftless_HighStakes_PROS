@@ -7,6 +7,9 @@
 #include "driftless/control/PID.hpp"
 #include "driftless/control/Point.hpp"
 #include "driftless/control/motion/IGoToPoint.hpp"
+#include "driftless/robot/subsystems/ESubsystem.hpp"
+#include "driftless/robot/subsystems/ESubsystemCommand.hpp"
+#include "driftless/robot/subsystems/ESubsystemState.hpp"
 #include "driftless/robot/subsystems/odometry/Position.hpp"
 #include "driftless/rtos/IDelayer.hpp"
 #include "driftless/rtos/IMutex.hpp"
@@ -89,8 +92,8 @@ class PIDGoToPoint : public IGoToPoint {
   void resume() override;
 
   // tell the robot to go to a given point
-  void goToPoint(const std::shared_ptr<driftless::robot::Robot>& robot, double velocity,
-                 Point point) override;
+  void goToPoint(const std::shared_ptr<driftless::robot::Robot>& robot,
+                 double velocity, Point point) override;
 
   // set the max velocity to move at
   void setVelocity(double velocity) override;

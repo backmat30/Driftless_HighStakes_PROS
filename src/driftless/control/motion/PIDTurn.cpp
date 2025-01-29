@@ -13,20 +13,25 @@ void PIDTurn::taskLoop(void* params) {
 
 void PIDTurn::setDriveVelocity(
     driftless::robot::subsystems::drivetrain::Velocity velocity) {
-  m_robot->sendCommand("DIFFERENTIAL DRIVE", "SET VELOCITY", velocity);
+  m_robot->sendCommand(
+      robot::subsystems::ESubsystem::DRIVETRAIN,
+      robot::subsystems::ESubsystemCommand::DRIVETRAIN_SET_VELOCITY, velocity);
 }
 
 driftless::robot::subsystems::odometry::Position PIDTurn::getPosition() {
   driftless::robot::subsystems::odometry::Position position{};
   position = *static_cast<driftless::robot::subsystems::odometry::Position*>(
-      m_robot->getState("ODOMETRY", "GET POSITION"));
+      m_robot->getState(
+          robot::subsystems::ESubsystem::ODOMETRY,
+          robot::subsystems::ESubsystemState::ODOMETRY_GET_POSITION));
   return position;
 }
 
 double PIDTurn::getDriveRadius() {
   double drive_radius{};
-  drive_radius = *static_cast<double*>(
-      m_robot->getState("DIFFERENTIAL DRIVE", "GET RADIUS"));
+  drive_radius = *static_cast<double*>(m_robot->getState(
+      robot::subsystems::ESubsystem::DRIVETRAIN,
+      robot::subsystems::ESubsystemState::DRIVETRAIN_GET_RADIUS));
   return drive_radius;
 }
 

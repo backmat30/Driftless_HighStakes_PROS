@@ -6,6 +6,9 @@
 
 #include "driftless/control/PID.hpp"
 #include "driftless/control/motion/ITurn.hpp"
+#include "driftless/robot/subsystems/ESubsystem.hpp"
+#include "driftless/robot/subsystems/ESubsystemCommand.hpp"
+#include "driftless/robot/subsystems/ESubsystemState.hpp"
 #include "driftless/robot/subsystems/drivetrain/Velocity.hpp"
 #include "driftless/robot/subsystems/odometry/Position.hpp"
 #include "driftless/rtos/IDelayer.hpp"
@@ -67,7 +70,8 @@ class PIDTurn : public ITurn {
   bool paused{};
 
   // sets the velocity of the drive train
-  void setDriveVelocity(driftless::robot::subsystems::drivetrain::Velocity velocity);
+  void setDriveVelocity(
+      driftless::robot::subsystems::drivetrain::Velocity velocity);
 
   // gets the position of the robot from the odometry
   driftless::robot::subsystems::odometry::Position getPosition();

@@ -14,7 +14,10 @@ void PIDDriveStraight::taskLoop(void* params) {
 
 void PIDDriveStraight::setDriveVelocity(double left, double right) {
   if (m_robot) {
-    m_robot->sendCommand("DIFFERENTIAL DRIVE", "SET VELOCITY", left, right);
+    m_robot->sendCommand(
+        robot::subsystems::ESubsystem::DRIVETRAIN,
+        robot::subsystems::ESubsystemCommand::DRIVETRAIN_SET_VELOCITY, left,
+        right);
   }
 }
 
@@ -23,7 +26,9 @@ PIDDriveStraight::getPosition() {
   driftless::robot::subsystems::odometry::Position position{};
   if (m_robot) {
     position = *static_cast<driftless::robot::subsystems::odometry::Position*>(
-        m_robot->getState("ODOMETRY", "GET POSITION"));
+        m_robot->getState(
+            robot::subsystems::ESubsystem::ODOMETRY,
+            robot::subsystems::ESubsystemState::ODOMETRY_GET_POSITION));
   }
   return position;
 }

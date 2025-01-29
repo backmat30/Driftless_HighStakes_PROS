@@ -12,13 +12,18 @@ void PIDGoToPoint::taskLoop(void* params) {
 }
 
 void PIDGoToPoint::setDriveVelocity(double left, double right) {
-  m_robot->sendCommand("DIFFERENTIAL DRIVE", "SET VELOCITY", left, right);
+  m_robot->sendCommand(
+      robot::subsystems::ESubsystem::DRIVETRAIN,
+      robot::subsystems::ESubsystemCommand::DRIVETRAIN_SET_VELOCITY, left,
+      right);
 }
 
 driftless::robot::subsystems::odometry::Position PIDGoToPoint::getPosition() {
   driftless::robot::subsystems::odometry::Position position{};
   position = *static_cast<driftless::robot::subsystems::odometry::Position*>(
-      m_robot->getState("ODOMETRY", "GET POSITION"));
+      m_robot->getState(
+          robot::subsystems::ESubsystem::ODOMETRY,
+          robot::subsystems::ESubsystemState::ODOMETRY_GET_POSITION));
   return position;
 }
 
