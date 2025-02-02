@@ -34,7 +34,7 @@ void* AutoRingRejectionProcess::state(EProcessState state_name) {
   void* result;
 
   if(state_name == EProcessState::AUTO_RING_REJECTION_IS_PAUSED) { 
-    result = new bool(m_ring_rejector->isPaused());
+    result = new bool{m_ring_rejector->isPaused()};
   }
   
   return result;
