@@ -22,7 +22,7 @@ class MotionControl : public driftless::control::AControl {
   std::unique_ptr<driftless::control::motion::IDriveStraight>
       m_drive_straight{};
 
-  /// @brief @brief The algorithm to go to a point
+  /// @brief The algorithm to go to a point
   std::unique_ptr<driftless::control::motion::IGoToPoint> m_go_to_point{};
 
   /// @brief The algorithm to turn
