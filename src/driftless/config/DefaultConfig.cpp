@@ -507,7 +507,7 @@ std::shared_ptr<robot::Robot> DefaultConfig::buildRobot() {
 }
 
 std::shared_ptr<processes::ProcessSystem> DefaultConfig::buildProcessSystem() {
-  std::shared_ptr<processes::ProcessSystem> process_system{};
+  std::shared_ptr<processes::ProcessSystem> process_system{std::make_shared<processes::ProcessSystem>()};
 
   std::unique_ptr<rtos::IDelayer> ring_rejector_delayer{
       std::make_unique<pros_adapters::ProsDelayer>()};
