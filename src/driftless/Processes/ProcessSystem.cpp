@@ -3,7 +3,8 @@
 namespace driftless {
 namespace processes {
 void ProcessSystem::addProcess(std::unique_ptr<AProcess>& process) {
-  m_processes.emplace(process->getName(), std::move(process));
+  EProcess process_name{process->getName()};
+  m_processes.emplace(process_name, std::move(process));
 }
 
 bool ProcessSystem::removeProcess(EProcess process_name) {

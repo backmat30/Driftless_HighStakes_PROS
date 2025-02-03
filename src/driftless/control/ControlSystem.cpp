@@ -14,7 +14,7 @@ void ControlSystem::addControl(std::unique_ptr<AControl>& control) {
 bool ControlSystem::removeControl(EControl control) {
   // defines the return variable
   bool removed{false};
-  // loops through the list of controls until the specified control is found
+  // removes the control if it exists
   removed = controls.erase(control) > 0;
   return removed;
 }

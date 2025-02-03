@@ -3,7 +3,8 @@
 namespace driftless {
 namespace robot {
 void Robot::addSubsystem(std::unique_ptr<subsystems::ASubsystem>& subsystem) {
-  subsystems.emplace(subsystem->getName(), std::move(subsystem));
+  subsystems::ESubsystem subsystem_name{subsystem->getName()};
+  subsystems.emplace(subsystem_name, std::move(subsystem));
 }
 
 bool Robot::removeSubsystem(subsystems::ESubsystem subsystem) {
@@ -44,7 +45,7 @@ void* Robot::getState(subsystems::ESubsystem subsystem_name,
                       subsystems::ESubsystemState state_name) {
   // basic ptr init
   void* state{nullptr};
-  // find correct subsystem
+  //find correct subsystem
   state = subsystems.at(subsystem_name)->state(state_name);
   return state;
 }

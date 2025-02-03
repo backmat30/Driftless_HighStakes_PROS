@@ -10,6 +10,8 @@
 #include "driftless/robot/subsystems/ESubsystemCommand.hpp"
 #include "driftless/robot/subsystems/ESubsystemState.hpp"
 
+#include "pros/screen.hpp"
+
 namespace driftless {
 namespace robot {
 class Robot {

@@ -16,7 +16,7 @@ void ElevatorAutoRingRejector::taskUpdate() {
   if (m_mutex) {
     m_mutex->take();
   }
-  if (!paused) {
+  if (m_robot && !paused) {
     double elevator_pos{getElevatorPosition()};
     double elevator_distance_to_sensor{getElevatorDistanceToSensor()};
     bool has_opposing_ring{hasOpposingRing()};
@@ -94,19 +94,19 @@ void ElevatorAutoRingRejector::setRejectorPosition(bool active) {
 }
 
 void ElevatorAutoRingRejector::setArmPosition(bool go_neutral) {
-  bool is_load{*static_cast<bool*>(
-      m_robot->getState(robot::subsystems::ESubsystem::ARM,
-                        robot::subsystems::ESubsystemState::ARM_IS_LOAD))};
+    bool is_load{*static_cast<bool*>(
+        m_robot->getState(robot::subsystems::ESubsystem::ARM,
+                          robot::subsystems::ESubsystemState::ARM_IS_LOAD))};
 
-  if (go_neutral && is_load) {
-    m_robot->sendCommand(robot::subsystems::ESubsystem::ARM,
-                         robot::subsystems::ESubsystemCommand::ARM_GO_NEUTRAL);
-    was_arm_moved = true;
-  } else if (was_arm_moved) {
-    m_robot->sendCommand(robot::subsystems::ESubsystem::ARM,
-                         robot::subsystems::ESubsystemCommand::ARM_GO_LOAD);
-    was_arm_moved = false;
-  }
+    if (go_neutral && is_load) {
+      m_robot->sendCommand(robot::subsystems::ESubsystem::ARM,
+                           robot::subsystems::ESubsystemCommand::ARM_GO_NEUTRAL);
+      was_arm_moved = true;
+    } else if (was_arm_moved) {
+      m_robot->sendCommand(robot::subsystems::ESubsystem::ARM,
+                           robot::subsystems::ESubsystemCommand::ARM_GO_LOAD);
+      was_arm_moved = false;
+    }
 }
 
 void ElevatorAutoRingRejector::init() {}
