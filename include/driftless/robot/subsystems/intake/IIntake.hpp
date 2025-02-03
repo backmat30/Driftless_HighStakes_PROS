@@ -1,22 +1,37 @@
 #ifndef __I_INTAKE_HPP__
 #define __I_INTAKE_HPP__
 
+/// @brief The namespace for driftless library code
+/// @author Matthew Backman
 namespace driftless {
+
+/// @brief The namespace for robot code
+/// @author Matthew Backman
 namespace robot {
+
+/// @brief The namespace for subsystems code
+/// @author Matthew Backman
 namespace subsystems {
+
+/// @brief The namespace for intake subsystem code
+/// @author Matthew Backman
 namespace intake {
+
+/// @brief Interface for intake mechanisms
+/// @author Matthew Backman
 class IIntake {
  public:
-  // destroys the intake object
+  /// @brief Destroys the intake object
   virtual ~IIntake() = default;
 
-  // initialize the intake
+  /// @brief Initializes the intake
   virtual void init() = 0;
 
-  // run the intake
+  /// @brief Runs the intake
   virtual void run() = 0;
 
-  // set the voltage of the motor
+  /// @brief Sets the voltage of the motor
+  /// @param voltage __double__ The voltage to set
   virtual void setVoltage(double voltage) = 0;
 };
 }  // namespace intake

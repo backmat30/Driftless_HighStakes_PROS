@@ -5,10 +5,24 @@
 
 #include "driftless/robot/subsystems/ring_sort/ColorRingSort.hpp"
 
+/// @brief The namespace for driftless library code
+/// @author Matthew Backman
 namespace driftless {
+
+/// @brief The namespace for robot code
+/// @author Matthew Backman
 namespace robot {
+
+/// @brief The namespace for subsystems code
+/// @author Matthew Backman
 namespace subsystems {
+
+/// @brief The namespace for ring sort code
+/// @author Matthew Backman
 namespace ring_sort {
+
+/// @brief The builder for the ColorRingSort class
+/// @author Matthew Backman
 class ColorRingSortBuilder {
  private:
   std::unique_ptr<driftless::io::IColorSensor> m_color_sensor{};
@@ -19,18 +33,19 @@ class ColorRingSortBuilder {
 
  public:
   /// @brief Adds a color sensor to the builder
-  /// @param color_sensor The color sensor being used
+  /// @param color_sensor __std::unique_ptr<driftless::io::IColorSensor>&__ The
+    /// color sensor
   /// @return __ColorRingSortBuilder*__ Pointer to the current builder
   ColorRingSortBuilder* withColorSensor(
       std::unique_ptr<driftless::io::IColorSensor>& color_sensor);
 
   /// @brief Adds a max ring distance to the builder
-  /// @param max_ring_distance The max ring distance
+  /// @param max_ring_distance __double__ The max ring distance
   /// @return __ColorRingSortBuilder*__ Pointer to the current builder
   ColorRingSortBuilder* withMaxRingDistance(double max_ring_distance);
 
   /// @brief Adds a distance to the end of the elevator to the builder
-  /// @param distance_to_elevator_end The distance
+  /// @param distance_to_elevator_end __double__ The distance
   /// @return __ColorRingSortBuilder*__ Pointer to the current builder
   ColorRingSortBuilder* withDistanceToElevatorEnd(
       double distance_to_elevator_end);

@@ -6,11 +6,24 @@
 #include "driftless/robot/subsystems/ASubsystem.hpp"
 #include "driftless/robot/subsystems/ring_sort/IRingSort.hpp"
 
+/// @brief The namespace for driftless library code
+/// @author Matthew Backman
 namespace driftless {
+
+/// @brief The namespace for robot code
+/// @author Matthew Backman
 namespace robot {
+
+/// @brief The namespace for subsystems code
+/// @author Matthew Backman
 namespace subsystems {
+
+/// @brief The namespace for the ring sorter subsystem
+/// @author Matthew Backman
 namespace ring_sort {
+  
 /// @brief Subsystem for the ring sorter
+/// @author Matthew Backman
 class RingSortSubsystem : public ASubsystem {
  private:
   std::unique_ptr<IRingSort> m_ring_sort{};

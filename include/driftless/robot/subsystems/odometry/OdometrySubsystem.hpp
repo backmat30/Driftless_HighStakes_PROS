@@ -7,10 +7,24 @@
 #include "driftless/robot/subsystems/odometry/DistancePositionResetter.hpp"
 #include "driftless/robot/subsystems/odometry/InertialPositionTracker.hpp"
 
+/// @brief The namespace for driftless library code
+/// @author Matthew Backman
 namespace driftless {
+
+/// @brief The namespace for robot code
+/// @author Matthew Backman
 namespace robot {
+
+/// @brief The namespace for subsystems code
+/// @author Matthew Backman
 namespace subsystems {
+
+/// @brief The namespace for odometry code
+/// @author Matthew Backman
 namespace odometry {
+
+/// @brief Class representing the odometry subsystem of the robot
+/// @author Matthew Backman
 class OdometrySubsystem : public ASubsystem {
  private:
   // the position tracker being used
@@ -20,22 +34,29 @@ class OdometrySubsystem : public ASubsystem {
   std::unique_ptr<IPositionResetter> m_position_resetter{};
 
  public:
-  // constructor
+  /// @brief Constructor
+  /// @param position_tracker __std::unique_ptr<IPositionTracker>&__ The position tracker to use
+  /// @param position_resetter __std::unique_ptr<IPositionResetter>&__ The position resetter to use
   OdometrySubsystem(std::unique_ptr<IPositionTracker>& position_tracker,
                     std::unique_ptr<IPositionResetter>& position_resetter);
 
-  // initialize the subsystem
+  /// @brief Initializes the subsystem
   void init() override;
 
-  // run the subsystem
+  /// @brief Runs the subsystem
   void run() override;
 
-  // send a command to the subsystem
+  /// @brief Sends a command to the subsystem
+  /// @param command_name __ESubsystemCommand__ The command to send
+  /// @param args __va_list&__ The arguments for the command
   void command(ESubsystemCommand command_name, va_list& args) override;
 
-  // get a specified state of the subsystem
+  /// @brief Gets a specified state of the subsystem
+  /// @param state_name __ESubsystemState__ The state to get
+  /// @return __void*__ The state
   void* state(ESubsystemState state_name) override;
 };
+
 }  // namespace odometry
 }  // namespace subsystems
 }  // namespace robot

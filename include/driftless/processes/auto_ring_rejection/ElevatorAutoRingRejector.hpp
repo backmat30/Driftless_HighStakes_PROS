@@ -13,26 +13,35 @@ namespace processes {
 namespace auto_ring_rejection {
 class ElevatorAutoRingRejector : public IAutoRingRejector {
  private:
+  /// @brief The task delay
   static constexpr uint8_t TASK_DELAY{10};
 
   /// @brief Constantly runs the task updates
   /// @param params The instance being updated
   static void taskLoop(void* params);
 
+  /// @brief The robot object
   std::shared_ptr<robot::Robot> m_robot{};
 
+  /// @brief The alliance object
   std::shared_ptr<alliance::IAlliance> m_alliance{};
 
+  /// @brief If the automatic ring rejector is paused
   bool paused{true};
 
+  /// @brief The elevator position when the last opposing ring was detected
   double last_opposing_ring_pos{-__DBL_MAX__};
 
+  /// @brief Whether the arm was moved out of the way of a ring or not
   bool was_arm_moved{false};
 
+  /// @brief The Delayer used
   std::unique_ptr<rtos::IDelayer> m_delayer{};
 
+  /// @brief The Mutex used
   std::unique_ptr<rtos::IMutex> m_mutex{};
 
+  /// @brief The Task used
   std::unique_ptr<rtos::ITask> m_task{};
 
   /// @brief Updates all instance specific values

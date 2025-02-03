@@ -3,10 +3,24 @@
 
 #include "driftless/robot/subsystems/elevator/PIDElevator.hpp"
 
+/// @brief The namespace for driftless library code
+/// @author Matthew Backman
 namespace driftless {
+    
+/// @brief The namespace for robot code
+/// @author Matthew Backman
 namespace robot {
+
+/// @brief The namespace for subsystems code
+/// @author Matthew Backman
 namespace subsystems {
+
+/// @brief The namespace for elevator subsystem code
+/// @author Matthew Backman
 namespace elevator {
+
+/// @brief Builder class for creating PIDElevator objects
+/// @author Matthew Backman
 class PIDElevatorBuilder {
  private:
   // the delayer used to build the elevator
@@ -54,6 +68,8 @@ class PIDElevatorBuilder {
   // adds a radians to inches ratio to the builder
   PIDElevatorBuilder* withRadiansToInches(double radians_to_inches);
 
+  /// @brief Builds a new PIDElevator object
+  /// @return __std::unique_ptr<PIDElevator>__ Pointer to the new PIDElevator object
   std::unique_ptr<driftless::robot::subsystems::elevator::PIDElevator> build();
 };
 }  // namespace elevator

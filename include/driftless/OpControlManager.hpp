@@ -19,10 +19,13 @@
 #include "driftless/rtos/IClock.hpp"
 #include "driftless/rtos/IDelayer.hpp"
 
+/// @brief Namespace for driftless library code
+/// @author Matthew Backman
 namespace driftless {
+/// @brief Manages the operator control of the robot
+/// @author Matthew Backman
 class OpControlManager {
  private:
-  // loop delay
   static constexpr uint32_t CONTROL_DELAY{10};
 
   std::shared_ptr<rtos::IClock> m_clock{};
@@ -31,27 +34,38 @@ class OpControlManager {
 
   std::unique_ptr<profiles::IProfile> m_profile{};
 
-  // the current alliance
   std::shared_ptr<alliance::IAlliance> m_alliance{};
 
  public:
-  // constructor
+  /// @brief Constructs a new OpControlManager object
+  /// @param clock __std::shared_ptr<rtos::IClock>&__ The clock to use
+  /// @param delayer __std::unique_ptr<rtos::IDelayer>&__ The delayer to use
   OpControlManager(const std::shared_ptr<rtos::IClock>& clock,
                    const std::unique_ptr<rtos::IDelayer>& delayer);
 
-  // defines the controller profile to use
+  /// @brief Sets the profile used in the operator control
+  /// @param profile __std::unique_ptr<profiles::IProfile>&__ The profile to use
   void setProfile(std::unique_ptr<profiles::IProfile>& profile);
 
-  // defines the alliance the robot is on
+  /// @brief Sets the alliance used in the operator control
+  /// @param alliance __std::shared_ptr<alliance::IAlliance>&__ The alliance to use
   void setAlliance(std::shared_ptr<alliance::IAlliance>& alliance);
 
-  // initializes op control
+  /// @brief Initializes the operator control manager
+  /// @param control_system __std::shared_ptr<control::ControlSystem>&__ The control system to use
+  /// @param process_system __std::shared_ptr<driftless::processes::ProcessSystem>&__ The process system to use
+  /// @param controller __std::shared_ptr<io::IController>&__ The controller to use
+  /// @param robot __std::shared_ptr<robot::Robot>&__ The robot to use
   void init(std::shared_ptr<control::ControlSystem> control_system,
             std::shared_ptr<driftless::processes::ProcessSystem> process_system,
             std::shared_ptr<io::IController> controller,
             std::shared_ptr<robot::Robot> robot);
 
-  // runs op control
+  /// @brief Runs the operator control manager
+  /// @param control_system __std::shared_ptr<control::ControlSystem>&__ The control system to use
+  /// @param process_system __std::shared_ptr<driftless::processes::ProcessSystem>&__ The process system to use
+  /// @param controller __std::shared_ptr<io::IController>&__ The controller to use
+  /// @param robot __std::shared_ptr<robot::Robot>&__ The robot to use
   void run(std::shared_ptr<control::ControlSystem> control_system,
            std::shared_ptr<driftless::processes::ProcessSystem> process_system,
            std::shared_ptr<io::IController> controller,

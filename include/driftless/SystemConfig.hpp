@@ -8,7 +8,11 @@
 #include "driftless/config/IConfig.hpp"
 #include "driftless/profiles/IProfile.hpp"
 
+/// @brief Namespace for driftless library code
+/// @author Matthew Backman
 namespace driftless {
+/// @brief The system configuration
+/// @author Matthew Backman
 struct SystemConfig {
   std::shared_ptr<alliance::IAlliance> alliance{};
 

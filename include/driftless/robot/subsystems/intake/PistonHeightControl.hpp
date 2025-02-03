@@ -6,10 +6,24 @@
 #include "driftless/hal/PistonGroup.hpp"
 #include "driftless/robot/subsystems/intake/IHeightControl.hpp"
 
+/// @brief The namespace for driftless library code
+/// @author Matthew Backman
 namespace driftless {
+
+/// @brief The namespace for robot code
+/// @author Matthew Backman
 namespace robot {
+
+/// @brief The namespace for subsystems code
+/// @author Matthew Backman
 namespace subsystems {
+
+/// @brief The namespace for intake subsystem code
+/// @author Matthew Backman
 namespace intake {
+
+/// @brief Class for controlling the height of the intake using pistons
+/// @author Matthew Backman
 class PistonHeightControl : public IHeightControl {
  private:
   // the group of pistons being used
@@ -19,19 +33,22 @@ class PistonHeightControl : public IHeightControl {
   bool raised{false};
 
  public:
-  // initialize the height controller
+  /// @brief Initializes the height controller
   void init() override;
 
-  // run the height controller
+  /// @brief Runs the height controller
   void run() override;
 
-  // sets the height of the intake
+  /// @brief Sets the height of the intake
+  /// @param up __bool__ Whether to raise or lower the intake
   void setHeight(bool up) override;
 
-  // get the height of the intake
+  /// @brief Gets the height of the intake
+  /// @return __bool__ Whether the intake is raised
   bool isRaised() override;
 
-  // set the pistons
+  /// @brief Sets the pistons
+  /// @param pistons __driftless::hal::PistonGroup&__ The pistons to set
   void setPistons(driftless::hal::PistonGroup& pistons);
 };
 }  // namespace intake

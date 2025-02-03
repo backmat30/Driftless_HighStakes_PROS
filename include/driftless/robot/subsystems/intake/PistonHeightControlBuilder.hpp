@@ -5,21 +5,37 @@
 
 #include "driftless/robot/subsystems/intake/PistonHeightControl.hpp"
 
+/// @brief The namespace for driftless library code
+/// @author Matthew Backman
 namespace driftless {
+
+/// @brief The namespace for robot code
+/// @author Matthew Backman
 namespace robot {
+
+/// @brief The namespace for subsystems code
+/// @author Matthew Backman
 namespace subsystems {
+
+/// @brief The namespace for intake subsystem code
+/// @author Matthew Backman
 namespace intake {
+
+/// @brief Builder class for creating PistonHeightControl objects
 class PistonHeightControlBuilder {
  private:
   // the pistons used to build the height controller
   driftless::hal::PistonGroup m_pistons{};
 
  public:
-  // add a piston group to the builder
+  /// @brief Adds a piston group to the builder
+  /// @param piston __std::unique_ptr<driftless::io::IPiston>&__ The piston to add
+  /// @return __PistonHeightControlBuilder*__ The builder instance
   PistonHeightControlBuilder* withPiston(
       std::unique_ptr<driftless::io::IPiston>& piston);
 
-  // build a new piston height controller
+  /// @brief Builds a new PistonHeightControl object
+  /// @return __std::unique_ptr<PistonHeightControl>__ The built PistonHeightControl object
   std::unique_ptr<PistonHeightControl> build();
 };
 }  // namespace intake

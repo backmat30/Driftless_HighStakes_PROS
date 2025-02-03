@@ -15,7 +15,11 @@
 #include "driftless/rtos/IDelayer.hpp"
 #include "pros/misc.hpp"
 
+/// @brief Namespace for driftless library code
+/// @author Matthew Backman
 namespace driftless {
+/// @brief Manages the match
+/// @author Matthew Backman
 class MatchController {
  private:
   static constexpr uint32_t MENU_DELAY{10};
@@ -39,18 +43,28 @@ class MatchController {
   std::shared_ptr<processes::ProcessSystem> process_system{};
 
  public:
+  /// @brief Constructs a new MatchController object
+  /// @param new_menu __std::unique_ptr<menu::IMenu>&__ The menu to use
+  /// @param clock __std::shared_ptr<rtos::IClock>&__ The clock to use
+  /// @param delayer __std::unique_ptr<rtos::IDelayer>&__ The delayer to use
   MatchController(std::unique_ptr<menu::IMenu> &new_menu,
                   std::shared_ptr<rtos::IClock> &clock,
                   std::unique_ptr<rtos::IDelayer> &delayer);
 
+  /// @brief Initializes the MatchController
+  /// @param fast_init __bool__ True if the MatchController should be initialized quickly, false otherwise
   void init(bool fast_init);
 
+  /// @brief Runs the disabled sequence
   void disabled();
 
+  /// @brief Runs the competition initialization sequence
   void competitionInit();
 
+  /// @brief Runs the autonomous controller
   void autonomous();
 
+  /// @brief Runs the operator control manager
   void operatorControl();
 };
 }  // namespace driftless

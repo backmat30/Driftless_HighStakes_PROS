@@ -1,10 +1,24 @@
 #ifndef __I_RING_REJECTION_HPP__
 #define __I_RING_REJECTION_HPP__
 
+/// @brief The namespace for driftless library code
+/// @author Matthew Backman
 namespace driftless {
+
+/// @brief The namespace for robot code
+/// @author Matthew Backman
 namespace robot {
+
+/// @brief The namespace for subsystems code
+/// @author Matthew Backman
 namespace subsystems {
+
+/// @brief The namespace for elevator subsystem code
+/// @author Matthew Backman
 namespace elevator {
+
+/// @brief Interface for ring rejection systems
+/// @author Matthew Backman
 class IRingRejection {
  public:
   /// @brief Deletes the ring rejection object
@@ -26,7 +40,7 @@ class IRingRejection {
   /// @return __True__ if extended, __false__ otherwise
   virtual bool isDeployed() = 0;
 };
-}  // namespace ring_sort
+}  // namespace elevator
 }  // namespace subsystems
 }  // namespace robot
 }  // namespace driftless

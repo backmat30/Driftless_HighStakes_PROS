@@ -1,9 +1,20 @@
 #ifndef __E_SUBSYSTEM_COMMAND_HPP__
 #define __E_SUBSYSTEM_COMMAND_HPP__
 
+/// @brief The namespace for driftless library code
+/// @author Matthew Backman
 namespace driftless {
+
+/// @brief The namespace for robot code
+/// @author Matthew Backman
 namespace robot {
+
+/// @brief The namespace for subsystems code
+/// @author Matthew Backman
 namespace subsystems {
+  
+/// @brief The enum class for subsystem commands
+/// @author Matthew Backman
 enum class ESubsystemCommand {
   ARM_GO_NEUTRAL,
   ARM_GO_LOAD,

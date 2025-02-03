@@ -217,7 +217,7 @@ void LvglMenu::drawMainMenu() {
   lv_style_set_text_color(&team_name_label_style, lv_color_make(244, 115, 33));
   lv_obj_t* team_name_label = lv_label_create(lv_scr_act());
   lv_obj_add_style(team_name_label, &team_name_label_style, 0);
-  lv_label_set_text(team_name_label, "PVEGA5");
+  lv_label_set_text(team_name_label, "Driftless");
   lv_obj_align(team_name_label, LV_ALIGN_BOTTOM_MID, 0, -26);
 
   // Add the status label
