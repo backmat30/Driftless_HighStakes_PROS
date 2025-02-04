@@ -30,6 +30,8 @@ void OpControlManager::run(
     std::shared_ptr<robot::Robot> robot) {
   // pause control system to allow operator takeover
   control_system->pause();
+
+  process_system->sendCommand(processes::EProcess::AUTO_RING_REJECTION, processes::EProcessCommand::AUTO_RING_REJECTION_REJECT_RINGS, robot, m_alliance);
   process_system->resumeAll();
 
   // set subsystems to driver control

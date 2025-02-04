@@ -23,13 +23,15 @@ void ElevatorAutoRingRejector::taskUpdate() {
 
     if (has_opposing_ring) {
       last_opposing_ring_pos = elevator_pos;
+      setArmPosition(true);
     }
 
-    if (elevator_pos > last_opposing_ring_pos + 0.25 &&
+    if (elevator_pos >= last_opposing_ring_pos &&
         elevator_pos < last_opposing_ring_pos + elevator_distance_to_sensor) {
       setRejectorPosition(true);
-      setArmPosition(true);
-    } else {
+    } else if (elevator_pos < last_opposing_ring_pos - 0.25 ||
+               elevator_pos >
+                   last_opposing_ring_pos + elevator_distance_to_sensor) {
       setRejectorPosition(false);
       setArmPosition(false);
       last_opposing_ring_pos = -__DBL_MAX__;
@@ -94,19 +96,19 @@ void ElevatorAutoRingRejector::setRejectorPosition(bool active) {
 }
 
 void ElevatorAutoRingRejector::setArmPosition(bool go_neutral) {
-    bool is_load{*static_cast<bool*>(
-        m_robot->getState(robot::subsystems::ESubsystem::ARM,
-                          robot::subsystems::ESubsystemState::ARM_IS_LOAD))};
+  bool is_load{*static_cast<bool*>(
+      m_robot->getState(robot::subsystems::ESubsystem::ARM,
+                        robot::subsystems::ESubsystemState::ARM_IS_LOAD))};
 
-    if (go_neutral && is_load) {
-      m_robot->sendCommand(robot::subsystems::ESubsystem::ARM,
-                           robot::subsystems::ESubsystemCommand::ARM_GO_NEUTRAL);
-      was_arm_moved = true;
-    } else if (was_arm_moved) {
-      m_robot->sendCommand(robot::subsystems::ESubsystem::ARM,
-                           robot::subsystems::ESubsystemCommand::ARM_GO_LOAD);
-      was_arm_moved = false;
-    }
+  if (go_neutral && is_load) {
+    m_robot->sendCommand(robot::subsystems::ESubsystem::ARM,
+                         robot::subsystems::ESubsystemCommand::ARM_GO_NEUTRAL);
+    was_arm_moved = true;
+  } else if (was_arm_moved && !go_neutral) {
+    m_robot->sendCommand(robot::subsystems::ESubsystem::ARM,
+                         robot::subsystems::ESubsystemCommand::ARM_GO_LOAD);
+    was_arm_moved = false;
+  }
 }
 
 void ElevatorAutoRingRejector::init() {}
