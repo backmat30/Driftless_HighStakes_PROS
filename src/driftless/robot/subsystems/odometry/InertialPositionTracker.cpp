@@ -77,7 +77,8 @@ void InertialPositionTracker::updatePosition() {
   m_position.x += global_x;
   m_position.y += global_y;
   m_position.theta = current_rotation;
-  //pros::screen::print(pros::E_TEXT_MEDIUM_CENTER, 1, "X: %7.2f, Y: %7.2f", m_position.x, m_position.y);
+  pros::screen::print(pros::E_TEXT_LARGE_CENTER, 1, "X: %7.2f, Y: %7.2f",
+                      m_position.x, m_position.y);
 
   // calculate velocities
   if (time_change) {
