@@ -5,11 +5,19 @@
 #include <map>
 #include <memory>
 
-#include "pros/motors.hpp"
 #include "driftless/io/IMotor.hpp"
+#include "pros/motors.hpp"
 
+/// @brief The namespace for driftless library code
+/// @author Matthew Backman
 namespace driftless {
+
+/// @brief The namespace for PROS adapters
+/// @author Matthew Backman
 namespace pros_adapters {
+
+/// @brief Class to adapt the pros motor class to the IMotor interface
+/// @author Matthew Backman
 class ProsV5Motor : public io::IMotor {
  private:
   // maps pros motor cartridges to the corresponding gear ratios
@@ -82,7 +90,7 @@ class ProsV5Motor : public io::IMotor {
   /**
    * @brief Construct a new Pros V5 Motor object
    *
-   * @param motor The motor being adapted
+   * @param motor __std::unique_ptr<pros::Motor>&__ The motor being adapted
    */
   ProsV5Motor(std::unique_ptr<pros::Motor> &motor);
 
@@ -95,42 +103,42 @@ class ProsV5Motor : public io::IMotor {
   /**
    * @brief Get the torque constant of the motor
    *
-   * @return double The torque constant of the motor
+   * @return __double__ The torque constant of the motor
    */
   double getTorqueConstant() override;
 
   /**
    * @brief Get the resistance of the motor
    *
-   * @return double The resistance of the motor
+   * @return __double__ The resistance of the motor
    */
   double getResistance() override;
 
   /**
    * @brief Get the angular velocity constant of the motor
    *
-   * @return double The angular velocity constant of the motor
+   * @return __double__ The angular velocity constant of the motor
    */
   double getAngularVelocityConstant() override;
 
   /**
    * @brief Get the gear ratio of the motor (1 if n/a)
    *
-   * @return double The gear ratio of the motor
+   * @return __double__ The gear ratio of the motor
    */
   double getGearRatio() override;
 
   /**
    * @brief Get the angular velocity of the motor in radians/second
    *
-   * @return double The angular velocity of the motor in radians/second
+   * @return __double__ The angular velocity of the motor in radians/second
    */
   double getAngularVelocity() override;
 
   /**
    * @brief Get the position of the motor in total radians
    *
-   * @return double The total number of radians moved since last reset
+   * @return __double__ The total number of radians moved since last reset
    */
   double getPosition() override;
 
@@ -141,14 +149,14 @@ class ProsV5Motor : public io::IMotor {
   /**
    * @brief Set the voltage input to the motor in Volts
    *
-   * @param volts The voltage input in Volts
+   * @param volts __double__ The voltage input in Volts
    */
   void setVoltage(double volts) override;
 
   /**
    * @brief Set the position of the motor in radians
    *
-   * @param position The position of the motor
+   * @param position __double__ The position of the motor
    */
   void setPosition(double position) override;
 };

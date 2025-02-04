@@ -3,11 +3,19 @@
 
 #include <memory>
 
-#include "pros/adi.hpp"
 #include "driftless/io/IPiston.hpp"
+#include "pros/adi.hpp"
 
+/// @brief The namespace for driftless library code
+/// @author Matthew Backman
 namespace driftless {
+
+/// @brief The namespace for PROS adapters
+/// @author Matthew Backman
 namespace pros_adapters {
+
+/// @brief The class for adapting a PROS piston
+/// @author Matthew Backman
 class ProsPiston : public driftless::io::IPiston {
  private:
   // the ADI port used by the piston
@@ -17,19 +25,22 @@ class ProsPiston : public driftless::io::IPiston {
   bool extended{};
 
  public:
-  // constructs a new pros piston object
+  /// @brief Constructs a new ProsPiston object
+  /// @param adi_digital_out __std::unique_ptr<pros::adi::DigitalOut>&__ The ADI
+  /// port used by the piston
   ProsPiston(std::unique_ptr<pros::adi::DigitalOut>& adi_digital_out);
 
-  // extends the piston
+  /// @brief Extends the piston
   void extend() override;
 
-  // retracts the piston
+  /// @brief Retracts the piston
   void retract() override;
 
-  // toggles the state of the piston
+  /// @brief Toggles the state of the piston
   void toggleState() override;
 
-  // determines if the piston is extended
+  /// @brief Determines if the piston is extended
+  /// @return __bool__ True if extended, false otherwise
   bool isExtended() override;
 };
 }  // namespace pros_adapters

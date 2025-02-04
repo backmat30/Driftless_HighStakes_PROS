@@ -3,29 +3,39 @@
 
 #include <memory>
 
-#include "pros/rtos.hpp"
 #include "driftless/rtos/ITask.hpp"
+#include "pros/rtos.hpp"
 
+/// @brief The namespace for driftless library code
+/// @author Matthew Backman
 namespace driftless {
+
+/// @brief The namespace for PROS adapters
+/// @author Matthew Backman
 namespace pros_adapters {
+
+/// @brief Class to adapt the pros task class to the ITask interface
+/// @author Matthew Backman
 class ProsTask : public rtos::ITask {
  private:
   std::unique_ptr<pros::Task> task{};
 
  public:
-  // starts a task using the provided function and given parameters
+  /// @brief Starts a new task
+  /// @param function __void (*)(void*)__ The function callback ran by the task
+  /// @param params __void*__ Potential parameters of the given function
   void start(void (*function)(void *), void *params) override;
 
-  // remove the task from the scheduler
+  /// @brief Removes the task
   void remove() override;
 
-  // suspends the task
+  /// @brief Suspends the task
   void suspend() override;
 
-  // resumes the task
+  /// @brief Resumes the task
   void resume() override;
 
-  // pauses other tasks until this task is done
+  /// @brief Joins the task
   void join() override;
 };
 }  // namespace pros_adapters

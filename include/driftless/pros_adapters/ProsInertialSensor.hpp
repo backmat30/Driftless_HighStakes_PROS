@@ -5,11 +5,19 @@
 
 #include <memory>
 
-#include "pros/imu.hpp"
 #include "driftless/io/IInertialSensor.hpp"
+#include "pros/imu.hpp"
 
+/// @brief The namespace for driftless library code
+/// @author Matthew Backman
 namespace driftless {
+
+/// @brief The namespace for PROS adapters
+/// @author Matthew Backman
 namespace pros_adapters {
+
+/// @brief The class for adapting a PROS inertial sensor
+/// @author Matthew Backman
 class ProsInertialSensor : public driftless::io::IInertialSensor {
  private:
   // conversion factor from degrees to radians, also flips direction
@@ -22,26 +30,32 @@ class ProsInertialSensor : public driftless::io::IInertialSensor {
   double m_tuning_constant{};
 
  public:
-  // constructor
+  /// @brief Constructs a new ProsInertialSensor object
+  /// @param inertial_sensor The inertial sensor being adapted
+  /// @param tuning_constant The tuning constant to ensure accuracy
   ProsInertialSensor(std::unique_ptr<pros::IMU>& inertial_sensor,
                      double tuning_constant = 1);
 
-  // initialize the inertial sensor
+  /// @brief Initializes the inertial sensor
   void init() override;
 
-  // reset the inertial sensor
+  /// @brief Resets the inertial sensor
   void reset() override;
 
-  // gets the rotation around the Z axis (bound to [0, 360))
+  /// @brief Gets the rotation around the Z axis (bound to [0, 360))
+  /// @return __double__ The heading of the inertial sensor
   double getHeading() override;
 
-  // get the unbounded rotation around the Z axis
+  /// @brief Gets the unbounded rotation around the Z axis
+  /// @return __double__ The rotation of the inertial sensor
   double getRotation() override;
 
-  // sets the heading to a new value
+  /// @brief Sets the heading to a new value
+  /// @param heading The new heading value
   void setHeading(double heading) override;
 
-  // sets the rotation to a new value
+  /// @brief Sets the rotation to a new value
+  /// @param rotation The new rotation value
   void setRotation(double rotation) override;
 };
 }  // namespace pros_adapters

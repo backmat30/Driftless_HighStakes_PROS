@@ -4,11 +4,19 @@
 #include <cstdint>
 #include <memory>
 
-#include "pros/optical.hpp"
 #include "driftless/io/IColorSensor.hpp"
+#include "pros/optical.hpp"
 
+/// @brief The namespace for driftless library code
+/// @author Matthew Backman
 namespace driftless {
+
+/// @brief The namespace for PROS adapters
+/// @author Matthew Backman
 namespace pros_adapters {
+
+/// @brief Adapter class for the PROS color sensor
+/// @author Matthew Backman
 class ProsColorSensor : public driftless::io::IColorSensor {
  private:
   // the default brightness on the LEDs
@@ -18,23 +26,28 @@ class ProsColorSensor : public driftless::io::IColorSensor {
   std::unique_ptr<pros::Optical> m_optical_sensor{};
 
  public:
-  // constructs a new pros color sensor
+  /// @brief Constructor
+  /// @param optical_sensor __std::unique_ptr<pros::Optical>&__ The optical
+  /// sensor to adapt
   ProsColorSensor(std::unique_ptr<pros::Optical>& optical_sensor);
 
-  // initialize the color sensor
+  /// @brief Initializes the color sensor
   void init() override;
 
-  // set the brightness of the LEDs on the optical sensor
+  /// @brief Sets the brightness of the LEDs on the optical sensor
+  /// @param brightness __uint8_t__ The brightness level
   void setLEDBrightness(uint8_t brightness) override;
 
-  // get the hue from the color sensor
+  /// @brief Gets the hue from the color sensor
+  /// @return __double__ The hue value
   double getHue() override;
 
   /// @brief Gets the RGB value from the color sensor
-  /// @return __RGBValue__ The rgb value of the color sensor
+  /// @return __io::RGBValue__ The RGB value
   io::RGBValue getRGB() override;
 
-  // get the proximity from the color sensor
+  /// @brief Gets the proximity from the color sensor
+  /// @return __uint32_t__ The proximity value
   uint32_t getProximity() override;
 };
 }  // namespace pros_adapters

@@ -5,13 +5,20 @@
 #include <map>
 #include <memory>
 
-#include "pros/misc.h"
+#include "driftless/io/IController.hpp"
 #include "pros/misc.hpp"
 #include "pros/rtos.hpp"
-#include "driftless/io/IController.hpp"
 
+/// @brief The namespace for driftless library code
+/// @author Matthew Backman
 namespace driftless {
+
+/// @brief The namespace for PROS adapters
+/// @author Matthew Backman
 namespace pros_adapters {
+
+/// @brief Adapter class for the PROS controller
+/// @author Matthew Backman
 class ProsController : public io::IController {
  private:
   static constexpr uint8_t TASK_DELAY{10};
@@ -75,18 +82,34 @@ class ProsController : public io::IController {
   void taskUpdate();
 
  public:
+  /// @brief Constructor
+  /// @param controller __std::unique_ptr<pros::Controller>&__ The controller to
+  /// adapt
   ProsController(std::unique_ptr<pros::Controller> &controller);
 
+  /// @brief Initializes the controller
   void init() override;
 
+  /// @brief Runs the controller
   void run() override;
 
+  /// @brief Gets the analog value from the controller
+  /// @param channel __op_control::EControllerAnalog__ The analog channel
+  /// @return __double__ The analog value
   double getAnalog(op_control::EControllerAnalog channel) override;
 
+  /// @brief Gets the digital value from the controller
+  /// @param channel __op_control::EControllerDigital__ The digital channel
+  /// @return __bool__ The digital value
   bool getDigital(op_control::EControllerDigital channel) override;
 
+  /// @brief Gets the new digital value from the controller
+  /// @param channel __op_control::EControllerDigital__ The digital channel
+  /// @return __bool__ The new digital value
   bool getNewDigital(op_control::EControllerDigital channel) override;
 
+  /// @brief Sets the rumble pattern for the controller
+  /// @param pattern __std::string__ The rumble pattern
   void rumble(std::string pattern) override;
 };
 }  // namespace pros_adapters
