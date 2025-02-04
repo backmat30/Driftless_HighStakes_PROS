@@ -13,10 +13,24 @@
 #include "driftless/rtos/IMutex.hpp"
 #include "driftless/rtos/ITask.hpp"
 
+/// @brief The namespace for driftless library code
+/// @author Matthew Backman
 namespace driftless {
+
+/// @brief The namespace for robot code
+/// @author Matthew Backman
 namespace robot {
+
+/// @brief The namespace for subsystems code
+/// @author Matthew Backman
 namespace subsystems {
+
+/// @brief The namespace for arm subsystem code
+/// @author Matthew Backman
 namespace arm {
+
+/// @brief The class for PID arm motion control
+/// @author Matthew Backman
 class PIDArmMotion : public IArmMotion {
  private:
   enum class EState {
@@ -186,125 +200,149 @@ class PIDArmMotion : public IArmMotion {
   double getLinearEfficiency();
 
  public:
-  // initialize the arm motion control
+  /// @brief Initializes the arm motion control
   void init() override;
 
-  // run the arm motion control
+  /// @brief Runs the arm motion control
   void run() override;
 
-  // finds the zero-position of the arm and calibrates
+  /// @brief Finds the zero-position of the arm and calibrates
   void calibrate() override;
 
-  // goes to the neutral position
+  /// @brief Goes to the neutral position
   void goNeutral() override;
 
-  // goes to the loading position
+  /// @brief Goes to the loading position
   void goLoad() override;
 
-  // goes to the ready position
+  /// @brief Goes to the ready position
   void goReady() override;
 
-  // goes to the score position
+  /// @brief Goes to the score position
   void goScore() override;
 
-  // goes to the rush position
+  /// @brief Goes to the rush position
   void goRush() override;
 
   /// @brief Puts the arm at the alliance stake position
   void goAllianceStake() override;
 
-  // goes to the previous position
+  /// @brief Goes to the previous position
   void goPrevious() override;
 
-  // determines if the arm is in the neutral position
+  /// @brief Determines if the arm is in the neutral position
+  /// @return __bool__ True if at neutral, false otherwise
   bool isAtNeutral() override;
 
-  // determines if the arm is going to the neutral position
+  /// @brief Determines if the arm is going to the neutral position
+  /// @return __bool__ True if going neutral, false otherwise
   bool isGoingNeutral() override;
 
-  // determines if the arm is in the loading position
+  /// @brief Determines if the arm is in the loading position
+  /// @return __bool__ True if at load, false otherwise
   bool isAtLoad() override;
 
-  // determines if the arm is going to the loading position
+  /// @brief Determines if the arm is going to the loading position
+  /// @return __bool__ True if going load, false otherwise
   bool isGoingLoad() override;
 
-  // determines if the arm is in the ready position
+  /// @brief Determines if the arm is in the ready position
+  /// @return __bool__ True if at ready, false otherwise
   bool isAtReady() override;
 
-  // determines if the arm is going to the ready position
+  /// @brief Determines if the arm is going to the ready position
+  /// @return __bool__ True if going ready, false otherwise
   bool isGoingReady() override;
 
-  // determines if the arm is in the score position
+  /// @brief Determines if the arm is in the score position
+  /// @return __bool__ True if at score, false otherwise
   bool isAtScore() override;
 
-  // determines if the arm is going to the score position
+  /// @brief Determines if the arm is going to the score position
+  /// @return __bool__ True if going score, false otherwise
   bool isGoingScore() override;
 
-  // determines if the arm is at the rush position
+  /// @brief Determines if the arm is at the rush position
+  /// @return __bool__ True if at rush, false otherwise
   bool isAtRush() override;
 
-  // determines if the arm is going to the rush position
+  /// @brief Determines if the arm is going to the rush position
+  /// @return __bool__ True if going rush, false otherwise
   bool isGoingRush() override;
 
   /// @brief Determines if the arm is at the alliance stake position
-  /// @return __true__ if at alliance stake, __false__ otherwise
+  /// @return __bool__ True if at alliance stake, false otherwise
   bool isAtAllianceStake() override;
 
   /// @brief Determines if the arm is going to the alliance stake position
-  /// @return __True__ if going alliance stake, __false__ otherwise
+  /// @return __bool__ True if going alliance stake, false otherwise
   bool isGoingAllianceStake() override;
 
   /// @brief Sets the internal clock of the system
   /// @param clock The new internal clock
   void setClock(const std::unique_ptr<driftless::rtos::IClock>& clock);
 
-  // sets the delayer
+  /// @brief Sets the delayer
+  /// @param delayer The new delayer
   void setDelayer(const std::unique_ptr<driftless::rtos::IDelayer>& delayer);
 
-  // sets the mutex
+  /// @brief Sets the mutex
+  /// @param mutex The new mutex
   void setMutex(std::unique_ptr<driftless::rtos::IMutex>& mutex);
 
-  // sets the task
+  /// @brief Sets the task
+  /// @param task The new task
   void setTask(std::unique_ptr<driftless::rtos::ITask>& task);
 
-  // sets the rotation sensor
+  /// @brief Sets the rotation sensor
+  /// @param rotation_sensor The new rotation sensor
   void setRotationSensor(
       std::unique_ptr<driftless::io::IRotationSensor>& rotation_sensor);
 
-  // sets the potentiometer
+  /// @brief Sets the potentiometer
+  /// @param potentiometer The new potentiometer
   void setPotentiometer(
       std::unique_ptr<driftless::io::IPotentiometer>& potentiometer);
 
-  // sets the rotation motors
+  /// @brief Sets the rotation motors
+  /// @param rotation_motors The new rotation motors
   void setRotationMotors(driftless::hal::MotorGroup& rotation_motors);
 
-  // sets the linear motors
+  /// @brief Sets the linear motors
+  /// @param linear_motors The new linear motors
   void setLinearMotors(driftless::hal::MotorGroup& linear_motors);
 
-  // sets the rotational PID controller
+  /// @brief Sets the rotational PID controller
+  /// @param rotational_pid The new rotational PID controller
   void setRotationalPID(driftless::control::PID rotational_pid);
 
-  // sets the linear PID controller
+  /// @brief Sets the linear PID controller
+  /// @param linear_pid The new linear PID controller
   void setLinearPID(driftless::control::PID linear_pid);
 
-  // sets the rotational neutral position
+  /// @brief Sets the rotational neutral position
+  /// @param rotational_neutral_position The new rotational neutral position
   void setRotationalNeutralPosition(double rotational_neutral_position);
 
-  // sets the rotational loading position
+  /// @brief Sets the rotational loading position
+  /// @param rotational_load_position The new rotational load position
   void setRotationalLoadPosition(double rotational_load_position);
 
-  // sets the rotational ready position
+  /// @brief Sets the rotational ready position
+  /// @param rotational_ready_position The new rotational ready position
   void setRotationalReadyPosition(double rotational_ready_position);
 
-  // sets the rotational score position
+  /// @brief Sets the rotational score position
+  /// @param rotational_score_position The new rotational score position
   void setRotationalScorePosition(double rotational_score_position);
 
-  // sets the rotational rush position
+  /// @brief Sets the rotational rush position
+  /// @param rotational_rush_position The new rotational rush position
   void setRotationalRushPosition(double rotational_rush_position);
 
   /// @brief Sets the rotational alliance stake position of the arm
-  /// @param rotational_alliance_stake_position The rotational alliance stake
-  /// position
+  /// @param rotational_alliance_stake_position The new rotational alliance
+  /// stake position
   void setRotationalAllianceStakePosition(
       double rotational_alliance_stake_position);
 
@@ -328,22 +366,28 @@ class PIDArmMotion : public IArmMotion {
   void setRotationalAllianceStakeIntermediatePosition(
       double rotational_alliance_stake_intermediate_position);
 
-  // sets the rotational position tolerance
+  /// @brief Sets the rotational position tolerance
+  /// @param rotational_tolerance The new tolerance
   void setRotationalTolerance(double rotational_tolerance);
 
-  // sets the linear neutral position
+  /// @brief Sets the linear neutral position
+  /// @param linear_neutral_position The new linear neutral position
   void setLinearNeutralPosition(double linear_neutral_position);
 
-  // sets the linear loading position
+  /// @brief Sets the linear loading position
+  /// @param linear_load_position The new linear load position
   void setLinearLoadPosition(double linear_load_position);
 
-  // sets the linear ready position
+  /// @brief Sets the linear ready position
+  /// @param linear_ready_position The new linear ready position
   void setLinearReadyPosition(double linear_ready_position);
 
-  // sets the linear score position
+  /// @brief Sets the linear score position
+  /// @param linear_score_position The new linear score position
   void setLinearScorePosition(double linear_score_position);
 
-  // sets the linear rush position
+  /// @brief Sets the linear rush position
+  /// @param linear_rush_position The new linear rush position
   void setLinearRushPosition(double linear_rush_position);
 
   /// @brief Sets the linear alliance stake position
