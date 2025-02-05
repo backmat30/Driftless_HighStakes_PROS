@@ -4,9 +4,20 @@
 #include "driftless/processes/AProcess.hpp"
 #include "driftless/processes/auto_ring_rejection/IAutoRingRejector.hpp"
 
+/// @brief Namespace for driftless library code
+/// @author Matthew Backman
 namespace driftless {
+
+/// @brief Namespace for process management
+/// @author Matthew Backman
 namespace processes {
+
+/// @brief Namespace for the auto ring rejection process
+/// @author Matthew Backman
 namespace auto_ring_rejection {
+
+/// @brief Class representing the Auto ring rejection process
+/// @author Matthew Backman
 class AutoRingRejectionProcess : public AProcess {
  private:
   /// @brief The auto ring rejector
@@ -14,7 +25,9 @@ class AutoRingRejectionProcess : public AProcess {
 
  public:
   /// @brief Constructs an AutoRingRejectionProcess object
-  /// @param ring_rejector __std::unique_ptr<auto_ring_rejection::IAutoRingRejector>&__ The auto ring rejector
+  /// @param ring_rejector
+  /// __std::unique_ptr<auto_ring_rejection::IAutoRingRejector>&__ The auto ring
+  /// rejector
   AutoRingRejectionProcess(
       std::unique_ptr<auto_ring_rejection::IAutoRingRejector>& ring_rejector);
 

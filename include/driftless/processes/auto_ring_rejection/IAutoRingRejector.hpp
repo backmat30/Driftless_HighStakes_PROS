@@ -6,9 +6,20 @@
 #include "driftless/alliance/IAlliance.hpp"
 #include "driftless/robot/Robot.hpp"
 
+/// @brief Namespace for driftless library code
+/// @author Matthew Backman
 namespace driftless {
+
+/// @brief Namespace for process management
+/// @author Matthew Backman
 namespace processes {
+
+/// @brief Namespace for the auto ring rejection process
+/// @author Matthew Backman
 namespace auto_ring_rejection {
+
+/// @brief Interface for a generic automatic ring rejection process
+/// @author Matthew Backman
 class IAutoRingRejector {
  public:
   /// @brief Destroys the current auto ring rejector object
@@ -28,7 +39,8 @@ class IAutoRingRejector {
 
   /// @brief Rejects rings
   /// @param robot __std::shared_ptr<robot::Robot>&__ The robot object
-  /// @param alliance __std::shared_ptr<alliance::IAlliance>&__ The alliance object
+  /// @param alliance __std::shared_ptr<alliance::IAlliance>&__ The alliance
+  /// object
   virtual void rejectRings(std::shared_ptr<robot::Robot>& robot,
                            std::shared_ptr<alliance::IAlliance>& alliance) = 0;
 

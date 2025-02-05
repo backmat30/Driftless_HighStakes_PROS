@@ -8,8 +8,16 @@
 
 #include "driftless/processes/AProcess.hpp"
 
+/// @brief Namespace for driftless library code
+/// @author Matthew Backman
 namespace driftless {
+
+/// @brief Namespace for process management
+/// @author Matthew Backman
 namespace processes {
+
+/// @brief Manages and controls various processes
+/// @author Matthew Backman
 class ProcessSystem {
  private:
   std::map<EProcess, std::unique_ptr<AProcess>> m_processes{};
@@ -25,9 +33,11 @@ class ProcessSystem {
   bool removeProcess(EProcess process_name);
 
   /// @brief Pause a process
+  /// @param process_name __EProcess__ The name of the process to pause
   void pause(EProcess process_name);
 
   /// @brief Resume a process
+  /// @param process_name __EProcess__ The name of the process to resume
   void resume(EProcess process_name);
 
   /// @brief Pause all processes
@@ -43,13 +53,15 @@ class ProcessSystem {
   void run();
 
   /// @brief Send a command to a process
-  /// @param process_name __EProcess__ The name of the process to send the command to
+  /// @param process_name __EProcess__ The name of the process to send the
+  /// command to
   /// @param command_name __EProcessCommand__ The command to send
   /// @param ... The arguments to the command
   void sendCommand(EProcess process_name, EProcessCommand command_name, ...);
 
   /// @brief Get the state of a process
-  /// @param process_name __EProcess__ The name of the process to get the state of
+  /// @param process_name __EProcess__ The name of the process to get the state
+  /// of
   /// @param state_name __EProcessState__ The state to get
   /// @return __void*__ A pointer to the state
   void* getState(EProcess process_name, EProcessState state_name);
