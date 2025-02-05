@@ -16,10 +16,15 @@
 #include "driftless/profiles/IProfile.hpp"
 
 /// @brief Namespace for driftless library code
+/// @author Matthew Backman
 namespace driftless {
+
 /// @brief Namespace for user control profiles
+/// @author Matthew Backman
 namespace profiles {
-/// @brief User control profile for John
+
+/// @brief User control profile for John with arcade drive
+/// @author Matthew Backman
 class JohnButArcade : public driftless::profiles::IProfile {
  private:
   /// @brief Name of the profile
@@ -71,29 +76,31 @@ class JohnButArcade : public driftless::profiles::IProfile {
 
  public:
   /// @brief Gets the name of the profile
-  /// @return The name as a string
+  /// @return __std::string__ The name
   std::string getName() override;
 
   /// @brief Gets the control mode of the given control type
-  /// @param control_type The control type
-  /// @return The control mode as an integer
+  /// @param control_type __op_control::EControlType__ The control type
+  /// @return __int__ The control mode as an integer
   int getControlMode(op_control::EControlType control_type) const override;
 
   /// @brief Sets the control mode of the given control type
-  /// @param control_type The control type
-  /// @param control_mode The new control mode
+  /// @param control_type __op_control::EControlType__ The control type
+  /// @param control_mode __int__ The new control mode
   void setControlMode(op_control::EControlType control_type,
                       int control_mode) override;
 
   /// @brief Gets the analog control mapped to the given control
-  /// @param control The control
-  /// @return The analog control mapped to the control
+  /// @param control __op_control::EControl__ The control
+  /// @return __op_control::EControllerAnalog__ The analog control mapped to the
+  /// control
   op_control::EControllerAnalog getAnalogControlMapping(
       op_control::EControl control) const override;
 
   /// @brief Gets the digital control mapped to the given control
-  /// @param control The control
-  /// @return The digital control mapped to the control
+  /// @param control __op_control::EControl__ The control
+  /// @return __op_control::EControllerDigital__ The digital control mapped to
+  /// the control
   op_control::EControllerDigital getDigitalControlMapping(
       op_control::EControl control) const override;
 };

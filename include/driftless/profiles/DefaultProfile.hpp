@@ -15,14 +15,22 @@
 #include "driftless/op_control/intake/EIntakeControlMode.hpp"
 #include "driftless/profiles/IProfile.hpp"
 
+/// @brief Namespace for driftless library code
+/// @author Matthew Backman
 namespace driftless {
+
+/// @brief Namespace for user control profiles
+/// @author Matthew Backman
 namespace profiles {
+
+/// @brief Default user control profile
+/// @author Matthew Backman
 class DefaultProfile : public profiles::IProfile {
  private:
-  // name of profile
+  /// @brief Name of the profile
   static constexpr char PROFILE_NAME[]{"DEFAULT"};
 
-  // list of subsystems to be controlled and the type of control used
+  /// @brief List of subsystems to be controlled and the type of control used
   std::map<op_control::EControlType, int> CONTROL_MODE_MAP{
       {op_control::EControlType::ARM,
        static_cast<int>(op_control::arm::EArmControlMode::SMART_TOGGLE)},
@@ -36,11 +44,11 @@ class DefaultProfile : public profiles::IProfile {
        static_cast<int>(
            op_control::intake::EIntakeControlMode::SINGLE_TOGGLE)}};
 
-  // maps subsystem controls to analog inputs
+  /// @brief Maps subsystem controls to analog inputs
   const std::map<op_control::EControl, op_control::EControllerAnalog>
       ANALOG_CONTROL_MAP{};
 
-  // maps subsystem controls to digital inputs
+  /// @brief Maps subsystem controls to digital inputs
   const std::map<op_control::EControl, op_control::EControllerDigital>
       DIGITAL_CONTROL_MAP{
           {op_control::EControl::ARM_TOGGLE,
@@ -59,21 +67,30 @@ class DefaultProfile : public profiles::IProfile {
            op_control::EControllerDigital::TRIGGER_RIGHT_TOP}};
 
  public:
-  // returns profile name
+  /// @brief Gets the name of the profile
+  /// @return The name as a string
   std::string getName() override;
 
-  // returns the control mode for the given subsystem
+  /// @brief Gets the control mode for the given subsystem
+  /// @param control_type __op_control::EControlType__ The control type
+  /// @return __int__ The control mode as an integer
   int getControlMode(op_control::EControlType control_type) const override;
 
-  // sets the control mode for the given subsystem
+  /// @brief Sets the control mode for the given subsystem
+  /// @param control_type __op_control::EControlType__ The control type
+  /// @param control_mode __int__ The new control mode
   void setControlMode(op_control::EControlType control_type,
                       int control_mode) override;
 
-  // gets the analog input type used for an action
+  /// @brief Gets the analog input type used for an action
+  /// @param control __op_control::EControl__ The control
+  /// @return __op_control::EControllerAnalog__ The analog input type
   op_control::EControllerAnalog getAnalogControlMapping(
       op_control::EControl control) const override;
 
-  // gets the digital input type used for an action
+  /// @brief Gets the digital input type used for an action
+  /// @param control __op_control::EControl__ The control
+  /// @return __op_control::EControllerDigital__ The digital input type
   op_control::EControllerDigital getDigitalControlMapping(
       op_control::EControl control) const override;
 };
