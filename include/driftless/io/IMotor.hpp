@@ -2,10 +2,15 @@
 #define __I_MOTOR_HPP__
 
 /// @brief Namespace for driftless library code
+/// @author Matthew Backman
 namespace driftless {
-/// @brief Namespace for all input/output device interfaces
+
+/// @brief Namespace for all IO device interfaces
+/// @author Matthew Backman
 namespace io {
+
 /// @brief Interface for a generic motor
+/// @author Matthew Backman
 class IMotor {
  public:
   /// @brief Destroys the motor object

@@ -1,20 +1,28 @@
 #ifndef __I_DISTANCE_SENSOR_HPP__
 #define __I_DISTANCE_SENSOR_HPP__
 
+/// @brief Namespace for driftless library code
+/// @author Matthew Backman
 namespace driftless {
+
+/// @brief Namespace for IO device interfaces
+/// @author Matthew Backman
 namespace io {
+/// @brief Interface for a generic distance sensor
+/// @author Matthew Backman
 class IDistanceSensor {
  public:
-  // destroyer
+  /// @brief Destroys the distance sensor
   virtual ~IDistanceSensor() = default;
 
-  // initialize the distance sensor
+  /// @brief Initializes the distance sensor
   virtual void init() = 0;
 
-  // resets the distance sensor
+  /// @brief Resets the distance sensor
   virtual void reset() = 0;
 
-  // gets the distance from the sensor
+  /// @brief Gets the distance, in inches, from the distance sensor
+  /// @return __double__ The distance
   virtual double getDistance() = 0;
 };
 }  // namespace io
