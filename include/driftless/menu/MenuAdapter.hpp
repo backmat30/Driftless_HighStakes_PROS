@@ -11,8 +11,16 @@
 #include "driftless/menu/IMenu.hpp"
 #include "driftless/profiles/IProfile.hpp"
 
+/// @brief Namespace for driftless library code
+/// @author Matthew Backman
 namespace driftless {
+
+/// @brief Namespace for menu handling
+/// @author Matthew Backman
 namespace menu {
+
+/// @brief Class to adapt the lvgl menu to the IMenu interface
+/// @author Matthew Backman
 class MenuAdapter : public IMenu {
  private:
   // Name used for the alliance settings
@@ -42,25 +50,36 @@ class MenuAdapter : public IMenu {
 
  public:
   /// @brief Adds an alliance to the menu
-  /// @param alliance __std::unique_ptr<IAlliance>__ Reference to the desired
-  /// alliance to add
+  /// @param alliance __std::unique_ptr<alliance::IAlliance>__ Reference to the
+  /// desired alliance to add
   void addAlliance(std::shared_ptr<alliance::IAlliance>& alliance) override;
 
+  /// @brief Adds an auton to the menu
+  /// @param auton __std::unique_ptr<auton::IAuton>&__ Reference to the auton
+  /// being added
   void addAuton(std::unique_ptr<auton::IAuton>& auton) override;
 
-  // add a config to the selection
+  /// @brief Adds a config to the menu
+  /// @param config __std::unique_ptr<config::IConfig>&__ Reference to the
+  /// config being added
   void addConfig(std::unique_ptr<config::IConfig>& config) override;
 
-  // add a profile to the selection
+  /// @brief Adds a profile to the menu
+  /// @param profile __std::unique_ptr<profiles::IProfile>&__ Reference to the
+  /// profile being added
   void addProfile(std::unique_ptr<profiles::IProfile>& profile) override;
 
-  // display menu
+  /// @brief Displays the menu on the brain
   void display() override;
 
-  // checks if the menu is running
+  /// @brief Determines if the start button has been pressed
+  /// @return __bool__ True if the button was pressed, false otherwise
   bool isStarted() override;
 
-  // gets the systems config settings
+  /// @brief Gets the system configuration to use during the match
+  /// @param read_only __bool__ Whether to get the system config straight from
+  /// the memory, or let the user configure settings
+  /// @return __SystemConfig__ The configurations to use during the match
   SystemConfig getSystemConfig(bool read_only = false) override;
 };
 }  // namespace menu

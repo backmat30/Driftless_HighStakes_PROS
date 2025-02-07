@@ -3,8 +3,17 @@
 
 #include <string>
 #include <vector>
+
+/// @brief Namespace for driftless library code
+/// @author Matthew Backman
 namespace driftless {
+
+/// @brief Namespace for menu handling
+/// @author Matthew Backman
 namespace menu {
+
+/// @brief Struct representing an option type and potential values
+/// @author Matthew Backman
 struct Option {
   std::string name{};
 
