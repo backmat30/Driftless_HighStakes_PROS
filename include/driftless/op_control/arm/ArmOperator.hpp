@@ -11,9 +11,20 @@
 #include "driftless/robot/subsystems/ESubsystemCommand.hpp"
 #include "driftless/robot/subsystems/ESubsystemState.hpp"
 
+/// @brief Namespace for driftless library code
+/// @author Matthew Backman
 namespace driftless {
+
+/// @brief Namespace for operator control management
+/// @author Matthew Backman
 namespace op_control {
+
+/// @brief Namespace for arm control
+/// @author Matthew Backman
 namespace arm {
+
+/// @brief Class to represent arm control
+/// @author Matthew Backman
 class ArmOperator {
  private:
   // the controller used
@@ -23,29 +34,55 @@ class ArmOperator {
   std::shared_ptr<driftless::robot::Robot> m_robot{};
 
   /// @brief determines if the robot has an alliance ring loaded
+  /// @param alliance __const std::shared_ptr<alliance::IAlliance>&__ The
+  /// current alliance
+  /// @return __bool__ True if there is an alliance ring, false otherwise
   bool hasAllianceRing(const std::shared_ptr<alliance::IAlliance>& alliance);
 
   /// @depricated: Use color sort process
   /// @brief determines if the robot has an opposing alliance ring loaded
+  /// @param alliance __const std::shared_ptr<alliance::IAlliance>&__ The
+  /// current alliance
   bool hasOpposingRing(const std::shared_ptr<alliance::IAlliance>& alliance);
 
-  // updates the arm using split toggle
+  /// @brief Updates the arm using seperate buttons for each location
+  /// @param neutral __EControllerDigital__ Button for neutral position
+  /// @param load __EControllerDigital__ Button for load position
+  /// @param ready __EControllerDigital__ Button for ready position
+  /// @param score __EControllerDigital__ Button for score position
+  /// @param alliance __const std::shared_ptr<alliance::IAlliance>&__ The
+  /// current alliance
   void updateSplitToggle(EControllerDigital neutral, EControllerDigital load,
                          EControllerDigital ready, EControllerDigital score,
                          const std::shared_ptr<alliance::IAlliance>& alliance);
 
-  // update the arm using single toggle
+  /// @brief Updates the arm using a single primary button for position cycling
+  /// @param toggle __EControllerDigital__ Button for primary position cycle
+  /// @param rush __EControllerDigital__ Button to go to the rush position
+  /// @param calibrate __EControllerDigital__ Button to calibrate the arm
+  /// @param alliance_stake __EControllerDigital__ Button to go to the alliance
+  /// stake position
+  /// @param alliance __const std::shared_ptr<alliance::IAlliance>&__ The
+  /// current alliance
   void updateSmartToggle(EControllerDigital toggle, EControllerDigital rush,
                          EControllerDigital calibrate,
                          EControllerDigital alliance_stake,
                          const std::shared_ptr<alliance::IAlliance>& alliance);
 
  public:
-  // constructs a new arm operator
+  /// @brief Constructs a new ArmOperator object
+  /// @param controller __const std::shared_ptr<io::IController>&__
+  /// The controller used
+  /// @param robot __const std::shared_ptr<robot::Robot>&__ The robot
+  /// being controlled
   ArmOperator(const std::shared_ptr<driftless::io::IController>& controller,
               const std::shared_ptr<driftless::robot::Robot>& robot);
 
-  // update the arm
+  /// @brief Updates the arm
+  /// @param profile __const std::unique_ptr<profiles::IProfile>&__ The profile
+  /// used for control mapping
+  /// @param alliance __const std::shared_ptr<alliance::IAlliance>&__ The
+  /// current alliance
   void update(const std::unique_ptr<driftless::profiles::IProfile>& profile,
               const std::shared_ptr<alliance::IAlliance>& alliance);
 };

@@ -15,9 +15,24 @@
 #include "driftless/robot/subsystems/ESubsystemCommand.hpp"
 #include "driftless/robot/subsystems/ESubsystemState.hpp"
 
+/// @brief Namespace for driftless library code
+/// @author Matthew Backman
 namespace driftless {
+
+/// @brief Namespace for operator control management
+/// @date 2024-2025
+/// @author Matthew Backman
 namespace op_control {
+
+/// @brief Namespace for elevator control
+/// @date 2024-2025
+/// @author Matthew Backman
 namespace elevator {
+
+/// @brief Class to represent elevator control
+/// @date 2024-2025
+/// @details This class provides control mechanisms for the elevator subsystem.
+/// @author Matthew Backman
 class ElevatorOperator {
  private:
   // name of the blue alliance
@@ -46,27 +61,33 @@ class ElevatorOperator {
   void updateElevatorVoltage(double voltage);
 
   /// @brief Updates the elevator using held buttons
-  /// @param spin The button to spin the intake forwards
-  /// @param reverse The button to spin the intake reverse
+  /// @param spin __EControllerDigital__ The button to spin the intake forwards
+  /// @param reverse __EControllerDigital__ The button to spin the intake reverse
   void updateHold(EControllerDigital spin, EControllerDigital reverse);
 
   /// @brief Updates the elevator using new button presses
-  /// @param spin The button to spin the intake forwards
-  /// @param reverse The button to spin the intake reverse
+  /// @param spin __EControllerDigital__ The button to spin the intake forwards
+  /// @param reverse __EControllerDigital__ The button to spin the intake reverse
   void updateToggle(EControllerDigital spin, EControllerDigital reverse);
 
   /// @deprecated: Use color sort process
   /// @brief Updates the ring sensor and ring rejector
+  /// @param toggle __EControllerDigital__ The button to toggle the ring sensor
+  /// @param alliance __const std::shared_ptr<alliance::IAlliance>&__ The alliance information
   void updateRingSensor(EControllerDigital toggle,
                         const std::shared_ptr<alliance::IAlliance>& alliance);
 
  public:
-  // constructor
+  /// @brief Constructs a new ElevatorOperator object
+  /// @param controller __const std::shared_ptr<driftless::io::IController>&__ The controller used by the robot
+  /// @param robot __const std::shared_ptr<driftless::robot::Robot>&__ The robot being controlled
   ElevatorOperator(
       const std::shared_ptr<driftless::io::IController>& controller,
       const std::shared_ptr<driftless::robot::Robot>& robot);
 
-  // spin the elevator
+  /// @brief Updates the state of the elevator
+  /// @param profile __const std::unique_ptr<driftless::profiles::IProfile>&__ The profile used for control mappings
+  /// @param alliance __const std::shared_ptr<driftless::alliance::IAlliance>&__ The alliance information
   void update(const std::unique_ptr<driftless::profiles::IProfile>& profile,
               const std::shared_ptr<driftless::alliance::IAlliance>& alliance);
 };

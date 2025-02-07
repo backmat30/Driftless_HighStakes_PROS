@@ -12,9 +12,20 @@
 #include "driftless/robot/subsystems/ESubsystemCommand.hpp"
 #include "driftless/robot/subsystems/ESubsystemState.hpp"
 
+/// @brief Namespace for driftless library code
+/// @author Matthew Backman
 namespace driftless {
+
+/// @brief Namespace for operator control management
+/// @author Matthew Backman
 namespace op_control {
+
+/// @brief Namespace for clamp control
+/// @author Matthew Backman
 namespace clamp {
+
+/// @brief Class to represent clamp control
+/// @author Matthew Backman
 class ClampOperator {
  private:
   // the controller being used
@@ -23,13 +34,18 @@ class ClampOperator {
   // the robot being controlled
   std::shared_ptr<driftless::robot::Robot> m_robot{};
 
-  // update the clamp using hold mode
+  /// @brief Updates the clamp using a held button
+  /// @param hold __EControllerDigital__ Button used to hold the clamp down
   void updateHold(EControllerDigital hold);
 
-  // update the clamp using single toggle mode
+  /// @brief Updates the clamp using a single button to toggle
+  /// @param toggle __EControllerDigital__ Button used to toggle the clamp
+  /// between states
   void updateSingleToggle(EControllerDigital toggle);
 
-  // update the clamp using slpit toggle mode
+  /// @brief Updates the clamp using a button for each state
+  /// @param grab __EControllerDigital__ Button used to grab with the clamp
+  /// @param release __EControllerDigital__ Button used to release the clamp
   void updateSplitToggle(EControllerDigital grab, EControllerDigital release);
 
   // update the state of the clamp
