@@ -5,10 +5,15 @@
 
 #include "driftless/io/IMotor.hpp"
 /// @brief Namespace for driftless library code
+/// @author Matthew Backman
 namespace driftless {
+
 /// @brief Namespace for the hardware abstraction layer
+/// @author Matthew Backman
 namespace hal {
+
 /// @brief Class for a group of related motors
+/// @author Matthew Backman
 class MotorGroup {
  private:
   /// @brief The motors in the group
@@ -16,7 +21,7 @@ class MotorGroup {
 
  public:
   /// @brief Adds a motor to the group
-  /// @param motor The motor to add
+  /// @param motor __std::unique_ptr<io::IMotor>&__ The motor to add
   void addMotor(std::unique_ptr<io::IMotor>& motor);
 
   /// @brief Initializes the motor group
@@ -30,7 +35,8 @@ class MotorGroup {
   /// @return __double__ the resistance
   double getResistance();
 
-  /// @brief Gets the average angular velocity constant of the motors in the group
+  /// @brief Gets the average angular velocity constant of the motors in the
+  /// group
   /// @return __double__ the angular velocity constant
   double getAngularVelocityConstant();
 

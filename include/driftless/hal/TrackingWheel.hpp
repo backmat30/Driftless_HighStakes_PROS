@@ -6,8 +6,16 @@
 #include "driftless/io/IDistanceTracker.hpp"
 #include "driftless/io/IRotationSensor.hpp"
 
+/// @brief Namespace for driftless library code
+/// @author Matthew Backman
 namespace driftless {
+
+/// @brief Namespace for the hardware abstraction layer
+/// @author Matthew Backman
 namespace hal {
+
+/// @brief Class representing a tracking wheel
+/// @author Matthew Backman
 class TrackingWheel : public driftless::io::IDistanceTracker {
  private:
   // the rotation sensor for the wheel
@@ -17,20 +25,26 @@ class TrackingWheel : public driftless::io::IDistanceTracker {
   double m_wheel_radius{};
 
  public:
-  // constructor
-  TrackingWheel(std::unique_ptr<driftless::io::IRotationSensor>& rotation_sensor,
-                double wheel_radius);
+  /// @brief Constructs a new tracking wheel
+  /// @param rotation_sensor __std::unique_ptr<io::IRotationSensor>&__ The
+  /// rotation sensor used in the tracking wheel
+  /// @param wheel_radius __double__ The radius of the tracking wheel, in inches
+  TrackingWheel(
+      std::unique_ptr<driftless::io::IRotationSensor>& rotation_sensor,
+      double wheel_radius);
 
-  // initialize the sensor
+  /// @brief Initializes the tracking wheel
   void init() override;
 
-  // reset the sensor
+  /// @brief Resets the tracking wheel
   void reset() override;
 
-  // gets the distance travelled by the wheel
+  /// @brief Gets the distance travelled by the tracking wheel, in inches
+  /// @return __double__ The distance
   double getDistance() override;
 
-  // sets the distance to a new value
+  /// @brief Sets the distance on the tracking wheel
+  /// @param distance __double__ The new distance
   void setDistance(double distance) override;
 };
 }  // namespace hal

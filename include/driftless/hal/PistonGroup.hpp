@@ -1,13 +1,21 @@
 #ifndef __PISTON_GROUP_HPP__
 #define __PISTON_GROUP_HPP__
 
-#include <vector>
 #include <memory>
+#include <vector>
 
 #include "driftless/io/IPiston.hpp"
 
+/// @brief Namespace for driftless library code
+/// @author Matthew Backman
 namespace driftless {
+
+/// @brief Namespace for the hardware abstraction layer
+/// @author Matthew Backman
 namespace hal {
+
+/// @brief Class representing a group of linked pistons
+/// @author Matthew Backman
 class PistonGroup {
  private:
   // vector of pistons in the group
@@ -17,21 +25,23 @@ class PistonGroup {
   bool extended{};
 
  public:
-  // add a piston to the group
+  /// @brief Adds a piston to the group
+  /// @param piston __std::unique_ptr<io::IPiston>&__ The piston to add
   void addPiston(std::unique_ptr<driftless::io::IPiston>& piston);
 
-  // extend all pistons in the group
+  /// @brief Extends all pistons in the group
   void extend();
 
-  // retract all pistons in the group
+  /// @brief Retracts all pistons in the group
   void retract();
 
-  // toggle the state of all pistons in the group
+  /// @brief Toggles the state of the pistons in the group
   void toggleState();
 
-  // determines if the pistons are extended
+  /// @brief Determines if the pistons in the group are extended
+  /// @return __bool__ True if extended, false if retracted
   bool isExtended();
 };
-}
-}
+}  // namespace hal
+}  // namespace driftless
 #endif
