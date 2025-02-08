@@ -34,7 +34,7 @@ class PIDPathFollower : public driftless::control::path::IPathFollower {
   static constexpr uint8_t TASK_DELAY{10};
 
   /// @brief Constantly loops task updates
-  /// @param params __void*__ Pointer to the taskUpdate function
+  /// @param params __void*__ Pointer to the PIDPathFollower being updated
   static void taskLoop(void* params);
 
   // delayer
