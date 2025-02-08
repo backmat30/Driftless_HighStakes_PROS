@@ -14,15 +14,27 @@
 #include "driftless/rtos/ITask.hpp"
 #include "driftless/utils/UtilityFunctions.hpp"
 
+/// @brief Namespace for driftless library code
+/// @author Matthew Backman
 namespace driftless {
+
+/// @brief Namespace for control algorithms
+/// @author Matthew Backman
 namespace control {
+
+/// @brief Namespace for the path follower control
+/// @author Matthew Backman
 namespace path {
+
+/// @brief Class representing a pure pursuit path follower using PID
+/// @author Matthew Backman
 class PIDPathFollower : public driftless::control::path::IPathFollower {
  private:
   // delay in ms between each task loop
   static constexpr uint8_t TASK_DELAY{10};
-  
-  // background task loop to update algorithm
+
+  /// @brief Constantly loops task updates
+  /// @param params __void*__ Pointer to the taskUpdate function
   static void taskLoop(void* params);
 
   // delayer
@@ -67,80 +79,110 @@ class PIDPathFollower : public driftless::control::path::IPathFollower {
   // whether the robot is at the target or not
   bool target_reached{true};
 
-  // updates the task
+  /// @brief Updates the path follower algorithm
   void taskUpdate();
 
-  // set the velocity of the drive train
+  /// @brief Sets the velocity of the drive train
+  /// @param velocity robot::subsystems::drivetrain::Velocity__ The new velocity
   void setDriveVelocity(
       driftless::robot::subsystems::drivetrain::Velocity velocity);
 
-  // get the radius of the drive train
+  /// @brief Gets the radius of the drive train
+  /// @return __double__ The radius of the drive train
   double getDriveRadius();
 
-  // gets the position of the robot from the odometry subsystem
+  /// @brief Gets the position from the odometry subsystem
+  /// @return __robot::subsystems::odometry::Position__ The position of the
+  /// robot
   driftless::robot::subsystems::odometry::Position getPosition();
 
-  // calculates the distance to the end of the path
+  /// @brief Calculates the distance from the current position to the end of the
+  /// path
+  /// @param position __robot::subsystems::odometry::Position__ The current
+  /// position
+  /// @return __double__ The distance to the target
   double calculateDistanceToTarget(
       robot::subsystems::odometry::Position position);
 
-  // updates the points found
+  /// @brief Updates the points found
+  /// @param position __robot::subsystems::odometry::Position__ The current
+  /// position
   void updateFoundPoints(robot::subsystems::odometry::Position position);
 
-  // calculates the follow point, aka where the robot will go on the current
-  // iteration
+  /// @brief Calculates the next follow point to target
+  /// @param position __robot::subsystems::odometry::Position__ The current
+  /// position
+  /// @return __Point__ The next follow point
   Point calculateFollowPoint(robot::subsystems::odometry::Position position);
 
-  // update the drive velocity
+  /// @brief Updates the velocity of the drive train
+  /// @param position __robot::subsystems::odometry::Position__ The current
+  /// position
+  /// @param follow_point __Point__ The target follow point
   void updateVelocity(robot::subsystems::odometry::Position position,
                       Point follow_point);
 
  public:
-  // initialize the path follower
+  /// @brief Initializes the path follower
   void init() override;
 
-  // run the path follower
+  /// @brief Runs the path follower
   void run() override;
 
-  // pause the path follower
+  /// @brief Pauses the path follower
   void pause() override;
 
-  // resume the path follower
+  /// @brief Resumes the path follower
   void resume() override;
 
-  // follow a given path of points
+  /// @brief Follows a given path
+  /// @param robot __const std::shared_ptr<robot::Robot>&__ The robot being
+  /// controlled
+  /// @param control_path __const std::vector<Point>&__ The list of control
+  /// points
+  /// @param velocity __double__ The maximum velocity
   void followPath(const std::shared_ptr<driftless::robot::Robot>& robot,
                   const std::vector<Point>& control_path,
                   double velocity) override;
 
-  // sets the velocity to follow the path at
+  /// @brief Sets the max velocity to travel at
+  /// @param velocity __double__ The new max velocity
   void setVelocity(double velocity) override;
 
-  // check if the target was reached
+  /// @brief Determines if the target has been reached
+  /// @return __bool__ True if within the target range, false otherwise
   bool targetReached() override;
 
-  // set the delayer
+  /// @brief Sets the delayer used by the path follower
+  /// @param delayer __const std::unique_ptr<rtos::IDelayer>&__ The delayer used
   void setDelayer(const std::unique_ptr<driftless::rtos::IDelayer>& delayer);
 
-  // set the mutex
+  /// @brief Sets the mutex used by the path follower
+  /// @param mutex __std::unique_ptr<rtos::IMutex>&__ The mutex used
   void setMutex(std::unique_ptr<driftless::rtos::IMutex>& mutex);
 
-  // set the task
+  /// @brief Sets the task used by the path follower
+  /// @param task __std::unique_ptr<rtos::ITask>&__ The task used
   void setTask(std::unique_ptr<driftless::rtos::ITask>& task);
 
-  // set the linear PID controller
+  /// @brief Sets the linear PID controller used by the path follower
+  /// @param linear_pid __PID__ The linear PID controller used
   void setLinearPID(driftless::control::PID linear_pid);
 
-  // set the rotational PID controller
+  /// @brief Sets the rotational PID controller used by the path follower
+  /// @param rotational_pid __PID__ The rotational PID controller used
   void setRotationalPID(driftless::control::PID rotational_pid);
 
-  // set the follow distance
+  /// @brief Sets the follow distance used by the path follower
+  /// @param follow_distance __double__ The follow distance used
   void setFollowDistance(double follow_distance);
 
-  // sets the tolerance for reaching the target
+  /// @brief Sets the target tolerance used by the path follower
+  /// @param target_tolerance __double__ The target tolerance used
   void setTargetTolerance(double target_tolerance);
 
-  // sets the maximum velocity for the robot to be considered at the target
+  /// @brief Sets the target velocity used by the path follower
+  /// @param target_velocity __double__ The target velocity used
   void setTargetVelocity(double target_velocity);
 };
 }  // namespace path

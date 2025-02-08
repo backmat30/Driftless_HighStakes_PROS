@@ -7,34 +7,53 @@
 #include "driftless/control/Point.hpp"
 #include "driftless/robot/Robot.hpp"
 
+/// @brief Namespace for driftless library code
+/// @author Matthew Backman
 namespace driftless {
+
+/// @brief Namespace for control algorithms
+/// @author Matthew Backman
 namespace control {
+
+/// @brief Namespace for the path follower control
+/// @author Matthew Backman
 namespace path {
+
+/// @brief Interface for a generic path follower
+/// @author Matthew Backman
 class IPathFollower {
  public:
-  // destroyer
+  /// @brief Destroys the path follower
   virtual ~IPathFollower() = default;
 
-  // initialize the path follower
+  /// @brief Initializes the path follower
   virtual void init() = 0;
 
-  // run the path follower
+  /// @brief Runs the path follower
   virtual void run() = 0;
 
-  // pause the algorithm
+  /// @brief Pauses the path follower
   virtual void pause() = 0;
 
-  // resume the algorithm
+  /// @brief Resumes the path follower
   virtual void resume() = 0;
 
-  // follow a given path
+  /// @brief Follows a given path
+  /// @param robot __const std::shared_ptr<robot::Robot>&__ The robot being
+  /// controlled
+  /// @param control_path __const std::vector<Point>&__ The list of control
+  /// points
+  /// @param velocity __double__ The maximum velocity
   virtual void followPath(const std::shared_ptr<driftless::robot::Robot>& robot,
-                          const std::vector<Point>& control_path, double velocity) = 0;
+                          const std::vector<Point>& control_path,
+                          double velocity) = 0;
 
-  // set the velocity to follow the path at
+  /// @brief Sets the max velocity of the path follower
+  /// @param velocity __double__ The new max velocity
   virtual void setVelocity(double velocity) = 0;
 
-  // check if the robot has reached the target
+  /// @brief Determines if the target position has been reached
+  /// @return __bool__ True if within target range, false otherwise
   virtual bool targetReached() = 0;
 };
 }  // namespace path
