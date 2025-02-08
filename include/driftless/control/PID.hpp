@@ -5,8 +5,16 @@
 
 #include "driftless/rtos/IClock.hpp"
 
+/// @brief Namespace for driftless library code
+/// @author Matthew Backman
 namespace driftless {
+
+/// @brief Namespace for control algorithms
+/// @author Matthew Backman
 namespace control {
+
+/// @brief Class for a basic PID controller
+/// @author Matthew Backman
 class PID {
  private:
   // system clock
@@ -31,29 +39,42 @@ class PID {
   double last_time{};
 
  public:
-  // default constructor
+  /// @brief Constructs a new PID controller
   PID() = default;
 
-  // constructor
-  PID(const std::unique_ptr<driftless::rtos::IClock>& clock, double kp, double ki,
-      double kd);
+  /// @brief Constructs a new PID controller
+  /// @param clock __std::unique_ptr<rtos::IClock>&__ The system clock used
+  /// @param kp __double__ The proportional coefficient
+  /// @param ki __double__ The integral coefficient
+  /// @param kd __double__ The derivitive coefficient
+  PID(const std::unique_ptr<driftless::rtos::IClock>& clock, double kp,
+      double ki, double kd);
 
-  // copy constructor
+  /// @brief Copies another PID controller
+  /// @param other __const PID&__ The PID controller being copied
   PID(const PID& other);
 
-  // move constructor
+  /// @brief Moves a PID controller
+  /// @param other __PID&&__ The PID controller being moved
   PID(PID&& other) = default;
 
-  // gets the control value from the PID controller
+  /// @brief Gets the control value of the PID controller
+  /// @param current __double__ The current value
+  /// @param target __double__ The target value
+  /// @return __double__ The control value
   double getControlValue(double current, double target);
 
-  // reset the PID controller
+  /// @brief Resets the PID controller
   void reset();
 
-  // copy assignment
+  /// @brief Copies another PID controller
+  /// @param rhs __const PID&__ The PID controller being copied
+  /// @return __PID&__ Reference to the new PID controller
   PID& operator=(const PID& rhs);
 
-  // default move assignment
+  /// @brief Moves another PID controller
+  /// @param rhs __PID&&__ The PID controller being moved
+  /// @return __PID&__ Reference to the new PID controller
   PID& operator=(PID&& rhs);
 };
 }  // namespace control
