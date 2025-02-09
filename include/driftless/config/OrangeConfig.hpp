@@ -96,10 +96,15 @@
 #include "driftless/processes/auto_ring_rejection/ElevatorAutoRingRejectorBuilder.hpp"
 
 /// @brief Namespace for driftless library code
+/// @author Matthew Backman
 namespace driftless {
+
 /// @brief Namespace for robot configurations
+/// @author Matthew Backman
 namespace config {
+
 /// @brief the default robot configuration
+/// @author Matthew Backman
 class OrangeConfig : public IConfig {
  private:
   /// @brief the name of the config
@@ -373,19 +378,19 @@ class OrangeConfig : public IConfig {
 
  public:
   /// @brief Gets the name of the config
-  /// @return The name of the config as a string
+  /// @return __std::string__ The name of the config as a string
   std::string getName() override;
 
   /// @brief Builds a control system using the config values
-  /// @return a new control system
+  /// @return __shared_ptr<control::ControlSystem>__ The new control system
   std::shared_ptr<control::ControlSystem> buildControlSystem() override;
 
   /// @brief Builds a controller object using the config values
-  /// @return a new controller object
+  /// @return __std::shared_ptr<io::IController>__ The new controller object
   std::shared_ptr<io::IController> buildController() override;
 
   /// @brief Builds a robot object using the config values
-  /// @return a new robot object
+  /// @return __std::shared_ptr<robot::Robot>__ The new robot object
   std::shared_ptr<robot::Robot> buildRobot() override;
 
   /// @brief Builds a process system using config values
