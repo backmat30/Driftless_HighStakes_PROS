@@ -22,6 +22,10 @@ driftless::MatchController MatchControllerFactory::createMatchController() {
       std::make_unique<auton::OrangeRushAuton>()};
   lvgl_menu->addAuton(orange_rush_auton);
 
+  std::unique_ptr<auton::IAuton> orange_skills_auton{
+      std::make_unique<auton::OrangeSkillsAuton>()};
+  lvgl_menu->addAuton(orange_skills_auton);
+
   // add configs
   std::unique_ptr<config::IConfig> default_config{
       std::make_unique<config::DefaultConfig>()};

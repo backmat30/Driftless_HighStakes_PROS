@@ -13,6 +13,7 @@
 #include "driftless/profiles/EricProfile.hpp"
 #include "driftless/profiles/JohnButArcade.hpp"
 #include "driftless/profiles/JohnProfile.hpp"
+#include "driftless/auton/OrangeSkillsAuton.hpp"
 
 /// @brief Namespace for driftless library code
 /// @author Matthew Backman
