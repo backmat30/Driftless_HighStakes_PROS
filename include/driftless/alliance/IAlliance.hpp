@@ -7,10 +7,16 @@
 #include "driftless/io/RGBValue.hpp"
 #include "driftless/utils/Range.hpp"
 
+/// @brief Namespace for driftless library code
+/// @author Matthew Backman
 namespace driftless {
-/// @brief Namespace for various alliances
+
+/// @brief Namespace for alliances
+/// @author Matthew Backman
 namespace alliance {
+
 /// @brief Interface for a generic alliance
+/// @author Matthew Backman
 class IAlliance {
  public:
   /// @brief Deletes the current alliance object

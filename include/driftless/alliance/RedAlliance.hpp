@@ -3,8 +3,16 @@
 
 #include "driftless/alliance/IAlliance.hpp"
 
+/// @brief Namespace for driftless library code
+/// @author Matthew Backman
 namespace driftless {
+
+/// @brief Namespace for alliances
+/// @author Matthew Backman
 namespace alliance {
+
+/// @brief Class representing the red alliance
+/// @author Matthew Backman
 class RedAlliance : public IAlliance {
  private:
   static constexpr io::RGBValue ALLIANCE_COLOR{1500.0, 0.0, 500.0, 0.0};
