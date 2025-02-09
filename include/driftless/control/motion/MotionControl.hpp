@@ -10,12 +10,19 @@
 #include "driftless/control/motion/ITurn.hpp"
 
 /// @brief Namespace for driftless library code
+/// @author Matthew Backman
 namespace driftless {
+
 /// @brief Namespace for control algorithms
+/// @author Matthew Backman
 namespace control {
+
 /// @brief Namespace for basic motion control algorithms
+/// @author Matthew Backman
 namespace motion {
+
 /// @brief Class to hold and control all motion algorithms
+/// @author Matthew Backman
 class MotionControl : public driftless::control::AControl {
  private:
   /// @brief The algorithm to drive straight
@@ -33,9 +40,11 @@ class MotionControl : public driftless::control::AControl {
 
  public:
   /// @brief Constructs a new Motion Control object
-  /// @param drive_straight - The algorithm used to drive straight
-  /// @param go_to_point - The algorithm used to go to a point
-  /// @param turn - The algorithm used to turn
+  /// @param drive_straight __std::unique_ptr<IDriveStraight>&__ The algorithm
+  /// used to drive straight
+  /// @param go_to_point __std::unique_ptr<IGoToPoint>&__ The algorithm used to
+  /// go to a point
+  /// @param turn __std::unique_ptr<ITurn>&__ The algorithm used to turn
   MotionControl(
       std::unique_ptr<driftless::control::motion::IDriveStraight>&
           drive_straight,
@@ -55,13 +64,13 @@ class MotionControl : public driftless::control::AControl {
   void resume() override;
 
   /// @brief Sends a command to the motion control
-  /// @param command_name - The name of the command to run
-  /// @param args - Any arguments needed for the command
+  /// @param command_name __EControlCommand__ The name of the command to run
+  /// @param args __va_list&__ Any arguments needed for the command
   void command(EControlCommand command_name, va_list& args) override;
 
   /// @brief Gets a state of the motion control
-  /// @param state_name - The name of the state desired
-  /// @return The desired state of the motion control
+  /// @param state_name __EControlState__ The name of the state desired
+  /// @return __void*__ The desired state of the motion control
   void* state(EControlState state_name) override;
 };
 }  // namespace motion

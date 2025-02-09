@@ -16,9 +16,20 @@
 #include "driftless/rtos/ITask.hpp"
 #include "driftless/utils/UtilityFunctions.hpp"
 
+/// @brief Namespace for driftless library code
+/// @author Matthew Backman
 namespace driftless {
+
+/// @brief Namespace for control algorithms
+/// @author Matthew Backman
 namespace control {
+
+/// @brief Namespace for direct motion control
+/// @author Matthew Backman
 namespace motion {
+
+/// @brief Class representing a go to point algorithm using PID
+/// @author Matthew Backman
 class PIDGoToPoint : public IGoToPoint {
  private:
   // the task delay
@@ -63,63 +74,82 @@ class PIDGoToPoint : public IGoToPoint {
   // whether the control is paused
   bool paused{};
 
-  // sets the velocity of the drive train
+  /// @brief Sets the velocity of the drive train
+  /// @param left __double__ The desired left drive velocity
+  /// @param right __double__ The desired right drive velocity
   void setDriveVelocity(double left, double right);
 
-  // gets the position of the robot from the odometry
+  /// @brief Gets the position of the robot from the odometry
+  /// @return __robot::subsystems::odometry::Position__ The robot's position
   driftless::robot::subsystems::odometry::Position getPosition();
 
-  // gets the current velocity of the robot
+  /// @brief Gets the current velocity of the robot
+  /// @return __double__ The robot's current velocity
   double getVelocity();
 
-  // updates the control velocity
+  /// @brief Updates the control velocity
+  /// @param distance __double__ The distance to the target point
+  /// @param target_angle __double__ The desired angle
+  /// @param theta __double__ The current heading
   void updateVelocity(double distance, double target_angle, double theta);
 
-  // run all instance specific updates
+  /// @brief Runs all instance specific updates
   void taskUpdate();
 
  public:
-  // initialize the control
+  /// @brief Initializes the control
   void init() override;
 
-  // run the control
+  /// @brief Runs the control
   void run() override;
 
-  // pause the control
+  /// @brief Pauses the control
   void pause() override;
 
-  // resume the control
+  /// @brief Resumes the control
   void resume() override;
 
-  // tell the robot to go to a given point
+  /// @brief Tells the robot to go to a given point
+  /// @param robot __const std::shared_ptr<robot::Robot>&__ The robot being controlled
+  /// @param velocity __double__ The max velocity to move at
+  /// @param point __Point__ The point on the field to go to
   void goToPoint(const std::shared_ptr<driftless::robot::Robot>& robot,
                  double velocity, Point point) override;
 
-  // set the max velocity to move at
+  /// @brief Sets the max velocity to move at
+  /// @param velocity __double__ The max velocity
   void setVelocity(double velocity) override;
 
-  // determines if the robot has reached the target
+  /// @brief Determines if the robot has reached the target
+  /// @return __bool__ True if within the target range, else false
   bool targetReached() override;
 
-  // set the delayer
+  /// @brief Sets the delayer used
+  /// @param delayer __std::unique_ptr<rtos::IDelayer>&__ The delayer
   void setDelayer(std::unique_ptr<driftless::rtos::IDelayer>& delayer);
 
-  // set the mutex
+  /// @brief Sets the mutex used
+  /// @param mutex __std::unique_ptr<rtos::IMutex>&__ The mutex
   void setMutex(std::unique_ptr<driftless::rtos::IMutex>& mutex);
 
-  // set the task
+  /// @brief Sets the task used
+  /// @param task __std::unique_ptr<rtos::ITask>&__ The task
   void setTask(std::unique_ptr<driftless::rtos::ITask>& task);
 
-  // set the linear pid controller
+  /// @brief Sets the linear PID controller used
+  /// @param linear_pid __PID__ The linear PID controller
   void setLinearPID(PID linear_pid);
 
-  // set the rotational pid controller
+  /// @brief Sets the rotational PID controller used
+  /// @param rotational_pid __PID__ The rotational PID controller
   void setRotationalPID(PID rotational_pid);
 
-  // set the target tolerance
+  /// @brief Sets the target tolerance
+  /// @param target_tolerance __double__ The target tolerance
   void setTargetTolerance(double target_tolerance);
 
-  // set the target velocity
+  /// @brief Sets the target velocity
+  /// @param target_velocity __double__ The target velocity
   void setTargetVelocity(double targetVelocity);
 };
 }  // namespace motion

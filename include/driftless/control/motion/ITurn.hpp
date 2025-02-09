@@ -8,18 +8,25 @@
 #include "driftless/robot/Robot.hpp"
 
 /// @brief Namespace for driftless library code
+/// @author Matthew Backman
 namespace driftless {
+
 /// @brief Namespace for control algorithms
+/// @author Matthew Backman
 namespace control {
+
 /// @brief Namespace for basic motion control algorithms
+/// @author Matthew Backman
 namespace motion {
-/// @brief Interface for a generic __turn__ algorithm
+
+/// @brief Interface for a generic turn algorithm
+/// @author Matthew Backman
 class ITurn {
  public:
   /// @brief Destroys the turn object
   virtual ~ITurn() = default;
 
-  /// @brief Initialize the turn algorithm
+  /// @brief Initializes the turn algorithm
   virtual void init() = 0;
 
   /// @brief Runs the turn algorithm
@@ -31,26 +38,30 @@ class ITurn {
   /// @brief Resumes the turn algorithm
   virtual void resume() = 0;
 
-  /// @brief Turn the robot to face a given angle
-  /// @param robot - The robot being controlled
-  /// @param velocity - The max velocity during motion
-  /// @param theta - The angle to turn towards
-  /// @param direction - The direction to turn in, defaults to __AUTO__
+  /// @brief Turns the robot to face a given angle
+  /// @param robot __const std::shared_ptr<robot::Robot>&__ The robot being
+  /// controlled
+  /// @param velocity __double__ The max velocity during motion
+  /// @param theta __double__ The angle to turn towards
+  /// @param direction __ETurnDirection__ The direction to turn in, defaults to
+  /// __AUTO__
   virtual void turnToAngle(
       const std::shared_ptr<driftless::robot::Robot>& robot, double velocity,
       double theta, ETurnDirection direction = ETurnDirection::AUTO) = 0;
 
-  /// @brief Turn the robot to face a given point
-  /// @param robot - The robot being controlled
-  /// @param velocity - The max velocity during motion
-  /// @param point - The point to turn towards
-  /// @param direction - The direction to turn in, defaults to __AUTO__
+  /// @brief Turns the robot to face a given point
+  /// @param robot __const std::shared_ptr<robot::Robot>&__ The robot being
+  /// controlled
+  /// @param velocity __double__ The max velocity during motion
+  /// @param point __Point__ The point to turn towards
+  /// @param direction __ETurnDirection__ The direction to turn in, defaults to
+  /// __AUTO__
   virtual void turnToPoint(
       const std::shared_ptr<driftless::robot::Robot>& robot, double velocity,
       Point point, ETurnDirection direction = ETurnDirection::AUTO) = 0;
 
   /// @brief Determines if the robot has reached the target rotation
-  /// @return __TRUE__ if the robot has reached the target, __FALSE__ if not
+  /// @return __bool__ True if the robot has reached the target, else false
   virtual bool targetReached() = 0;
 };
 }  // namespace motion

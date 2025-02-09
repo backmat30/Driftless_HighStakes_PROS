@@ -16,9 +16,20 @@
 #include "driftless/rtos/ITask.hpp"
 #include "driftless/utils/UtilityFunctions.hpp"
 
+/// @brief Namespace for driftless library code
+/// @author Matthew Backman
 namespace driftless {
+
+/// @brief Namespace for control algorithms
+/// @author Matthew Backman
 namespace control {
+
+/// @brief Namespace for direct motion control
+/// @author Matthew Backman
 namespace motion {
+
+/// @brief Class representing a turn algorithm using a PID controller
+/// @author Matthew Backman
 class PIDTurn : public ITurn {
  private:
   // the task delay
@@ -27,7 +38,8 @@ class PIDTurn : public ITurn {
   // the distance to the imaginary point to turn towards
   static constexpr double TURN_TO_ANGLE_DISTANCE{120000};
 
-  // task loop to run task updates
+  /// @brief Constantly runs task updates
+  /// @param params __void*__ Pointer to the PIDTurn object being updated
   static void taskLoop(void* params);
 
   // the delayer
@@ -69,69 +81,100 @@ class PIDTurn : public ITurn {
   // whether the control is paused
   bool paused{};
 
-  // sets the velocity of the drive train
+  /// @brief Sets the velocity of the drive train
+  /// @param velocity __robot::subsystems::drivetrain::Velocity__ The desired
+  /// drive velocity
   void setDriveVelocity(
       driftless::robot::subsystems::drivetrain::Velocity velocity);
 
-  // gets the position of the robot from the odometry
+  /// @brief Gets the position of the robot from the odometry
+  /// @return __robot::subsystems::odometry::Position__ The robot's position
   driftless::robot::subsystems::odometry::Position getPosition();
 
-  // gets the radius of the drive train
+  /// @brief Gets the radius of the drive train
+  /// @return __double__ The drive train's radius
   double getDriveRadius();
 
-  // calculates the angle from the given position to the target position
+  /// @brief Calculates the angle between the current heading and the target
+  /// point
+  /// @param position __robot::subsystems::odometry::Position__ The current
+  /// position
+  /// @return __double__ The angle, in radians
   double calculateAngleToTarget(
       driftless::robot::subsystems::odometry::Position position);
 
-  // calculates the velocity for the drive train
+  /// @brief Calculates the velocity to pass to the drive train
+  /// @param current_angle __double__ The robot's current heading
+  /// @param target_angle __double__ The desired angle
+  /// @return __robot::subsystems::drivetrain::Velocity__ The velocity for the
+  /// drive train
   robot::subsystems::drivetrain::Velocity calculateDriveVelocity(
       double current_angle, double target_angle);
 
-  // runs all instance related updates
+  /// @brief Runs all instance related updates
   void taskUpdate();
 
  public:
-  // initialize the control
+  /// @brief Initializes the PIDTurn
   void init() override;
 
-  // run the control
+  /// @brief Runs the PIDTurn
   void run() override;
 
-  // pause the control
+  /// @brief Pauses the PIDTurn
   void pause() override;
 
-  // resume the control
+  /// @brief Resumes the PIDTurn
   void resume() override;
 
-  // tell the robot to turn in to a given angle
+  /// @brief Turns towards a designated angle, in radians
+  /// @param robot __const std::shared_ptr<robot::Robot>&__ The robot being
+  /// controlled
+  /// @param velocity __double__ The max velocity to move at
+  /// @param theta __double__ The desired angle
+  /// @param direction __ETurnDirection__ The direction to turn in; leave blank
+  /// to take shortest path
   void turnToAngle(const std::shared_ptr<driftless::robot::Robot>& robot,
                    double velocity, double theta,
                    ETurnDirection direction = ETurnDirection::AUTO) override;
 
-  // tell the robot to turn towards a point on the field
+  /// @brief Turns towards a point on the field
+  /// @param robot __const std::shared_ptr<robot::Robot>&__ The robot being
+  /// controlled
+  /// @param velocity __double__ The max velocity to move at
+  /// @param point __Point__ The point on the field to turn towards
+  /// @param direction __ETurnDirection__ The direction to turn in; leave blank
+  /// to take shortest path
   void turnToPoint(const std::shared_ptr<driftless::robot::Robot>& robot,
                    double velocity, Point point,
                    ETurnDirection direction = ETurnDirection::AUTO) override;
 
-  // determines if the robot has reached the target
+  /// @brief Determines if the target angle has been reached
+  /// @return __bool__ True if within the target range, else false
   bool targetReached() override;
 
-  // set the delayer
+  /// @brief Sets the delayer used
+  /// @param delayer __const std::unique_ptr<rtos::IDelayer>&__ The delayer
   void setDelayer(const std::unique_ptr<driftless::rtos::IDelayer>& delayer);
 
-  // set the mutex
+  /// @brief Sets the mutex used
+  /// @param mutex __std::unique_ptr<rtos::IMutex>&__ The mutex
   void setMutex(std::unique_ptr<driftless::rtos::IMutex>& mutex);
 
-  // set the task
+  /// @brief Sets the task used
+  /// @param task __std::unique_ptr<rtos::ITask>&__ The task
   void setTask(std::unique_ptr<driftless::rtos::ITask>& task);
 
-  // sets the rotational pid controller
+  /// @brief Sets the rotational PID controller used
+  /// @param rotational_pid __PID__ The rotational PID controller
   void setRotationalPID(PID rotational_pid);
 
-  // set the target tolerance
+  /// @brief Sets the target tolerance
+  /// @param target_tolerance __double__ The target tolerance
   void setTargetTolerance(double target_tolerance);
 
-  // set the target velocity
+  /// @brief Sets the target velocity
+  /// @param target_velocity __double__ The target velocity
   void setTargetVelocity(double target_velocity);
 };
 }  // namespace motion
