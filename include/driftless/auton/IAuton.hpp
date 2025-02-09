@@ -24,15 +24,34 @@ namespace driftless {
 namespace auton {
 class IAuton {
  public:
+  /// @brief Deletes the auton
   virtual ~IAuton() = default;
 
+  /// @brief Gets the name of the auton
+  /// @return __std::string__ The name of the auton
   virtual std::string getName() = 0;
 
+  /// @brief Initializes the auton
+  /// @param robot __std::shared_ptr<robot::Robot>&__ The robot being controlled
+  /// @param control_system __std::shared_ptr<control::ControlSystem>&__ The
+  /// control system used
+  /// @param process_system __std::shared_ptr<processes::ProcessSystem>&__ The
+  /// process system used
   virtual void init(
       std::shared_ptr<driftless::robot::Robot>& robot,
       std::shared_ptr<driftless::control::ControlSystem>& control_system,
       std::shared_ptr<driftless::processes::ProcessSystem>& process_system) = 0;
 
+  /// @brief Runs the auton
+  /// @param robot __std::shared_ptr<robot::Robot>&__ The robot being controlled
+  /// @param control_system __std::shared_ptr<control::ControlSystem>&__ The
+  /// control system used
+  /// @param process_system __std::shared_ptr<processes::ProcessSystem>&__ The
+  /// process system used
+  /// @param alliance __std::shared_ptr<alliance::IAlliance>&__ The current
+  /// alliance
+  /// @param clock __std::shared_ptr<rtos::IClock>&__ The system clock
+  /// @param delayer __std::unique_ptr<rtos::IDelayer>&__ The delayer used
   virtual void run(
       std::shared_ptr<driftless::robot::Robot>& robot,
       std::shared_ptr<driftless::control::ControlSystem>& control_system,
