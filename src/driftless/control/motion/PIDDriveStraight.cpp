@@ -49,8 +49,6 @@ void PIDDriveStraight::updateVelocity(double distance, double theta) {
   double left_velocity{linear_control - angular_control};
   double right_velocity{linear_control + angular_control};
 
-  pros::screen::print(pros::E_TEXT_LARGE_CENTER, 7, "L: %7.2f, R: %7.2f",
-                      left_velocity, right_velocity);
   setDriveVelocity(left_velocity, right_velocity);
 }
 
