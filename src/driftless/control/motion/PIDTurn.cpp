@@ -160,6 +160,8 @@ void PIDTurn::turnToAngle(const std::shared_ptr<driftless::robot::Robot>& robot,
 
   m_rotational_pid.reset();
 
+  paused = false;
+
   if (m_mutex) {
     m_mutex->give();
   }
@@ -184,6 +186,8 @@ void PIDTurn::turnToPoint(const std::shared_ptr<driftless::robot::Robot>& robot,
   forced_direction_reached = false;
 
   m_rotational_pid.reset();
+
+  paused = false;
 
   if (m_mutex) {
     m_mutex->give();
