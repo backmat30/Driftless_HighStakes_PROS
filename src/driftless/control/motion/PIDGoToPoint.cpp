@@ -39,6 +39,16 @@ void PIDGoToPoint::updateVelocity(double distance, double target_angle,
     linear_control *= m_max_velocity / std::abs(linear_control);
   }
 
+  double current_velocity{getVelocity()};
+
+  // limits acceleration to 36.0 inches per second
+
+  // @todo add acceleration limit as a member variable instead of magic number
+  if (std::abs(linear_control) >= std::abs(current_velocity) + 36.0) {
+    linear_control *= (std::abs(current_velocity) + 36.0) /
+                      std::abs(linear_control);
+  }
+
   double angular_offset{bindRadians(target_angle - theta)};
   double angular_error{};
   if (angular_offset < 0) {

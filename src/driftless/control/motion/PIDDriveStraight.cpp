@@ -46,6 +46,15 @@ void PIDDriveStraight::updateVelocity(double distance, double theta) {
   if (std::abs(linear_control) > m_max_velocity) {
     linear_control *= m_max_velocity / std::abs(linear_control);
   }
+
+  double current_velocity{getVelocity()};
+
+  // limits acceleration to half of the max velocity per second
+  if (std::abs(linear_control) >= std::abs(current_velocity) + 36.0) {
+    linear_control *= (std::abs(current_velocity) + 36.0) /
+                      std::abs(linear_control);
+  }
+
   double left_velocity{linear_control - angular_control};
   double right_velocity{linear_control + angular_control};
 
