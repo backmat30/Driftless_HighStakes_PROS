@@ -5,7 +5,9 @@
 #include "driftless/alliance/BlueAlliance.hpp"
 #include "driftless/alliance/RedAlliance.hpp"
 #include "driftless/auton/BlueRushAuton.hpp"
+#include "driftless/auton/BlueSkillsAuton.hpp"
 #include "driftless/auton/OrangeRushAuton.hpp"
+#include "driftless/auton/OrangeSkillsAuton.hpp"
 #include "driftless/config/DefaultConfig.hpp"
 #include "driftless/config/OrangeConfig.hpp"
 #include "driftless/menu/MenuAdapter.hpp"
@@ -13,7 +15,6 @@
 #include "driftless/profiles/EricProfile.hpp"
 #include "driftless/profiles/JohnButArcade.hpp"
 #include "driftless/profiles/JohnProfile.hpp"
-#include "driftless/auton/OrangeSkillsAuton.hpp"
 
 /// @brief Namespace for driftless library code
 /// @author Matthew Backman
