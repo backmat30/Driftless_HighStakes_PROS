@@ -33,7 +33,7 @@ namespace odometry {
 class InertialPositionTracker : public IPositionTracker {
  private:
   // the delay between task loops
-  static constexpr uint8_t TASK_DELAY{20};
+  static constexpr uint8_t TASK_DELAY{10};
 
   // conversion factor between milliseconds and seconds
   static constexpr double MS_TO_SECONDS{1.0 / 1000.0};
