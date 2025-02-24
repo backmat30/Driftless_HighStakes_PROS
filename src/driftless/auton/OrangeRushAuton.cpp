@@ -37,44 +37,12 @@ void OrangeRushAuton::setElevatorVoltage(double voltage) {
       robot::subsystems::ESubsystemCommand::ELEVATOR_SET_VOLTAGE, voltage);
 }
 
-void OrangeRushAuton::updateRingSort() {
-  void* position_state{m_robot->getState(
-      robot::subsystems::ESubsystem::ELEVATOR,
-      robot::subsystems::ESubsystemState::ELEVATOR_GET_POSITION)};
-  double position{*static_cast<double*>(position_state)};
-
-  void* distance_to_end_state{m_robot->getState(
-      robot::subsystems::ESubsystem::RING_SORT,
-      robot::subsystems::ESubsystemState::RING_SORT_GET_DISTANCE_TO_END)};
-  double distance_to_end{*static_cast<double*>(distance_to_end_state)};
-
-  if (hasOpposingRing()) {
-    ring_sort_latest_ring_pos = position;
-  }
-  if (hasAllianceRing()) {
-    ring_sort_latest_ring_pos = -__DBL_MAX__;
-  }
-
-  if (position <= ring_sort_latest_ring_pos + distance_to_end &&
-      position >= ring_sort_latest_ring_pos - 0.1) {
-    m_robot->sendCommand(
-        robot::subsystems::ESubsystem::ELEVATOR,
-        robot::subsystems::ESubsystemCommand::ELEVATOR_DEPLOY_REJECTOR);
-  } else {
-    m_robot->sendCommand(
-        robot::subsystems::ESubsystem::ELEVATOR,
-        robot::subsystems::ESubsystemCommand::ELEVATOR_RETRACT_REJECTOR);
-    ring_sort_latest_ring_pos = -__DBL_MAX__;
-  }
-}
-
 void OrangeRushAuton::waitForAllianceRing(uint32_t timeout) {
   uint32_t current_time = getTime();
   uint32_t end_time = current_time + timeout;
   while (!hasAllianceRing() && current_time < end_time) {
     m_delayer->delay(LOOP_DELAY);
     current_time = getTime();
-    updateRingSort();
   }
 }
 
@@ -84,11 +52,10 @@ void OrangeRushAuton::waitForOpposingRing(uint32_t timeout) {
   while (!hasOpposingRing() && current_time < end_time) {
     m_delayer->delay(LOOP_DELAY);
     current_time = getTime();
-    updateRingSort();
   }
 }
 
-void OrangeRushAuton::spinIntake(double voltage) {
+void OrangeRushAuton::setIntakeVoltage(double voltage) {
   m_robot->sendCommand(robot::subsystems::ESubsystem::INTAKE,
                        robot::subsystems::ESubsystemCommand::INTAKE_SET_VOLTAGE,
                        voltage);
@@ -144,7 +111,6 @@ void OrangeRushAuton::waitForGoToPoint(double target_x, double target_y,
     current_position = getOdomPosition();
     distance_to_target =
         distance(current_position.x, current_position.y, target_x, target_y);
-    updateRingSort();
     m_delayer->delay(LOOP_DELAY);
   }
 }
@@ -171,7 +137,6 @@ void OrangeRushAuton::waitForTurnToPoint(double x, double y, uint32_t timeout,
     angle_difference =
         bindRadians(angle(current_position.x, current_position.y, x, y) -
                     current_position.theta);
-    updateRingSort();
     m_delayer->delay(LOOP_DELAY);
   }
 }
@@ -192,7 +157,6 @@ void OrangeRushAuton::waitForTurnToAngle(double theta, uint32_t timeout,
          std::abs(current_position.theta - theta) > tolerance) {
     current_time = m_clock->getTime();
     current_position = getOdomPosition();
-    updateRingSort();
     m_delayer->delay(LOOP_DELAY);
   }
 }
@@ -219,7 +183,6 @@ void OrangeRushAuton::waitForDriveStraight(double target_distance,
     current_position = getOdomPosition();
     current_distance = distance(start_position.x, start_position.y,
                                 current_position.x, current_position.y);
-    updateRingSort();
     m_delayer->delay(LOOP_DELAY);
   }
 }
@@ -230,7 +193,6 @@ void OrangeRushAuton::delay(uint32_t delay_time) {
 
   while (current_time < end_time) {
     current_time = getTime();
-    updateRingSort();
     m_delayer->delay(LOOP_DELAY);
   }
 }
@@ -465,7 +427,7 @@ void OrangeRushAuton::run(
 
   followPath(under_ladder_path, target_velocity);
 
-  spinIntake(12.0);
+  setIntakeVoltage(12.0);
   setElevatorVoltage(12.0);
   delay(100);
   target_velocity = 30.0;
@@ -488,10 +450,9 @@ void OrangeRushAuton::run(
     position = getOdomPosition();
     target_distance = distance(position.x, position.y, target_point.getX(),
                                target_point.getY());
-    updateRingSort();
     if (hasOpposingRing() && elevator_running) {
       setElevatorVoltage(0.0);
-      spinIntake(0.0);
+      setIntakeVoltage(0.0);
       elevator_running = false;
     }
   }
@@ -503,10 +464,10 @@ void OrangeRushAuton::run(
   current_time = getTime();
   waitForOpposingRing(2500);
   setElevatorVoltage(0.0);
-  spinIntake(0.0);
+  setIntakeVoltage(0.0);
   m_delayer->delayUntil(current_time + 3000);
   setElevatorVoltage(12.0);
-  spinIntake(12.0);
+  setIntakeVoltage(12.0);
 
   target_point = under_ladder_path.back();
   position = getOdomPosition();
@@ -548,13 +509,14 @@ void OrangeRushAuton::run(
   driveStraight(-7.0, target_velocity, position.theta);
   waitForDriveStraight(-7.0, 500, 0.5);
   waitForAllianceRing(500);
-  if (alliance->getAlliance() == alliance::EAlliance::RED && !hasAllianceRing()) {
+  if (alliance->getAlliance() == alliance::EAlliance::RED &&
+      !hasAllianceRing()) {
     driveStraight(7.0, target_velocity, position.theta);
     waitForDriveStraight(7.0, 500, 0.5);
   }
   m_control_system->pause();
 
-  spinIntake(0.0);
+  setIntakeVoltage(0.0);
   setElevatorVoltage(0.0);
 
   // Go towards next ring stack
@@ -589,7 +551,7 @@ void OrangeRushAuton::run(
 
   // resume elevator and intake
   setElevatorVoltage(12.0);
-  spinIntake(12.0);
+  setIntakeVoltage(12.0);
   setIntakeHeight(true);
 
   // finish motion to rings
@@ -678,7 +640,7 @@ void OrangeRushAuton::run(
 
   delay(750);
   setElevatorVoltage(0.0);
-  spinIntake(0.0);
+  setIntakeVoltage(0.0);
 
   armGoAllianceStake();
   m_delayer->delay(600);

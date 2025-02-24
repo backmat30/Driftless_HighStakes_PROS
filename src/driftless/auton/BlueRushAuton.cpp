@@ -26,40 +26,12 @@ void BlueRushAuton::setElevatorVoltage(double voltage) {
       robot::subsystems::ESubsystemCommand::ELEVATOR_SET_VOLTAGE, voltage);
 }
 
-void BlueRushAuton::updateRingSort() {
-  void* position_state{m_robot->getState(
-      robot::subsystems::ESubsystem::ELEVATOR,
-      robot::subsystems::ESubsystemState::ELEVATOR_GET_POSITION)};
-  double position{*static_cast<double*>(position_state)};
-
-  void* distance_to_end_state{m_robot->getState(
-      robot::subsystems::ESubsystem::RING_SORT,
-      robot::subsystems::ESubsystemState::RING_SORT_GET_DISTANCE_TO_END)};
-  double distance_to_end{*static_cast<double*>(distance_to_end_state)};
-
-  if (hasOpposingRing()) {
-    ring_sort_latest_ring_pos = position;
-  }
-
-  if (position <= ring_sort_latest_ring_pos + distance_to_end &&
-      position >= ring_sort_latest_ring_pos - distance_to_end) {
-    m_robot->sendCommand(
-        robot::subsystems::ESubsystem::ELEVATOR,
-        robot::subsystems::ESubsystemCommand::ELEVATOR_DEPLOY_REJECTOR);
-  } else {
-    m_robot->sendCommand(
-        robot::subsystems::ESubsystem::ELEVATOR,
-        robot::subsystems::ESubsystemCommand::ELEVATOR_RETRACT_REJECTOR);
-  }
-}
-
 void BlueRushAuton::waitForAllianceRing(uint32_t timeout) {
   uint32_t current_time = getTime();
   uint32_t end_time = current_time + timeout;
   while (!hasAllianceRing() && current_time < end_time) {
     m_delayer->delay(LOOP_DELAY);
     current_time = getTime();
-    updateRingSort();
   }
 }
 
@@ -69,11 +41,10 @@ void BlueRushAuton::waitForOpposingRing(uint32_t timeout) {
   while (!hasOpposingRing() && current_time < end_time) {
     m_delayer->delay(LOOP_DELAY);
     current_time = getTime();
-    updateRingSort();
   }
 }
 
-void BlueRushAuton::spinIntake(double voltage) {
+void BlueRushAuton::setIntakeVoltage(double voltage) {
   m_robot->sendCommand(robot::subsystems::ESubsystem::INTAKE,
                        robot::subsystems::ESubsystemCommand::INTAKE_SET_VOLTAGE,
                        voltage);
@@ -129,7 +100,6 @@ void BlueRushAuton::waitForGoToPoint(double target_x, double target_y,
     current_position = getOdomPosition();
     distance_to_target =
         distance(current_position.x, current_position.y, target_x, target_y);
-    updateRingSort();
     m_delayer->delay(LOOP_DELAY);
   }
 }
@@ -156,7 +126,6 @@ void BlueRushAuton::waitForTurnToPoint(double x, double y, uint32_t timeout,
     angle_difference =
         bindRadians(angle(current_position.x, current_position.y, x, y) -
                     current_position.theta);
-    updateRingSort();
     m_delayer->delay(LOOP_DELAY);
   }
 }
@@ -177,7 +146,6 @@ void BlueRushAuton::waitForTurnToAngle(double theta, uint32_t timeout,
          std::abs(current_position.theta - theta) > tolerance) {
     current_time = m_clock->getTime();
     current_position = getOdomPosition();
-    updateRingSort();
     m_delayer->delay(LOOP_DELAY);
   }
 }
@@ -204,7 +172,6 @@ void BlueRushAuton::waitForDriveStraight(double target_distance,
     current_position = getOdomPosition();
     current_distance = distance(start_position.x, start_position.y,
                                 current_position.x, current_position.y);
-    updateRingSort();
     m_delayer->delay(LOOP_DELAY);
   }
 }
@@ -215,7 +182,6 @@ void BlueRushAuton::delay(uint32_t delay_time) {
 
   while (current_time < end_time) {
     current_time = getTime();
-    updateRingSort();
     m_delayer->delay(LOOP_DELAY);
   }
 }
@@ -386,10 +352,10 @@ void BlueRushAuton::run(
 
   followPath(rush_path, target_velocity);
   // Set up subsystems while moving to the path
-  spinIntake(12.0);
+  setIntakeVoltage(12.0);
   calibrateArm();
   m_delayer->delay(75);
-  spinIntake(0.0);
+  setIntakeVoltage(0.0);
   target_velocity = 24.0;
   setFollowPathVelocity(target_velocity);
   m_delayer->delay(75);
@@ -426,7 +392,7 @@ void BlueRushAuton::run(
 
   // raise the intake to get ready for the ring stacks
   setIntakeHeight(true);
-  spinIntake(12.0);
+  setIntakeVoltage(12.0);
   m_delayer->delay(50);
 
   // Go to first ring stack
@@ -468,7 +434,7 @@ void BlueRushAuton::run(
   m_control_system->pause();
   if (hasAllianceRing()) {
     setElevatorVoltage(-1.0);
-    spinIntake(-12.0);
+    setIntakeVoltage(-12.0);
   }
 
   // go to the next mobile goal
@@ -485,7 +451,7 @@ void BlueRushAuton::run(
   waitForTurnToPoint(mirrorValue(target_point.getX(), position.x),
                      mirrorValue(target_point.getY(), position.y), 500,
                      M_PI / 25.0);
-  spinIntake(0.0);
+  setIntakeVoltage(0.0);
   setElevatorVoltage(0.0);
   target_velocity = 48.0;
   goToPoint(target_point.getX(), target_point.getY(), target_velocity);
@@ -537,7 +503,7 @@ void BlueRushAuton::run(
   setElevatorVoltage(12.0);
 
   goToPoint(target_point.getX(), target_point.getY(), target_velocity);
-  spinIntake(12.0);
+  setIntakeVoltage(12.0);
   setElevatorVoltage(12.0);
   waitForGoToPoint(target_point.getX(), target_point.getY(), 1000, 1.0);
   waitForAllianceRing(3000);
@@ -548,7 +514,7 @@ void BlueRushAuton::run(
   else if (alliance->getAlliance() == alliance::EAlliance::BLUE)
     target_point = control::Point{144.0 - 32.0, 101.0};
   goToPoint(target_point.getX(), target_point.getY(), target_velocity);
-  spinIntake(12.0);
+  setIntakeVoltage(12.0);
   setElevatorVoltage(12.0);
 
   while (target_distance > 15.0) {
@@ -679,7 +645,7 @@ void BlueRushAuton::run(
   }
   m_control_system->pause();
   setElevatorVoltage(0.0);
-  spinIntake(0.0);
+  setIntakeVoltage(0.0);
 
   // Print the run-time for routing purposes, determine how much more can be
   // done after current tasks
