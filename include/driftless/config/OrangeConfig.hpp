@@ -367,7 +367,7 @@ class OrangeConfig : public IConfig {
   /// @brief position resetter y offset
   static constexpr double RESETTER_LOCAL_Y_OFFSET{0.0};
   /// @brief position resetter angular offset
-  static constexpr double RESETTER_LOCAL_THETA_OFFSET{0};
+  static constexpr double RESETTER_LOCAL_THETA_OFFSET{0.0};
 
   // ring sensor
 

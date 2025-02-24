@@ -140,11 +140,11 @@ class DefaultConfig : public IConfig {
   /// @brief kd value of the go to point linear pid controller
   static constexpr double PID_GO_TO_POINT_LINEAR_KD{200};
   /// @brief kp value for the go to point rotational pid controller
-  static constexpr double PID_GO_TO_POINT_ROTATIONAL_KP{1.0};
+  static constexpr double PID_GO_TO_POINT_ROTATIONAL_KP{0.8};
   /// @brief ki value for the go to point rotational pid controller
   static constexpr double PID_GO_TO_POINT_ROTATIONAL_KI{0.001};
   /// @brief kd value for the go to point rotational pid controller
-  static constexpr double PID_GO_TO_POINT_ROTATIONAL_KD{200};
+  static constexpr double PID_GO_TO_POINT_ROTATIONAL_KD{100};
   /// @brief the target tolerance of the go to point algorithm
   static constexpr double PID_GO_TO_POINT_TARGET_TOLERANCE{0.5};
   /// @brief the target velocity of the go to point algorithm
@@ -159,9 +159,9 @@ class DefaultConfig : public IConfig {
   /// @brief kd value for the turn rotational pid controller
   static constexpr double PID_TURN_ROTATIONAL_KD{1000.0};
   /// @brief the target tolerance of the turn algorithm
-  static constexpr double PID_TURN_TARGET_TOLERANCE{M_PI / 50};
+  static constexpr double PID_TURN_TARGET_TOLERANCE{M_PI / 50.0};
   /// @brief the target velocity of the turn algorithm
-  static constexpr double PID_TURN_TARGET_VELOCITY{M_PI / 200};
+  static constexpr double PID_TURN_TARGET_VELOCITY{M_PI / 200.0};
 
   // path follower control
 
@@ -306,7 +306,7 @@ class DefaultConfig : public IConfig {
   static constexpr double ARM_ROTATIONAL_RUSH_POSITION{2.475 / 4.0 * 2.0 *
                                                        M_PI};
 
-  static constexpr double ARM_ROTATIONAL_ALLIANCE_STAKE_POSITION{2.0 / 4.0 *
+  static constexpr double ARM_ROTATIONAL_ALLIANCE_STAKE_POSITION{1.95 / 4.0 *
                                                                  2.0 * M_PI};
 
   /// @brief The intermediate position on the rotation towards the arm ready
@@ -360,9 +360,9 @@ class DefaultConfig : public IConfig {
   /// @brief forwards offset of the strafe tracking wheel
   static constexpr double STRAFE_TRACKING_WHEEL_OFFSET{-2.26};
   /// @brief position resetter x offset
-  static constexpr double RESETTER_LOCAL_X_OFFSET{13.5 / 2.0};
+  static constexpr double RESETTER_LOCAL_X_OFFSET{3.33159158};
   /// @brief position resetter y offset
-  static constexpr double RESETTER_LOCAL_Y_OFFSET{10.865};
+  static constexpr double RESETTER_LOCAL_Y_OFFSET{0.0};
   /// @brief position resetter angular offset
   static constexpr double RESETTER_LOCAL_THETA_OFFSET{0.0};
 
