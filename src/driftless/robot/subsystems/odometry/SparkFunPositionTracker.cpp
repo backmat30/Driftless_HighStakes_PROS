@@ -1,5 +1,6 @@
 #include "driftless/robot/subsystems/odometry/SparkFunPositionTracker.hpp"
 
+#include "pros/screen.hpp"
 namespace driftless::robot::subsystems::odometry {
 void SparkFunPositionTracker::taskLoop(void* params) {
   SparkFunPositionTracker* instance{
@@ -39,7 +40,7 @@ void SparkFunPositionTracker::updatePosition() {
   y_pos += global_y_offset;
   heading += global_theta_offset;
 
-  double time_change{current_time - latest_time};
+  uint32_t time_change{current_time - latest_time};
   double x_change{x_pos - current_position.x};
   double y_change{y_pos - current_position.y};
   double theta_change{heading - current_position.theta};
@@ -55,6 +56,11 @@ void SparkFunPositionTracker::updatePosition() {
 
   latest_time = current_time;
 
+  pros::screen::print(pros::E_TEXT_LARGE_CENTER, 1, "X: %7.2f, Y: %7.2f",
+                      current_position.x, current_position.y);
+  pros::screen::print(pros::E_TEXT_LARGE_CENTER, 3, "Theta: %7.2f ",
+                      current_position.theta * 180 / M_PI);
+
   if (m_mutex) {
     m_mutex->give();
   }
@@ -69,7 +75,7 @@ Position SparkFunPositionTracker::fetchRawPosition() {
 
       if (static_cast<char>(m_serial_device->readByte()) != ':') {
         m_serial_device->flush();
-        return;
+        return Position{};
       }
 
       std::string value{""};
@@ -130,6 +136,10 @@ void SparkFunPositionTracker::setPosition(Position position) {
   setX(position.x);
   setY(position.y);
   setTheta(position.theta);
+}
+
+Position SparkFunPositionTracker::getPosition() {
+  return current_position;
 }
 
 void SparkFunPositionTracker::setX(double x) {
