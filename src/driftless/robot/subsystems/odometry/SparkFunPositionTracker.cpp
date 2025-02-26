@@ -93,7 +93,7 @@ Position SparkFunPositionTracker::fetchRawPosition() {
       }
     }
   }
-
+  m_serial_device->flush();
   return raw_position;
 }
 
@@ -103,6 +103,8 @@ void SparkFunPositionTracker::sendLocalOffset() {
   }
 
   if (m_serial_device) {
+    m_serial_device->flush();
+
     std::string output_string{"X:" + std::to_string(m_local_x_offset) + ";" +
                               "Y:" + std::to_string(m_local_y_offset) + ";" +
                               "H:" + std::to_string(m_local_theta_offset) +
@@ -146,7 +148,8 @@ void SparkFunPositionTracker::setClock(std::unique_ptr<rtos::IClock>& clock) {
   m_clock = std::move(clock);
 }
 
-void SparkFunPositionTracker::setDelayer(std::unique_ptr<rtos::IDelayer>& delayer) {
+void SparkFunPositionTracker::setDelayer(
+    std::unique_ptr<rtos::IDelayer>& delayer) {
   m_delayer = std::move(delayer);
 }
 
@@ -158,7 +161,8 @@ void SparkFunPositionTracker::setTask(std::unique_ptr<rtos::ITask>& task) {
   m_task = std::move(task);
 }
 
-void SparkFunPositionTracker::setSerialDevice(std::unique_ptr<io::ISerialDevice>& serial_device) {
+void SparkFunPositionTracker::setSerialDevice(
+    std::unique_ptr<io::ISerialDevice>& serial_device) {
   m_serial_device = std::move(serial_device);
 }
 
