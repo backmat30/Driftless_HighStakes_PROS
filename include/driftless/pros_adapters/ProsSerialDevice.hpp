@@ -25,9 +25,18 @@ class ProsSerialDevice : public io::ISerialDevice {
   /// @brief Initializes the pros serial device
   void initialize() override;
 
-  /// @brief Reads a double from the input stream
-  /// @return __double__ The first item from the input stream as a double
-  double readDouble() override;
+  /// @brief Reads the next byte in the input stream
+  /// @return __uint8_t__ The next available byte
+  uint8_t readByte() override;
+
+  /// @brief Checks the next byte in the input stream without removing it
+  /// @return __uint8_t__ The next byte in the input stream
+  uint8_t peekByte() override;
+
+  /// @brief Reads from the input stream into a buffer
+  /// @param buffer __uint8_t*__ Array of bytes to store read values
+  /// @param length __int__ Number of bytes to read
+  void read(uint8_t* buffer, int length) override;
 
   /// @brief Writes to the output stream
   /// @param buffer __uint8_t*__ Array of bytes to be sent

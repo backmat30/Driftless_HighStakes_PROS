@@ -20,9 +20,18 @@ class ISerialDevice {
   /// @brief Initializes the serial device
   virtual void initialize() = 0;
 
-  /// @brief Reads a double from the input stream
-  /// @return __double__ The first item in the byte stream, as a double
-  virtual double readDouble() = 0;
+  /// @brief Reads a byte from the input stream
+  /// @return __uint8_t__ The next byte in the input stream
+  virtual uint8_t readByte() = 0;
+
+  /// @brief Checks the next byte in the input stream without removing it
+  /// @return __uint8_t__ The next byte in the input stream
+  virtual uint8_t peekByte() = 0;
+
+  /// @brief Reads from the input stream into a buffer
+  /// @param buffer __uint8_t*__ Byte array to store read values
+  /// @param length __int__ The number of bytes to read
+  virtual void read(uint8_t* buffer, int length) = 0;
 
   /// @brief Writes to the output stream
   /// @param output_bytes __uint8_t*__ Array of bytes

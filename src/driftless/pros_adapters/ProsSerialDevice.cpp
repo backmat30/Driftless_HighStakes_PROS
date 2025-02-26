@@ -6,15 +6,29 @@ ProsSerialDevice::ProsSerialDevice(std::unique_ptr<pros::Serial>& serial_device)
 
 void ProsSerialDevice::initialize() { m_serial_device->flush(); }
 
-double ProsSerialDevice::readDouble() {
-  double value{};
-  uint8_t buffer[sizeof(double)];
+uint8_t ProsSerialDevice::readByte() {
+  uint8_t value{};
 
-  if (m_serial_device) m_serial_device->read(buffer, sizeof(double));
-
-  std::memcpy(&value, buffer, sizeof(double));
+  if (m_serial_device && m_serial_device->get_read_avail()) {
+    value = m_serial_device->read_byte();
+  }
 
   return value;
+}
+
+uint8_t ProsSerialDevice::peekByte() {
+  uint8_t value{};
+  if (m_serial_device && m_serial_device->get_read_avail()) {
+    value = m_serial_device->peek_byte();
+  }
+
+  return value;
+}
+
+void ProsSerialDevice::read(uint8_t* buffer, int length) {
+  if (m_serial_device) {
+    m_serial_device->read(buffer, length);
+  }
 }
 
 void ProsSerialDevice::write(uint8_t* buffer, int length) {
