@@ -49,6 +49,7 @@
 #include "driftless/pros_adapters/ProsRotationSensor.hpp"
 #include "driftless/pros_adapters/ProsTask.hpp"
 #include "driftless/pros_adapters/ProsV5Motor.hpp"
+#include "driftless/pros_adapters/ProsSerialDevice.hpp"
 
 // robot include
 #include "driftless/robot/Robot.hpp"
@@ -78,6 +79,7 @@
 
 // odometry subsystem includes
 #include "driftless/robot/subsystems/odometry/DistancePositionResetterBuilder.hpp"
+#include "driftless/robot/subsystems/odometry/SparkFunPositionTrackerBuilder.hpp"
 #include "driftless/robot/subsystems/odometry/InertialPositionTrackerBuilder.hpp"
 #include "driftless/robot/subsystems/odometry/OdometrySubsystem.hpp"
 
@@ -254,6 +256,8 @@ class OrangeConfig : public IConfig {
   /// @brief distance sensor
   static constexpr int8_t ODOMETRY_DISTANCE_SENSOR{13};
 
+  static constexpr int8_t ODOMETRY_ARDUINO{1};
+
   // RING SORT PORTS
 
   static constexpr int8_t RING_SORT_COLOR_SENSOR{17};
@@ -368,6 +372,12 @@ class OrangeConfig : public IConfig {
   static constexpr double RESETTER_LOCAL_Y_OFFSET{0.0};
   /// @brief position resetter angular offset
   static constexpr double RESETTER_LOCAL_THETA_OFFSET{0.0};
+
+  static constexpr double ODOMETRY_SENSOR_LOCAL_X_OFFSET{0.0};
+
+  static constexpr double ODOMETRY_SENSOR_LOCAL_Y_OFFSET{0.0};
+
+  static constexpr double ODOMETRY_SENSOR_LOCAL_THETA_OFFSET{0.0};
 
   // ring sensor
 
