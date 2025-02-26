@@ -62,7 +62,7 @@ class SparkFunPositionTracker : public IPositionTracker {
 
   Position current_position{};
 
-  uint8_t latest_time{};
+  uint32_t latest_time{};
 
   /// @brief Runs all updates related to the position tracker
   void taskUpdate();
