@@ -5,9 +5,7 @@ namespace op_control {
 namespace arm {
 bool ArmOperator::hasAllianceRing(
     const std::shared_ptr<alliance::IAlliance>& alliance) {
-  bool has_ring{*static_cast<bool*>(m_robot->getState(
-      robot::subsystems::ESubsystem::RING_SORT,
-      robot::subsystems::ESubsystemState::RING_SORT_HAS_RING))};
+  bool has_ring{hasRing()};
 
   io::RGBValue ring_rgb{*static_cast<io::RGBValue*>(m_robot->getState(
       robot::subsystems::ESubsystem::RING_SORT,
@@ -29,9 +27,7 @@ bool ArmOperator::hasAllianceRing(
 
 bool ArmOperator::hasOpposingRing(
     const std::shared_ptr<alliance::IAlliance>& alliance) {
-  bool has_ring{*static_cast<bool*>(m_robot->getState(
-      robot::subsystems::ESubsystem::RING_SORT,
-      robot::subsystems::ESubsystemState::RING_SORT_HAS_RING))};
+  bool has_ring{hasRing()};
 
   io::RGBValue ring_rgb{*static_cast<io::RGBValue*>(m_robot->getState(
       robot::subsystems::ESubsystem::RING_SORT,
@@ -49,6 +45,14 @@ bool ArmOperator::hasOpposingRing(
   }
 
   return has_opposing_ring;
+}
+
+bool ArmOperator::hasRing() {
+  bool has_ring{*static_cast<bool*>(m_robot->getState(
+      robot::subsystems::ESubsystem::RING_SORT,
+      robot::subsystems::ESubsystemState::RING_SORT_HAS_RING))};
+
+  return has_ring;
 }
 
 void ArmOperator::updateSplitToggle(
@@ -158,6 +162,10 @@ void ArmOperator::updateSmartToggle(
 
   bool has_alliance_ring{hasAllianceRing(alliance)};
 
+  bool is_color_sorting_paused{*static_cast<bool*>(m_process_system->getState(
+      processes::EProcess::AUTO_RING_REJECTION,
+      processes::EProcessState::AUTO_RING_REJECTION_IS_PAUSED))};
+
   // Opposing ring logic moved to a process
   // bool has_opposing_ring{hasOpposingRing(alliance)};
 
@@ -171,7 +179,8 @@ void ArmOperator::updateSmartToggle(
     if (is_neutral) {
       m_robot->sendCommand(robot::subsystems::ESubsystem::ARM,
                            robot::subsystems::ESubsystemCommand::ARM_GO_LOAD);
-    } else if (is_load && has_alliance_ring) {
+    } else if (is_load &&
+               (has_alliance_ring || (is_color_sorting_paused && hasRing()))) {
       m_robot->sendCommand(robot::subsystems::ESubsystem::ARM,
                            robot::subsystems::ESubsystemCommand::ARM_GO_READY);
     } else if (is_ready) {
@@ -214,8 +223,11 @@ void ArmOperator::updateSmartToggle(
 
 ArmOperator::ArmOperator(
     const std::shared_ptr<driftless::io::IController>& controller,
-    const std::shared_ptr<driftless::robot::Robot>& robot)
-    : m_controller{controller}, m_robot{robot} {}
+    const std::shared_ptr<driftless::robot::Robot>& robot,
+    const std::shared_ptr<driftless::processes::ProcessSystem>& process_system)
+    : m_controller{controller},
+      m_robot{robot},
+      m_process_system{process_system} {}
 
 void ArmOperator::update(
     const std::unique_ptr<driftless::profiles::IProfile>& profile,
