@@ -36,5 +36,14 @@ op_control::EControllerDigital EricProfile::getDigitalControlMapping(
   }
   return digitalMapping;
 }
+
+bool EricProfile::getStartupConfig(
+    op_control::EStartupConfig startup_config) const {
+  bool config{};
+  if (STARTUP_CONFIG_MAP.contains(startup_config)) {
+    config = STARTUP_CONFIG_MAP.at(startup_config);
+  }
+  return config;
+}
 }  // namespace profiles
 }  // namespace driftless

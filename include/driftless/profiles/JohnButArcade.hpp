@@ -28,7 +28,7 @@ namespace profiles {
 class JohnButArcade : public driftless::profiles::IProfile {
  private:
   /// @brief Name of the profile
-  static constexpr char PROFILE_NAME[]{"JOHN BUT ARCADE"};
+  static constexpr char PROFILE_NAME[]{"JOHN_BUT_ARCADE"};
 
   /// @brief List of subsystems to be controlled and the type of control used
   std::map<op_control::EControlType, int> CONTROL_MODE_MAP{
@@ -74,6 +74,10 @@ class JohnButArcade : public driftless::profiles::IProfile {
           {op_control::EControl::INTAKE_TOGGLE_HEIGHT,
            op_control::EControllerDigital::TRIGGER_LEFT_BOTTOM}};
 
+  const std::map<op_control::EStartupConfig, bool> STARTUP_CONFIG_MAP{
+      {op_control::EStartupConfig::COLOR_SORT_DEFAULT, true},
+      {op_control::EStartupConfig::ARM_CALLIBRATE, false}};
+
  public:
   /// @brief Gets the name of the profile
   /// @return __std::string__ The name
@@ -103,6 +107,13 @@ class JohnButArcade : public driftless::profiles::IProfile {
   /// the control
   op_control::EControllerDigital getDigitalControlMapping(
       op_control::EControl control) const override;
+
+  /// @brief Gets the value of the desired startup configuration
+  /// @param startup_config __op_control::EStartupConfig__ The desired startup
+  /// configuration
+  /// @return __bool__ The value of the desired startup configuration
+  bool getStartupConfig(
+      op_control::EStartupConfig startup_config) const override;
 };
 }  // namespace profiles
 }  // namespace driftless
