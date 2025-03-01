@@ -40,6 +40,8 @@ class ElevatorAutoRingRejector : public IAutoRingRejector {
   /// @brief If the automatic ring rejector is paused
   bool paused{true};
 
+  bool rejecting_ring{};
+
   /// @brief The elevator position when the last opposing ring was detected
   double last_opposing_ring_pos{-__DBL_MAX__};
 

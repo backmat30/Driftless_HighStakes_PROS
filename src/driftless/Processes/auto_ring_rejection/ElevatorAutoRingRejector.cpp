@@ -1,5 +1,4 @@
 #include "driftless/processes/auto_ring_rejection/ElevatorAutoRingRejector.hpp"
-
 namespace driftless {
 namespace processes {
 namespace auto_ring_rejection {
@@ -27,13 +26,15 @@ void ElevatorAutoRingRejector::taskUpdate() {
     }
 
     if (elevator_pos >= last_opposing_ring_pos &&
-        elevator_pos < last_opposing_ring_pos + elevator_distance_to_sensor) {
+        elevator_pos < last_opposing_ring_pos + elevator_distance_to_sensor && !rejecting_ring) {
       setRejectorPosition(true);
+      rejecting_ring = true;
     } else if (elevator_pos < last_opposing_ring_pos - 0.25 ||
                elevator_pos >
-                   last_opposing_ring_pos + elevator_distance_to_sensor) {
+                   last_opposing_ring_pos + elevator_distance_to_sensor && rejecting_ring) {
       setRejectorPosition(false);
       setArmPosition(false);
+      rejecting_ring = false;
       last_opposing_ring_pos = -__DBL_MAX__;
     }
   }
