@@ -105,8 +105,6 @@ void ElevatorOperator::update(
       profile->getDigitalControlMapping(EControl::ELEVATOR_REVERSE)};
   EControllerDigital toggle{
       profile->getDigitalControlMapping(EControl::ELEVATOR_TOGGLE)};
-  EControllerDigital toggle_color_sort{
-      profile->getDigitalControlMapping(EControl::ELEVATOR_TOGGLE_COLOR_SORT)};
 
   if (!m_controller) {
     updateElevatorVoltage(0);
