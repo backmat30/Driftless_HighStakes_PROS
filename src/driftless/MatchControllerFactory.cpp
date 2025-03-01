@@ -40,17 +40,21 @@ driftless::MatchController MatchControllerFactory::createMatchController() {
   lvgl_menu->addConfig(orange_config);
 
   // add profiles
-  std::unique_ptr<profiles::IProfile> default_profile{
-      std::make_unique<profiles::DefaultProfile>()};
-  lvgl_menu->addProfile(default_profile);
-
   std::unique_ptr<profiles::IProfile> eric_profile{
       std::make_unique<driftless::profiles::EricProfile>()};
   lvgl_menu->addProfile(eric_profile);
 
+  std::unique_ptr<profiles::IProfile> eric_skills_profile{
+      std::make_unique<driftless::profiles::EricSkillsProfile>()};
+  lvgl_menu->addProfile(eric_skills_profile);
+
   std::unique_ptr<profiles::IProfile> john_profile{
       std::make_unique<driftless::profiles::JohnProfile>()};
   lvgl_menu->addProfile(john_profile);
+
+  std::unique_ptr<profiles::IProfile> john_skills_profile{
+      std::make_unique<driftless::profiles::JohnSkillsProfile>()};
+  lvgl_menu->addProfile(john_skills_profile);
 
   std::unique_ptr<profiles::IProfile> john_but_arcade{
       std::make_unique<driftless::profiles::JohnButArcade>()};
