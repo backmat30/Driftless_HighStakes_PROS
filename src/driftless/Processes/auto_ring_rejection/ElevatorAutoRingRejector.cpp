@@ -20,12 +20,16 @@ void ElevatorAutoRingRejector::taskUpdate() {
     double elevator_distance_to_sensor{getElevatorDistanceToSensor()};
     bool has_opposing_ring{hasOpposingRing()};
 
-    if (has_opposing_ring) {
+    if (has_opposing_ring && !seen_opposing_ring) {
+      seen_opposing_ring = true;
       last_opposing_ring_pos = elevator_pos;
       setArmPosition(true);
     }
+    if(!has_opposing_ring) {
+      seen_opposing_ring = false;
+    }
 
-    if (elevator_pos >= last_opposing_ring_pos &&
+    if (elevator_pos >= last_opposing_ring_pos + 0.25 &&
         elevator_pos < last_opposing_ring_pos + elevator_distance_to_sensor && !rejecting_ring) {
       setRejectorPosition(true);
       rejecting_ring = true;

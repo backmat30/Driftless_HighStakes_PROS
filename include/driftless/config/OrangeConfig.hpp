@@ -372,7 +372,7 @@ class OrangeConfig : public IConfig {
   // ring sensor
 
   /// @brief The distance from the color sensor to the end of the elevator
-  static constexpr double RING_SORT_COLOR_SENSOR_TO_END{2.5};
+  static constexpr double RING_SORT_COLOR_SENSOR_TO_END{3.25};
   /// @brief The minimum proximity value to be considered a ring
   static constexpr uint8_t RING_SORT_MIN_RING_PROXIMITY{50};
 
