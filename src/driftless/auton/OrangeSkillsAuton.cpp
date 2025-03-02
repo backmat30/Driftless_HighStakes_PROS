@@ -7,8 +7,8 @@ namespace auton {
 void OrangeSkillsAuton::startColorSort() {
   m_process_system->sendCommand(
       processes::EProcess::AUTO_RING_REJECTION,
-      processes::EProcessCommand::AUTO_RING_REJECTION_REJECT_RINGS, m_robot,
-      m_alliance);
+      processes::EProcessCommand::AUTO_RING_REJECTION_REJECT_RINGS, &m_robot,
+      &m_alliance);
 }
 
 void OrangeSkillsAuton::pauseColorSort() {
@@ -189,7 +189,7 @@ void OrangeSkillsAuton::waitForTurnToAngle(double theta, uint32_t timeout,
   uint32_t end_time{current_time + timeout};
   robot::subsystems::odometry::Position current_position{getOdomPosition()};
   while (!turnTargetReached() && current_time < end_time &&
-         std::abs(current_position.theta - theta) > tolerance) {
+         std::abs(bindRadians(current_position.theta - theta)) > tolerance) {
     current_time = m_clock->getTime();
     current_position = getOdomPosition();
     m_delayer->delay(LOOP_DELAY);
