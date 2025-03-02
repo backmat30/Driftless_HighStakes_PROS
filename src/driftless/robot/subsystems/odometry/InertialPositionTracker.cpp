@@ -79,7 +79,7 @@ void InertialPositionTracker::updatePosition() {
   m_position.theta = current_rotation;
   pros::screen::print(pros::E_TEXT_LARGE_CENTER, 1, "X: %7.2f, Y: %7.2f",
                       m_position.x, m_position.y);
-  pros::screen::print(pros::E_TEXT_LARGE_CENTER, 3, "Theta: %7.2f ",
+  pros::screen::print(pros::E_TEXT_LARGE_CENTER, 7, "Theta: %7.2f ",
                       m_position.theta * 180 / M_PI);
 
   // calculate velocities
