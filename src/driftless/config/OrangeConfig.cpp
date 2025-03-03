@@ -486,7 +486,7 @@ std::shared_ptr<robot::Robot> OrangeConfig::buildRobot() {
 
   // pros objects
   std::unique_ptr<pros::Serial> odom_pros_serial_device{
-      std::make_unique<pros::Serial>(ODOMETRY_ARDUINO)};
+      std::make_unique<pros::Serial>(ODOMETRY_ARDUINO, ODOMETRY_BAUD_RATE)};
   std::unique_ptr<pros::Distance> temp_distance_sensor{
       std::make_unique<pros::Distance>(ODOMETRY_DISTANCE_SENSOR)};
 

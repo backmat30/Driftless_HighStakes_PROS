@@ -379,6 +379,8 @@ class OrangeConfig : public IConfig {
 
   static constexpr double ODOMETRY_SENSOR_LOCAL_THETA_OFFSET{0.0};
 
+  static constexpr uint16_t ODOMETRY_BAUD_RATE{74880};
+
   // ring sensor
 
   /// @brief The distance from the color sensor to the end of the elevator
