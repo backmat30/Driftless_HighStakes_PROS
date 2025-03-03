@@ -56,10 +56,10 @@ void SparkFunPositionTracker::updatePosition() {
 
   latest_time = current_time;
 
-  pros::screen::print(pros::E_TEXT_LARGE_CENTER, 1, "X: %7.2f, Y: %7.2f",
-                      current_position.x, current_position.y);
-  pros::screen::print(pros::E_TEXT_LARGE_CENTER, 3, "Theta: %7.2f ",
-                      current_position.theta * 180 / M_PI);
+  // pros::screen::print(pros::E_TEXT_LARGE_CENTER, 1, "X: %7.2f, Y: %7.2f",
+  //                     current_position.x, current_position.y);
+  // pros::screen::print(pros::E_TEXT_LARGE_CENTER, 3, "Theta: %7.2f ",
+  //                     current_position.theta * 180 / M_PI);
 
   if (m_mutex) {
     m_mutex->give();
@@ -69,37 +69,60 @@ void SparkFunPositionTracker::updatePosition() {
 Position SparkFunPositionTracker::fetchRawPosition() {
   Position raw_position{};
 
-  if (m_serial_device) {
-    for (int i = 0; i < 3; i++) {
-      InputKey current_key{static_cast<InputKey>(m_serial_device->readByte())};
+  // Gather a valid set of packets from the arduino
+  std::string arduino_output{""};
+  if (m_serial_device && m_serial_device->getInputBytes()) {
+    while (static_cast<char>(m_serial_device->readByte()) != '/');
+    uint8_t number_of_packets{};
+    while (number_of_packets < 3) {
+      if (m_serial_device->getInputBytes()) {
+        arduino_output += static_cast<char>(m_serial_device->readByte());
+        if (arduino_output.back() == ';') {
+          ++number_of_packets;
+        }
+      }
+    }
+    m_serial_device->flush();
+  }
 
-      if (static_cast<char>(m_serial_device->readByte()) != ':') {
-        m_serial_device->flush();
+  if (arduino_output.length() > 0) {
+    for (int i = 0; i < 3; i++) {
+      InputKey current_key{static_cast<InputKey>(arduino_output.front())};
+
+      int value_start{2};
+      int value_end{arduino_output.find(';') - 1};
+      std::string value{
+          arduino_output.substr(value_start, value_end - value_start)};
+
+      double value_as_double{};
+      try {
+        value_as_double = std::stod(value);
+      } catch (std::invalid_argument& e) {
         return Position{};
       }
 
-      std::string value{""};
-
-      // Turn the byte stream back into a readable string
-      while (static_cast<char>(m_serial_device->peekByte()) != ';') {
-        value += static_cast<char>(m_serial_device->readByte());
-      }
-      m_serial_device->readByte();
-
       switch (current_key) {
         case InputKey::GET_X:
-          raw_position.x = std::stod(value);
+          raw_position.x = value_as_double;
+          pros::screen::print(pros::E_TEXT_MEDIUM_CENTER, 2, "X: %7.2f",
+          value_as_double);
           break;
         case InputKey::GET_Y:
-          raw_position.y = std::stod(value);
+          raw_position.y = value_as_double;
+          pros::screen::print(pros::E_TEXT_MEDIUM_CENTER, 3, "Y: %7.2f",
+          value_as_double);
           break;
         case InputKey::GET_HEADING:
-          raw_position.theta = std::stod(value);
+          raw_position.theta = value_as_double * M_PI / 180;
+          pros::screen::print(pros::E_TEXT_MEDIUM_CENTER, 4, "Z: %7.2f",
+          value_as_double);
+
           break;
       }
+
+      arduino_output = arduino_output.substr(value_end + 2);
     }
   }
-  m_serial_device->flush();
   return raw_position;
 }
 
@@ -138,9 +161,7 @@ void SparkFunPositionTracker::setPosition(Position position) {
   setTheta(position.theta);
 }
 
-Position SparkFunPositionTracker::getPosition() {
-  return current_position;
-}
+Position SparkFunPositionTracker::getPosition() { return current_position; }
 
 void SparkFunPositionTracker::setX(double x) {
   global_x_offset += x - current_position.x;
