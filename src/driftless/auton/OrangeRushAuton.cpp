@@ -360,8 +360,8 @@ void OrangeRushAuton::run(
   else if (alliance->getAlliance() == alliance::EAlliance::BLUE)
     rush_control_points = std::vector<control::Point>{
         control::Point{144.0 - 35.0, 114.5}, control::Point{144.0 - 32.0, 97.0},
-        control::Point{144.0 - 31.5, 96.0},
-        control::Point{144.0 - 23.75, 81.75}};
+        control::Point{144.0 - 29.0, 96.0},
+        control::Point{144.0 - 24.0, 79.5}};
 
   std::vector<control::Point> rush_path{
       control::path::BezierCurveInterpolation::calculate(rush_control_points)};
@@ -402,8 +402,8 @@ void OrangeRushAuton::run(
         control::Point{72.0, 70.0}, control::Point{90.0, 97.0}};
   else if (alliance->getAlliance() == alliance::EAlliance::BLUE)
     under_ladder_control_points = std::vector<control::Point>{
-        control::Point{144.0 - 24.0, 82.25}, control::Point{144.0 - 46.0, 97.0},
-        control::Point{144.0 - 72.0, 70.0}, control::Point{144.0 - 88.0, 96.0}};
+        control::Point{144.0 - 24.0, 82.25}, control::Point{144.0 - 46.0, 95.0},
+        control::Point{144.0 - 72.0, 70.0}, control::Point{144.0 - 90.0, 97.0}};
 
   std::vector<control::Point> under_ladder_path{
       control::path::BezierCurveInterpolation::calculate(
@@ -468,10 +468,10 @@ void OrangeRushAuton::run(
         control::Point{122.0, 102.5}, control::Point{121.0, 78.0}};
   else if (alliance->getAlliance() == alliance::EAlliance::BLUE)
     wall_stake_rings_control_points =
-        std::vector<control::Point>{control::Point{144.0 - 88.0, 96.0},
+        std::vector<control::Point>{control::Point{144.0 - 90.0, 97.0},
                                     control::Point{144.0 - 101.5, 112.0},
                                     control::Point{144.0 - 122.0, 102.5},
-                                    control::Point{144.0 - 123.0, 77.0}};
+                                    control::Point{144.0 - 121.0, 78.0}};
   std::vector<control::Point> wall_stake_rings_path{
       control::path::BezierCurveInterpolation::calculate(
           wall_stake_rings_control_points)};
@@ -566,7 +566,7 @@ void OrangeRushAuton::run(
   if (alliance->getAlliance() == alliance::EAlliance::RED)
     target_point = control::Point{144.0, 144.0};
   else if (alliance->getAlliance() == alliance::EAlliance::BLUE)
-    target_point = control::Point{144.0 - 150.0, 144.0};
+    target_point = control::Point{144.0 - 144.0, 144.0};
 
   turnToPoint(target_point.getX(), target_point.getY(), target_angular_velocity,
               control::motion::ETurnDirection::AUTO);
@@ -595,9 +595,12 @@ void OrangeRushAuton::run(
     delay(100);
     current_time = getTime();
   }
-
-  driveStraight(-12.0, target_velocity, M_PI / 4.0);
-  waitForDriveStraight(-12.0, 2000, 0.5);
+  if(m_alliance->getAlliance() == alliance::EAlliance::RED) {
+  driveStraight(-16.0, target_velocity, M_PI / 4.0);
+  } else if (m_alliance->getAlliance() == alliance::EAlliance::BLUE) {
+  driveStraight(-16.0, target_velocity, 3.0 * M_PI / 4.0);
+  }
+  waitForDriveStraight(-16.0, 2000, 0.5);
 
   // go to the rings by alliance stake
 
@@ -605,7 +608,7 @@ void OrangeRushAuton::run(
   if (alliance->getAlliance() == alliance::EAlliance::RED)
     target_point = control::Point{65.0, 130.0};
   else if (alliance->getAlliance() == alliance::EAlliance::BLUE)
-    target_point = control::Point{144.0 - 68.5, 127.5};
+    target_point = control::Point{144.0 - 67.0, 130.0};
 
   turnToPoint(target_point.getX(), target_point.getY(), target_angular_velocity,
               control::motion::ETurnDirection::AUTO);
