@@ -629,7 +629,7 @@ void BlueSkillsAuton::run(
 
   // go to ring 3 for stack 2
 
-  target_point = control::Point{100.0, 30.0};
+  target_point = control::Point{102.0, 30.0};
   target_velocity = 28.0;
 
   setIntakeHeight(true);
@@ -769,7 +769,7 @@ void BlueSkillsAuton::run(
 
   // go to alliance stake ring
 
-  target_point = control::Point{82.0, 15.0};
+  target_point = control::Point{83.0, 15.0};
   target_velocity = 40.0;
 
   turnToPoint(target_point.getX(), target_point.getY(), target_angular_velocity,
@@ -792,7 +792,7 @@ void BlueSkillsAuton::run(
 
   turnToAngle(-M_PI / 2.0, target_angular_velocity,
               control::motion::ETurnDirection::AUTO);
-  waitForTurnToAngle(-M_PI / 2.0, 1500, M_PI / 10.0);
+  waitForTurnToAngle(-M_PI / 2.0, 2000, M_PI / 20.0);
 
   driveStraight(target_distance, target_velocity, -M_PI / 2.0);
   waitForDriveStraight(target_distance, 1500, 1.0);
@@ -806,6 +806,12 @@ void BlueSkillsAuton::run(
 
   target_velocity = 42.0;
 
+  driveStraight(-target_distance, target_velocity, -M_PI / 2.0);
+  delay(500);
+  turnToAngle(-M_PI / 4.0, target_angular_velocity, control::motion::ETurnDirection::AUTO);
+  delay(150);
+  turnToAngle(3 * -M_PI / 4.0, target_angular_velocity, control::motion::ETurnDirection::AUTO);
+  delay(150);
   driveStraight(-target_distance, target_velocity, -M_PI / 2.0);
 
   // moves arm to look cool and not abuse the stupid ring bs that john wants

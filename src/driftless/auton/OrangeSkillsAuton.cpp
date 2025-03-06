@@ -636,7 +636,7 @@ void OrangeSkillsAuton::run(
   waitForGoToPoint(target_point.getX(), target_point.getY(), 1000, 1.0);
 
   waitForAllianceRing(1000);
-  setElevatorVoltage(0.0);
+  setElevatorVoltage(-2.0);
   setIntakeVoltage(0.0);
 
   // grab mogo 2
@@ -647,6 +647,8 @@ void OrangeSkillsAuton::run(
   turnToAngle(M_PI, target_angular_velocity,
               control::motion::ETurnDirection::CLOCKWISE);
   waitForTurnToAngle(M_PI, 1500, M_PI / 32.0);
+
+  setElevatorVoltage(0.0);
 
   goToPoint(target_point.getX(), target_point.getY(), target_velocity);
   waitForGoToPoint(target_point.getX(), target_point.getY(), 1000, 0.1);
@@ -716,7 +718,7 @@ void OrangeSkillsAuton::run(
 
   // pick up ring 2 for stack 3
 
-  target_point = control::Point{20.0, 24.0};
+  target_point = control::Point{24.0, 24.0};
   target_velocity = 36.0;
 
   setIntakeHeight(true);
@@ -727,6 +729,7 @@ void OrangeSkillsAuton::run(
   setIntakeHeight(false);
 
   position = getOdomPosition();
+  target_velocity = 24.0;
 
   driveStraight(12.0, target_velocity, position.theta);
 
