@@ -369,7 +369,7 @@ class DefaultConfig : public IConfig {
   // ring sensor
 
   /// @brief The distance from the color sensor to the end of the elevator
-  static constexpr double RING_SORT_COLOR_SENSOR_TO_END{3.25};
+  static constexpr double RING_SORT_COLOR_SENSOR_TO_END{3.35};
   /// @brief The minimum proximity value to be considered a ring
   static constexpr uint8_t RING_SORT_MIN_RING_PROXIMITY{50};
 
