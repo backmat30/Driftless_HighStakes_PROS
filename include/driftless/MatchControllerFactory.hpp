@@ -6,6 +6,7 @@
 #include "driftless/alliance/RedAlliance.hpp"
 #include "driftless/auton/BlueRushAuton.hpp"
 #include "driftless/auton/BlueSkillsAuton.hpp"
+#include "driftless/auton/OrangeMidRushAuton.hpp"
 #include "driftless/auton/OrangeRushAuton.hpp"
 #include "driftless/auton/OrangeSkillsAuton.hpp"
 #include "driftless/config/DefaultConfig.hpp"
