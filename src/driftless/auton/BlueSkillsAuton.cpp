@@ -382,13 +382,16 @@ void BlueSkillsAuton::run(
   // start the color sorter
   startColorSort();
 
+  // drop intake
+  setIntakeVoltage(12.0);
+
   // calibrate the arm
   calibrateArm();
 
   // grab mogo 1
 
   target_point = control::Point{119.0, 99.0};
-  target_velocity = 32.0;
+  target_velocity = 28.0;
 
   goToPoint(target_point.getX(), target_point.getY(), target_velocity);
   waitForGoToPoint(target_point.getX(), target_point.getY(), 2500, 0.25);
@@ -399,7 +402,6 @@ void BlueSkillsAuton::run(
 
   // go to first ring for stack 1
 
-  setIntakeVoltage(12.0);
   setElevatorVoltage(12.0);
 
   target_point = control::Point{96.0, 96.0};
@@ -515,8 +517,8 @@ void BlueSkillsAuton::run(
 
   // go to wall stake rings
 
-  target_point = control::Point{131.0, 77.0};
-  target_velocity = 48.0;
+  target_point = control::Point{130.0, 77.0};
+  target_velocity = 42.0;
 
   turnToPoint(target_point.getX(), target_point.getY(), target_angular_velocity,
               control::motion::ETurnDirection::AUTO);
@@ -559,7 +561,7 @@ void BlueSkillsAuton::run(
   // go to ring 1 for stack 2
 
   target_point = control::Point{122.0, 57.0};
-  target_velocity = 30.0;
+  target_velocity = 26.0;
 
   turnToPoint(target_point.getX(), target_point.getY(), target_velocity,
               control::motion::ETurnDirection::AUTO);
@@ -579,7 +581,7 @@ void BlueSkillsAuton::run(
 
   // go to mogo 2
 
-  target_point = control::Point{98.0, 52.0};
+  target_point = control::Point{98.0, 50.0};
   target_velocity = 24.0;
 
   turnToAngle(0.0, target_angular_velocity,
@@ -598,7 +600,7 @@ void BlueSkillsAuton::run(
 
   // get ring 2 for stack 2
 
-  target_point = control::Point{81.0, 66.0};
+  target_point = control::Point{81.0, 65.0};
   target_velocity = 40.0;
 
   turnToPoint(target_point.getX() + 9.0, target_point.getY(),
@@ -629,7 +631,7 @@ void BlueSkillsAuton::run(
 
   // go to ring 3 for stack 2
 
-  target_point = control::Point{102.0, 30.0};
+  target_point = control::Point{102.0, 28.0};
   target_velocity = 28.0;
 
   setIntakeHeight(true);
@@ -650,7 +652,7 @@ void BlueSkillsAuton::run(
 
   // go to ring 4 for stack 2
 
-  target_point = control::Point{126.0, 32.0};
+  target_point = control::Point{124.0, 32.0};
   target_velocity = 42.0;
 
   turnToPoint(target_point.getX(), target_point.getY(), target_angular_velocity,
@@ -701,7 +703,7 @@ void BlueSkillsAuton::run(
 
   // go to ring 5 for stack 2
 
-  target_point = control::Point{152.0, 4.0};
+  target_point = control::Point{154.0, 4.0};
   target_velocity = 30.0;
 
   turnToPoint(target_point.getX(), target_point.getY(), target_angular_velocity,
@@ -727,10 +729,9 @@ void BlueSkillsAuton::run(
   target_velocity = 24.0;
   position = getOdomPosition();
 
+  setIntakeVoltage(-12.0);
   driveStraight(-target_distance, target_velocity, position.theta);
   waitForDriveStraight(-target_distance, 1500, 1.0);
-
-  setIntakeVoltage(-12.0);
 
   delay(150);
 
@@ -769,8 +770,8 @@ void BlueSkillsAuton::run(
 
   // go to alliance stake ring
 
-  target_point = control::Point{83.0, 15.0};
-  target_velocity = 40.0;
+  target_point = control::Point{81.0, 15.0};
+  target_velocity = 36.0;
 
   turnToPoint(target_point.getX(), target_point.getY(), target_angular_velocity,
               control::motion::ETurnDirection::AUTO);

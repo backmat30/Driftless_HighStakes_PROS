@@ -343,14 +343,14 @@ void BlueRushAuton::run(
   std::vector<control::Point> rush_control_points{};
   if (alliance->getAlliance() == alliance::EAlliance::RED) {
     rush_control_points = std::vector<control::Point>{
-        control::Point{109.0, 125.0}, control::Point{111.0, 102.0},
-        control::Point{112.0, 98.0}, control::Point{122.0, 84.0}};
+        control::Point{109.0, 125.0}, control::Point{108.0, 102.0},
+        control::Point{113.5, 99.5}, control::Point{119.0, 83.0}};
 
   } else if (alliance->getAlliance() == alliance::EAlliance::BLUE) {
     rush_control_points =
         std::vector<control::Point>{control::Point{144.0 - 109.0, 125.0},
-                                    control::Point{144.0 - 109.0, 102.0},
-                                    control::Point{144.0 - 110.0, 98.0},
+                                    control::Point{144.0 - 108.0, 102.0},
+                                    control::Point{144.0 - 113.0, 99.0},
                                     control::Point{144.0 - 120.0, 84.0}};
   }
 
@@ -378,7 +378,7 @@ void BlueRushAuton::run(
 
   target_distance = distance(position.x, position.y, target_point.getX(),
                              target_point.getY());
-  while (target_distance > 14.0) {
+  while (target_distance > 15.0) {
     m_delayer->delay(LOOP_DELAY);
     position = getOdomPosition();
     target_distance = distance(position.x, position.y, target_point.getX(),

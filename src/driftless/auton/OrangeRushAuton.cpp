@@ -356,12 +356,12 @@ void OrangeRushAuton::run(
   if (alliance->getAlliance() == alliance::EAlliance::RED)
     rush_control_points = std::vector<control::Point>{
         control::Point{35.0, 114.5}, control::Point{31.0, 97.0},
-        control::Point{29.0, 96.0}, control::Point{24.0, 79.5}};
+        control::Point{29.5, 96.5}, control::Point{25.5, 80.0}};
   else if (alliance->getAlliance() == alliance::EAlliance::BLUE)
     rush_control_points = std::vector<control::Point>{
-        control::Point{144.0 - 37.0, 112.0}, control::Point{144.0 - 30.0, 90.0},
-        control::Point{144.0 - 26.0, 83.5},
-        control::Point{144.0 - 23.5, 81.5}};
+        control::Point{144.0 - 35.0, 114.5}, control::Point{144.0 - 31.0, 97.0},
+        control::Point{144.0 - 29.5, 96.5},
+        control::Point{144.0 - 25.5, 80.0}};
 
   std::vector<control::Point> rush_path{
       control::path::BezierCurveInterpolation::calculate(rush_control_points)};

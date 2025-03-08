@@ -353,19 +353,19 @@ namespace driftless {
       std::vector<control::Point> rush_control_points{};
       if (alliance->getAlliance() == alliance::EAlliance::RED)
         rush_control_points = std::vector<control::Point>{
-            control::Point{35.0, 114.5}, control::Point{31.0, 97.0},
-            control::Point{29.0, 96.0}, control::Point{24.0, 79.5}};
+            control::Point{35.0, 114.5}, control::Point{25.0, 85.0},
+            control::Point{57.0, 92.0}, control::Point{62.5, 79.5}};
       else if (alliance->getAlliance() == alliance::EAlliance::BLUE)
         rush_control_points = std::vector<control::Point>{
-            control::Point{144.0 - 37.0, 112.0}, control::Point{144.0 - 30.0, 90.0},
-            control::Point{144.0 - 26.0, 83.5},
-            control::Point{144.0 - 23.5, 81.5}};
+            control::Point{144.0 - 35.0, 114.5}, control::Point{144.0 - 25.0, 85.0},
+            control::Point{144.0 - 57.0, 92.0},
+            control::Point{144.0 - 62.5, 79.5}};
     
       std::vector<control::Point> rush_path{
           control::path::BezierCurveInterpolation::calculate(rush_control_points)};
       target_point = rush_control_points.back();
     
-      target_velocity = 72.0;
+      target_velocity = 40.0;
     
       followPath(rush_path, target_velocity);
       // Set up subsystems while moving to the path
@@ -376,15 +376,15 @@ namespace driftless {
       position = getOdomPosition();
       target_distance = distance(position.x, position.y, target_point.getX(),
                                  target_point.getY());
-      while (target_distance > 13.0) {
+      while (target_distance > 9.0) {
         m_delayer->delay(LOOP_DELAY);
         position = getOdomPosition();
         target_distance = distance(position.x, position.y, target_point.getX(),
                                    target_point.getY());
       }
-      target_velocity = 16.0;
+      target_velocity = 14.0;
       setFollowPathVelocity(target_velocity);
-      while(target_distance > 4.5) {
+      while(target_distance > 4.0) {
         m_delayer->delay(LOOP_DELAY);
         position = getOdomPosition();
         target_distance = distance(position.x, position.y, target_point.getX(),
@@ -392,40 +392,39 @@ namespace driftless {
       }
       goToPoint(target_point.getX(), target_point.getY(), target_velocity);
     
-      waitForGoToPoint(target_point.getX(), target_point.getY(), 1200, 0.5);
+      waitForGoToPoint(target_point.getX(), target_point.getY(), 1200, 1.0);
     
       setClamp(true);
       m_control_system->pause();
       delay(100);
       armGoNeutral();
+
+      driveStraight(4.0, target_velocity, position.theta);
+      waitForDriveStraight(4.0, 1000, 0.5);
+      m_control_system->pause();
     
-      // Set up the path under the ladder
-      std::vector<control::Point> under_ladder_control_points{};
+      // Target the ring outside of ladder
       if (alliance->getAlliance() == alliance::EAlliance::RED)
-        under_ladder_control_points = std::vector<control::Point>{
-            control::Point{24.0, 82.25}, control::Point{46.0, 95.0},
-            control::Point{72.0, 70.0}, control::Point{90.0, 97.0}};
+        target_point = control::Point{90.0, 97.0};
       else if (alliance->getAlliance() == alliance::EAlliance::BLUE)
-        under_ladder_control_points = std::vector<control::Point>{
-            control::Point{144.0 - 24.0, 79.0}, control::Point{144.0 - 46.0, 90.0},
-            control::Point{144.0 - 72.0, 70.0}, control::Point{144.0 - 90.0, 97.0}};
+        target_point = control::Point{144.0 - 90.0, 97.0};
     
-      std::vector<control::Point> under_ladder_path{
-          control::path::BezierCurveInterpolation::calculate(
-              under_ladder_control_points)};
     
       // follow the path under the ladder
-      target_point = under_ladder_control_points.back();
-      target_velocity = 12.0;
+      target_velocity = 56.0;
       position = getOdomPosition();
-    
-      followPath(under_ladder_path, target_velocity);
-    
+
+      turnToPoint(target_point.getX(), target_point.getY() - 24.0, target_angular_velocity,
+                  control::motion::ETurnDirection::AUTO);
+        
       setIntakeVoltage(12.0);
       setElevatorVoltage(12.0);
-      delay(100);
-      target_velocity = 36.0;
-      setFollowPathVelocity(target_velocity);
+
+      waitForTurnToPoint(target_point.getX(), target_point.getY(), 1500,
+                        M_PI / 20.0);
+
+      goToPoint(target_point.getX(), target_point.getY(), target_velocity);
+      waitForGoToPoint(target_point.getX(), target_point.getY(), 2000, 0.5);
     
       target_distance = distance(position.x, position.y, target_point.getX(),
                                  target_point.getY());
@@ -441,8 +440,6 @@ namespace driftless {
           elevator_running = false;
         }
       }
-      target_velocity = 24.0;
-      setFollowPathVelocity(target_velocity);
       delay(200);
       m_control_system->pause();
       // Wait for the blue robot to leave, robot is too zoomy
@@ -454,14 +451,14 @@ namespace driftless {
       // regrab goal to get better clamp
       setClamp(false);
       position = getOdomPosition();
-      driveStraight(-12.0, target_velocity, position.theta);
-      waitForDriveStraight(-12.0, 1000, 0.5);
+      driveStraight(-14.0, target_velocity, position.theta);
+      waitForDriveStraight(-14.0, 1000, 0.5);
       delay(75);
       setClamp(true);
       driveStraight(8.0, target_velocity, position.theta);
       waitForDriveStraight(8.0, 1000, 0.5);
       m_control_system->pause();
-      m_delayer->delayUntil(current_time + 3250);
+      m_delayer->delayUntil(current_time + 2750);
       setElevatorVoltage(12.0);
       setIntakeVoltage(12.0);
     
@@ -469,14 +466,14 @@ namespace driftless {
       std::vector<control::Point> wall_stake_rings_control_points{};
       if (alliance->getAlliance() == alliance::EAlliance::RED)
         wall_stake_rings_control_points = std::vector<control::Point>{
-            control::Point{90.0, 97.0}, control::Point{101.5, 112.0},
-            control::Point{122.0, 102.5}, control::Point{121.0, 78.0}};
+            control::Point{90.0, 97.0}, control::Point{103.5, 108.0},
+            control::Point{126.0, 100.5}, control::Point{123.0, 79.0}};
       else if (alliance->getAlliance() == alliance::EAlliance::BLUE)
         wall_stake_rings_control_points =
             std::vector<control::Point>{control::Point{144.0 - 90.0, 97.0},
-                                        control::Point{144.0 - 101.5, 112.0},
-                                        control::Point{144.0 - 122.0, 102.5},
-                                        control::Point{144.0 - 122.0, 78.0}};
+                                        control::Point{144.0 - 103.5, 108.0},
+                                        control::Point{144.0 - 126.0, 100.5},
+                                        control::Point{144.0 - 123.0, 79.0}};
       std::vector<control::Point> wall_stake_rings_path{
           control::path::BezierCurveInterpolation::calculate(
               wall_stake_rings_control_points)};
@@ -485,8 +482,7 @@ namespace driftless {
       target_distance = distance(position.x, position.y, target_point.getX(),
                                  target_point.getY());
     
-      target_velocity = 36.0;
-      setFollowPathVelocity(target_velocity);
+      target_velocity = 46.0;
       followPath(wall_stake_rings_path, target_velocity);
     
       if (alliance->getAlliance() == alliance::EAlliance::RED) {
@@ -505,9 +501,9 @@ namespace driftless {
         target_distance = distance(position.x, position.y, target_point.getX(),
                                    target_point.getY());
       }
-      target_velocity = 12.0;
+      target_velocity = 18.0;
       goToPoint(target_point.getX(), target_point.getY(), target_velocity);
-      waitForGoToPoint(target_point.getX(), target_point.getY(), 1500, 0.5);
+      waitForGoToPoint(target_point.getX(), target_point.getY(), 1500, 1.0);
     
       position = getOdomPosition();
     
@@ -518,9 +514,9 @@ namespace driftless {
     
       // Go towards next ring stack
       if (alliance->getAlliance() == alliance::EAlliance::RED)
-        target_point = control::Point{112.0, 114.0};
+        target_point = control::Point{113.0, 113.0};
       else if (alliance->getAlliance() == alliance::EAlliance::BLUE)
-        target_point = control::Point{144.0 - 112.0, 114.0};
+        target_point = control::Point{144.0 - 115.0, 113.0};
     
       target_velocity = 36.0;
       goToPoint(target_point.getX(), target_point.getY(), target_velocity);
@@ -580,7 +576,7 @@ namespace driftless {
     
       setIntakeHeight(true);
     
-      target_velocity = 20.0;
+      target_velocity = 32.0;
       goToPoint(target_point.getX(), target_point.getY(), target_velocity);
       waitForGoToPoint(target_point.getX(), target_point.getY(), 1200, 0.5);
       position = getOdomPosition();
@@ -611,9 +607,9 @@ namespace driftless {
     
       target_velocity = 72.0;
       if (alliance->getAlliance() == alliance::EAlliance::RED)
-        target_point = control::Point{65.0, 130.0};
+        target_point = control::Point{67.0, 128.0};
       else if (alliance->getAlliance() == alliance::EAlliance::BLUE)
-        target_point = control::Point{144.0 - 67.0, 128.0};
+        target_point = control::Point{144.0 - 68.0, 128.0};
     
       turnToPoint(target_point.getX(), target_point.getY(), target_angular_velocity,
                   control::motion::ETurnDirection::AUTO);
@@ -622,6 +618,19 @@ namespace driftless {
       setElevatorVoltage(8.0);
     
       goToPoint(target_point.getX(), target_point.getY(), target_velocity);
+
+      position = getOdomPosition();
+      target_distance = distance(position.x, position.y, target_point.getX(),
+                                 target_point.getY());
+
+      while (target_distance > 8.0) {
+        m_delayer->delay(LOOP_DELAY);
+        position = getOdomPosition();
+        target_distance = distance(position.x, position.y, target_point.getX(),
+                                   target_point.getY());
+      }
+      target_velocity = 24.0;
+      setGoToPointVelocity(target_velocity);
       waitForGoToPoint(target_point.getX(), target_point.getY(), 1700, 0.5);
       waitForAllianceRing(1500);
       armGoLoad();
@@ -631,12 +640,11 @@ namespace driftless {
                   control::motion::ETurnDirection::AUTO);
       waitForTurnToAngle(M_PI / 2.0, 1000, M_PI / 25.0);
     
-      target_velocity = 12.0;
+      target_velocity = 28.0;
       driveStraight(12.0, target_velocity, M_PI / 2.0);
       waitForDriveStraight(12.0, 500, 0.5);
       m_control_system->pause();
     
-      delay(750);
       setElevatorVoltage(0.0);
       setIntakeVoltage(0.0);
     
@@ -649,13 +657,13 @@ namespace driftless {
     
       // jiggle to get ring on stake
       turnToAngle(M_PI / 4.0, target_angular_velocity, control::motion::ETurnDirection::AUTO);
-      delay(100);
+      delay(200);
       turnToAngle(3.0 * M_PI / 4.0, target_angular_velocity, control::motion::ETurnDirection::AUTO);
-      delay(100);
+      delay(300);
     
       // finish driving away from the stake
       driveStraight(-10.0, target_velocity, M_PI / 2.0);
-      delay(300);
+      delay(500);
       armGoNeutral();
       waitForDriveStraight(-10.0, 1000, 0.5);
     
