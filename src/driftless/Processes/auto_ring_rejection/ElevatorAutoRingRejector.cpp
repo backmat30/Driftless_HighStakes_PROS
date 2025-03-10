@@ -80,9 +80,9 @@ bool ElevatorAutoRingRejector::hasOpposingRing() {
   if (has_ring) {
     has_opposing_ring =
         ((m_alliance->getAlliance() == alliance::EAlliance::RED &&
-          ring_rgb.red < ring_rgb.blue) ||
+          ring_rgb.red < ring_rgb.blue * 0.9) ||
          (m_alliance->getAlliance() == alliance::EAlliance::BLUE &&
-          ring_rgb.blue < ring_rgb.red));
+          ring_rgb.blue * 0.9 < ring_rgb.red));
   }
 
   return has_opposing_ring;
