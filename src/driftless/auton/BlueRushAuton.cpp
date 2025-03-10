@@ -343,15 +343,15 @@ void BlueRushAuton::run(
   std::vector<control::Point> rush_control_points{};
   if (alliance->getAlliance() == alliance::EAlliance::RED) {
     rush_control_points = std::vector<control::Point>{
-        control::Point{109.0, 125.0}, control::Point{108.0, 102.0},
-        control::Point{113.5, 99.5}, control::Point{119.0, 83.0}};
+        control::Point{109.0, 125.0}, control::Point{108.0, 98.0},
+        control::Point{114.0, 96.0}, control::Point{121.0, 83.5}};
 
   } else if (alliance->getAlliance() == alliance::EAlliance::BLUE) {
     rush_control_points =
         std::vector<control::Point>{control::Point{144.0 - 109.0, 125.0},
-                                    control::Point{144.0 - 108.0, 102.0},
-                                    control::Point{144.0 - 113.0, 99.0},
-                                    control::Point{144.0 - 120.0, 84.0}};
+                                    control::Point{144.0 - 110.0, 98.0},
+                                    control::Point{144.0 - 116.0, 96.0},
+                                    control::Point{144.0 - 120.0, 82.0}};
   }
 
   std::vector<control::Point> rush_path{
@@ -444,7 +444,7 @@ void BlueRushAuton::run(
 
   // go to the next mobile goal
   if (alliance->getAlliance() == alliance::EAlliance::RED)
-    target_point = control::Point{84.0, 121.5};
+    target_point = control::Point{83.0, 121.5};
   else if (alliance->getAlliance() == alliance::EAlliance::BLUE)
     target_point = control::Point{144.0 - 84.0, 121.5};
 
@@ -473,7 +473,7 @@ void BlueRushAuton::run(
   // slow down near the target
   target_velocity = 16.0;
   setGoToPointVelocity(target_velocity);
-  waitForGoToPoint(target_point.getX(), target_point.getY(), 3000, 0.5);
+  waitForGoToPoint(target_point.getX(), target_point.getY(), 3000, 1.0);
   setClamp(true);
   delay(75);
 
@@ -516,9 +516,9 @@ void BlueRushAuton::run(
 
   // move towards next rings
   if (alliance->getAlliance() == alliance::EAlliance::RED)
-    target_point = control::Point{32.0, 101.0};
+    target_point = control::Point{32.0, 99.0};
   else if (alliance->getAlliance() == alliance::EAlliance::BLUE)
-    target_point = control::Point{144.0 - 32.0, 101.0};
+    target_point = control::Point{144.0 - 32.0, 100.0};
   goToPoint(target_point.getX(), target_point.getY(), target_velocity);
   setIntakeVoltage(12.0);
   setElevatorVoltage(12.0);
@@ -636,25 +636,25 @@ void BlueRushAuton::run(
   driveStraight(15.0, target_velocity, position.theta);
   waitForDriveStraight(15.0, 1000, 0.5);
   if (alliance->getAlliance() == alliance::EAlliance::RED) {
-    driveStraight(-10.0, target_velocity, 3.0 * M_PI / 4.0);
-    waitForDriveStraight(-25.0, 2000, 0.5);
+    driveStraight(-20.0, target_velocity, 3.0 * M_PI / 4.0);
+    waitForDriveStraight(-20.0, 2000, 0.5);
     turnToAngle(-M_PI / 4.0, target_angular_velocity,
                 control::motion::ETurnDirection::AUTO);
     waitForTurnToAngle(-M_PI / 4.0, 1000, M_PI / 25.0);
     setClamp(false);
-    driveStraight(-10.0, target_velocity, -M_PI / 4.0);
-    waitForDriveStraight(-10.0, 500, 0.5);
+    driveStraight(-20.0, target_velocity, -M_PI / 4.0);
+    waitForDriveStraight(-20.0, 500, 0.5);
     driveStraight(25.0, target_velocity, -M_PI / 4.0);
     waitForDriveStraight(25.0, 1000, 0.5);
   } else if (alliance->getAlliance() == alliance::EAlliance::BLUE) {
-    driveStraight(-10.0, target_velocity, M_PI / 4.0);
-    waitForDriveStraight(-25.0, 2000, 0.5);
+    driveStraight(-20.0, target_velocity, M_PI / 4.0);
+    waitForDriveStraight(-20.0, 2000, 0.5);
     turnToAngle(-3.0 * M_PI / 4.0, target_angular_velocity,
                 control::motion::ETurnDirection::AUTO);
     waitForTurnToAngle(-3.0 * M_PI / 4.0, 1000, M_PI / 25.0);
     setClamp(false);
-    driveStraight(-10.0, target_velocity, -3.0 * M_PI / 4.0);
-    waitForDriveStraight(-10.0, 500, 0.5);
+    driveStraight(-20.0, target_velocity, -3.0 * M_PI / 4.0);
+    waitForDriveStraight(-20.0, 500, 0.5);
     driveStraight(25.0, target_velocity, -3.0 * M_PI / 4.0);
     waitForDriveStraight(25.0, 1000, 0.5);
   }

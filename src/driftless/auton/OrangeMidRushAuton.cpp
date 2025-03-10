@@ -365,7 +365,7 @@ namespace driftless {
           control::path::BezierCurveInterpolation::calculate(rush_control_points)};
       target_point = rush_control_points.back();
     
-      target_velocity = 40.0;
+      target_velocity = 36.0;
     
       followPath(rush_path, target_velocity);
       // Set up subsystems while moving to the path
@@ -382,7 +382,7 @@ namespace driftless {
         target_distance = distance(position.x, position.y, target_point.getX(),
                                    target_point.getY());
       }
-      target_velocity = 14.0;
+      target_velocity = 16.0;
       setFollowPathVelocity(target_velocity);
       while(target_distance > 4.0) {
         m_delayer->delay(LOOP_DELAY);
@@ -392,7 +392,7 @@ namespace driftless {
       }
       goToPoint(target_point.getX(), target_point.getY(), target_velocity);
     
-      waitForGoToPoint(target_point.getX(), target_point.getY(), 1200, 1.0);
+      waitForGoToPoint(target_point.getX(), target_point.getY(), 1200, 1.5);
     
       setClamp(true);
       m_control_system->pause();
@@ -402,16 +402,17 @@ namespace driftless {
       driveStraight(4.0, target_velocity, position.theta);
       waitForDriveStraight(4.0, 1000, 0.5);
       m_control_system->pause();
+      m_delayer->delay(2000);
     
       // Target the ring outside of ladder
       if (alliance->getAlliance() == alliance::EAlliance::RED)
         target_point = control::Point{90.0, 97.0};
       else if (alliance->getAlliance() == alliance::EAlliance::BLUE)
-        target_point = control::Point{144.0 - 90.0, 97.0};
+        target_point = control::Point{144.0 - 89.0, 96.0};
     
     
       // follow the path under the ladder
-      target_velocity = 56.0;
+      target_velocity = 46.0;
       position = getOdomPosition();
 
       turnToPoint(target_point.getX(), target_point.getY() - 24.0, target_angular_velocity,
@@ -452,13 +453,12 @@ namespace driftless {
       setClamp(false);
       position = getOdomPosition();
       driveStraight(-14.0, target_velocity, position.theta);
-      waitForDriveStraight(-14.0, 1000, 0.5);
+      waitForDriveStraight(-16.0, 1000, 0.5);
       delay(75);
       setClamp(true);
       driveStraight(8.0, target_velocity, position.theta);
-      waitForDriveStraight(8.0, 1000, 0.5);
+      waitForDriveStraight(6.0, 1000, 0.5);
       m_control_system->pause();
-      m_delayer->delayUntil(current_time + 2750);
       setElevatorVoltage(12.0);
       setIntakeVoltage(12.0);
     
@@ -607,7 +607,7 @@ namespace driftless {
     
       target_velocity = 72.0;
       if (alliance->getAlliance() == alliance::EAlliance::RED)
-        target_point = control::Point{67.0, 128.0};
+        target_point = control::Point{65.0, 130.0};
       else if (alliance->getAlliance() == alliance::EAlliance::BLUE)
         target_point = control::Point{144.0 - 68.0, 128.0};
     
@@ -668,13 +668,13 @@ namespace driftless {
       waitForDriveStraight(-10.0, 1000, 0.5);
     
       // touch ladder for AWP
-      turnToAngle(3.0 * M_PI / 2.0, target_velocity,
-                  control::motion::ETurnDirection::AUTO);
-      waitForTurnToAngle(3.0 * M_PI / 2.0, 700, M_PI / 25.0);
+      // turnToAngle(3.0 * M_PI / 2.0, target_velocity,
+      //             control::motion::ETurnDirection::AUTO);
+      // waitForTurnToAngle(3.0 * M_PI / 2.0, 700, M_PI / 25.0);
     
-      driveStraight(24.0, target_velocity, 3.0 * M_PI / 2.0);
-      delay(1000);
-      armGoAllianceStake();
+      // driveStraight(24.0, target_velocity, 3.0 * M_PI / 2.0);
+      // delay(1000);
+      // armGoAllianceStake();
       m_control_system->pause();
     
       // display the runtime at the end

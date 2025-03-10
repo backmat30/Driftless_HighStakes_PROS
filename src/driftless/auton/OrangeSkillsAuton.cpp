@@ -426,7 +426,7 @@ void OrangeSkillsAuton::run(
 
   // go to first ring for stack 1
   target_point = control::Point{52.0, 101.0};
-  target_velocity = 36.0;
+  target_velocity = 34.0;
 
   turnToPoint(target_point.getX(), target_point.getY(), target_angular_velocity,
               control::motion::ETurnDirection::COUNTERCLOCKWISE);
@@ -465,7 +465,7 @@ void OrangeSkillsAuton::run(
 
   // go to ring under ladder for stack 1
   target_point = control::Point{66.0, 83.0};
-  target_velocity = 32.0;
+  target_velocity = 30.0;
 
   setIntakeVoltage(12.0);
 
@@ -511,7 +511,7 @@ void OrangeSkillsAuton::run(
   // turn to ring 4 for stack 1
 
   target_point = control::Point{24.0, 120.0};
-  target_velocity = 42.0;
+  target_velocity = 38.0;
 
   turnToPoint(target_point.getX(), target_point.getY(), target_velocity,
               control::motion::ETurnDirection::CLOCKWISE);
@@ -529,7 +529,7 @@ void OrangeSkillsAuton::run(
 
   // turn to ring 5 for stack 1
   target_point = control::Point{6.0, 140.0};
-  target_velocity = 32.0;
+  target_velocity = 24.0;
 
   turnToPoint(target_point.getX(), target_point.getY(), target_angular_velocity,
               control::motion::ETurnDirection::AUTO);

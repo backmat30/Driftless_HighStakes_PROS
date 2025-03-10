@@ -517,7 +517,7 @@ void BlueSkillsAuton::run(
 
   // go to wall stake rings
 
-  target_point = control::Point{130.0, 77.0};
+  target_point = control::Point{129.0, 77.0};
   target_velocity = 42.0;
 
   turnToPoint(target_point.getX(), target_point.getY(), target_angular_velocity,
