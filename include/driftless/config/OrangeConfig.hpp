@@ -361,7 +361,7 @@ class OrangeConfig : public IConfig {
   /// @brief left offset of the linear tracking wheel
   static constexpr double LINEAR_TRACKING_WHEEL_OFFSET{0.0};
   /// @brief forwards offset of the strafe tracking wheel
-  static constexpr double STRAFE_TRACKING_WHEEL_OFFSET{-2.26};
+  static constexpr double STRAFE_TRACKING_WHEEL_OFFSET{-2.25};
   /// @brief position resetter x offset
   static constexpr double RESETTER_LOCAL_X_OFFSET{3.33159158};
   /// @brief position resetter y offset
