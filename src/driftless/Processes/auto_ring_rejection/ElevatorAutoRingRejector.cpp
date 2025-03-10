@@ -1,5 +1,4 @@
 #include "driftless/processes/auto_ring_rejection/ElevatorAutoRingRejector.hpp"
-
 namespace driftless {
 namespace processes {
 namespace auto_ring_rejection {
@@ -21,19 +20,25 @@ void ElevatorAutoRingRejector::taskUpdate() {
     double elevator_distance_to_sensor{getElevatorDistanceToSensor()};
     bool has_opposing_ring{hasOpposingRing()};
 
-    if (has_opposing_ring) {
+    if (has_opposing_ring && !seen_opposing_ring) {
+      seen_opposing_ring = true;
       last_opposing_ring_pos = elevator_pos;
       setArmPosition(true);
     }
+    if(!has_opposing_ring) {
+      seen_opposing_ring = false;
+    }
 
-    if (elevator_pos >= last_opposing_ring_pos &&
-        elevator_pos < last_opposing_ring_pos + elevator_distance_to_sensor) {
+    if (elevator_pos >= last_opposing_ring_pos + 0.6 &&
+        elevator_pos < last_opposing_ring_pos + elevator_distance_to_sensor && !rejecting_ring) {
       setRejectorPosition(true);
+      rejecting_ring = true;
     } else if (elevator_pos < last_opposing_ring_pos - 0.25 ||
                elevator_pos >
-                   last_opposing_ring_pos + elevator_distance_to_sensor) {
+                   last_opposing_ring_pos + elevator_distance_to_sensor && rejecting_ring) {
       setRejectorPosition(false);
       setArmPosition(false);
+      rejecting_ring = false;
       last_opposing_ring_pos = -__DBL_MAX__;
     }
   }
@@ -75,9 +80,9 @@ bool ElevatorAutoRingRejector::hasOpposingRing() {
   if (has_ring) {
     has_opposing_ring =
         ((m_alliance->getAlliance() == alliance::EAlliance::RED &&
-          ring_rgb.red < ring_rgb.blue) ||
+          ring_rgb.red < ring_rgb.blue * 0.9) ||
          (m_alliance->getAlliance() == alliance::EAlliance::BLUE &&
-          ring_rgb.blue < ring_rgb.red));
+          ring_rgb.blue * 0.9 < ring_rgb.red));
   }
 
   return has_opposing_ring;

@@ -76,7 +76,7 @@ class JohnProfile : public driftless::profiles::IProfile {
 
   const std::map<op_control::EStartupConfig, bool> STARTUP_CONFIG_MAP{
       {op_control::EStartupConfig::COLOR_SORT_DEFAULT, true},
-      {op_control::EStartupConfig::ARM_CALLIBRATE, false}};
+      {op_control::EStartupConfig::ARM_CALLIBRATE, true}};
 
  public:
   /// @brief Gets the name of the profile
