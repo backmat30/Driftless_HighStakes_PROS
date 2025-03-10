@@ -407,8 +407,8 @@ std::shared_ptr<robot::Robot> DefaultConfig::buildRobot() {
   // pros objects
   std::unique_ptr<pros::Rotation> temp_linear_rotation_sensor{
       std::make_unique<pros::Rotation>(ODOMETRY_LINEAR_TRACKING_WHEEL)};
-  //   std::unique_ptr<pros::Rotation> temp_strafe_rotation_sensor{
-  //       std::make_unique<pros::Rotation>(ODOMETRY_STRAFE_TRACKING_WHEEL)};
+  std::unique_ptr<pros::Rotation> temp_strafe_rotation_sensor{
+      std::make_unique<pros::Rotation>(ODOMETRY_STRAFE_TRACKING_WHEEL)};
   std::unique_ptr<pros::IMU> temp_inertial_sensor{
       std::make_unique<pros::IMU>(ODOMETRY_INERTIAL_SENSOR)};
   std::unique_ptr<pros::Distance> temp_distance_sensor{
@@ -423,12 +423,12 @@ std::shared_ptr<robot::Robot> DefaultConfig::buildRobot() {
       std::make_unique<driftless::hal::TrackingWheel>(linear_rotation_sensor,
                                                       TRACKING_WHEEL_RADIUS)};
   // strafe tracking wheel
-  //   std::unique_ptr<driftless::io::IRotationSensor> strafe_rotation_sensor{
-  //       std::make_unique<driftless::pros_adapters::ProsRotationSensor>(
-  //           temp_strafe_rotation_sensor)};
-  //   std::unique_ptr<driftless::io::IDistanceTracker> strafe_tracking_wheel{
-  //       std::make_unique<driftless::hal::TrackingWheel>(strafe_rotation_sensor,
-  //                                                       TRACKING_WHEEL_RADIUS)};
+  std::unique_ptr<driftless::io::IRotationSensor> strafe_rotation_sensor{
+      std::make_unique<driftless::pros_adapters::ProsRotationSensor>(
+          temp_strafe_rotation_sensor)};
+  std::unique_ptr<driftless::io::IDistanceTracker> strafe_tracking_wheel{
+      std::make_unique<driftless::hal::TrackingWheel>(strafe_rotation_sensor,
+                                                      TRACKING_WHEEL_RADIUS)};
   // inertial sensor
   std::unique_ptr<driftless::io::IInertialSensor> inertial_sensor{
       std::make_unique<driftless::pros_adapters::ProsInertialSensor>(
@@ -458,8 +458,8 @@ std::shared_ptr<robot::Robot> DefaultConfig::buildRobot() {
               ->withInertialSensor(inertial_sensor)
               ->withLinearDistanceTracker(linear_tracking_wheel)
               ->withLinearDistanceTrackerOffset(LINEAR_TRACKING_WHEEL_OFFSET)
-              //   ->withStrafeDistanceTracker(strafe_tracking_wheel)
-              //   ->withStrafeDistanceTrackerOffset(STRAFE_TRACKING_WHEEL_OFFSET)
+              ->withStrafeDistanceTracker(strafe_tracking_wheel)
+              ->withStrafeDistanceTrackerOffset(STRAFE_TRACKING_WHEEL_OFFSET)
               ->build()};
   // position resetter
   driftless::robot::subsystems::odometry::DistancePositionResetterBuilder

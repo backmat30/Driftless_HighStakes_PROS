@@ -249,6 +249,7 @@ void PIDPathFollower::followPath(const std::shared_ptr<robot::Robot>& robot,
   found_index = 0;
   m_max_velocity = velocity;
   target_reached = false;
+  paused = false;
 
   if (m_mutex) {
     m_mutex->give();

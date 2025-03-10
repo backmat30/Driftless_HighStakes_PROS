@@ -31,6 +31,9 @@ class BlueRushAuton : public IAuton {
 
   std::shared_ptr<alliance::IAlliance> m_alliance{};
 
+  /// @brief Starts the color sorter
+  void startColorSort();
+
   /// @brief Calibrates the arm
   void calibrateArm();
 

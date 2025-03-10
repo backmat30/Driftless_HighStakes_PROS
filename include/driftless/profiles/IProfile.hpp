@@ -7,6 +7,7 @@
 #include "driftless/op_control/EControlType.hpp"
 #include "driftless/op_control/EControllerAnalog.hpp"
 #include "driftless/op_control/EControllerDigital.hpp"
+#include "driftless/op_control/EStartupConfig.hpp"
 
 /// @brief Namespace for driftless library code
 /// @author Matthew Backman
@@ -49,6 +50,13 @@ class IProfile {
   /// @return __op_control::EControllerDigital__ The digital input type
   virtual op_control::EControllerDigital getDigitalControlMapping(
       op_control::EControl control) const = 0;
+
+  /// @brief Gets the value of the desired startup configuration
+  /// @param startup_config __op_control::EStartupConfig__ The desired startup
+  /// configuration
+  /// @return __bool__ The value of the desired startup configuration
+  virtual bool getStartupConfig(
+      op_control::EStartupConfig startup_config) const = 0;
 };
 }  // namespace profiles
 }  // namespace driftless

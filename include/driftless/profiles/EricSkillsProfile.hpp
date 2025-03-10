@@ -1,5 +1,5 @@
-#ifndef __ERIC_PROFILE_HPP__
-#define __ERIC_PROFILE_HPP__
+#ifndef __ERIC_SKILLS_PROFILE_HPP__
+#define __ERIC_SKILLS_PROFILE_HPP__
 
 #include <map>
 #include <string>
@@ -23,12 +23,12 @@ namespace driftless {
 /// @author Matthew Backman
 namespace profiles {
 
-/// @brief User control profile for Eric
+/// @brief User control profile for Eric during skills
 /// @author Matthew Backman
-class EricProfile : public driftless::profiles::IProfile {
+class EricSkillsProfile : public driftless::profiles::IProfile {
  private:
   /// @brief Name of the profile
-  static constexpr char PROFILE_NAME[]{"ERIC"};
+  static constexpr char PROFILE_NAME[]{"ERIC_SKILLS"};
 
   /// @brief List of subsystems to be controlled and the type of control used
   std::map<op_control::EControlType, int> CONTROL_MODE_MAP{
@@ -79,8 +79,8 @@ class EricProfile : public driftless::profiles::IProfile {
            op_control::EControllerDigital::DPAD_DOWN}};
 
     const std::map<op_control::EStartupConfig, bool> STARTUP_CONFIG_MAP{
-        {op_control::EStartupConfig::COLOR_SORT_DEFAULT, true},
-        {op_control::EStartupConfig::ARM_CALLIBRATE, false}};
+        {op_control::EStartupConfig::COLOR_SORT_DEFAULT, false},
+        {op_control::EStartupConfig::ARM_CALLIBRATE, true}};
 
  public:
   /// @brief Gets the name of the profile

@@ -40,9 +40,16 @@ void OpControlManager::run(
   op_control::drivetrain::DrivetrainOperator drive_operator{controller, robot};
   op_control::elevator::ElevatorOperator elevator_operator{controller, robot};
   op_control::intake::IntakeOperator intake_operator{controller, robot};
-  op_control::arm::ArmOperator arm_operator{controller, robot};
+  op_control::arm::ArmOperator arm_operator{controller, robot, process_system};
   op_control::color_sort::ColorSortOperator color_sort_operator{controller,
                                                                 process_system};
+
+  if(!m_profile->getStartupConfig(op_control::EStartupConfig::COLOR_SORT_DEFAULT)) {
+    process_system->pause(processes::EProcess::AUTO_RING_REJECTION);
+  }
+  if(m_profile->getStartupConfig(op_control::EStartupConfig::ARM_CALLIBRATE)) {
+    robot->sendCommand(robot::subsystems::ESubsystem::ARM, robot::subsystems::ESubsystemCommand::ARM_CALIBRATE);
+  }
 
   // variable to hold time for delayer
   uint32_t current_time{};

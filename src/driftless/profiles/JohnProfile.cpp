@@ -36,5 +36,14 @@ op_control::EControllerDigital JohnProfile::getDigitalControlMapping(
   }
   return digitalMapping;
 }
+
+bool JohnProfile::getStartupConfig(
+  op_control::EStartupConfig startup_config) const {
+bool config{};
+if (STARTUP_CONFIG_MAP.contains(startup_config)) {
+  config = STARTUP_CONFIG_MAP.at(startup_config);
+}
+return config;
+}
 }  // namespace profiles
 }  // namespace driftless
