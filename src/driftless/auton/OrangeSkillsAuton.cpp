@@ -447,7 +447,7 @@ void OrangeSkillsAuton::run(
   setElevatorVoltage(0.0);
 
   // turn to mogo 1
-  target_point = control::Point{25.0, 97.5};
+  target_point = control::Point{25.0, 99.0};
   target_velocity = 25.0;
 
   turnToAngle(0, target_angular_velocity,
@@ -460,21 +460,22 @@ void OrangeSkillsAuton::run(
 
   // grab mogo 1
   setClamp(true);
+  delay(100);
   setElevatorVoltage(12.0);
   setIntakeVoltage(12.0);
-  delay(500);
+  delay(400);
 
   // Line up for ring under ladder
 
   target_point = control::Point{50.0, 97.0};
-  target_velocity = 40.0;
+  target_velocity = 52.0;
 
   goToPoint(target_point.getX(), target_point.getY(), target_velocity);
   waitForGoToPoint(target_point.getX(), target_point.getY(), 2000, 0.5);
 
   // go to ring under ladder for stack 1
   target_point = control::Point{63.0, 81.0};
-  target_velocity = 40.0;
+  target_velocity = 52.0;
 
   turnToPoint(target_point.getX(), target_point.getY() + 4.0,
               target_angular_velocity, control::motion::ETurnDirection::AUTO);
@@ -538,20 +539,20 @@ void OrangeSkillsAuton::run(
   delay(250);
 
   // turn to ring 5 for stack 1
-  target_point = control::Point{2.0, 140.0};
+  target_point = control::Point{2.0, 144.0};
   target_velocity = 24.0;
 
   turnToPoint(target_point.getX() + 10.0, target_point.getY(),
               target_angular_velocity, control::motion::ETurnDirection::AUTO);
   waitForTurnToPoint(target_point.getX() + 10.0, target_point.getY(), 1250,
-                     M_PI / 20.0);
+                     M_PI / 10.0);
 
   goToPoint(target_point.getX(), target_point.getY(), target_velocity);
   waitForGoToPoint(target_point.getX(), target_point.getY(), 2000, 1.0);
   m_control_system->pause();
 
   waitForAllianceRing(500);
-  delay(500);
+  delay(400);
 
   setIntakeVoltage(0.0);
 
@@ -598,14 +599,14 @@ void OrangeSkillsAuton::run(
   turnToPoint(target_point.getX(), target_point.getY(), target_angular_velocity,
               control::motion::ETurnDirection::AUTO);
   waitForTurnToPoint(target_point.getX(), target_point.getY(), 1500,
-                     M_PI / 32.0);
+                     M_PI / 10.0);
 
   goToPoint(target_point.getX(), target_point.getY(), target_velocity);
   waitForGoToPoint(target_point.getX(), target_point.getY(), 2500, 0.1);
 
   // turn to wall stake
 
-  target_velocity = 15.0;
+  target_velocity = 24.0;
   target_distance = 16.0;
 
   turnToAngle(M_PI, target_angular_velocity,
@@ -617,8 +618,9 @@ void OrangeSkillsAuton::run(
 
   delay(200);
 
-  driveStraight(-6.0, target_velocity, M_PI);
-  waitForDriveStraight(-6.0, 1000, 1.0);
+  driveStraight(-4.0, target_velocity, M_PI);
+  waitForDriveStraight(-4.0, 1000, 1.0);
+  m_control_system->pause();
 
   waitForAllianceRing(500);
   delay(250);
@@ -630,7 +632,7 @@ void OrangeSkillsAuton::run(
     delay(LOOP_DELAY);
   }
 
-  target_velocity = 32.0;
+  target_velocity = 40.0;
   driveStraight(target_distance, target_velocity, M_PI);
   waitForDriveStraight(target_distance, 1000, 1.0);
 
@@ -649,7 +651,7 @@ void OrangeSkillsAuton::run(
 
   // turn and go to first ring stack for stack 2
 
-  target_point = control::Point{24.0, 50.0};
+  target_point = control::Point{23.0, 51.0};
   target_velocity = 32.0;
 
   armGoNeutral();
@@ -668,40 +670,40 @@ void OrangeSkillsAuton::run(
 
   // grab mogo 2
 
-  target_point = control::Point{58.0, 51.0};
+  target_point = control::Point{58.0, 50.0};
   target_velocity = 24.0;
 
   turnToAngle(M_PI, target_angular_velocity,
               control::motion::ETurnDirection::CLOCKWISE);
   waitForTurnToAngle(M_PI, 1500, M_PI / 32.0);
 
-  setElevatorVoltage(0.0);
-
   goToPoint(target_point.getX(), target_point.getY(), target_velocity);
   waitForGoToPoint(target_point.getX(), target_point.getY(), 1000, 0.1);
   m_control_system->pause();
 
   setClamp(true);
-  setElevatorVoltage(12.0);
-  setIntakeVoltage(12.0);
-
-  delay(250);
 
   // grab ring under ladder for stack 2
 
   target_point = control::Point{74.0, 72.0};
-  target_velocity = 42.0;
+  target_velocity = 52.0;
 
   turnToPoint(target_point.getX(), target_point.getY(), target_angular_velocity,
               control::motion::ETurnDirection::CLOCKWISE);
   waitForTurnToPoint(target_point.getX(), target_point.getY(), 1500,
                      M_PI / 32.0);
 
+  setElevatorVoltage(12.0);
+  setIntakeVoltage(12.0);
+
+  delay(500);
+
   goToPoint(target_point.getX(), target_point.getY(), target_velocity);
   waitForGoToPoint(target_point.getX(), target_point.getY(), 1250, 1.0);
   m_control_system->pause();
 
-  delay(500);
+  waitForAllianceRing(500);
+  delay(300);
 
   // spin and drop stack 2
 
@@ -714,10 +716,17 @@ void OrangeSkillsAuton::run(
 
   setClamp(false);
 
+  position = getOdomPosition();
+  target_distance = 18.0;
+  target_velocity = 48.0;
+
+  driveStraight(target_distance, target_velocity, position.theta);
+  waitForDriveStraight(target_distance, 1500, 1.0);
+
   // grab first ring for stack 3
 
-  target_point = control::Point{46.0, 22.0};
-  target_velocity = 40.0;
+  target_point = control::Point{42.0, 22.0};
+  target_velocity = 52.0;
 
   goToPoint(target_point.getX(), target_point.getY(), target_velocity);
   waitForGoToPoint(target_point.getX(), target_point.getY(), 1500, 1.0);
@@ -728,7 +737,7 @@ void OrangeSkillsAuton::run(
 
   // go to mogo 3
 
-  target_point = control::Point{76.0, 27.0};
+  target_point = control::Point{72.0, 28.0};
   target_velocity = 24.0;
 
   turnToAngle(M_PI, target_angular_velocity,
@@ -740,6 +749,7 @@ void OrangeSkillsAuton::run(
   m_control_system->pause();
 
   setClamp(true);
+  delay(100);
   setElevatorVoltage(12.0);
   setIntakeVoltage(12.0);
 
@@ -747,8 +757,8 @@ void OrangeSkillsAuton::run(
 
   // pick up ring 2 for stack 3
 
-  target_point = control::Point{28.0, 25.0};
-  target_velocity = 48.0;
+  target_point = control::Point{28.0, 24.0};
+  target_velocity = 60.0;
 
   setIntakeHeight(true);
 
@@ -770,7 +780,7 @@ void OrangeSkillsAuton::run(
   // back up to go towards ring 3 for stack 3
 
   target_point = control::Point{28.0, 24.0};
-  target_velocity = 32.0;
+  target_velocity = 48.0;
 
   goToPoint(target_point.getX(), target_point.getY(), target_velocity);
   waitForGoToPoint(target_point.getX(), target_point.getY(), 1000, 1.0);
@@ -778,7 +788,7 @@ void OrangeSkillsAuton::run(
   // pick up ring 3 for stack 3
 
   target_point = control::Point{0.0, 2.0};
-  target_velocity = 36.0;
+  target_velocity = 40.0;
 
   turnToPoint(target_point.getX() + 6.0, target_point.getY(),
               target_angular_velocity, control::motion::ETurnDirection::AUTO);
