@@ -432,7 +432,7 @@ std::shared_ptr<robot::Robot> DefaultConfig::buildRobot() {
   // inertial sensor
   std::unique_ptr<driftless::io::IInertialSensor> inertial_sensor{
       std::make_unique<driftless::pros_adapters::ProsInertialSensor>(
-          temp_inertial_sensor)};
+          temp_inertial_sensor, ODOMETRY_ANGULAR_TUNING_CONSTANT)};
   // distance sensor
   std::unique_ptr<driftless::io::IDistanceSensor> distance_sensor{
       std::make_unique<driftless::pros_adapters::ProsDistanceSensor>(
