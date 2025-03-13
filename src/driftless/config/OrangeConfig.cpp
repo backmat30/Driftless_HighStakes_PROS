@@ -348,7 +348,8 @@ std::shared_ptr<robot::Robot> OrangeConfig::buildRobot() {
       pid_elevator_builder{};
 
   std::unique_ptr<driftless::robot::subsystems::elevator::IElevator> elevator{
-      pid_elevator_builder.withDelayer(elevator_delayer)
+      pid_elevator_builder.withClock(elevator_clock)
+          ->withDelayer(elevator_delayer)
           ->withMutex(elevator_mutex)
           ->withTask(elevator_task)
           ->withMotor(adapted_elevator_motor_1)
