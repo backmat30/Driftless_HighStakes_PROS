@@ -38,6 +38,9 @@ class PIDElevator : public driftless::robot::subsystems::elevator::IElevator {
   // constantly updates the task
   static void taskLoop(void* params);
 
+  // the clock used by the elevator
+  std::unique_ptr<rtos::IClock> m_clock{};
+
   // the delayer used by the elevator
   std::unique_ptr<driftless::rtos::IDelayer> m_delayer{};
 
@@ -63,13 +66,20 @@ class PIDElevator : public driftless::robot::subsystems::elevator::IElevator {
   double m_position{};
 
   // whether the elevator is manually controlled
-  bool manual_control{};
+  bool manual_control{true};
+
+  bool jammed{};
+
+  uint32_t latest_jam_time{};
 
   // update all instance specific data
   void taskUpdate();
 
   // update the position of the elevator
   void updatePosition();
+
+  /// @brief Unjams the elevator
+  void unjam();
 
  public:
   // initialize the elevator
@@ -86,6 +96,10 @@ class PIDElevator : public driftless::robot::subsystems::elevator::IElevator {
 
   // get the position of the elevator
   double getPosition() override;
+
+  /// @brief Sets the clock
+  /// @param clock __const std::unique_ptr<rtos::IClock>&__ The clock to use
+  void setClock(const std::unique_ptr<rtos::IClock>& clock);
 
   // set the delayer
   void setDelayer(const std::unique_ptr<driftless::rtos::IDelayer>& delayer);

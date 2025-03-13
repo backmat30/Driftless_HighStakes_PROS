@@ -16,6 +16,9 @@ void PIDElevator::taskUpdate() {
   if (m_mutex) {
     m_mutex->take();
   }
+
+  unjam();
+
   if (!manual_control) {
     updatePosition();
   }
@@ -32,6 +35,19 @@ void PIDElevator::updatePosition() {
   m_motors.setVoltage(voltage);
 }
 
+void PIDElevator::unjam() {
+  if (m_motors.getEfficiency() < 0.2) {
+    if (!jammed) {
+      jammed = true;
+      m_motors.setVoltage(-12.0);
+      latest_jam_time = m_clock->getTime();
+    }
+  }
+  if (m_clock->getTime() > latest_jam_time + 500) {
+    jammed = false;
+  }
+}
+
 void PIDElevator::init() {
   m_motors.init();
   if (m_rotation_sensor) {
@@ -46,8 +62,11 @@ void PIDElevator::setVoltage(double voltage) {
   if (m_mutex) {
     m_mutex->take();
   }
-  m_motors.setVoltage(voltage);
-  manual_control = true;
+
+  if (!jammed) {
+    m_motors.setVoltage(voltage);
+    manual_control = true;
+  }
 
   if (m_mutex) {
     m_mutex->give();
@@ -58,8 +77,10 @@ void PIDElevator::setPosition(double position) {
   if (m_mutex) {
     m_mutex->take();
   }
-  m_position = position;
-  manual_control = false;
+  if (!jammed) {
+    m_position = position;
+    manual_control = false;
+  }
 
   if (m_mutex) {
     m_mutex->give();
@@ -75,6 +96,10 @@ double PIDElevator::getPosition() {
   }
 
   return position;
+}
+
+void PIDElevator::setClock(const std::unique_ptr<rtos::IClock>& clock) {
+  m_clock = clock->clone();
 }
 
 void PIDElevator::setDelayer(

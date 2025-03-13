@@ -4,6 +4,11 @@ namespace driftless {
 namespace robot {
 namespace subsystems {
 namespace elevator {
+PIDElevatorBuilder* PIDElevatorBuilder::withClock(
+    const std::unique_ptr<rtos::IClock>& clock) {
+  m_clock = clock->clone();
+  return this;
+}
 PIDElevatorBuilder* PIDElevatorBuilder::withDelayer(
     const std::unique_ptr<driftless::rtos::IDelayer>& delayer) {
   m_delayer = delayer->clone();

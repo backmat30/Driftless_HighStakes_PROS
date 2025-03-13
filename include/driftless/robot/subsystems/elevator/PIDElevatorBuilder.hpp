@@ -6,7 +6,7 @@
 /// @brief The namespace for driftless library code
 /// @author Matthew Backman
 namespace driftless {
-    
+
 /// @brief The namespace for robot code
 /// @author Matthew Backman
 namespace robot {
@@ -23,6 +23,8 @@ namespace elevator {
 /// @author Matthew Backman
 class PIDElevatorBuilder {
  private:
+  std::unique_ptr<rtos::IClock> m_clock{};
+
   // the delayer used to build the elevator
   std::unique_ptr<driftless::rtos::IDelayer> m_delayer{};
 
@@ -45,12 +47,18 @@ class PIDElevatorBuilder {
   double m_radians_to_inches{};
 
  public:
+  /// @brief sets the clock for the builder
+  /// @param clock __const std::unique_ptr<rtos::IClock>&__ The clock to use
+  /// @return __PIDElevatorBuilder*__ Pointer to the builder
+  PIDElevatorBuilder* withClock(const std::unique_ptr<rtos::IClock>& clock);
+
   // adds a delayer to the builder
   PIDElevatorBuilder* withDelayer(
       const std::unique_ptr<driftless::rtos::IDelayer>& delayer);
 
   // adds a mutex to the builder
-  PIDElevatorBuilder* withMutex(std::unique_ptr<driftless::rtos::IMutex>& mutex);
+  PIDElevatorBuilder* withMutex(
+      std::unique_ptr<driftless::rtos::IMutex>& mutex);
 
   // adds a task to the builder
   PIDElevatorBuilder* withTask(std::unique_ptr<driftless::rtos::ITask>& task);
@@ -69,7 +77,8 @@ class PIDElevatorBuilder {
   PIDElevatorBuilder* withRadiansToInches(double radians_to_inches);
 
   /// @brief Builds a new PIDElevator object
-  /// @return __std::unique_ptr<PIDElevator>__ Pointer to the new PIDElevator object
+  /// @return __std::unique_ptr<PIDElevator>__ Pointer to the new PIDElevator
+  /// object
   std::unique_ptr<driftless::robot::subsystems::elevator::PIDElevator> build();
 };
 }  // namespace elevator
