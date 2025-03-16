@@ -538,8 +538,8 @@ void BlueSkillsAuton::run(
   waitForGoToPoint(target_point.getX(), target_point.getY(), 2500, 0.25);
 
   // turn and score wall stake
-  target_distance = 32.0;
-  target_velocity = 15.0;
+  target_distance = 24.0;
+  target_velocity = 32.0;
 
   turnToAngle(0.0, target_angular_velocity,
               control::motion::ETurnDirection::AUTO);
@@ -554,8 +554,15 @@ void BlueSkillsAuton::run(
   setElevatorVoltage(0.0);
   setIntakeVoltage(0.0);
 
+  driveStraight(-8.0, target_velocity, 0.0);
+  waitForDriveStraight(-8.0, 1000, 1.0);
+
   armGoReady();
   delay(1000);
+
+  target_distance = 30.0;
+  driveStraight(target_distance, target_velocity, 0.0);
+  waitForDriveStraight(target_distance, 1000, 1.0);
 
   armGoScore();
   delay(400);
@@ -569,8 +576,8 @@ void BlueSkillsAuton::run(
 
   // go to ring 1 for stack 2
 
-  target_point = control::Point{117.0, 54.0};
-  target_velocity = 32.0;
+  target_point = control::Point{118.0, 54.0};
+  target_velocity = 52.0;
 
   turnToPoint(target_point.getX(), target_point.getY(), target_velocity,
               control::motion::ETurnDirection::AUTO);
@@ -590,12 +597,12 @@ void BlueSkillsAuton::run(
 
   // go to mogo 2
 
-  target_point = control::Point{98.0, 51.0};
+  target_point = control::Point{96.0, 51.0};
   target_velocity = 24.0;
 
   turnToAngle(0.0, target_angular_velocity,
               control::motion::ETurnDirection::AUTO);
-  waitForTurnToAngle(0.0, 3000, M_PI / 20.0);
+  waitForTurnToAngle(0.0, 3000, M_PI / 10.0);
 
   goToPoint(target_point.getX(), target_point.getY(), target_velocity);
   waitForGoToPoint(target_point.getX(), target_point.getY(), 2000, 0.25);
@@ -610,7 +617,7 @@ void BlueSkillsAuton::run(
   // get ring 2 for stack 2
 
   target_point = control::Point{78.0, 70.0};
-  target_velocity = 42.0;
+  target_velocity = 60.0;
 
   turnToPoint(target_point.getX() + 6.0, target_point.getY(),
               target_angular_velocity, control::motion::ETurnDirection::AUTO);
@@ -629,7 +636,7 @@ void BlueSkillsAuton::run(
   // back up out from the ladder
 
   target_point = control::Point{98.0, 52.0};
-  target_velocity = 42.0;
+  target_velocity = 72.0;
 
   goToPoint(target_point.getX(), target_point.getY(), target_velocity);
   waitForGoToPoint(target_point.getX(), target_point.getY(), 2500, 1.0);
@@ -641,10 +648,8 @@ void BlueSkillsAuton::run(
 
   // go to ring 3 for stack 2
 
-  target_point = control::Point{95.5, 31.0};
+  target_point = control::Point{94.5, 31.0};
   target_velocity = 40.0;
-
-  setIntakeHeight(true);
 
   turnToPoint(target_point.getX(), target_point.getY(), target_angular_velocity,
               control::motion::ETurnDirection::AUTO);
@@ -654,8 +659,6 @@ void BlueSkillsAuton::run(
   goToPoint(target_point.getX(), target_point.getY(), target_velocity);
   waitForGoToPoint(target_point.getX(), target_point.getY(), 2000, 1.0);
   m_control_system->pause();
-
-  setIntakeHeight(false);
 
   waitForAllianceRing(2000);
   delay(500);
@@ -768,7 +771,8 @@ void BlueSkillsAuton::run(
 
   // back up and turn to put mogo 2 in corner
 
-  target_velocity = 32.0;
+  target_distance = 18.0;
+  target_velocity = 52.0;
 
   driveStraight(-target_distance, target_velocity, -M_PI / 4.0);
   waitForDriveStraight(-target_distance, 2000, 1.0);
@@ -784,14 +788,14 @@ void BlueSkillsAuton::run(
 
   delay(100);
 
-  driveStraight(target_distance - 4.0, target_velocity, 3 * M_PI / 4.0);
+  driveStraight(target_distance - 8.0, target_velocity, 3 * M_PI / 4.0);
   waitForDriveStraight(target_distance, 2000, 1.0);
   m_control_system->pause();
 
   // Line up for alliance stake ring
 
-  target_point = control::Point{76.0, 36.0};
-  target_velocity = 46.0;
+  target_point = control::Point{75.0, 36.0};
+  target_velocity = 72.0;
 
   turnToPoint(target_point.getX(), target_point.getY(), target_angular_velocity,
               control::motion::ETurnDirection::AUTO);
@@ -811,7 +815,7 @@ void BlueSkillsAuton::run(
 
   turnToAngle(-M_PI / 2.0, target_angular_velocity,
               control::motion::ETurnDirection::AUTO);
-  waitForTurnToAngle(-M_PI / 2.0, 2000, M_PI / 20.0);
+  waitForTurnToAngle(-M_PI / 2.0, 2000, M_PI / 10.0);
 
   driveStraight(target_distance, target_velocity, -M_PI / 2.0);
   waitForDriveStraight(target_distance, 2500, 1.0);
