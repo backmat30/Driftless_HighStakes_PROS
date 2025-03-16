@@ -369,6 +369,8 @@ class OrangeConfig : public IConfig {
   /// @brief position resetter angular offset
   static constexpr double RESETTER_LOCAL_THETA_OFFSET{0.0};
 
+  static constexpr double ODOMETRY_ANGULAR_TUNING_CONSTANT{0.9950248756};
+
   // ring sensor
 
   /// @brief The distance from the color sensor to the end of the elevator
