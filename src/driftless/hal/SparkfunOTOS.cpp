@@ -9,40 +9,41 @@ void SparkfunOTOS::updatePosition() {
       arduino_buffer += static_cast<char>(m_serial_device->readByte());
     }
   }
+  if (arduino_buffer.find('/') != std::string::npos) {
+    arduino_buffer = arduino_buffer.substr(arduino_buffer.find('/'));
 
-  arduino_buffer = arduino_buffer.substr(arduino_buffer.find('/'));
+    while (arduino_buffer.find(';') != std::string::npos) {
+      arduino_buffer = arduino_buffer.substr(arduino_buffer.find('/') + 1);
 
-  while (arduino_buffer.find(';') != std::string::npos) {
-    arduino_buffer = arduino_buffer.substr(arduino_buffer.find('/') + 1);
+      char current_key{static_cast<char>(arduino_buffer.at(0))};
 
-    char current_key{static_cast<char>(arduino_buffer.at(0))};
+      int value_start{2};
+      uint32_t value_end{arduino_buffer.find(';') - 1};
+      std::string value{
+          arduino_buffer.substr(value_start, value_end - value_start)};
 
-    int value_start{2};
-    int value_end{arduino_buffer.find(';') - 1};
-    std::string value{
-        arduino_buffer.substr(value_start, value_end - value_start)};
+      double value_as_double{};
+      try {
+        value_as_double = std::stod(value);
+      } catch (std::invalid_argument& e) {
+        return;
+      }
 
-    double value_as_double{};
-    try {
-      value_as_double = std::stod(value);
-    } catch (std::invalid_argument& e) {
-      return;
-    }
+      switch (current_key) {
+        case 'X':
+          latest_position.x = value_as_double;
+          break;
+        case 'Y':
+          latest_position.y = value_as_double;
+          break;
+        case 'H':
+          latest_position.theta = value_as_double * M_PI / 180;
+          break;
+      }
 
-    switch (current_key) {
-      case 'X':
-        latest_position.x = value_as_double;
-        break;
-      case 'Y':
-        latest_position.y = value_as_double;
-        break;
-      case 'H':
-        latest_position.theta = value_as_double * M_PI / 180;
-        break;
-    }
-
-    if (arduino_buffer.find('/') != std::string::npos) {
-      arduino_buffer = arduino_buffer.substr(arduino_buffer.find('/'));
+      if (arduino_buffer.find('/') != std::string::npos) {
+        arduino_buffer = arduino_buffer.substr(arduino_buffer.find('/'));
+      }
     }
   }
 }
