@@ -26,6 +26,7 @@
 
 // hardware interface includes
 #include "driftless/hal/TrackingWheel.hpp"
+#include "driftless/hal/SparkfunOTOS.hpp"
 #include "driftless/io/IColorSensor.hpp"
 #include "driftless/io/IController.hpp"
 #include "driftless/io/IDistanceSensor.hpp"

@@ -498,6 +498,10 @@ std::shared_ptr<robot::Robot> OrangeConfig::buildRobot() {
       std::make_unique<driftless::pros_adapters::ProsDistanceSensor>(
           temp_distance_sensor)};
 
+  // hal objects
+  std::unique_ptr<io::IPositionSensor> odom_position_sensor{
+      std::make_unique<hal::SparkfunOTOS>(odom_adapted_serial_device)};
+
   // rtos objects
   std::unique_ptr<rtos::IClock> odom_clock{
       std::make_unique<pros_adapters::ProsClock>()};
@@ -517,7 +521,7 @@ std::shared_ptr<robot::Robot> OrangeConfig::buildRobot() {
               ->withDelayer(odom_delayer)
               ->withMutex(odom_mutex)
               ->withTask(odom_task)
-              ->withSerialDevice(odom_adapted_serial_device)
+              ->withPositionSensor(odom_position_sensor)
               ->withLocalXOffset(ODOMETRY_SENSOR_LOCAL_X_OFFSET)
               ->withLocalYOffset(ODOMETRY_SENSOR_LOCAL_Y_OFFSET)
               ->withLocalThetaOffset(ODOMETRY_SENSOR_LOCAL_THETA_OFFSET)
