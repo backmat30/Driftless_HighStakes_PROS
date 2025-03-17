@@ -31,7 +31,7 @@ class SparkFunPositionTrackerBuilder {
 
   std::unique_ptr<rtos::ITask> m_task{};
 
-  std::unique_ptr<io::ISerialDevice> m_serial_device{};
+  std::unique_ptr<io::IPositionSensor> m_position_sensor{};
 
   double m_local_x_offset{};
   double m_local_y_offset{};
@@ -59,9 +59,9 @@ class SparkFunPositionTrackerBuilder {
   SparkFunPositionTrackerBuilder* withTask(std::unique_ptr<rtos::ITask>& task);
 
   /// @brief Adds a serial device to the builder
-  /// @param serial_device __std::unique_ptr<io::ISerialDevice>&__ The serial device to add
+  /// @param serial_device __std::unique_ptr<io::IPositionSensor>&__ The position sensor to add
   /// @return __SparkFunPositionTrackerBuilder*__ Pointer to the current builder
-  SparkFunPositionTrackerBuilder* withSerialDevice(std::unique_ptr<io::ISerialDevice>& serial_device);
+  SparkFunPositionTrackerBuilder* withPositionSensor(std::unique_ptr<io::IPositionSensor>& position_sensor);
 
   /// @brief Adds a local x offset to the builder
   /// @param local_x_offset __double__ The local x offset to add
