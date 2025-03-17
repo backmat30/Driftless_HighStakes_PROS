@@ -69,59 +69,8 @@ void SparkFunPositionTracker::updatePosition() {
 Position SparkFunPositionTracker::fetchRawPosition() {
   Position raw_position{};
 
-  // Gather a valid set of packets from the arduino
-  std::string arduino_output{""};
-  if (m_serial_device && m_serial_device->getInputBytes()) {
-    while (static_cast<char>(m_serial_device->readByte()) != '/');
-    uint8_t number_of_packets{};
-    while (number_of_packets < 3) {
-      if (m_serial_device->getInputBytes()) {
-        arduino_output += static_cast<char>(m_serial_device->readByte());
-        if (arduino_output.back() == ';') {
-          ++number_of_packets;
-        }
-      }
-    }
-    m_serial_device->flush();
-  }
-
-  if (arduino_output.length() > 0) {
-    for (int i = 0; i < 3; i++) {
-      InputKey current_key{static_cast<InputKey>(arduino_output.front())};
-
-      int value_start{2};
-      int value_end{arduino_output.find(';') - 1};
-      std::string value{
-          arduino_output.substr(value_start, value_end - value_start)};
-
-      double value_as_double{};
-      try {
-        value_as_double = std::stod(value);
-      } catch (std::invalid_argument& e) {
-        return Position{};
-      }
-
-      switch (current_key) {
-        case InputKey::GET_X:
-          raw_position.x = value_as_double;
-          pros::screen::print(pros::E_TEXT_MEDIUM_CENTER, 2, "X: %7.2f",
-          value_as_double);
-          break;
-        case InputKey::GET_Y:
-          raw_position.y = value_as_double;
-          pros::screen::print(pros::E_TEXT_MEDIUM_CENTER, 3, "Y: %7.2f",
-          value_as_double);
-          break;
-        case InputKey::GET_HEADING:
-          raw_position.theta = value_as_double * M_PI / 180;
-          pros::screen::print(pros::E_TEXT_MEDIUM_CENTER, 4, "Z: %7.2f",
-          value_as_double);
-
-          break;
-      }
-
-      arduino_output = arduino_output.substr(value_end + 2);
-    }
+  if (m_position_sensor) {
+    raw_position = m_position_sensor->getPosition();
   }
   return raw_position;
 }
@@ -131,19 +80,9 @@ void SparkFunPositionTracker::sendLocalOffset() {
     m_mutex->take();
   }
 
-  if (m_serial_device) {
-    m_serial_device->flush();
-
-    std::string output_string{"X:" + std::to_string(m_local_x_offset) + ";" +
-                              "Y:" + std::to_string(m_local_y_offset) + ";" +
-                              "H:" + std::to_string(m_local_theta_offset) +
-                              ";"};
-
-    uint8_t output_bytes[output_string.length()];
-
-    std::copy(output_string.begin(), output_string.end(), output_bytes);
-
-    m_serial_device->write(output_bytes, output_string.length());
+  if (m_position_sensor) {
+    m_position_sensor->setLocalOffset(m_local_x_offset, m_local_y_offset,
+                                      m_local_theta_offset);
   }
 
   if (m_mutex) {
@@ -192,9 +131,9 @@ void SparkFunPositionTracker::setTask(std::unique_ptr<rtos::ITask>& task) {
   m_task = std::move(task);
 }
 
-void SparkFunPositionTracker::setSerialDevice(
-    std::unique_ptr<io::ISerialDevice>& serial_device) {
-  m_serial_device = std::move(serial_device);
+void SparkFunPositionTracker::setPositionSensor(
+    std::unique_ptr<io::IPositionSensor>& position_sensor) {
+  m_position_sensor = std::move(position_sensor);
 }
 
 void SparkFunPositionTracker::setLocalXOffset(double local_x_offset) {
