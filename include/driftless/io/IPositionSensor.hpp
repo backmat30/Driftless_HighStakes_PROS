@@ -18,7 +18,7 @@ class IPositionSensor {
   virtual ~IPositionSensor() = default;
 
   /// @brief Initializes the position tracker
-  virtual void init();
+  virtual void init() = 0;
 
   /// @brief Gets the position from the position tracker
   /// @return __robot::subsystems::odometry::Position__ The position
