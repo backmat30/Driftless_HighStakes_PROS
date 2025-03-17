@@ -375,26 +375,41 @@ std::shared_ptr<robot::Robot> OrangeConfig::buildRobot() {
 
   // pros objects
   std::unique_ptr<pros::Motor> temp_intake_motor_1{
-      std::make_unique<pros::Motor>(INTAKE_MOTOR)};
-  std::unique_ptr<pros::adi::DigitalOut> temp_intake_piston{
-      std::make_unique<pros::adi::DigitalOut>(INTAKE_PISTON)};
+    std::make_unique<pros::Motor>(INTAKE_MOTOR)};
+std::unique_ptr<pros::adi::DigitalOut> temp_intake_piston{
+    std::make_unique<pros::adi::DigitalOut>(INTAKE_PISTON)};
 
-  // adapted objects
-  std::unique_ptr<driftless::io::IMotor> intake_motor_1{
-      std::make_unique<driftless::pros_adapters::ProsV5Motor>(
-          temp_intake_motor_1)};
-  std::unique_ptr<driftless::io::IPiston> intake_piston{
-      std::make_unique<driftless::pros_adapters::ProsPiston>(
-          temp_intake_piston)};
+// rtos objects
+std::unique_ptr<rtos::IClock> intake_clock{
+    std::make_unique<pros_adapters::ProsClock>()};
+std::unique_ptr<rtos::IDelayer> intake_delayer{
+    std::make_unique<pros_adapters::ProsDelayer>()};
+std::unique_ptr<rtos::IMutex> intake_mutex{
+    std::make_unique<pros_adapters::ProsMutex>()};
+std::unique_ptr<rtos::ITask> intake_task{
+    std::make_unique<pros_adapters::ProsTask>()};
 
-  // build the intake
-  driftless::robot::subsystems::intake::DirectIntakeBuilder
-      direct_intake_builder{};
-  driftless::robot::subsystems::intake::PistonHeightControlBuilder
-      piston_height_control_builder{};
+// adapted objects
+std::unique_ptr<driftless::io::IMotor> intake_motor_1{
+    std::make_unique<driftless::pros_adapters::ProsV5Motor>(
+        temp_intake_motor_1)};
+std::unique_ptr<driftless::io::IPiston> intake_piston{
+    std::make_unique<driftless::pros_adapters::ProsPiston>(
+        temp_intake_piston)};
 
-  std::unique_ptr<driftless::robot::subsystems::intake::IIntake> direct_intake{
-      direct_intake_builder.withMotor(intake_motor_1)->build()};
+// build the intake
+driftless::robot::subsystems::intake::DirectIntakeBuilder
+    direct_intake_builder{};
+driftless::robot::subsystems::intake::PistonHeightControlBuilder
+    piston_height_control_builder{};
+
+std::unique_ptr<driftless::robot::subsystems::intake::IIntake> direct_intake{
+    direct_intake_builder.withMotor(intake_motor_1)
+        ->withClock(intake_clock)
+        ->withDelayer(intake_delayer)
+        ->withMutex(intake_mutex)
+        ->withTask(intake_task)
+        ->build()};
   std::unique_ptr<driftless::robot::subsystems::intake::IHeightControl>
       piston_height_control{
           piston_height_control_builder.withPiston(intake_piston)->build()};
