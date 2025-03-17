@@ -43,8 +43,9 @@ void PIDElevator::unjam() {
       latest_jam_time = m_clock->getTime();
     }
   }
-  if (m_clock->getTime() > latest_jam_time + 500) {
+  if (jammed && m_clock->getTime() > latest_jam_time + 500) {
     jammed = false;
+    m_motors.setVoltage(target_voltage);
   }
 }
 
@@ -63,8 +64,10 @@ void PIDElevator::setVoltage(double voltage) {
     m_mutex->take();
   }
 
+  target_voltage = voltage;
+
   if (!jammed) {
-    m_motors.setVoltage(voltage);
+    m_motors.setVoltage(target_voltage);
     manual_control = true;
   }
 

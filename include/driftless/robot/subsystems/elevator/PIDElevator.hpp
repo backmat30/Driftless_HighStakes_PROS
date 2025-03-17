@@ -65,6 +65,8 @@ class PIDElevator : public driftless::robot::subsystems::elevator::IElevator {
   // position of the elevator
   double m_position{};
 
+  double target_voltage{};
+
   // whether the elevator is manually controlled
   bool manual_control{true};
 
