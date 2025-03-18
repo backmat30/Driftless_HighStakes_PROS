@@ -56,10 +56,10 @@ void SparkFunPositionTracker::updatePosition() {
 
   latest_time = current_time;
 
-  // pros::screen::print(pros::E_TEXT_LARGE_CENTER, 1, "X: %7.2f, Y: %7.2f",
-  //                     current_position.x, current_position.y);
-  // pros::screen::print(pros::E_TEXT_LARGE_CENTER, 3, "Theta: %7.2f ",
-  //                     current_position.theta * 180 / M_PI);
+  pros::screen::print(pros::E_TEXT_LARGE_CENTER, 1, "X: %7.2f, Y: %7.2f",
+                      current_position.x, current_position.y);
+  pros::screen::print(pros::E_TEXT_LARGE_CENTER, 3, "Theta: %7.2f ",
+                      current_position.theta * 180 / M_PI);
 
   if (m_mutex) {
     m_mutex->give();
