@@ -1,5 +1,7 @@
 #include "driftless/hal/SparkfunOTOS.hpp"
 
+#include "pros/screen.hpp"
+
 namespace driftless::hal {
 
 void SparkfunOTOS::updatePosition() {
@@ -13,6 +15,7 @@ void SparkfunOTOS::updatePosition() {
     arduino_buffer = arduino_buffer.substr(arduino_buffer.find('/'));
 
     while (arduino_buffer.find(';') != std::string::npos) {
+      pros::screen::print(pros::E_TEXT_MEDIUM_CENTER, 5, "%s", arduino_buffer);
       arduino_buffer = arduino_buffer.substr(arduino_buffer.find('/') + 1);
 
       char current_key{static_cast<char>(arduino_buffer.at(0))};
@@ -43,9 +46,17 @@ void SparkfunOTOS::updatePosition() {
 
       if (arduino_buffer.find('/') != std::string::npos) {
         arduino_buffer = arduino_buffer.substr(arduino_buffer.find('/'));
+      } else {
+        arduino_buffer = "";
       }
     }
   }
+
+  pros::screen::print(pros::E_TEXT_MEDIUM_CENTER, 6,
+                      "Raw X: %7.2f Raw Y: %7.2f", latest_position.x,
+                      latest_position.y);
+  pros::screen::print(pros::E_TEXT_MEDIUM_CENTER, 7, "Raw Theta: %7.2f",
+                      latest_position.theta);
 }
 
 SparkfunOTOS::SparkfunOTOS(std::unique_ptr<io::ISerialDevice>& serialDevice)
