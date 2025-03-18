@@ -83,7 +83,7 @@ void SparkFunPositionTracker::sendLocalOffset() {
 
   if (m_position_sensor) {
     m_position_sensor->setLocalOffset(m_local_x_offset, m_local_y_offset,
-                                      m_local_theta_offset);
+                                      m_local_theta_offset * 180 / M_PI);
   }
 
   if (m_mutex) {
