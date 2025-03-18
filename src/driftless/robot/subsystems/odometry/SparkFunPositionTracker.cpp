@@ -35,6 +35,7 @@ void SparkFunPositionTracker::updatePosition() {
           raw_position.y * std::sin(global_theta_offset);
   y_pos = raw_position.x * std::sin(global_theta_offset) +
           raw_position.y * std::cos(global_theta_offset);
+  heading = raw_position.theta;
 
   x_pos += global_x_offset;
   y_pos += global_y_offset;
