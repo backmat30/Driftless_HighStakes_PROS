@@ -39,6 +39,10 @@ class IBoomerang {
                             double velocity, double target_x, double target_y,
                             double target_theta) = 0;
 
+  /// @brief Sets the max velocity of the boomerang control
+  /// @param velocity __double__ The max velocity
+  virtual void setVelocity(double velocity) = 0;
+
   /// @brief Pauses the boomerang control
   virtual void pause() = 0;
 
