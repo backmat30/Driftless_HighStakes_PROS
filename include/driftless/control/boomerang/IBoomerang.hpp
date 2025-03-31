@@ -32,12 +32,12 @@ class IBoomerang {
   /// @param robot __const std::shared_ptr<robot::Robot>&__ The robot being
   /// controlled
   /// @param velocity __double__ The maximum velocity
-  /// @param target_x __double__ The target x position
-  /// @param target_y __double__ The target y position
-  /// @param target_theta __double__ The target theta position
+  /// @param x __double__ The target x position
+  /// @param y __double__ The target y position
+  /// @param theta __double__ The target theta position
   virtual void goToPosition(const std::shared_ptr<robot::Robot>& robot,
-                            double velocity, double target_x, double target_y,
-                            double target_theta) = 0;
+                            double velocity, double x, double y,
+                            double theta) = 0;
 
   /// @brief Sets the max velocity of the boomerang control
   /// @param velocity __double__ The max velocity
