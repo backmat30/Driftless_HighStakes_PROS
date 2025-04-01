@@ -17,6 +17,8 @@
 
 // control system includes
 #include "driftless/control/ControlSystem.hpp"
+#include "driftless/control/boomerang/BoomerangControl.hpp"
+#include "driftless/control/boomerang/PIDBoomerangBuilder.hpp"
 #include "driftless/control/motion/MotionControl.hpp"
 #include "driftless/control/motion/PIDDriveStraightBuilder.hpp"
 #include "driftless/control/motion/PIDGoToPointBuilder.hpp"
@@ -186,6 +188,28 @@ class DefaultConfig : public IConfig {
   static constexpr double PID_PATH_FOLLOWER_TARGET_TOLERANCE{3.0};
   /// @brief path follower target velocity
   static constexpr double PID_PATH_FOLLOWER_TARGET_VELOCITY{12.0};
+
+  // boomerang control
+
+  static constexpr double PID_BOOMERANG_LINEAR_KP{14.0};
+
+  static constexpr double PID_BOOMERANG_LINEAR_KI{0.0};
+
+  static constexpr double PID_BOOMERANG_LINEAR_KD{640.0};
+
+  static constexpr double PID_BOOMERANG_ROTATIONAL_KP{640.0};
+
+  static constexpr double PID_BOOMERANG_ROTATIONAL_KI{0.0};
+
+  static constexpr double PID_BOOMERANG_ROTATIONAL_KD{12000.0};
+
+  static constexpr double PID_BOOMERANG_LEAD_DISTANCE{0.15};
+
+  static constexpr double PID_BOOMERANG_AIM_DISTANCE{6.0};
+
+  static constexpr double PID_BOOMERANG_TARGET_TOLERANCE{3.0};
+
+  static constexpr double PID_BOOMERANG_TARGET_VELOCITY{12.0};
 
   // -----PORT NUMBERS-----
 

@@ -124,6 +124,49 @@ std::shared_ptr<control::ControlSystem> DefaultConfig::buildControlSystem() {
   // insert the path follower control into the control manager
   control_system->addControl(path_follower_control);
 
+  // BOOMERANG CONTROL
+  driftless::control::boomerang::PIDBoomerangBuilder pid_boomerang_builder{};
+
+  // rtos objects for boomerang
+
+  std::unique_ptr<rtos::IDelayer> boomerang_delayer{
+      std::make_unique<pros_adapters::ProsDelayer>()};
+  std::unique_ptr<rtos::IMutex> boomerang_mutex{
+      std::make_unique<pros_adapters::ProsMutex>()};
+  std::unique_ptr<rtos::ITask> boomerang_task{
+      std::make_unique<pros_adapters::ProsTask>()};
+
+  // PID controllers for boomerang
+
+  control::PID boomerang_linear_pid{clock, PID_BOOMERANG_LINEAR_KP,
+                                    PID_BOOMERANG_LINEAR_KI,
+                                    PID_BOOMERANG_LINEAR_KD};
+  control::PID boomerang_rotational_pid{clock, PID_BOOMERANG_ROTATIONAL_KP,
+                                        PID_BOOMERANG_ROTATIONAL_KI,
+                                        PID_BOOMERANG_ROTATIONAL_KD};
+
+  // assemble the boomerang controller
+
+  std::unique_ptr<control::boomerang::IBoomerang> pid_boomerang{
+      pid_boomerang_builder.withDelayer(boomerang_delayer)
+          ->withMutex(boomerang_mutex)
+          ->withTask(boomerang_task)
+          ->withLinearPID(boomerang_linear_pid)
+          ->withRotationalPID(boomerang_rotational_pid)
+          ->withLead(PID_BOOMERANG_LEAD_DISTANCE)
+          ->withAimDistance(PID_BOOMERANG_AIM_DISTANCE)
+          ->withTargetTolerance(PID_BOOMERANG_TARGET_TOLERANCE)
+          ->withTargetVelocity(PID_BOOMERANG_TARGET_VELOCITY)
+          ->build()};
+
+  // put the boomerang control in a control object
+
+  std::unique_ptr<control::AControl> boomerang_control{
+      std::make_unique<driftless::control::boomerang::BoomerangControl>(
+          pid_boomerang)};
+
+  control_system->addControl(boomerang_control);
+
   return control_system;
 }
 
