@@ -10,7 +10,7 @@ namespace driftless {
 namespace control {
 
 /// @brief Enumerated class representing control types
-enum class EControl { MOTION, PATH_FOLLOWER };
+enum class EControl { MOTION, PATH_FOLLOWER, BOOMERANG };
 }  // namespace control
 }  // namespace driftless
 #endif
