@@ -32,7 +32,9 @@ class DirectDriveBuilder {
 
   hal::MotorGroup m_right_motors{};
 
-  double m_velocity_to_voltage{1.0};
+  control::FeedForward m_left_motor_feed_forward{};
+
+  control::FeedForward m_right_motor_feed_forward{};
 
   double m_gear_ratio{};
 
@@ -51,10 +53,19 @@ class DirectDriveBuilder {
   /// @return __DirectDriveBuilder*__ Pointer to the current builder
   DirectDriveBuilder* withRightMotor(std::unique_ptr<io::IMotor>& motor);
 
-  /// @brief Adds a velocity to voltage conversion to the builder
-  /// @param velocity_to_voltage _double_ The conversion factor being added
+  /// @brief Adds a feed forward controller for the left motors to the builder
+  /// @param left_motor_feed_forward __control::FeedForward__ The feed forward
+  /// controller
   /// @return __DirectDriveBuilder*__ Pointer to the current builder
-  DirectDriveBuilder* withVelocityToVoltage(double velocity_to_voltage);
+  DirectDriveBuilder* withLeftFeedForward(
+      control::FeedForward left_motor_feed_forward);
+
+  /// @brief Adds a feed forward controller for the right motors to the builder
+  /// @param right_motor_feed_forward __control::FeedForward__ The feed forward
+  /// controller
+  /// @return __DirectDriveBuilder*__ Pointer to the current builder
+  DirectDriveBuilder* withRightFeedForward(
+      control::FeedForward right_motor_feed_forward);
 
   /// @brief Adds a wheel radius to the builder
   /// @param wheel_radius __double__ The wheel radius

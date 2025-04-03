@@ -16,11 +16,18 @@ DirectDriveBuilder *DirectDriveBuilder::withRightMotor(
   return this;
 }
 
-DirectDriveBuilder *DirectDriveBuilder::withVelocityToVoltage(
-    double velocity_to_voltage) {
-  m_velocity_to_voltage = velocity_to_voltage;
+DirectDriveBuilder *DirectDriveBuilder::withLeftFeedForward(
+    control::FeedForward left_motor_feed_forward) {
+  m_left_motor_feed_forward = left_motor_feed_forward;
   return this;
 }
+
+DirectDriveBuilder *DirectDriveBuilder::withRightFeedForward(
+    control::FeedForward right_motor_feed_forward) {
+  m_right_motor_feed_forward = right_motor_feed_forward;
+  return this;
+}
+
 DirectDriveBuilder *DirectDriveBuilder::withWheelRadius(double wheel_radius) {
   m_wheel_radius = wheel_radius;
   return this;
@@ -35,7 +42,8 @@ std::unique_ptr<IDrivetrain> DirectDriveBuilder::build() {
   std::unique_ptr<directDrive> drivetrain{std::make_unique<directDrive>()};
   drivetrain->setLeftMotors(m_left_motors);
   drivetrain->setRightMotors(m_right_motors);
-  drivetrain->setVelocityToVoltage(m_velocity_to_voltage);
+  drivetrain->setLeftMotorFeedForward(m_left_motor_feed_forward);
+  drivetrain->setRightMotorFeedForward(m_right_motor_feed_forward);
   drivetrain->setWheelRadius(m_wheel_radius);
   drivetrain->setDriveRadius(m_drive_radius);
   return drivetrain;
