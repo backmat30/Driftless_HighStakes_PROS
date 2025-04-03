@@ -264,8 +264,11 @@ class DefaultConfig : public IConfig {
 
   /// @brief drive gearset
   static constexpr pros::MotorGearset DRIVE_GEARSET{pros::E_MOTOR_GEAR_BLUE};
-  /// @brief drive ratio of motor voltage to velocity
-  static constexpr double DRIVE_VELOCITY_TO_VOLTAGE{12.0 / 72.0};
+
+  static constexpr double DRIVE_FEEDFORWARD_KS{0.0};
+
+  static constexpr double DRIVE_FEEDFORWARD_KV{72.0 /
+                                               (12.0 - DRIVE_FEEDFORWARD_KS)};
   /// @brief radius of the robot
   static constexpr double ROBOT_RADIUS{6.0625};
   /// @brief radius of the drive wheels

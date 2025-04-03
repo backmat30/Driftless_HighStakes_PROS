@@ -186,6 +186,13 @@ std::shared_ptr<robot::Robot> DefaultConfig::buildRobot() {
   std::unique_ptr<io::IMotor> right_motor_4{
       std::make_unique<pros_adapters::ProsV5Motor>(right_temp_motor_4)};
 
+  // feed forward objects
+  driftless::control::FeedForward left_motor_feed_forward{DRIVE_FEEDFORWARD_KS,
+                                                          DRIVE_FEEDFORWARD_KV};
+
+  driftless::control::FeedForward right_motor_feed_forward{
+      DRIVE_FEEDFORWARD_KS, DRIVE_FEEDFORWARD_KV};
+
   // assembling the drive train
   std::unique_ptr<robot::subsystems::drivetrain::IDrivetrain> drivetrain{
       // call the factory and add all necessary items for the drivetrain
@@ -197,7 +204,8 @@ std::shared_ptr<robot::Robot> DefaultConfig::buildRobot() {
           ->withRightMotor(right_motor_2)
           ->withRightMotor(right_motor_3)
           ->withRightMotor(right_motor_4)
-          ->withVelocityToVoltage(DRIVE_VELOCITY_TO_VOLTAGE)
+          ->withLeftFeedForward(left_motor_feed_forward)
+          ->withRightFeedForward(right_motor_feed_forward)
           ->withDriveRadius(ROBOT_RADIUS)
           ->withWheelRadius(DRIVE_WHEEL_RADIUS)
           ->build()};
