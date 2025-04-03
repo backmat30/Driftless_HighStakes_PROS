@@ -19,8 +19,6 @@ class FeedForward {
 
   double m_kV{};
 
-  double m_kA{};
-
  public:
   /// @brief Constructs a new FeedForward controller
   FeedForward() = default;
@@ -28,8 +26,7 @@ class FeedForward {
   /// @brief Constructs a new FeedForward controller
   /// @param kS __double__ The static coefficient
   /// @param kV __double__ The velocity coefficient
-  /// @param kA __double__ The acceleration coefficient
-  FeedForward(double kS, double kV, double kA);
+  FeedForward(double kS, double kV);
 
   /// @brief Copies another FeedForward controller
   /// @param other __const FeedForward&__ The FeedForward controller being
@@ -42,9 +39,8 @@ class FeedForward {
 
   /// @brief Gets the control value of the FeedForward controller
   /// @param target_velocity __double__ The desired velocity
-  /// @param target_acceleration __double__ The desired acceleration
   /// @return __double__ The control value
-  double getControlValue(double target_velocity, double target_acceleration);
+  double getControlValue(double target_velocity);
 
   /// @brief Copies another FeedForward controller
   /// @param rhs __const FeedForward&__ The FeedForward controller being copied
