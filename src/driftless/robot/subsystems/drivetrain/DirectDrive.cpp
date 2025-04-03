@@ -12,8 +12,16 @@ void directDrive::init() {
 void directDrive::run() {}
 
 void directDrive::setVelocity(Velocity velocity) {
-  m_left_motors.setVoltage(velocity.left_velocity * m_velocity_to_voltage);
-  m_right_motors.setVoltage(velocity.right_velocity * m_velocity_to_voltage);
+  double left_voltage{};
+  double right_voltage{};
+
+  if(velocity.left_velocity != 0)
+    left_voltage = m_left_motor_feed_forward.getControlValue(velocity.left_velocity);
+  if(velocity.right_velocity != 0)
+    right_voltage = m_right_motor_feed_forward.getControlValue(velocity.right_velocity);
+
+  m_left_motors.setVoltage(left_voltage);
+  m_right_motors.setVoltage(right_voltage);
 }
 
 void directDrive::setVoltage(double left_voltage, double right_voltage) {
@@ -29,8 +37,12 @@ void directDrive::setRightMotors(hal::MotorGroup& right_motors) {
   m_right_motors = right_motors;
 }
 
-void directDrive::setVelocityToVoltage(double velocity_to_voltage) {
-  m_velocity_to_voltage = velocity_to_voltage;
+void directDrive::setLeftMotorFeedForward(control::FeedForward left_motor_feed_forward) {
+  m_left_motor_feed_forward = left_motor_feed_forward;
+}
+
+void directDrive::setRightMotorFeedForward(control::FeedForward right_motor_feed_forward) {
+  m_right_motor_feed_forward = right_motor_feed_forward;
 }
 
 void directDrive::setGearRatio(double gear_ratio) { m_gear_ratio = gear_ratio; }

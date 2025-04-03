@@ -1,6 +1,7 @@
 #ifndef __DIRECT_DRIVE_HPP__
 #define __DIRECT_DRIVE_HPP__
 
+#include "driftless/control/FeedForward.hpp"
 #include "driftless/hal/MotorGroup.hpp"
 #include "driftless/robot/subsystems/drivetrain/IDriveTrain.hpp"
 
@@ -28,7 +29,9 @@ class directDrive : public IDrivetrain {
 
   hal::MotorGroup m_right_motors{};
 
-  double m_velocity_to_voltage{1.0};
+  control::FeedForward m_left_motor_feed_forward{};
+
+  control::FeedForward m_right_motor_feed_forward{};
 
   double m_gear_ratio{};
 
@@ -62,10 +65,15 @@ class directDrive : public IDrivetrain {
   /// drive train
   void setRightMotors(hal::MotorGroup& right_motors);
 
-  /// @brief Sets the conversion from velocity to voltage
-  /// @param velocity_to_voltage __double__ The ratio between velocity and
-  /// voltage
-  void setVelocityToVoltage(double velocity_to_voltage);
+  /// @brief Sets the feed forward controller for the left motors
+  /// @param left_motor_feed_forward __control::FeedForward&__ The feed forward
+  /// controller for the left motors
+  void setLeftMotorFeedForward(control::FeedForward left_motor_feed_forward);
+
+  /// @brief Sets the feed forward controller for the right motors
+  /// @param right_motor_feed_forward __control::FeedForward&__ The feed forward
+  /// controller for the right motors
+  void setRightMotorFeedForward(control::FeedForward right_motor_feed_forward);
 
   /// @brief Sets the gear ratio of the drive motors
   /// @param gear_ratio __double__ The gear ratio
