@@ -52,6 +52,34 @@ Velocity directDrive::getVelocity() {
 
 double directDrive::getDriveRadius() { return m_drive_radius; }
 
+void directDrive::startClimb() {
+  is_climbing = true;
+  m_climb_pistons.extend();
+
+  m_left_motors.setPosition(0.0);
+  m_right_motors.setPosition(0.0);
+}
+
+void directDrive::climb(double voltage) {
+  if(is_climbing) {
+    double left_voltage{voltage};
+    double right_voltage{voltage};
+
+    double left_position{m_left_motors.getPosition()};
+    double right_position{m_right_motors.getPosition()};
+    double avg_position{(left_position + right_position) / 2.0};
+
+    double left_voltage_scale{avg_position / left_position};
+    double right_voltage_scale{avg_position / right_position};
+
+    left_voltage *= left_voltage_scale;
+    right_voltage *= right_voltage_scale;
+
+    m_left_motors.setVoltage(left_voltage);
+    m_right_motors.setVoltage(right_voltage);
+
+  }
+}
 }  // namespace drivetrain
 }  // namespace subsystems
 }  // namespace robot
