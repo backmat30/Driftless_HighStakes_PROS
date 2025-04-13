@@ -14,7 +14,7 @@ class PneumaticClimb : public IClimb {
 
     hal::PistonGroup m_climber_pistons{};
 
-    bool isClimbing{};
+    bool is_climbing{};
 
   public:
     void init() override;
