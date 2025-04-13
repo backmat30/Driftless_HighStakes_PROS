@@ -3,27 +3,28 @@
 
 namespace driftless {
 
-  namespace robot {
+namespace robot {
 
-    namespace subsystems {
+namespace subsystems {
 
-      namespace climb {
+namespace climb {
 
-        class IClimb {
-          virtual ~IClimb() = default;
+class IClimb {
+ public:
+  virtual ~IClimb() = default;
 
-          virtual void init() = 0;
+  virtual void init() = 0;
 
-          virtual void run() = 0;
+  virtual void run() = 0;
 
-          virtual void toggleClimbing() = 0;
+  virtual void toggleClimbing() = 0;
 
-          virtual void pullBackClimber() = 0;
+  virtual void pullBackClimber() = 0;
 
-          virtual void pushForwardClimber() = 0;
-        };
-      }
-    }
-  }
-}
+  virtual void pushForwardClimber() = 0;
+};
+}  // namespace climb
+}  // namespace subsystems
+}  // namespace robot
+}  // namespace driftless
 #endif
