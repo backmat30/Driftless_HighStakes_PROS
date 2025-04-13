@@ -43,6 +43,7 @@ void OpControlManager::run(
   op_control::arm::ArmOperator arm_operator{controller, robot, process_system};
   op_control::color_sort::ColorSortOperator color_sort_operator{controller,
                                                                 process_system};
+  op_control::climb::ClimbOperator climb_operator{controller, robot};
 
   if(!m_profile->getStartupConfig(op_control::EStartupConfig::COLOR_SORT_DEFAULT)) {
     process_system->pause(processes::EProcess::AUTO_RING_REJECTION);
@@ -61,6 +62,7 @@ void OpControlManager::run(
 
     // updates all subsystems
     clamp_operator.update(m_profile);
+    climb_operator.update(m_profile);
     drive_operator.setDriveVoltage(m_profile);
     elevator_operator.update(m_profile, m_alliance);
     intake_operator.update(m_profile);
