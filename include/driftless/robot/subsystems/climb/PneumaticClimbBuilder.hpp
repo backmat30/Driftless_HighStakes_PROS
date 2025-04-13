@@ -12,9 +12,9 @@ namespace driftless {
             hal::PistonGroup m_stilt_pistons{};
             hal::PistonGroup m_climber_pistons{};
           public:
-            PneumaticClimbBuilder* withStiltPistons(hal::PistonGroup& stilt_pistons);
+            PneumaticClimbBuilder* withStiltPiston(std::unique_ptr<io::IPiston>& stilt_piston);
 
-            PneumaticClimbBuilder* withClimberPistons(hal::PistonGroup& climber_pistons);
+            PneumaticClimbBuilder* withClimberPiston(std::unique_ptr<io::IPiston>& climber_piston);
 
             std::unique_ptr<IClimb> build();
         };

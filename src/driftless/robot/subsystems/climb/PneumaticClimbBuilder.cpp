@@ -1,15 +1,15 @@
 #include "driftless/robot/subsystems/climb/PneumaticClimbBuilder.hpp"
 
 namespace driftless::robot::subsystems::climb {
-PneumaticClimbBuilder* PneumaticClimbBuilder::withStiltPistons(
-    hal::PistonGroup& stilt_pistons) {
-  m_stilt_pistons = stilt_pistons;
+PneumaticClimbBuilder* PneumaticClimbBuilder::withStiltPiston(
+    std::unique_ptr<io::IPiston>& stilt_piston) {
+  m_stilt_pistons.addPiston(stilt_piston);
   return this;
 }
 
-PneumaticClimbBuilder* PneumaticClimbBuilder::withClimberPistons(
-    hal::PistonGroup& climber_pistons) {
-  m_climber_pistons = climber_pistons;
+PneumaticClimbBuilder* PneumaticClimbBuilder::withClimberPiston(
+    std::unique_ptr<io::IPiston>& climber_piston) {
+  m_climber_pistons.addPiston(climber_piston);
   return this;
 }
 
