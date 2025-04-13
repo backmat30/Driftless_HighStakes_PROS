@@ -23,7 +23,11 @@ class ClimbOperator {
 
   void updateStiltState();
 
-  void updateClimberState(bool state);
+  void pullBackClimber();
+
+  void pushForwardClimber();
+
+  void climbDriveTrain(double voltage);
 
  public:
   ClimbOperator(const std::shared_ptr<io::IController>& controller,
