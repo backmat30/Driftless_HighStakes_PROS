@@ -25,8 +25,6 @@ namespace drivetrain {
 /// @author Matthew Backman
 class directDrive : public IDrivetrain {
  private:
-  hal::PistonGroup m_climb_pistons{};
-
   hal::MotorGroup m_left_motors{};
 
   hal::MotorGroup m_right_motors{};
@@ -93,7 +91,7 @@ class directDrive : public IDrivetrain {
   double getDriveRadius() override;
 
   /// @brief Sets the drive train to climbing mode
-  void startClimb() override;
+  void toggleClimb() override;
 
   /// @brief Controls the climb mech using the drive train
   /// @param voltage __double__ The voltage to feed the drive train

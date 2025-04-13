@@ -17,8 +17,10 @@ void directDrive::setVelocity(Velocity velocity) {
 }
 
 void directDrive::setVoltage(double left_voltage, double right_voltage) {
-  m_left_motors.setVoltage(left_voltage);
-  m_right_motors.setVoltage(right_voltage);
+  if (!is_climbing) {
+    m_left_motors.setVoltage(left_voltage);
+    m_right_motors.setVoltage(right_voltage);
+  }
 }
 
 void directDrive::setLeftMotors(hal::MotorGroup& left_motors) {
@@ -52,16 +54,15 @@ Velocity directDrive::getVelocity() {
 
 double directDrive::getDriveRadius() { return m_drive_radius; }
 
-void directDrive::startClimb() {
-  is_climbing = true;
-  m_climb_pistons.extend();
+void directDrive::toggleClimb() {
+  is_climbing = !is_climbing;
 
   m_left_motors.setPosition(0.0);
   m_right_motors.setPosition(0.0);
 }
 
 void directDrive::climb(double voltage) {
-  if(is_climbing) {
+  if (is_climbing) {
     double left_voltage{voltage};
     double right_voltage{voltage};
 
@@ -77,7 +78,6 @@ void directDrive::climb(double voltage) {
 
     m_left_motors.setVoltage(left_voltage);
     m_right_motors.setVoltage(right_voltage);
-
   }
 }
 }  // namespace drivetrain
