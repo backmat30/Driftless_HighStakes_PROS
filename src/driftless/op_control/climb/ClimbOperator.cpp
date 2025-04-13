@@ -25,6 +25,12 @@ void ClimbOperator::climbDriveTrain(double voltage) {
       robot::subsystems::ESubsystemCommand::DRIVETRAIN_CLIMB, voltage);
 }
 
+void ClimbOperator::toggleDriveClimbMode() {
+  m_robot->sendCommand(
+      robot::subsystems::ESubsystem::DRIVETRAIN,
+      robot::subsystems::ESubsystemCommand::DRIVETRAIN_TOGGLE_CLIMB_MODE);
+}
+
 ClimbOperator::ClimbOperator(
     const std::shared_ptr<driftless::io::IController>& controller,
     const std::shared_ptr<driftless::robot::Robot>& robot)
@@ -40,12 +46,13 @@ void ClimbOperator::update(const std::unique_ptr<profiles::IProfile>& profile) {
   
   if(m_controller->getNewDigital(stilt_control)) {
     updateStiltState();
+    toggleDriveClimbMode();
   }
 
   double climb_voltage_scalar{m_controller->getAnalog(climb_voltage_control)};
-  if(climb_voltage_scalar > 0.25) {
+  if(climb_voltage_scalar > 0.25 * 127) {
     pullBackClimber();
-  } else if (climb_voltage_scalar < -0.25) {
+  } else if (climb_voltage_scalar < -0.25 * 127) {
     pushForwardClimber();
   }
 
