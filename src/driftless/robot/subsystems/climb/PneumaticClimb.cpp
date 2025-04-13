@@ -24,10 +24,10 @@ void PneumaticClimb::pushForwardClimber() {
 }
 
 void PneumaticClimb::setStiltPistons(hal::PistonGroup& pistons) {
-  m_stilt_pistons = pistons;
+  m_stilt_pistons = std::move(pistons);
 }
 
 void PneumaticClimb::setClimberPistons(hal::PistonGroup& pistons) {
-  m_climber_pistons = pistons;
+  m_climber_pistons = std::move(pistons);
 }
 }  // namespace driftless::robot::subsystems::climb
