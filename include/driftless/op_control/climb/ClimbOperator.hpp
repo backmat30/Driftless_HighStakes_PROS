@@ -29,6 +29,8 @@ class ClimbOperator {
 
   void climbDriveTrain(double voltage);
 
+  void toggleDriveClimbMode();
+
  public:
   ClimbOperator(const std::shared_ptr<io::IController>& controller,
                 const std::shared_ptr<robot::Robot>& robot);
