@@ -48,6 +48,13 @@ class IDrivetrain {
   /// @brief Gets the radius of the drive train
   /// @return __double__ The drive radius
   virtual double getDriveRadius() = 0;
+
+  /// @brief toggles the drive triain between climb mode and drive mode
+  virtual void toggleClimb() = 0;
+
+  /// @brief Controls the climb mech using the drive train
+  /// @param voltage __double__ The voltage to feed the drive train
+  virtual void climb(double voltage) = 0;
 };
 }  // namespace drivetrain
 }  // namespace subsystems

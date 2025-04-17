@@ -61,6 +61,10 @@
 #include "driftless/robot/subsystems/clamp/ClampSubsystem.hpp"
 #include "driftless/robot/subsystems/clamp/PistonClampBuilder.hpp"
 
+// climb subsystem includes
+#include "driftless/robot/subsystems/climb/ClimbSubsystem.hpp"
+#include "driftless/robot/subsystems/climb/PneumaticClimbBuilder.hpp"
+
 // drivetrain subsystem includes
 #include "driftless/robot/subsystems/drivetrain/DirectDriveBuilder.hpp"
 #include "driftless/robot/subsystems/drivetrain/DrivetrainSubsystem.hpp"
@@ -195,68 +199,78 @@ class OrangeConfig : public IConfig {
   // DRIVE MOTORS
 
   /// @brief first left drive motor
-  static constexpr int8_t DRIVE_LEFT_MOTOR_1{-2};
+  static constexpr int8_t DRIVE_LEFT_MOTOR_1{-16};
   /// @brief second left drive motor
-  static constexpr int8_t DRIVE_LEFT_MOTOR_2{-3};
+  static constexpr int8_t DRIVE_LEFT_MOTOR_2{17};
   /// @brief third left drive motor
-  static constexpr int8_t DRIVE_LEFT_MOTOR_3{4};
+  static constexpr int8_t DRIVE_LEFT_MOTOR_3{-18};
   /// @brief fourth left drive motor
-  static constexpr int8_t DRIVE_LEFT_MOTOR_4{-5};
+  static constexpr int8_t DRIVE_LEFT_MOTOR_4{-19};
+
+  static constexpr int8_t DRIVE_LEFT_MOTOR_5{20};
   /// @brief first right drive motor
-  static constexpr int8_t DRIVE_RIGHT_MOTOR_1{7};
+  static constexpr int8_t DRIVE_RIGHT_MOTOR_1{15};
   /// @brief second right drive motor
-  static constexpr int8_t DRIVE_RIGHT_MOTOR_2{-8};
+  static constexpr int8_t DRIVE_RIGHT_MOTOR_2{-14};
   /// @brief third right drive motor
-  static constexpr int8_t DRIVE_RIGHT_MOTOR_3{9};
+  static constexpr int8_t DRIVE_RIGHT_MOTOR_3{13};
   /// @brief fourth right drive motor
-  static constexpr int8_t DRIVE_RIGHT_MOTOR_4{10};
+  static constexpr int8_t DRIVE_RIGHT_MOTOR_4{12};
+
+  static constexpr int8_t DRIVE_RIGHT_MOTOR_5{-11};
 
   // ARM PORTS
 
   /// @brief left side arm rotational motor
-  static constexpr int8_t ARM_LEFT_ROTATION_MOTOR{12};
+  static constexpr int8_t ARM_LEFT_ROTATION_MOTOR{UNDEFINED_PORT};
 
   /// @brief right side arm rotational motor
-  static constexpr int8_t ARM_RIGHT_ROTATION_MOTOR{-19};
+  static constexpr int8_t ARM_RIGHT_ROTATION_MOTOR{UNDEFINED_PORT};
 
   /// @brief arm linear motor
-  static constexpr int8_t ARM_LINEAR_MOTOR{20};
+  static constexpr int8_t ARM_LINEAR_MOTOR{UNDEFINED_PORT};
 
   // CLAMP PORTS
 
   /// @brief clamp piston controller
-  static constexpr int8_t CLAMP_PISTON_1{1};
+  static constexpr int8_t CLAMP_PISTON_1{UNDEFINED_PORT};
+
+  // CLIMB PORTS
+
+  static constexpr int8_t CLIMB_STILT_PISTON{1};
+
+  static constexpr int8_t CLIMB_CLIMBER_PISTON{2};
 
   // ELEVATOR PORTS
 
   /// @brief first elevator motor
-  static constexpr int8_t ELEVATOR_MOTOR_1{18};
+  static constexpr int8_t ELEVATOR_MOTOR_1{UNDEFINED_PORT};
   /// @brief elevator rotational sensor
   static constexpr int8_t ELEVATOR_ROTATIONAL_SENSOR{UNDEFINED_PORT};
 
-  static constexpr int8_t ELEVATOR_REJECTION_PISTON{3};
+  static constexpr int8_t ELEVATOR_REJECTION_PISTON{UNDEFINED_PORT};
 
   // INTAKE PORTS
 
   /// @brief intake piston
-  static constexpr int8_t INTAKE_PISTON{2};
+  static constexpr int8_t INTAKE_PISTON{0};
   /// @brief intake motor
-  static constexpr int8_t INTAKE_MOTOR{15};
+  static constexpr int8_t INTAKE_MOTOR{UNDEFINED_PORT};
 
   // ODOMETRY PORTS
 
   /// @brief left tracking wheel
-  static constexpr int8_t ODOMETRY_LINEAR_TRACKING_WHEEL{-16};
+  static constexpr int8_t ODOMETRY_LINEAR_TRACKING_WHEEL{UNDEFINED_PORT};
   /// @brief right tracking wheel
-  static constexpr int8_t ODOMETRY_STRAFE_TRACKING_WHEEL{6};
+  static constexpr int8_t ODOMETRY_STRAFE_TRACKING_WHEEL{UNDEFINED_PORT};
   /// @brief inertial sensor
-  static constexpr int8_t ODOMETRY_INERTIAL_SENSOR{14};
+  static constexpr int8_t ODOMETRY_INERTIAL_SENSOR{UNDEFINED_PORT};
   /// @brief distance sensor
-  static constexpr int8_t ODOMETRY_DISTANCE_SENSOR{13};
+  static constexpr int8_t ODOMETRY_DISTANCE_SENSOR{UNDEFINED_PORT};
 
   // RING SORT PORTS
 
-  static constexpr int8_t RING_SORT_COLOR_SENSOR{17};
+  static constexpr int8_t RING_SORT_COLOR_SENSOR{UNDEFINED_PORT};
 
   // -----MISC VALUES-----
 

@@ -1,5 +1,6 @@
 #include "driftless/robot/subsystems/drivetrain/DirectDrive.hpp"
 
+#include "pros/screen.hpp"
 namespace driftless {
 namespace robot {
 namespace subsystems {
@@ -17,8 +18,10 @@ void directDrive::setVelocity(Velocity velocity) {
 }
 
 void directDrive::setVoltage(double left_voltage, double right_voltage) {
-  m_left_motors.setVoltage(left_voltage);
-  m_right_motors.setVoltage(right_voltage);
+  if (!is_climbing) {
+    m_left_motors.setVoltage(left_voltage);
+    m_right_motors.setVoltage(right_voltage);
+  }
 }
 
 void directDrive::setLeftMotors(hal::MotorGroup& left_motors) {
@@ -52,6 +55,48 @@ Velocity directDrive::getVelocity() {
 
 double directDrive::getDriveRadius() { return m_drive_radius; }
 
+void directDrive::toggleClimb() {
+  is_climbing = !is_climbing;
+
+  m_left_motors.setPosition(0.0);
+  m_right_motors.setPosition(0.0);
+}
+
+void directDrive::climb(double voltage) {
+  if (is_climbing) {
+    double left_voltage{voltage};
+    double right_voltage{voltage};
+
+    if(voltage != 0) {
+    double left_position{m_left_motors.getPosition()};
+    double right_position{m_right_motors.getPosition()};
+
+    pros::screen::print(
+        pros::E_TEXT_LARGE_CENTER, 4, "L: %7.2f R: %7.2f", left_position,
+        right_position);
+
+    double position_difference{left_position - right_position};
+    double voltage_modifier{position_difference / 20.0};
+
+    if(left_position > right_position) {
+      if(voltage > 0) {
+        left_voltage = std::max(0.0, left_voltage - voltage_modifier);
+      } else if(voltage < 0){
+        right_voltage = std::min(0.0, right_voltage + voltage_modifier);
+      }
+    } else if (left_position < right_position) {
+      if(voltage > 0) {
+        right_voltage = std::max(0.0, right_voltage - voltage_modifier);
+      } else if(voltage < 0){
+        left_voltage = std::min(0.0, left_voltage + voltage_modifier);
+      }
+    }
+  }
+
+    m_left_motors.setVoltage(left_voltage);
+    m_right_motors.setVoltage(right_voltage);
+  }
+}
 }  // namespace drivetrain
 }  // namespace subsystems
 }  // namespace robot

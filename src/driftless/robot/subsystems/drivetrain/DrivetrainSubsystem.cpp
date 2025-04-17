@@ -23,6 +23,11 @@ void DrivetrainSubsystem::command(ESubsystemCommand command_name,
     double left_voltage{va_arg(args, double)};
     double right_voltage{va_arg(args, double)};
     m_drivetrain->setVoltage(left_voltage, right_voltage);
+  } else if (command_name == ESubsystemCommand::DRIVETRAIN_CLIMB) {
+    double voltage{va_arg(args, double)};
+    m_drivetrain->climb(voltage);
+  } else if (command_name == ESubsystemCommand::DRIVETRAIN_TOGGLE_CLIMB_MODE) {
+    m_drivetrain->toggleClimb();
   }
 }
 
