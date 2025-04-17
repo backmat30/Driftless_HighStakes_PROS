@@ -1,5 +1,6 @@
 #include "driftless/robot/subsystems/drivetrain/DirectDrive.hpp"
 
+#include "pros/screen.hpp"
 namespace driftless {
 namespace robot {
 namespace subsystems {
@@ -66,15 +67,31 @@ void directDrive::climb(double voltage) {
     double left_voltage{voltage};
     double right_voltage{voltage};
 
+    if(voltage != 0) {
     double left_position{m_left_motors.getPosition()};
     double right_position{m_right_motors.getPosition()};
-    double avg_position{(left_position + right_position) / 2.0};
 
-    double left_voltage_scale{avg_position / left_position};
-    double right_voltage_scale{avg_position / right_position};
+    pros::screen::print(
+        pros::E_TEXT_LARGE_CENTER, 4, "L: %7.2f R: %7.2f", left_position,
+        right_position);
 
-    left_voltage *= left_voltage_scale;
-    right_voltage *= right_voltage_scale;
+    double position_difference{left_position - right_position};
+    double voltage_modifier{position_difference / 20.0};
+
+    if(left_position > right_position) {
+      if(voltage > 0) {
+        left_voltage = std::max(0.0, left_voltage - voltage_modifier);
+      } else if(voltage < 0){
+        right_voltage = std::min(0.0, right_voltage + voltage_modifier);
+      }
+    } else if (left_position < right_position) {
+      if(voltage > 0) {
+        right_voltage = std::max(0.0, right_voltage - voltage_modifier);
+      } else if(voltage < 0){
+        left_voltage = std::min(0.0, left_voltage + voltage_modifier);
+      }
+    }
+  }
 
     m_left_motors.setVoltage(left_voltage);
     m_right_motors.setVoltage(right_voltage);
