@@ -50,13 +50,13 @@ void ClimbOperator::update(const std::unique_ptr<profiles::IProfile>& profile) {
   }
 
   double climb_voltage_scalar{m_controller->getAnalog(climb_voltage_control)};
-  if(climb_voltage_scalar > 0.25 * 127) {
+  if(climb_voltage_scalar > 0.1 * 127) {
     pullBackClimber();
-  } else if (climb_voltage_scalar < -0.25 * 127) {
+  } else if (climb_voltage_scalar < -0.1 * 127) {
     pushForwardClimber();
   }
 
-  climbDriveTrain(climb_voltage_scalar * 12.0);
+  climbDriveTrain(climb_voltage_scalar * 12.0 / 127.0);
 }
 
   
