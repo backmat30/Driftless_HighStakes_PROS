@@ -14,6 +14,8 @@ class PneumaticClimb : public IClimb {
 
     hal::PistonGroup m_climber_pistons{};
 
+    hal::PistonGroup m_passive_hook_pistons{};
+
     bool is_climbing{};
 
   public:
@@ -27,9 +29,15 @@ class PneumaticClimb : public IClimb {
 
     void pushForwardClimber() override;
 
+    void pushOutPassiveHooks() override;
+
+    void pullInPassiveHooks() override;
+
     void setStiltPistons(hal::PistonGroup& pistons);
 
     void setClimberPistons(hal::PistonGroup& pistons);
+
+    void setPassiveHookPistons(hal::PistonGroup& pistions);
 };
 }  // namespace climb
 }  // namespace subsystems
