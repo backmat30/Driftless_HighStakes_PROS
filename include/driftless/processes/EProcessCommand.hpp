@@ -13,6 +13,7 @@ namespace processes {
 /// @author Matthew Backman
 enum class EProcessCommand {
   AUTO_RING_REJECTION_REJECT_RINGS,
+  CLIMB_START_CLIMB
 };
 }  // namespace processes
 }  // namespace driftless

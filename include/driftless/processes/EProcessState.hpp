@@ -13,6 +13,7 @@ namespace processes {
 /// @author Matthew Backman
 enum class EProcessState {
   AUTO_RING_REJECTION_IS_PAUSED,
+  CLIMB_IS_PAUSED
 };
 }  // namespace processes
 }  // namespace driftless

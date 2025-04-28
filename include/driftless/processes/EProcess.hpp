@@ -11,7 +11,7 @@ namespace processes {
 
 /// @brief Enumeration representing the different processes
 /// @author Matthew Backman
-enum class EProcess { AUTO_RING_REJECTION };
+enum class EProcess { AUTO_RING_REJECTION, CLIMB };
 }  // namespace processes
 }  // namespace driftless
 #endif
