@@ -12,8 +12,7 @@ namespace processes {
 /// @brief Enumeration representing the possible commands for a process
 /// @author Matthew Backman
 enum class EProcessCommand {
-  AUTO_RING_REJECTION_REJECT_RINGS,
-  CLIMB_START_CLIMB
+  AUTO_RING_REJECTION_REJECT_RINGS
 };
 }  // namespace processes
 }  // namespace driftless
