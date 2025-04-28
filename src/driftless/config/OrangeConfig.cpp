@@ -234,9 +234,6 @@ std::shared_ptr<robot::Robot> OrangeConfig::buildRobot() {
   std::unique_ptr<pros::Motor> temp_arm_left_rotation_motor{
       std::make_unique<pros::Motor>(ARM_LEFT_ROTATION_MOTOR,
                                     ARM_ROTATIONAL_GEARSET)};
-  std::unique_ptr<pros::Motor> temp_arm_right_rotation_motor{
-      std::make_unique<pros::Motor>(ARM_RIGHT_ROTATION_MOTOR,
-                                    ARM_ROTATIONAL_GEARSET)};
   std::unique_ptr<pros::Motor> temp_arm_linear_motor{
       std::make_unique<pros::Motor>(ARM_LINEAR_MOTOR, ARM_LINEAR_GEARSET)};
 
@@ -244,9 +241,6 @@ std::shared_ptr<robot::Robot> OrangeConfig::buildRobot() {
   std::unique_ptr<driftless::io::IMotor> arm_left_rotation_motor{
       std::make_unique<driftless::pros_adapters::ProsV5Motor>(
           temp_arm_left_rotation_motor)};
-  std::unique_ptr<driftless::io::IMotor> arm_right_rotation_motor{
-      std::make_unique<driftless::pros_adapters::ProsV5Motor>(
-          temp_arm_right_rotation_motor)};
   std::unique_ptr<driftless::io::IMotor> arm_linear_motor{
       std::make_unique<driftless::pros_adapters::ProsV5Motor>(
           temp_arm_linear_motor)};
@@ -267,7 +261,6 @@ std::shared_ptr<robot::Robot> OrangeConfig::buildRobot() {
           ->withMutex(arm_mutex)
           ->withTask(arm_task)
           ->withRotationalMotor(arm_left_rotation_motor)
-          ->withRotationalMotor(arm_right_rotation_motor)
           ->withLinearMotor(arm_linear_motor)
           ->withRotationalPID(arm_rotational_pid)
           ->withLinearPID(arm_linear_pid)
@@ -369,7 +362,7 @@ std::shared_ptr<robot::Robot> OrangeConfig::buildRobot() {
   std::unique_ptr<pros::Motor> temp_elevator_motor_1{
       std::make_unique<pros::Motor>(ELEVATOR_MOTOR_1)};
   std::unique_ptr<pros::adi::DigitalOut> temp_elevator_rejection_piston{
-      std::make_unique<pros::adi::DigitalOut>(ELEVATOR_REJECTION_PISTON)};
+      std::make_unique<pros::adi::DigitalOut>(ELEVATOR_REJECTION_RIGHT_PISTON)};
 
   // adapted objects
   std::unique_ptr<driftless::io::IMotor> adapted_elevator_motor_1{
@@ -415,7 +408,7 @@ std::shared_ptr<robot::Robot> OrangeConfig::buildRobot() {
   std::unique_ptr<pros::Motor> temp_intake_motor_1{
       std::make_unique<pros::Motor>(INTAKE_MOTOR)};
   std::unique_ptr<pros::adi::DigitalOut> temp_intake_piston{
-      std::make_unique<pros::adi::DigitalOut>(INTAKE_PISTON)};
+      std::make_unique<pros::adi::DigitalOut>(INTAKE_STAGE1_PISTON)};
 
   // adapted objects
   std::unique_ptr<driftless::io::IMotor> intake_motor_1{
