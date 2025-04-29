@@ -26,6 +26,8 @@ class IClimb {
   virtual void pushOutPassiveHooks() = 0;
 
   virtual void pullInPassiveHooks() = 0;
+
+  virtual bool arePassivesOut() = 0;
 };
 }  // namespace climb
 }  // namespace subsystems

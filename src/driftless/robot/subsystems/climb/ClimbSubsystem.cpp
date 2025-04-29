@@ -31,6 +31,13 @@ namespace driftless::robot::subsystems::climb {
   }
 
   void* ClimbSubsystem::state(ESubsystemState state_name) {
-    return nullptr;
+    switch(state_name) {
+      case ESubsystemState::CLIMB_ARE_PASSIVES_OUT: {
+        bool* are_passives_out{new bool{m_climb->arePassivesOut()}};
+        return are_passives_out;
+      }
+      default:
+        return nullptr;
+    }
   }
 }

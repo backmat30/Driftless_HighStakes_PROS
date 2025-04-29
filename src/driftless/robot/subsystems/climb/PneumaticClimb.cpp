@@ -33,6 +33,10 @@ void PneumaticClimb::pullInPassiveHooks() {
   m_passive_hook_pistons.retract();
 }
 
+bool PneumaticClimb::arePassivesOut() {
+  return m_passive_hook_pistons.isExtended();
+}
+
 void PneumaticClimb::setStiltPistons(hal::PistonGroup& pistons) {
   m_stilt_pistons = std::move(pistons);
 }
