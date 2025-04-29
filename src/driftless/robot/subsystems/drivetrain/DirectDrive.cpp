@@ -55,7 +55,7 @@ Velocity directDrive::getVelocity() {
 
 double directDrive::getDriveRadius() { return m_drive_radius; }
 
-double directDrive::getLeftMotorPosition() { 
+double directDrive::getLeftMotorPosition() {
   return m_left_motors.getPosition();
 }
 
@@ -75,31 +75,42 @@ void directDrive::climb(double voltage) {
     double left_voltage{voltage};
     double right_voltage{voltage};
 
-    if(voltage != 0) {
     double left_position{m_left_motors.getPosition()};
+    if (left_position < 0) {
+      m_left_motors.setPosition(0.0);
+      left_position = 0.0;
+    } else if (left_position > 51.0) {
+      m_left_motors.setPosition(51.0);
+      left_position = 51.0;
+    }
     double right_position{m_right_motors.getPosition()};
+    if (right_position < 0) {
+      m_right_motors.setPosition(0.0);
+      right_position = 0.0;
+    } else if (right_position > 51.0) {
+      m_right_motors.setPosition(51.0);
+      right_position = 51.0;
+    }
 
-    pros::screen::print(
-        pros::E_TEXT_LARGE_CENTER, 4, "L: %7.2f R: %7.2f", left_position,
-        right_position);
+    pros::screen::print(pros::E_TEXT_LARGE_CENTER, 4, "L: %7.2f R: %7.2f",
+                        left_position, right_position);
 
     double position_difference{left_position - right_position};
-    double voltage_modifier{position_difference / 20.0};
+    double voltage_modifier{position_difference / 5.0};
 
-    if(left_position > right_position) {
-      if(voltage > 0) {
+    if (left_position > right_position) {
+      if (voltage > 0) {
         left_voltage = std::max(0.0, left_voltage - voltage_modifier);
-      } else if(voltage < 0){
+      } else if (voltage < 0) {
         right_voltage = std::min(0.0, right_voltage + voltage_modifier);
       }
     } else if (left_position < right_position) {
-      if(voltage > 0) {
+      if (voltage > 0) {
         right_voltage = std::max(0.0, right_voltage - voltage_modifier);
-      } else if(voltage < 0){
+      } else if (voltage < 0) {
         left_voltage = std::min(0.0, left_voltage + voltage_modifier);
       }
     }
-  }
 
     m_left_motors.setVoltage(left_voltage);
     m_right_motors.setVoltage(right_voltage);
