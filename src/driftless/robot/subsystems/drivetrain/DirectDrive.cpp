@@ -55,6 +55,14 @@ Velocity directDrive::getVelocity() {
 
 double directDrive::getDriveRadius() { return m_drive_radius; }
 
+double directDrive::getLeftMotorPosition() { 
+  return m_left_motors.getPosition();
+}
+
+double directDrive::getRightMotorPosition() {
+  return m_right_motors.getPosition();
+}
+
 void directDrive::toggleClimb() {
   is_climbing = !is_climbing;
 

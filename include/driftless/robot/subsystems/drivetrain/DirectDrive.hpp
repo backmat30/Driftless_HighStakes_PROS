@@ -90,6 +90,14 @@ class directDrive : public IDrivetrain {
   /// @return __double__ The radius of the drive train
   double getDriveRadius() override;
 
+  /// @brief Gets the position of the left motors
+  /// @return __double__ The position of the left motors
+  double getLeftMotorPosition() override;
+
+  /// @brief Gets the position of the right motors
+  /// @return __double__ The position of the right motors
+  double getRightMotorPosition() override;
+
   /// @brief Sets the drive train to climbing mode
   void toggleClimb() override;
 

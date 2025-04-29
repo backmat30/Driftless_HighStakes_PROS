@@ -49,6 +49,14 @@ class IDrivetrain {
   /// @return __double__ The drive radius
   virtual double getDriveRadius() = 0;
 
+  /// @brief Gets the position of the left motors
+  /// @return __double__ The position of the left motors
+  virtual double getLeftMotorPosition() = 0;
+
+  /// @brief Gets the position of the right motors
+  /// @return __double__ The position of the right motors
+  virtual double getRightMotorPosition() = 0;
+
   /// @brief toggles the drive triain between climb mode and drive mode
   virtual void toggleClimb() = 0;
 
