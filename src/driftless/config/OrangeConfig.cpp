@@ -327,25 +327,29 @@ std::shared_ptr<robot::Robot> OrangeConfig::buildRobot() {
       std::make_unique<pros::adi::DigitalOut>(CLIMB_STILT_PISTON)};
   std::unique_ptr<pros::adi::DigitalOut> temp_climb_climber_piston{
       std::make_unique<pros::adi::DigitalOut>(CLIMB_CLIMBER_PISTON)};
-  
-  // adapted objects
-    std::unique_ptr<io::IPiston> adapted_climb_stilt_piston{
-        std::make_unique<pros_adapters::ProsPiston>(
-            temp_climb_stilt_piston)};
-    std::unique_ptr<io::IPiston> adapted_climb_climber_piston{
-        std::make_unique<pros_adapters::ProsPiston>(
-            temp_climb_climber_piston)};
-    
-    // build the climb
-    std::unique_ptr<driftless::robot::subsystems::climb::IClimb> pneumatic_climb{
-        pneumatic_climb_builder.withStiltPiston(adapted_climb_stilt_piston)
-            ->withClimberPiston(adapted_climb_climber_piston)
-            ->build()};
+  std::unique_ptr<pros::adi::DigitalOut> temp_climb_passive_hook_piston{
+      std::make_unique<pros::adi::DigitalOut>(CLIMB_PASSIVE_PISTON)};
 
-    std::unique_ptr<robot::subsystems::ASubsystem> climb_subsystem{
-        std::make_unique<robot::subsystems::climb::ClimbSubsystem>(
-            pneumatic_climb)};
-    robot->addSubsystem(climb_subsystem);
+  // adapted objects
+  std::unique_ptr<io::IPiston> adapted_climb_stilt_piston{
+      std::make_unique<pros_adapters::ProsPiston>(temp_climb_stilt_piston)};
+  std::unique_ptr<io::IPiston> adapted_climb_climber_piston{
+      std::make_unique<pros_adapters::ProsPiston>(temp_climb_climber_piston)};
+  std::unique_ptr<io::IPiston> adapted_climb_passive_piston{
+      std::make_unique<pros_adapters::ProsPiston>(
+          temp_climb_passive_hook_piston)};
+
+  // build the climb
+  std::unique_ptr<driftless::robot::subsystems::climb::IClimb> pneumatic_climb{
+      pneumatic_climb_builder.withStiltPiston(adapted_climb_stilt_piston)
+          ->withClimberPiston(adapted_climb_climber_piston)
+          ->withPassiveHookPiston(adapted_climb_passive_piston)
+          ->build()};
+
+  std::unique_ptr<robot::subsystems::ASubsystem> climb_subsystem{
+      std::make_unique<robot::subsystems::climb::ClimbSubsystem>(
+          pneumatic_climb)};
+  robot->addSubsystem(climb_subsystem);
 
   // ELEVATOR
 
