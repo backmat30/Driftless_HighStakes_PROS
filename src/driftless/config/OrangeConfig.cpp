@@ -454,6 +454,7 @@ std::shared_ptr<robot::Robot> OrangeConfig::buildRobot() {
 
   // ODOMETRY
 
+  /* TRACKING WHEEL SETUP
   // pros objects
   std::unique_ptr<pros::Rotation> temp_linear_rotation_sensor{
       std::make_unique<pros::Rotation>(ODOMETRY_LINEAR_TRACKING_WHEEL)};
@@ -528,6 +529,68 @@ std::shared_ptr<robot::Robot> OrangeConfig::buildRobot() {
       std::make_unique<
           driftless::robot::subsystems::odometry::OdometrySubsystem>(
           inertial_position_tracker, distance_position_resetter)};
+  robot->addSubsystem(odometry_subsystem);
+  */
+
+  // pros objects
+  std::unique_ptr<pros::Serial> odom_pros_serial_device{
+      std::make_unique<pros::Serial>(ODOMETRY_ARDUINO, ODOMETRY_BAUD_RATE)};
+  std::unique_ptr<pros::Distance> temp_distance_sensor{
+      std::make_unique<pros::Distance>(ODOMETRY_DISTANCE_SENSOR)};
+
+  // adapted pros objects
+  std::unique_ptr<io::ISerialDevice> odom_adapted_serial_device{
+      std::make_unique<pros_adapters::ProsSerialDevice>(
+          odom_pros_serial_device)};
+  std::unique_ptr<driftless::io::IDistanceSensor> distance_sensor{
+      std::make_unique<driftless::pros_adapters::ProsDistanceSensor>(
+          temp_distance_sensor)};
+
+  // hal objects
+  std::unique_ptr<io::IPositionSensor> odom_position_sensor{
+      std::make_unique<hal::SparkfunOTOS>(odom_adapted_serial_device)};
+
+  // rtos objects
+  std::unique_ptr<rtos::IClock> odom_clock{
+      std::make_unique<pros_adapters::ProsClock>()};
+  std::unique_ptr<rtos::IDelayer> odom_delayer{
+      std::make_unique<pros_adapters::ProsDelayer>()};
+  std::unique_ptr<rtos::IMutex> odom_mutex{
+      std::make_unique<pros_adapters::ProsMutex>()};
+  std::unique_ptr<rtos::ITask> odom_task{
+      std::make_unique<pros_adapters::ProsTask>()};
+
+  // build the sparkfun odom
+  robot::subsystems::odometry::SparkFunPositionTrackerBuilder
+      sparkFun_position_tracker_builder{};
+  std::unique_ptr<robot::subsystems::odometry::IPositionTracker>
+      sparkFun_position_tracker{
+          sparkFun_position_tracker_builder.withClock(odom_clock)
+              ->withDelayer(odom_delayer)
+              ->withMutex(odom_mutex)
+              ->withTask(odom_task)
+              ->withPositionSensor(odom_position_sensor)
+              ->withLocalXOffset(ODOMETRY_SENSOR_LOCAL_X_OFFSET)
+              ->withLocalYOffset(ODOMETRY_SENSOR_LOCAL_Y_OFFSET)
+              ->withLocalThetaOffset(ODOMETRY_SENSOR_LOCAL_THETA_OFFSET)
+              ->build()};
+
+  // position resetter
+  driftless::robot::subsystems::odometry::DistancePositionResetterBuilder
+      distance_position_resetter_builder{};
+  std::unique_ptr<driftless::robot::subsystems::odometry::IPositionResetter>
+      distance_position_resetter{
+          distance_position_resetter_builder
+              .withDistanceSensor(distance_sensor)
+              ->withLocalX(RESETTER_LOCAL_X_OFFSET)
+              ->withLocalY(RESETTER_LOCAL_Y_OFFSET)
+              ->withLocalTheta(RESETTER_LOCAL_THETA_OFFSET)
+              ->build()};
+
+  // Add the odometry subsystem to the robot
+  std::unique_ptr<robot::subsystems::ASubsystem> odometry_subsystem{
+      std::make_unique<robot::subsystems::odometry::OdometrySubsystem>(
+          sparkFun_position_tracker, distance_position_resetter)};
   robot->addSubsystem(odometry_subsystem);
 
   // RING SORT

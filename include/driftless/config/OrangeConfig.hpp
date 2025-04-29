@@ -26,6 +26,7 @@
 
 // hardware interface includes
 #include "driftless/hal/TrackingWheel.hpp"
+#include "driftless/hal/SparkfunOTOS.hpp"
 #include "driftless/io/IColorSensor.hpp"
 #include "driftless/io/IController.hpp"
 #include "driftless/io/IDistanceSensor.hpp"
@@ -49,6 +50,7 @@
 #include "driftless/pros_adapters/ProsRotationSensor.hpp"
 #include "driftless/pros_adapters/ProsTask.hpp"
 #include "driftless/pros_adapters/ProsV5Motor.hpp"
+#include "driftless/pros_adapters/ProsSerialDevice.hpp"
 
 // robot include
 #include "driftless/robot/Robot.hpp"
@@ -86,6 +88,7 @@
 
 // odometry subsystem includes
 #include "driftless/robot/subsystems/odometry/DistancePositionResetterBuilder.hpp"
+#include "driftless/robot/subsystems/odometry/SparkFunPositionTrackerBuilder.hpp"
 #include "driftless/robot/subsystems/odometry/InertialPositionTrackerBuilder.hpp"
 #include "driftless/robot/subsystems/odometry/OdometrySubsystem.hpp"
 
@@ -277,8 +280,9 @@ class OrangeConfig : public IConfig {
   static constexpr int8_t ODOMETRY_INERTIAL_SENSOR{UNDEFINED_PORT};
   static constexpr int8_t ODOMETRY_INERTIAL_SENSOR{UNDEFINED_PORT};
   /// @brief distance sensor
-  static constexpr int8_t ODOMETRY_DISTANCE_SENSOR{UNDEFINED_PORT};
-  static constexpr int8_t ODOMETRY_DISTANCE_SENSOR{UNDEFINED_PORT};
+  static constexpr int8_t ODOMETRY_DISTANCE_SENSOR{13};
+
+  static constexpr int8_t ODOMETRY_ARDUINO{1};
 
   // RING SORT PORTS
 
@@ -395,7 +399,13 @@ class OrangeConfig : public IConfig {
   /// @brief position resetter angular offset
   static constexpr double RESETTER_LOCAL_THETA_OFFSET{0.0};
 
-  static constexpr double ODOMETRY_ANGULAR_TUNING_CONSTANT{0.9950248756};
+  static constexpr double ODOMETRY_SENSOR_LOCAL_X_OFFSET{0.0};
+
+  static constexpr double ODOMETRY_SENSOR_LOCAL_Y_OFFSET{-5.0};
+
+  static constexpr double ODOMETRY_SENSOR_LOCAL_THETA_OFFSET{-M_PI / 2};
+
+  static constexpr int ODOMETRY_BAUD_RATE{74880};
 
   // ring sensor
 
