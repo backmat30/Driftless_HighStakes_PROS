@@ -146,6 +146,7 @@ std::shared_ptr<robot::Robot> OrangeConfig::buildRobot() {
 
   // creates the factory used to build the drivetrain
   robot::subsystems::drivetrain::DirectDriveBuilder drive_builder{};
+  robot::subsystems::drivetrain::DirectDriveBuilder drive_builder{};
   // pros objects
   // left motors
   std::unique_ptr<pros::Motor> left_temp_motor_1{
@@ -158,6 +159,8 @@ std::shared_ptr<robot::Robot> OrangeConfig::buildRobot() {
       std::make_unique<pros::Motor>(DRIVE_LEFT_MOTOR_4, DRIVE_GEARSET)};
   std::unique_ptr<pros::Motor> left_temp_motor_5{
       std::make_unique<pros::Motor>(DRIVE_LEFT_MOTOR_5, DRIVE_GEARSET)};
+  std::unique_ptr<pros::Motor> left_temp_motor_5{
+      std::make_unique<pros::Motor>(DRIVE_LEFT_MOTOR_5, DRIVE_GEARSET)};
   // right motors
   std::unique_ptr<pros::Motor> right_temp_motor_1{
       std::make_unique<pros::Motor>(DRIVE_RIGHT_MOTOR_1, DRIVE_GEARSET)};
@@ -167,6 +170,8 @@ std::shared_ptr<robot::Robot> OrangeConfig::buildRobot() {
       std::make_unique<pros::Motor>(DRIVE_RIGHT_MOTOR_3, DRIVE_GEARSET)};
   std::unique_ptr<pros::Motor> right_temp_motor_4{
       std::make_unique<pros::Motor>(DRIVE_RIGHT_MOTOR_4, DRIVE_GEARSET)};
+  std::unique_ptr<pros::Motor> right_temp_motor_5{
+      std::make_unique<pros::Motor>(DRIVE_RIGHT_MOTOR_5, DRIVE_GEARSET)};
   std::unique_ptr<pros::Motor> right_temp_motor_5{
       std::make_unique<pros::Motor>(DRIVE_RIGHT_MOTOR_5, DRIVE_GEARSET)};
 
@@ -182,6 +187,8 @@ std::shared_ptr<robot::Robot> OrangeConfig::buildRobot() {
       std::make_unique<pros_adapters::ProsV5Motor>(left_temp_motor_4)};
   std::unique_ptr<io::IMotor> left_motor_5{
       std::make_unique<pros_adapters::ProsV5Motor>(left_temp_motor_5)};
+  std::unique_ptr<io::IMotor> left_motor_5{
+      std::make_unique<pros_adapters::ProsV5Motor>(left_temp_motor_5)};
   // right motors
   std::unique_ptr<io::IMotor> right_motor_1{
       std::make_unique<pros_adapters::ProsV5Motor>(right_temp_motor_1)};
@@ -193,19 +200,24 @@ std::shared_ptr<robot::Robot> OrangeConfig::buildRobot() {
       std::make_unique<pros_adapters::ProsV5Motor>(right_temp_motor_4)};
   std::unique_ptr<io::IMotor> right_motor_5{
       std::make_unique<pros_adapters::ProsV5Motor>(right_temp_motor_5)};
+  std::unique_ptr<io::IMotor> right_motor_5{
+      std::make_unique<pros_adapters::ProsV5Motor>(right_temp_motor_5)};
 
   // assembling the drive train
   std::unique_ptr<robot::subsystems::drivetrain::IDrivetrain> drivetrain{
       // call the factory and add all necessary items for the drivetrain
       drive_builder.withLeftMotor(left_motor_1)
+      drive_builder.withLeftMotor(left_motor_1)
           ->withLeftMotor(left_motor_2)
           ->withLeftMotor(left_motor_3)
           ->withLeftMotor(left_motor_4)
+          ->withLeftMotor(left_motor_5)
           ->withLeftMotor(left_motor_5)
           ->withRightMotor(right_motor_1)
           ->withRightMotor(right_motor_2)
           ->withRightMotor(right_motor_3)
           ->withRightMotor(right_motor_4)
+          ->withRightMotor(right_motor_5)
           ->withRightMotor(right_motor_5)
           ->withVelocityToVoltage(DRIVE_VELOCITY_TO_VOLTAGE)
           ->withDriveRadius(ROBOT_RADIUS)

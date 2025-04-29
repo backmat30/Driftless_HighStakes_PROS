@@ -3,6 +3,7 @@
 
 #include "driftless/hal/MotorGroup.hpp"
 #include "driftless/hal/PistonGroup.hpp"
+#include "driftless/hal/PistonGroup.hpp"
 #include "driftless/robot/subsystems/drivetrain/IDriveTrain.hpp"
 
 /// @brief The namespace for driftless library code
@@ -36,6 +37,8 @@ class directDrive : public IDrivetrain {
   double m_wheel_radius{};
 
   double m_drive_radius{};
+
+  bool is_climbing{};
 
   bool is_climbing{};
 

@@ -1,6 +1,7 @@
 #include "driftless/robot/subsystems/drivetrain/DirectDrive.hpp"
 
 #include "pros/screen.hpp"
+#include "pros/screen.hpp"
 namespace driftless {
 namespace robot {
 namespace subsystems {
@@ -18,6 +19,10 @@ void directDrive::setVelocity(Velocity velocity) {
 }
 
 void directDrive::setVoltage(double left_voltage, double right_voltage) {
+  if (!is_climbing) {
+    m_left_motors.setVoltage(left_voltage);
+    m_right_motors.setVoltage(right_voltage);
+  }
   if (!is_climbing) {
     m_left_motors.setVoltage(left_voltage);
     m_right_motors.setVoltage(right_voltage);

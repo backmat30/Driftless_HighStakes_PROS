@@ -65,6 +65,10 @@
 #include "driftless/robot/subsystems/climb/ClimbSubsystem.hpp"
 #include "driftless/robot/subsystems/climb/PneumaticClimbBuilder.hpp"
 
+// climb subsystem includes
+#include "driftless/robot/subsystems/climb/ClimbSubsystem.hpp"
+#include "driftless/robot/subsystems/climb/PneumaticClimbBuilder.hpp"
+
 // drivetrain subsystem includes
 #include "driftless/robot/subsystems/drivetrain/DirectDriveBuilder.hpp"
 #include "driftless/robot/subsystems/drivetrain/DrivetrainSubsystem.hpp"
@@ -265,11 +269,15 @@ class OrangeConfig : public IConfig {
 
   /// @brief left tracking wheel
   static constexpr int8_t ODOMETRY_LINEAR_TRACKING_WHEEL{UNDEFINED_PORT};
+  static constexpr int8_t ODOMETRY_LINEAR_TRACKING_WHEEL{UNDEFINED_PORT};
   /// @brief right tracking wheel
+  static constexpr int8_t ODOMETRY_STRAFE_TRACKING_WHEEL{UNDEFINED_PORT};
   static constexpr int8_t ODOMETRY_STRAFE_TRACKING_WHEEL{UNDEFINED_PORT};
   /// @brief inertial sensor
   static constexpr int8_t ODOMETRY_INERTIAL_SENSOR{UNDEFINED_PORT};
+  static constexpr int8_t ODOMETRY_INERTIAL_SENSOR{UNDEFINED_PORT};
   /// @brief distance sensor
+  static constexpr int8_t ODOMETRY_DISTANCE_SENSOR{UNDEFINED_PORT};
   static constexpr int8_t ODOMETRY_DISTANCE_SENSOR{UNDEFINED_PORT};
 
   // RING SORT PORTS
