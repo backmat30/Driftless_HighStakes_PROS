@@ -17,6 +17,8 @@ namespace op_control {
 namespace climb {
 class ClimbOperator {
  private:
+ static constexpr double VOLTAGE_CONVERSION{12.0 / 127.0};
+
   std::shared_ptr<io::IController> m_controller{};
 
   std::shared_ptr<robot::Robot> m_robot{};
@@ -27,9 +29,21 @@ class ClimbOperator {
 
   void pushForwardClimber();
 
+  void pushOutPassiveHooks();
+
+  void pullInPassiveHooks();
+
+  bool arePassivesOut();
+
+  double getDriveTrainLeftMotorPosition();
+
+  double getDriveTrainRightMotorPosition();
+
+  void toggleDriveTrainClimbMode();
+
   void climbDriveTrain(double voltage);
 
-  void toggleDriveClimbMode();
+  void setClimberState(double climb_voltage);
 
  public:
   ClimbOperator(const std::shared_ptr<io::IController>& controller,

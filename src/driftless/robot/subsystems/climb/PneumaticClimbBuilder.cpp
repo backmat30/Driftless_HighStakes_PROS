@@ -13,10 +13,17 @@ PneumaticClimbBuilder* PneumaticClimbBuilder::withClimberPiston(
   return this;
 }
 
+PneumaticClimbBuilder* PneumaticClimbBuilder::withPassiveHookPiston(
+    std::unique_ptr<io::IPiston>& passive_hook_piston) {
+  m_passive_hook_pistons.addPiston(passive_hook_piston);
+  return this;
+}
+
 std::unique_ptr<IClimb> PneumaticClimbBuilder::build() {
   std::unique_ptr<PneumaticClimb> climb{std::make_unique<PneumaticClimb>()};
   climb->setStiltPistons(m_stilt_pistons);
   climb->setClimberPistons(m_climber_pistons);
+  climb->setPassiveHookPistons(m_passive_hook_pistons);
   return climb;
 }
 }  // namespace driftless::robot::subsystems::climb

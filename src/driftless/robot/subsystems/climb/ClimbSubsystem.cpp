@@ -21,10 +21,23 @@ namespace driftless::robot::subsystems::climb {
       case ESubsystemCommand::CLIMB_PUSH_FORWARD_CLIMBER:
         m_climb->pushForwardClimber();
         break;
+      case ESubsystemCommand::CLIMB_PUSH_OUT_PASSIVE_HOOKS:
+        m_climb->pushOutPassiveHooks();
+        break;
+      case ESubsystemCommand::CLIMB_PULL_IN_PASSIVE_HOOKS:
+        m_climb->pullInPassiveHooks();
+        break;
     }
   }
 
   void* ClimbSubsystem::state(ESubsystemState state_name) {
-    return nullptr;
+    switch(state_name) {
+      case ESubsystemState::CLIMB_ARE_PASSIVES_OUT: {
+        bool* are_passives_out{new bool{m_climb->arePassivesOut()}};
+        return are_passives_out;
+      }
+      default:
+        return nullptr;
+    }
   }
 }

@@ -146,6 +146,7 @@ std::shared_ptr<robot::Robot> OrangeConfig::buildRobot() {
 
   // creates the factory used to build the drivetrain
   robot::subsystems::drivetrain::DirectDriveBuilder drive_builder{};
+  robot::subsystems::drivetrain::DirectDriveBuilder drive_builder{};
   // pros objects
   // left motors
   std::unique_ptr<pros::Motor> left_temp_motor_1{
@@ -158,6 +159,8 @@ std::shared_ptr<robot::Robot> OrangeConfig::buildRobot() {
       std::make_unique<pros::Motor>(DRIVE_LEFT_MOTOR_4, DRIVE_GEARSET)};
   std::unique_ptr<pros::Motor> left_temp_motor_5{
       std::make_unique<pros::Motor>(DRIVE_LEFT_MOTOR_5, DRIVE_GEARSET)};
+  std::unique_ptr<pros::Motor> left_temp_motor_5{
+      std::make_unique<pros::Motor>(DRIVE_LEFT_MOTOR_5, DRIVE_GEARSET)};
   // right motors
   std::unique_ptr<pros::Motor> right_temp_motor_1{
       std::make_unique<pros::Motor>(DRIVE_RIGHT_MOTOR_1, DRIVE_GEARSET)};
@@ -167,6 +170,8 @@ std::shared_ptr<robot::Robot> OrangeConfig::buildRobot() {
       std::make_unique<pros::Motor>(DRIVE_RIGHT_MOTOR_3, DRIVE_GEARSET)};
   std::unique_ptr<pros::Motor> right_temp_motor_4{
       std::make_unique<pros::Motor>(DRIVE_RIGHT_MOTOR_4, DRIVE_GEARSET)};
+  std::unique_ptr<pros::Motor> right_temp_motor_5{
+      std::make_unique<pros::Motor>(DRIVE_RIGHT_MOTOR_5, DRIVE_GEARSET)};
   std::unique_ptr<pros::Motor> right_temp_motor_5{
       std::make_unique<pros::Motor>(DRIVE_RIGHT_MOTOR_5, DRIVE_GEARSET)};
 
@@ -182,6 +187,8 @@ std::shared_ptr<robot::Robot> OrangeConfig::buildRobot() {
       std::make_unique<pros_adapters::ProsV5Motor>(left_temp_motor_4)};
   std::unique_ptr<io::IMotor> left_motor_5{
       std::make_unique<pros_adapters::ProsV5Motor>(left_temp_motor_5)};
+  std::unique_ptr<io::IMotor> left_motor_5{
+      std::make_unique<pros_adapters::ProsV5Motor>(left_temp_motor_5)};
   // right motors
   std::unique_ptr<io::IMotor> right_motor_1{
       std::make_unique<pros_adapters::ProsV5Motor>(right_temp_motor_1)};
@@ -193,19 +200,24 @@ std::shared_ptr<robot::Robot> OrangeConfig::buildRobot() {
       std::make_unique<pros_adapters::ProsV5Motor>(right_temp_motor_4)};
   std::unique_ptr<io::IMotor> right_motor_5{
       std::make_unique<pros_adapters::ProsV5Motor>(right_temp_motor_5)};
+  std::unique_ptr<io::IMotor> right_motor_5{
+      std::make_unique<pros_adapters::ProsV5Motor>(right_temp_motor_5)};
 
   // assembling the drive train
   std::unique_ptr<robot::subsystems::drivetrain::IDrivetrain> drivetrain{
       // call the factory and add all necessary items for the drivetrain
       drive_builder.withLeftMotor(left_motor_1)
+      drive_builder.withLeftMotor(left_motor_1)
           ->withLeftMotor(left_motor_2)
           ->withLeftMotor(left_motor_3)
           ->withLeftMotor(left_motor_4)
+          ->withLeftMotor(left_motor_5)
           ->withLeftMotor(left_motor_5)
           ->withRightMotor(right_motor_1)
           ->withRightMotor(right_motor_2)
           ->withRightMotor(right_motor_3)
           ->withRightMotor(right_motor_4)
+          ->withRightMotor(right_motor_5)
           ->withRightMotor(right_motor_5)
           ->withVelocityToVoltage(DRIVE_VELOCITY_TO_VOLTAGE)
           ->withDriveRadius(ROBOT_RADIUS)
@@ -234,9 +246,6 @@ std::shared_ptr<robot::Robot> OrangeConfig::buildRobot() {
   std::unique_ptr<pros::Motor> temp_arm_left_rotation_motor{
       std::make_unique<pros::Motor>(ARM_LEFT_ROTATION_MOTOR,
                                     ARM_ROTATIONAL_GEARSET)};
-  std::unique_ptr<pros::Motor> temp_arm_right_rotation_motor{
-      std::make_unique<pros::Motor>(ARM_RIGHT_ROTATION_MOTOR,
-                                    ARM_ROTATIONAL_GEARSET)};
   std::unique_ptr<pros::Motor> temp_arm_linear_motor{
       std::make_unique<pros::Motor>(ARM_LINEAR_MOTOR, ARM_LINEAR_GEARSET)};
 
@@ -244,9 +253,6 @@ std::shared_ptr<robot::Robot> OrangeConfig::buildRobot() {
   std::unique_ptr<driftless::io::IMotor> arm_left_rotation_motor{
       std::make_unique<driftless::pros_adapters::ProsV5Motor>(
           temp_arm_left_rotation_motor)};
-  std::unique_ptr<driftless::io::IMotor> arm_right_rotation_motor{
-      std::make_unique<driftless::pros_adapters::ProsV5Motor>(
-          temp_arm_right_rotation_motor)};
   std::unique_ptr<driftless::io::IMotor> arm_linear_motor{
       std::make_unique<driftless::pros_adapters::ProsV5Motor>(
           temp_arm_linear_motor)};
@@ -267,7 +273,6 @@ std::shared_ptr<robot::Robot> OrangeConfig::buildRobot() {
           ->withMutex(arm_mutex)
           ->withTask(arm_task)
           ->withRotationalMotor(arm_left_rotation_motor)
-          ->withRotationalMotor(arm_right_rotation_motor)
           ->withLinearMotor(arm_linear_motor)
           ->withRotationalPID(arm_rotational_pid)
           ->withLinearPID(arm_linear_pid)
@@ -334,25 +339,29 @@ std::shared_ptr<robot::Robot> OrangeConfig::buildRobot() {
       std::make_unique<pros::adi::DigitalOut>(CLIMB_STILT_PISTON)};
   std::unique_ptr<pros::adi::DigitalOut> temp_climb_climber_piston{
       std::make_unique<pros::adi::DigitalOut>(CLIMB_CLIMBER_PISTON)};
-  
-  // adapted objects
-    std::unique_ptr<io::IPiston> adapted_climb_stilt_piston{
-        std::make_unique<pros_adapters::ProsPiston>(
-            temp_climb_stilt_piston)};
-    std::unique_ptr<io::IPiston> adapted_climb_climber_piston{
-        std::make_unique<pros_adapters::ProsPiston>(
-            temp_climb_climber_piston)};
-    
-    // build the climb
-    std::unique_ptr<driftless::robot::subsystems::climb::IClimb> pneumatic_climb{
-        pneumatic_climb_builder.withStiltPiston(adapted_climb_stilt_piston)
-            ->withClimberPiston(adapted_climb_climber_piston)
-            ->build()};
+  std::unique_ptr<pros::adi::DigitalOut> temp_climb_passive_hook_piston{
+      std::make_unique<pros::adi::DigitalOut>(CLIMB_PASSIVE_PISTON)};
 
-    std::unique_ptr<robot::subsystems::ASubsystem> climb_subsystem{
-        std::make_unique<robot::subsystems::climb::ClimbSubsystem>(
-            pneumatic_climb)};
-    robot->addSubsystem(climb_subsystem);
+  // adapted objects
+  std::unique_ptr<io::IPiston> adapted_climb_stilt_piston{
+      std::make_unique<pros_adapters::ProsPiston>(temp_climb_stilt_piston)};
+  std::unique_ptr<io::IPiston> adapted_climb_climber_piston{
+      std::make_unique<pros_adapters::ProsPiston>(temp_climb_climber_piston)};
+  std::unique_ptr<io::IPiston> adapted_climb_passive_piston{
+      std::make_unique<pros_adapters::ProsPiston>(
+          temp_climb_passive_hook_piston)};
+
+  // build the climb
+  std::unique_ptr<driftless::robot::subsystems::climb::IClimb> pneumatic_climb{
+      pneumatic_climb_builder.withStiltPiston(adapted_climb_stilt_piston)
+          ->withClimberPiston(adapted_climb_climber_piston)
+          ->withPassiveHookPiston(adapted_climb_passive_piston)
+          ->build()};
+
+  std::unique_ptr<robot::subsystems::ASubsystem> climb_subsystem{
+      std::make_unique<robot::subsystems::climb::ClimbSubsystem>(
+          pneumatic_climb)};
+  robot->addSubsystem(climb_subsystem);
 
   // ELEVATOR
 
@@ -369,7 +378,7 @@ std::shared_ptr<robot::Robot> OrangeConfig::buildRobot() {
   std::unique_ptr<pros::Motor> temp_elevator_motor_1{
       std::make_unique<pros::Motor>(ELEVATOR_MOTOR_1)};
   std::unique_ptr<pros::adi::DigitalOut> temp_elevator_rejection_piston{
-      std::make_unique<pros::adi::DigitalOut>(ELEVATOR_REJECTION_PISTON)};
+      std::make_unique<pros::adi::DigitalOut>(ELEVATOR_REJECTION_RIGHT_PISTON)};
 
   // adapted objects
   std::unique_ptr<driftless::io::IMotor> adapted_elevator_motor_1{
@@ -415,7 +424,7 @@ std::shared_ptr<robot::Robot> OrangeConfig::buildRobot() {
   std::unique_ptr<pros::Motor> temp_intake_motor_1{
       std::make_unique<pros::Motor>(INTAKE_MOTOR)};
   std::unique_ptr<pros::adi::DigitalOut> temp_intake_piston{
-      std::make_unique<pros::adi::DigitalOut>(INTAKE_PISTON)};
+      std::make_unique<pros::adi::DigitalOut>(INTAKE_STAGE1_PISTON)};
 
   // adapted objects
   std::unique_ptr<driftless::io::IMotor> intake_motor_1{
