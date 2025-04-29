@@ -19,16 +19,40 @@ void ClimbOperator::pushForwardClimber() {
       robot::subsystems::ESubsystemCommand::CLIMB_PUSH_FORWARD_CLIMBER);
 }
 
+double ClimbOperator::getDriveTrainLeftMotorPosition() {
+  double position{*static_cast<double*>(m_robot->getState(robot::subsystems::ESubsystem::DRIVETRAIN,
+                                robot::subsystems::ESubsystemState::DRIVETRAIN_GET_LEFT_POSITION))};
+  return position;
+}
+
+double ClimbOperator::getDriveTrainRightMotorPosition() {
+  double position{*static_cast<double*>(m_robot->getState(robot::subsystems::ESubsystem::DRIVETRAIN,
+                                robot::subsystems::ESubsystemState::DRIVETRAIN_GET_RIGHT_POSITION))};
+  return position;
+}
+
+void ClimbOperator::toggleDriveTrainClimbMode() {
+  m_robot->sendCommand(
+      robot::subsystems::ESubsystem::DRIVETRAIN,
+      robot::subsystems::ESubsystemCommand::DRIVETRAIN_TOGGLE_CLIMB_MODE);
+}
+
 void ClimbOperator::climbDriveTrain(double voltage) {
   m_robot->sendCommand(
       robot::subsystems::ESubsystem::DRIVETRAIN,
       robot::subsystems::ESubsystemCommand::DRIVETRAIN_CLIMB, voltage);
 }
 
-void ClimbOperator::toggleDriveClimbMode() {
-  m_robot->sendCommand(
-      robot::subsystems::ESubsystem::DRIVETRAIN,
-      robot::subsystems::ESubsystemCommand::DRIVETRAIN_TOGGLE_CLIMB_MODE);
+void ClimbOperator::setClimberState(double climb_voltage) {
+  double left_position{getDriveTrainLeftMotorPosition()};
+  double right_position{getDriveTrainRightMotorPosition()};
+  double avg_position{(left_position + right_position) / 2.0};
+  
+  if(climb_voltage > 1.0 && avg_position > 10.0) {
+    pullBackClimber();
+  } else if (climb_voltage < -1.0) {
+    pushForwardClimber();
+  }
 }
 
 ClimbOperator::ClimbOperator(
@@ -46,17 +70,13 @@ void ClimbOperator::update(const std::unique_ptr<profiles::IProfile>& profile) {
   
   if(m_controller->getNewDigital(stilt_control)) {
     updateStiltState();
-    toggleDriveClimbMode();
+    toggleDriveTrainClimbMode();
   }
 
-  double climb_voltage_scalar{m_controller->getAnalog(climb_voltage_control)};
-  if(climb_voltage_scalar > 0.1 * 127) {
-    pullBackClimber();
-  } else if (climb_voltage_scalar < -0.1 * 127) {
-    pushForwardClimber();
-  }
+  double climb_voltage{m_controller->getAnalog(climb_voltage_control) * VOLTAGE_CONVERSION};
 
-  climbDriveTrain(climb_voltage_scalar * 12.0 / 127.0);
+  setClimberState(climb_voltage);
+  climbDriveTrain(climb_voltage);
 }
 
   
