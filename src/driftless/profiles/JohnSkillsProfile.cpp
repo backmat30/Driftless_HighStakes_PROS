@@ -1,10 +1,10 @@
-#include "driftless/profiles/JohnButArcade.hpp"
+#include "driftless/profiles/JohnSkillsProfile.hpp"
 
 namespace driftless {
 namespace profiles {
-std::string JohnButArcade::getName() { return PROFILE_NAME; }
+std::string JohnSkillsProfile::getName() { return PROFILE_NAME; }
 
-int JohnButArcade::getControlMode(op_control::EControlType control_type) const {
+int JohnSkillsProfile::getControlMode(op_control::EControlType control_type) const {
   int mode{};
   if (CONTROL_MODE_MAP.contains(control_type)) {
     mode = CONTROL_MODE_MAP.at(control_type);
@@ -12,12 +12,12 @@ int JohnButArcade::getControlMode(op_control::EControlType control_type) const {
   return mode;
 }
 
-void JohnButArcade::setControlMode(op_control::EControlType control_type,
+void JohnSkillsProfile::setControlMode(op_control::EControlType control_type,
                                  int control_mode) {
   CONTROL_MODE_MAP[control_type] = control_mode;
 }
 
-op_control::EControllerAnalog JohnButArcade::getAnalogControlMapping(
+op_control::EControllerAnalog JohnSkillsProfile::getAnalogControlMapping(
     op_control::EControl control) const {
   op_control::EControllerAnalog analogMapping{
       op_control::EControllerAnalog::NONE};
@@ -27,7 +27,7 @@ op_control::EControllerAnalog JohnButArcade::getAnalogControlMapping(
   return analogMapping;
 }
 
-op_control::EControllerDigital JohnButArcade::getDigitalControlMapping(
+op_control::EControllerDigital JohnSkillsProfile::getDigitalControlMapping(
     op_control::EControl control) const {
   op_control::EControllerDigital digitalMapping{
       op_control::EControllerDigital::NONE};
@@ -37,13 +37,13 @@ op_control::EControllerDigital JohnButArcade::getDigitalControlMapping(
   return digitalMapping;
 }
 
-bool JohnButArcade::getStartupConfig(
-  op_control::EStartupConfig startup_config) const {
-bool config{};
-if (STARTUP_CONFIG_MAP.contains(startup_config)) {
-  config = STARTUP_CONFIG_MAP.at(startup_config);
-}
-return config;
+bool JohnSkillsProfile::getStartupConfig(
+    op_control::EStartupConfig startup_config) const {
+  bool config{};
+  if (STARTUP_CONFIG_MAP.contains(startup_config)) {
+    config = STARTUP_CONFIG_MAP.at(startup_config);
+  }
+  return config;
 }
 }  // namespace profiles
 }  // namespace driftless

@@ -1,5 +1,5 @@
-#ifndef __JOHN_BUT_ARCADE_HPP__
-#define __JOHN_BUT_ARCADE_HPP__
+#ifndef __ERIC_SKILLS_PROFILE_HPP__
+#define __ERIC_SKILLS_PROFILE_HPP__
 
 #include <map>
 #include <string>
@@ -23,12 +23,12 @@ namespace driftless {
 /// @author Matthew Backman
 namespace profiles {
 
-/// @brief User control profile for John with arcade drive
+/// @brief User control profile for Eric during skills
 /// @author Matthew Backman
-class JohnButArcade : public driftless::profiles::IProfile {
+class EricSkillsProfile : public driftless::profiles::IProfile {
  private:
   /// @brief Name of the profile
-  static constexpr char PROFILE_NAME[]{"JOHN_BUT_ARCADE"};
+  static constexpr char PROFILE_NAME[]{"ERIC_SKILLS"};
 
   /// @brief List of subsystems to be controlled and the type of control used
   std::map<op_control::EControlType, int> CONTROL_MODE_MAP{
@@ -48,9 +48,9 @@ class JohnButArcade : public driftless::profiles::IProfile {
   /// @brief Maps subsystem controls to analog inputs
   const std::map<op_control::EControl, op_control::EControllerAnalog>
       ANALOG_CONTROL_MAP{{op_control::EControl::DRIVE_ARCADE_LINEAR,
-                          op_control::EControllerAnalog::JOYSTICK_LEFT_Y},
+                          op_control::EControllerAnalog::JOYSTICK_RIGHT_Y},
                          {op_control::EControl::DRIVE_ARCADE_TURN,
-                          op_control::EControllerAnalog::JOYSTICK_RIGHT_X}};
+                          op_control::EControllerAnalog::JOYSTICK_LEFT_X}};
 
   /// @brief Maps subsystem controls to digital inputs
   const std::map<op_control::EControl, op_control::EControllerDigital>
@@ -72,11 +72,15 @@ class JohnButArcade : public driftless::profiles::IProfile {
           {op_control::EControl::INTAKE_REVERSE,
            op_control::EControllerDigital::TRIGGER_RIGHT_BOTTOM},
           {op_control::EControl::INTAKE_TOGGLE_HEIGHT,
-           op_control::EControllerDigital::TRIGGER_LEFT_BOTTOM}};
+           op_control::EControllerDigital::TRIGGER_LEFT_BOTTOM},
+          {op_control::EControl::COLOR_SORT_TOGGLE,
+           op_control::EControllerDigital::DPAD_LEFT},
+          {op_control::EControl::ARM_ALLIANCE_STAKE,
+           op_control::EControllerDigital::DPAD_DOWN}};
 
-  const std::map<op_control::EStartupConfig, bool> STARTUP_CONFIG_MAP{
-      {op_control::EStartupConfig::COLOR_SORT_DEFAULT, true},
-      {op_control::EStartupConfig::ARM_CALLIBRATE, false}};
+    const std::map<op_control::EStartupConfig, bool> STARTUP_CONFIG_MAP{
+        {op_control::EStartupConfig::COLOR_SORT_DEFAULT, false},
+        {op_control::EStartupConfig::ARM_CALLIBRATE, true}};
 
  public:
   /// @brief Gets the name of the profile
@@ -108,12 +112,12 @@ class JohnButArcade : public driftless::profiles::IProfile {
   op_control::EControllerDigital getDigitalControlMapping(
       op_control::EControl control) const override;
 
-  /// @brief Gets the value of the desired startup configuration
-  /// @param startup_config __op_control::EStartupConfig__ The desired startup
-  /// configuration
-  /// @return __bool__ The value of the desired startup configuration
-  bool getStartupConfig(
-      op_control::EStartupConfig startup_config) const override;
+    /// @brief Gets the value of the desired startup configuration
+    /// @param startup_config __op_control::EStartupConfig__ The desired startup
+    /// configuration
+    /// @return __bool__ The value of the desired startup configuration
+    bool getStartupConfig(
+        op_control::EStartupConfig startup_config) const override;
 };
 }  // namespace profiles
 }  // namespace driftless

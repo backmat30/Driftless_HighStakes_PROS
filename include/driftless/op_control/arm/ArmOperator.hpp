@@ -10,6 +10,7 @@
 #include "driftless/robot/Robot.hpp"
 #include "driftless/robot/subsystems/ESubsystemCommand.hpp"
 #include "driftless/robot/subsystems/ESubsystemState.hpp"
+#include "driftless/processes/ProcessSystem.hpp"
 
 /// @brief Namespace for driftless library code
 /// @author Matthew Backman
@@ -33,6 +34,8 @@ class ArmOperator {
   // the robot being controlled
   std::shared_ptr<driftless::robot::Robot> m_robot{};
 
+  std::shared_ptr<driftless::processes::ProcessSystem> m_process_system{};
+
   /// @brief determines if the robot has an alliance ring loaded
   /// @param alliance __const std::shared_ptr<alliance::IAlliance>&__ The
   /// current alliance
@@ -44,6 +47,10 @@ class ArmOperator {
   /// @param alliance __const std::shared_ptr<alliance::IAlliance>&__ The
   /// current alliance
   bool hasOpposingRing(const std::shared_ptr<alliance::IAlliance>& alliance);
+
+  /// @brief determines if the robot has a ring loaded
+  /// @return __bool__ True if there is a ring, false otherwise
+  bool hasRing();
 
   /// @brief Updates the arm using seperate buttons for each location
   /// @param neutral __EControllerDigital__ Button for neutral position
@@ -76,7 +83,9 @@ class ArmOperator {
   /// @param robot __const std::shared_ptr<robot::Robot>&__ The robot
   /// being controlled
   ArmOperator(const std::shared_ptr<driftless::io::IController>& controller,
-              const std::shared_ptr<driftless::robot::Robot>& robot);
+              const std::shared_ptr<driftless::robot::Robot>& robot,
+              const std::shared_ptr<driftless::processes::ProcessSystem>&
+                  process_system);
 
   /// @brief Updates the arm
   /// @param profile __const std::unique_ptr<profiles::IProfile>&__ The profile

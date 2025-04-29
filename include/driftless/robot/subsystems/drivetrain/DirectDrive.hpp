@@ -2,6 +2,8 @@
 #define __DIRECT_DRIVE_HPP__
 
 #include "driftless/hal/MotorGroup.hpp"
+#include "driftless/hal/PistonGroup.hpp"
+#include "driftless/hal/PistonGroup.hpp"
 #include "driftless/robot/subsystems/drivetrain/IDriveTrain.hpp"
 
 /// @brief The namespace for driftless library code
@@ -35,6 +37,10 @@ class directDrive : public IDrivetrain {
   double m_wheel_radius{};
 
   double m_drive_radius{};
+
+  bool is_climbing{};
+
+  bool is_climbing{};
 
  public:
   /// @brief Initializes the direct drive
@@ -86,6 +92,21 @@ class directDrive : public IDrivetrain {
   /// @brief Gets the radius of the drive train
   /// @return __double__ The radius of the drive train
   double getDriveRadius() override;
+
+  /// @brief Gets the position of the left motors
+  /// @return __double__ The position of the left motors
+  double getLeftMotorPosition() override;
+
+  /// @brief Gets the position of the right motors
+  /// @return __double__ The position of the right motors
+  double getRightMotorPosition() override;
+
+  /// @brief Sets the drive train to climbing mode
+  void toggleClimb() override;
+
+  /// @brief Controls the climb mech using the drive train
+  /// @param voltage __double__ The voltage to feed the drive train
+  void climb(double voltage) override;
 };
 }  // namespace drivetrain
 }  // namespace subsystems

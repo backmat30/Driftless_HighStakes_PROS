@@ -1,5 +1,5 @@
-#ifndef __ORANGE_AUTON_HPP__
-#define __ORANGE_AUTON_HPP__
+#ifndef __ORANGE_MID_RUSH_AUTON_HPP__
+#define __ORANGE_MID_RUSH_AUTON_HPP__
 
 #include "driftless/auton/IAuton.hpp"
 #include "driftless/control/Point.hpp"
@@ -11,9 +11,9 @@
 
 namespace driftless {
 namespace auton {
-class OrangeRushAuton : public IAuton {
+class OrangeMidRushAuton : public IAuton {
  private:
-  static constexpr char AUTON_NAME[]{"ORANGE_RUSH"};
+  static constexpr char AUTON_NAME[]{"ORANGE_MID_RUSH"};
 
   // MISC VALUES
 

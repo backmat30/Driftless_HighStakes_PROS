@@ -358,7 +358,7 @@ class DefaultConfig : public IConfig {
   /// @brief left offset of the linear tracking wheel
   static constexpr double LINEAR_TRACKING_WHEEL_OFFSET{0.0};
   /// @brief forwards offset of the strafe tracking wheel
-  static constexpr double STRAFE_TRACKING_WHEEL_OFFSET{-2.26};
+  static constexpr double STRAFE_TRACKING_WHEEL_OFFSET{-2.25};
   /// @brief position resetter x offset
   static constexpr double RESETTER_LOCAL_X_OFFSET{3.33159158};
   /// @brief position resetter y offset
@@ -366,10 +366,12 @@ class DefaultConfig : public IConfig {
   /// @brief position resetter angular offset
   static constexpr double RESETTER_LOCAL_THETA_OFFSET{0.0};
 
+  static constexpr double ODOMETRY_ANGULAR_TUNING_CONSTANT{0.9928295643};
+
   // ring sensor
 
   /// @brief The distance from the color sensor to the end of the elevator
-  static constexpr double RING_SORT_COLOR_SENSOR_TO_END{2.5};
+  static constexpr double RING_SORT_COLOR_SENSOR_TO_END{3.35};
   /// @brief The minimum proximity value to be considered a ring
   static constexpr uint8_t RING_SORT_MIN_RING_PROXIMITY{50};
 

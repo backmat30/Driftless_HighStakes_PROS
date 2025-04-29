@@ -46,7 +46,8 @@ class JohnProfile : public driftless::profiles::IProfile {
 
   /// @brief Maps subsystem controls to analog inputs
   const std::map<op_control::EControl, op_control::EControllerAnalog>
-      ANALOG_CONTROL_MAP{};
+      ANALOG_CONTROL_MAP{{op_control::EControl::CLIMB_CHANGE_HEIGHT,
+                          op_control::EControllerAnalog::JOYSTICK_LEFT_Y}};
 
   /// @brief Maps subsystem controls to digital inputs
   const std::map<op_control::EControl, op_control::EControllerDigital>
@@ -59,6 +60,8 @@ class JohnProfile : public driftless::profiles::IProfile {
            op_control::EControllerDigital::DPAD_RIGHT},
           {op_control::EControl::CLAMP_TOGGLE,
            op_control::EControllerDigital::BUTTON_Y},
+          {op_control::EControl::CLIMB_TOGGLE,
+           op_control::EControllerDigital::BUTTON_X},
           {op_control::EControl::ELEVATOR_SPIN,
            op_control::EControllerDigital::TRIGGER_RIGHT_TOP},
           {op_control::EControl::ELEVATOR_REVERSE,
@@ -69,10 +72,14 @@ class JohnProfile : public driftless::profiles::IProfile {
            op_control::EControllerDigital::TRIGGER_RIGHT_BOTTOM},
           {op_control::EControl::INTAKE_TOGGLE_HEIGHT,
            op_control::EControllerDigital::TRIGGER_LEFT_BOTTOM},
-          {op_control::EControl::ELEVATOR_TOGGLE_COLOR_SORT,
+          {op_control::EControl::COLOR_SORT_TOGGLE,
            op_control::EControllerDigital::BUTTON_A},
           {op_control::EControl::ARM_ALLIANCE_STAKE,
            op_control::EControllerDigital::DPAD_DOWN}};
+
+  const std::map<op_control::EStartupConfig, bool> STARTUP_CONFIG_MAP{
+      {op_control::EStartupConfig::COLOR_SORT_DEFAULT, true},
+      {op_control::EStartupConfig::ARM_CALLIBRATE, true}};
 
  public:
   /// @brief Gets the name of the profile
@@ -103,6 +110,13 @@ class JohnProfile : public driftless::profiles::IProfile {
   /// the control
   op_control::EControllerDigital getDigitalControlMapping(
       op_control::EControl control) const override;
+
+  /// @brief Gets the value of the desired startup configuration
+  /// @param startup_config __op_control::EStartupConfig__ The desired startup
+  /// configuration
+  /// @return __bool__ The value of the desired startup configuration
+  bool getStartupConfig(
+      op_control::EStartupConfig startup_config) const override;
 };
 }  // namespace profiles
 }  // namespace driftless
