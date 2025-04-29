@@ -31,6 +31,13 @@ void ClimbOperator::pullInPassiveHooks() {
       robot::subsystems::ESubsystemCommand::CLIMB_PULL_IN_PASSIVE_HOOKS);
 }
 
+bool ClimbOperator::arePassivesOut() {
+  bool are_passives_out{*static_cast<bool*>(m_robot->getState(
+      robot::subsystems::ESubsystem::CLIMB,
+      robot::subsystems::ESubsystemState::CLIMB_ARE_PASSIVES_OUT))};
+  return are_passives_out;
+}
+
 double ClimbOperator::getDriveTrainLeftMotorPosition() {
   double position{*static_cast<double*>(m_robot->getState(
       robot::subsystems::ESubsystem::DRIVETRAIN,
@@ -62,14 +69,17 @@ void ClimbOperator::setClimberState(double climb_voltage) {
   double right_position{getDriveTrainRightMotorPosition()};
   double avg_position{(left_position + right_position) / 2.0};
 
+  if(avg_position <= 0.0) {
+    pushOutPassiveHooks();
+  }
   if (climb_voltage > 1.0) {
-    if (avg_position > 10.0) {
+    if (avg_position > 5.0) {
       pullBackClimber();
     }
     pushOutPassiveHooks();
   } else if (climb_voltage < -1.0) {
     pushForwardClimber();
-    if (avg_position < 41.0) {
+    if (avg_position < 46.0) {
       pullInPassiveHooks();
     }
   }
@@ -99,7 +109,9 @@ void ClimbOperator::update(const std::unique_ptr<profiles::IProfile>& profile) {
                        VOLTAGE_CONVERSION};
 
   setClimberState(climb_voltage);
+  if(climb_voltage <= 0.0 || arePassivesOut()) {
   climbDriveTrain(climb_voltage);
+  }
 }
 
 }  // namespace driftless::op_control::climb

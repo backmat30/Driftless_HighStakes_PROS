@@ -33,6 +33,8 @@ class ClimbOperator {
 
   void pullInPassiveHooks();
 
+  bool arePassivesOut();
+
   double getDriveTrainLeftMotorPosition();
 
   double getDriveTrainRightMotorPosition();
