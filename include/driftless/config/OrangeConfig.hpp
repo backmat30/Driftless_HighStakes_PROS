@@ -225,7 +225,7 @@ class OrangeConfig : public IConfig {
   static constexpr int8_t ARM_LEFT_ROTATION_MOTOR{15};
 
   /// @brief arm linear motor
-  static constexpr int8_t ARM_LINEAR_MOTOR{18};
+  static constexpr int8_t ARM_LINEAR_MOTOR{-18};
 
   // CLAMP PORTS
 
@@ -243,7 +243,7 @@ class OrangeConfig : public IConfig {
   // ELEVATOR PORTS
 
   /// @brief first elevator motor
-  static constexpr int8_t ELEVATOR_MOTOR_1{16};
+  static constexpr int8_t ELEVATOR_MOTOR_1{-16};
   /// @brief elevator rotational sensor
   static constexpr int8_t ELEVATOR_ROTATIONAL_SENSOR{UNDEFINED_PORT};
 
