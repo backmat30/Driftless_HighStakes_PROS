@@ -207,7 +207,6 @@ std::shared_ptr<robot::Robot> OrangeConfig::buildRobot() {
   std::unique_ptr<robot::subsystems::drivetrain::IDrivetrain> drivetrain{
       // call the factory and add all necessary items for the drivetrain
       drive_builder.withLeftMotor(left_motor_1)
-      drive_builder.withLeftMotor(left_motor_1)
           ->withLeftMotor(left_motor_2)
           ->withLeftMotor(left_motor_3)
           ->withLeftMotor(left_motor_4)
