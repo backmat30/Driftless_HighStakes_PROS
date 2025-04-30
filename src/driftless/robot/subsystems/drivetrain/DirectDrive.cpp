@@ -1,7 +1,6 @@
 #include "driftless/robot/subsystems/drivetrain/DirectDrive.hpp"
 
 #include "pros/screen.hpp"
-#include "pros/screen.hpp"
 namespace driftless {
 namespace robot {
 namespace subsystems {
@@ -97,19 +96,16 @@ void directDrive::climb(double voltage) {
       right_position = 51.0;
     }
 
-    pros::screen::print(pros::E_TEXT_LARGE_CENTER, 4, "L: %7.2f R: %7.2f",
-                        left_position, right_position);
-
     double position_difference{left_position - right_position};
     double voltage_modifier{position_difference / 5.0};
 
     left_voltage -= voltage_modifier;
     right_voltage += voltage_modifier;
 
-    if(voltage < 0) {
+    if (voltage < 0) {
       left_voltage = std::min(left_voltage, 0.0);
       right_voltage = std::min(right_voltage, 0.0);
-    } else if (voltage >= 0) {
+    } else if (voltage > 0) {
       left_voltage = std::max(left_voltage, 0.0);
       right_voltage = std::max(right_voltage, 0.0);
     }
