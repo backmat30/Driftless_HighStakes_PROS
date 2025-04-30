@@ -8,14 +8,38 @@ void PistonRingRejection::init() {}
 
 void PistonRingRejection::run() {}
 
-void PistonRingRejection::deploy() { m_pistons.extend(); }
+void PistonRingRejection::deploy() {
+  if (rejection_direction == ERejectionDirection::LEFT) {
+    m_left_pistons.extend();
+  } else if (rejection_direction == ERejectionDirection::RIGHT) {
+    m_right_pistons.extend();
+  } else {
+    m_left_pistons.extend();
+    m_right_pistons.extend();
+  }
+}
 
-void PistonRingRejection::retract() { m_pistons.retract(); }
+void PistonRingRejection::retract() {
+  m_left_pistons.retract();
+  m_right_pistons.retract();
+}
 
-bool PistonRingRejection::isDeployed() { return m_pistons.isExtended(); }
+void PistonRingRejection::setDeploymentDirection(
+    ERejectionDirection direction) {
+  rejection_direction = direction;
+}
 
-void PistonRingRejection::setPistons(driftless::hal::PistonGroup& pistons) {
-  m_pistons = std::move(pistons);
+bool PistonRingRejection::isDeployed() {
+  return m_left_pistons.isExtended() || m_right_pistons.isExtended();
+}
+
+void PistonRingRejection::setLeftPistons(driftless::hal::PistonGroup& pistons) {
+  m_left_pistons = std::move(pistons);
+}
+
+void PistonRingRejection::setRightPistons(
+    driftless::hal::PistonGroup& pistons) {
+  m_right_pistons = std::move(pistons);
 }
 }  // namespace elevator
 }  // namespace subsystems
