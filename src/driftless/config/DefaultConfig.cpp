@@ -366,16 +366,23 @@ std::shared_ptr<robot::Robot> DefaultConfig::buildRobot() {
   // pros objects
   std::unique_ptr<pros::Motor> temp_elevator_motor_1{
       std::make_unique<pros::Motor>(ELEVATOR_MOTOR_1)};
-  std::unique_ptr<pros::adi::DigitalOut> temp_elevator_rejection_piston{
+  std::unique_ptr<pros::adi::DigitalOut> temp_elevator_rejection_right_piston{
       std::make_unique<pros::adi::DigitalOut>(ELEVATOR_REJECTION_RIGHT_PISTON)};
+  std::unique_ptr<pros::adi::DigitalOut> temp_elevator_rejection_left_piston{
+      std::make_unique<pros::adi::DigitalOut>(ELEVATOR_REJECTION_LEFT_PISTON)};
 
   // adapted objects
   std::unique_ptr<driftless::io::IMotor> adapted_elevator_motor_1{
       std::make_unique<driftless::pros_adapters::ProsV5Motor>(
           temp_elevator_motor_1)};
-  std::unique_ptr<driftless::io::IPiston> adapted_elevator_rejection_piston{
+  std::unique_ptr<driftless::io::IPiston>
+      adapted_elevator_rejection_right_piston{
       std::make_unique<driftless::pros_adapters::ProsPiston>(
-          temp_elevator_rejection_piston)};
+              temp_elevator_rejection_right_piston)};
+  std::unique_ptr<driftless::io::IPiston>
+      adapted_elevator_rejection_left_piston{
+          std::make_unique<driftless::pros_adapters::ProsPiston>(
+              temp_elevator_rejection_left_piston)};
 
   driftless::control::PID elevator_pid{elevator_clock, PID_ELEVATOR_KP,
                                        PID_ELEVATOR_KI, PID_ELEVATOR_KD};
@@ -398,7 +405,8 @@ std::shared_ptr<robot::Robot> DefaultConfig::buildRobot() {
 
   std::unique_ptr<robot::subsystems::elevator::IRingRejection> ring_rejection{
       piston_ring_rejection_builder
-          .withPiston(adapted_elevator_rejection_piston)
+          .withLeftPiston(adapted_elevator_rejection_left_piston)
+          ->withRightPiston(adapted_elevator_rejection_right_piston)
           ->build()};
 
   std::unique_ptr<driftless::robot::subsystems::ASubsystem> elevator_subsystem{

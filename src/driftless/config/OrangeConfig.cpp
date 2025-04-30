@@ -366,16 +366,23 @@ std::shared_ptr<robot::Robot> OrangeConfig::buildRobot() {
   // pros objects
   std::unique_ptr<pros::Motor> temp_elevator_motor_1{
       std::make_unique<pros::Motor>(ELEVATOR_MOTOR_1)};
-  std::unique_ptr<pros::adi::DigitalOut> temp_elevator_rejection_piston{
+  std::unique_ptr<pros::adi::DigitalOut> temp_elevator_rejection_right_piston{
       std::make_unique<pros::adi::DigitalOut>(ELEVATOR_REJECTION_RIGHT_PISTON)};
+  std::unique_ptr<pros::adi::DigitalOut> temp_elevator_rejection_left_piston{
+      std::make_unique<pros::adi::DigitalOut>(ELEVATOR_REJECTION_LEFT_PISTON)};
 
   // adapted objects
   std::unique_ptr<driftless::io::IMotor> adapted_elevator_motor_1{
       std::make_unique<driftless::pros_adapters::ProsV5Motor>(
           temp_elevator_motor_1)};
-  std::unique_ptr<driftless::io::IPiston> adapted_elevator_rejection_piston{
-      std::make_unique<driftless::pros_adapters::ProsPiston>(
-          temp_elevator_rejection_piston)};
+  std::unique_ptr<driftless::io::IPiston>
+      adapted_elevator_rejection_right_piston{
+          std::make_unique<driftless::pros_adapters::ProsPiston>(
+              temp_elevator_rejection_right_piston)};
+  std::unique_ptr<driftless::io::IPiston>
+      adapted_elevator_rejection_left_piston{
+          std::make_unique<driftless::pros_adapters::ProsPiston>(
+              temp_elevator_rejection_left_piston)};
 
   driftless::control::PID elevator_pid{elevator_clock, PID_ELEVATOR_KP,
                                        PID_ELEVATOR_KI, PID_ELEVATOR_KD};
@@ -398,7 +405,8 @@ std::shared_ptr<robot::Robot> OrangeConfig::buildRobot() {
 
   std::unique_ptr<robot::subsystems::elevator::IRingRejection> ring_rejection{
       piston_ring_rejection_builder
-          .withPiston(adapted_elevator_rejection_piston)
+          .withLeftPiston(adapted_elevator_rejection_left_piston)
+          ->withRightPiston(adapted_elevator_rejection_right_piston)
           ->build()};
 
   std::unique_ptr<driftless::robot::subsystems::ASubsystem> elevator_subsystem{
@@ -414,7 +422,7 @@ std::shared_ptr<robot::Robot> OrangeConfig::buildRobot() {
       std::make_unique<pros::Motor>(INTAKE_MOTOR)};
   std::unique_ptr<pros::adi::DigitalOut> temp_intake_piston{
       std::make_unique<pros::adi::DigitalOut>(INTAKE_STAGE1_PISTON)};
-    std::unique_ptr<pros::adi::DigitalOut> temp_secondary_intake_piston{
+  std::unique_ptr<pros::adi::DigitalOut> temp_secondary_intake_piston{
       std::make_unique<pros::adi::DigitalOut>(INTAKE_STAGE2_PISTON)};
 
   // adapted objects
@@ -422,9 +430,9 @@ std::shared_ptr<robot::Robot> OrangeConfig::buildRobot() {
       std::make_unique<driftless::pros_adapters::ProsV5Motor>(
           temp_intake_motor_1)};
   std::unique_ptr<driftless::io::IPiston> intake_piston{
-      std::make_unique<driftless::pros_adapters::ProsPiston>(
-          temp_intake_piston, false)};
-    std::unique_ptr<driftless::io::IPiston> secondary_intake_piston{
+      std::make_unique<driftless::pros_adapters::ProsPiston>(temp_intake_piston,
+                                                             false)};
+  std::unique_ptr<driftless::io::IPiston> secondary_intake_piston{
       std::make_unique<driftless::pros_adapters::ProsPiston>(
           temp_secondary_intake_piston, false)};
 
@@ -438,7 +446,9 @@ std::shared_ptr<robot::Robot> OrangeConfig::buildRobot() {
       direct_intake_builder.withMotor(intake_motor_1)->build()};
   std::unique_ptr<driftless::robot::subsystems::intake::IHeightControl>
       piston_height_control{
-          piston_height_control_builder.withHeightPiston(intake_piston)->withSecondaryPiston(secondary_intake_piston)->build()};
+          piston_height_control_builder.withHeightPiston(intake_piston)
+              ->withSecondaryPiston(secondary_intake_piston)
+              ->build()};
 
   // create and add the intake subsystem to the robot
   std::unique_ptr<driftless::robot::subsystems::ASubsystem> intake_subsystem{

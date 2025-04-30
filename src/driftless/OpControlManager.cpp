@@ -58,6 +58,8 @@ void OpControlManager::run(
   }
   robot->sendCommand(robot::subsystems::ESubsystem::INTAKE,
                      robot::subsystems::ESubsystemCommand::INTAKE_PUSH_OUT);
+  robot->sendCommand(robot::subsystems::ESubsystem::ELEVATOR,
+                     robot::subsystems::ESubsystemCommand::ELEVATOR_REJECT_LEFT);
 
   // variable to hold time for delayer
   uint32_t current_time{};

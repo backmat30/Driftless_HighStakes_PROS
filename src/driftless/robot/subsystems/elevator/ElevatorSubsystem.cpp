@@ -32,6 +32,12 @@ void ElevatorSubsystem::command(ESubsystemCommand command_name, va_list& args) {
     m_ring_rejector->deploy();
   } else if (command_name == ESubsystemCommand::ELEVATOR_RETRACT_REJECTOR) {
     m_ring_rejector->retract();
+  } else if (command_name == ESubsystemCommand::ELEVATOR_REJECT_LEFT) {
+    m_ring_rejector->setDeploymentDirection(ERejectionDirection::LEFT);
+  } else if (command_name == ESubsystemCommand::ELEVATOR_REJECT_RIGHT) {
+    m_ring_rejector->setDeploymentDirection(ERejectionDirection::RIGHT);
+  } else if (command_name == ESubsystemCommand::ELEVATOR_REJECT_FORWARD) {
+    m_ring_rejector->setDeploymentDirection(ERejectionDirection::FORWARD);
   }
 }
 
