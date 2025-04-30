@@ -25,13 +25,21 @@ namespace intake {
 class PistonHeightControlBuilder {
  private:
   // the pistons used to build the height controller
-  driftless::hal::PistonGroup m_pistons{};
+  driftless::hal::PistonGroup m_height_pistons{};
+
+  hal::PistonGroup m_secondary_pistons{};
 
  public:
-  /// @brief Adds a piston group to the builder
+  /// @brief Adds a height control piston to the builder
   /// @param piston __std::unique_ptr<driftless::io::IPiston>&__ The piston to add
   /// @return __PistonHeightControlBuilder*__ The builder instance
-  PistonHeightControlBuilder* withPiston(
+  PistonHeightControlBuilder* withHeightPiston(
+      std::unique_ptr<driftless::io::IPiston>& piston);
+
+  /// @brief Adds a secondary level piston to the builder
+  /// @param piston __std::unique_ptr<io::IPiston>&__ The piston to add
+  /// @return __PistonHeightControlBuilder*__ The builder instance
+  PistonHeightControlBuilder* withSecondaryPiston(
       std::unique_ptr<driftless::io::IPiston>& piston);
 
   /// @brief Builds a new PistonHeightControl object

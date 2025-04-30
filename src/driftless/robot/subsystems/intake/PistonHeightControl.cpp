@@ -10,17 +10,31 @@ void PistonHeightControl::run() {}
 
 void PistonHeightControl::setHeight(bool up) {
   if (up) {
-    m_pistons.extend();
-  } else {
-    m_pistons.retract();
+    m_height_pistons.extend();
+  } else if (!m_secondary_pistons.isExtended()) {
+    m_height_pistons.retract();
   }
-  raised = up;
+  raised = m_height_pistons.isExtended();
 }
+
+void PistonHeightControl::pullIn() {
+  if (m_height_pistons.isExtended()) {
+    m_secondary_pistons.retract();
+  }
+}
+
+void PistonHeightControl::pushOut() { m_secondary_pistons.extend(); }
 
 bool PistonHeightControl::isRaised() { return raised; }
 
-void PistonHeightControl::setPistons(driftless::hal::PistonGroup& pistons) {
-  m_pistons = std::move(pistons);
+void PistonHeightControl::setHeightPistons(
+    driftless::hal::PistonGroup& pistons) {
+  m_height_pistons = std::move(pistons);
+}
+
+void PistonHeightControl::setSecondaryPistons(
+    driftless::hal::PistonGroup& pistons) {
+  m_secondary_pistons = std::move(pistons);
 }
 }  // namespace intake
 }  // namespace subsystems

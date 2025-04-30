@@ -27,7 +27,9 @@ namespace intake {
 class PistonHeightControl : public IHeightControl {
  private:
   // the group of pistons being used
-  driftless::hal::PistonGroup m_pistons{};
+  driftless::hal::PistonGroup m_height_pistons{};
+
+  hal::PistonGroup m_secondary_pistons{};
 
   // whether the intake is up or down
   bool raised{false};
@@ -43,13 +45,23 @@ class PistonHeightControl : public IHeightControl {
   /// @param up __bool__ Whether to raise or lower the intake
   void setHeight(bool up) override;
 
+  /// @brief Pulls the intake in
+  void pullIn() override;
+
+  /// @brief Pushes the intake out
+  void pushOut() override;
+
   /// @brief Gets the height of the intake
   /// @return __bool__ Whether the intake is raised
   bool isRaised() override;
 
-  /// @brief Sets the pistons
-  /// @param pistons __driftless::hal::PistonGroup&__ The pistons to set
-  void setPistons(driftless::hal::PistonGroup& pistons);
+  /// @brief Sets the pistons for height control
+  /// @param pistons __driftless::hal::PistonGroup&__ The pistons to use
+  void setHeightPistons(driftless::hal::PistonGroup& pistons);
+
+  /// @brief Sets the pistons to push forward/pull back the intake
+  /// @param pistons __hal::PistonGroup&__ The pistons to use
+  void setSecondaryPistons(driftless::hal::PistonGroup& pistons);
 };
 }  // namespace intake
 }  // namespace subsystems
