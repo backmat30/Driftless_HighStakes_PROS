@@ -51,6 +51,9 @@ class PistonHeightControl : public IHeightControl {
   /// @brief Pushes the intake out
   void pushOut() override;
 
+  /// @brief Toggles the secondary pistons
+  void toggleSecondaryPistons() override;
+
   /// @brief Gets the height of the intake
   /// @return __bool__ Whether the intake is raised
   bool isRaised() override;

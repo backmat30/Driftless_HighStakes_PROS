@@ -23,6 +23,14 @@ void PistonHeightControl::pullIn() {
   }
 }
 
+void PistonHeightControl::toggleSecondaryPistons() {
+  if (m_secondary_pistons.isExtended()) {
+    m_secondary_pistons.retract();
+  } else {
+    m_secondary_pistons.extend();
+  }
+}
+
 void PistonHeightControl::pushOut() { m_secondary_pistons.extend(); }
 
 bool PistonHeightControl::isRaised() { return raised; }
