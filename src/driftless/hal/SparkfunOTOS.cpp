@@ -51,12 +51,6 @@ void SparkfunOTOS::updatePosition() {
       }
     }
   }
-
-  pros::screen::print(pros::E_TEXT_MEDIUM_CENTER, 6,
-                      "Raw X: %7.2f Raw Y: %7.2f", latest_position.x,
-                      latest_position.y);
-  pros::screen::print(pros::E_TEXT_MEDIUM_CENTER, 7, "Raw Theta: %7.2f",
-                      latest_position.theta);
 }
 
 SparkfunOTOS::SparkfunOTOS(std::unique_ptr<io::ISerialDevice>& serialDevice)
