@@ -54,6 +54,10 @@ class IntakeOperator {
   /// reverse
   void updateSpinner(EControllerDigital spin, EControllerDigital reverse);
 
+  /// @brief Updates the secondary pistons of the intake
+  /// @param toggle __EControllerDigital__ The button used to toggle the pistons
+  void updateSecondaryPistons(EControllerDigital toggle);
+
  public:
   /// @brief Constructs a new IntakeOperator object
   /// @param controller __std::shared_ptr<io::IController>&__ The controller
