@@ -41,6 +41,8 @@ class ClimbOperator {
 
   void toggleDriveTrainClimbMode();
 
+  void toggleIntakeClimbMode();
+
   void climbDriveTrain(double voltage);
 
   void setClimberState(double climb_voltage);

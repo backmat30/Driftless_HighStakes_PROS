@@ -58,6 +58,12 @@ void ClimbOperator::toggleDriveTrainClimbMode() {
       robot::subsystems::ESubsystemCommand::DRIVETRAIN_TOGGLE_CLIMB_MODE);
 }
 
+void ClimbOperator::toggleIntakeClimbMode() {
+  m_robot->sendCommand(
+      robot::subsystems::ESubsystem::INTAKE,
+      robot::subsystems::ESubsystemCommand::INTAKE_TOGGLE_SECONDARY_PISTONS);
+}
+
 void ClimbOperator::climbDriveTrain(double voltage) {
   m_robot->sendCommand(robot::subsystems::ESubsystem::DRIVETRAIN,
                        robot::subsystems::ESubsystemCommand::DRIVETRAIN_CLIMB,
@@ -69,7 +75,7 @@ void ClimbOperator::setClimberState(double climb_voltage) {
   double right_position{getDriveTrainRightMotorPosition()};
   double avg_position{(left_position + right_position) / 2.0};
 
-  if(avg_position <= 0.0) {
+  if (avg_position <= 0.0) {
     pushOutPassiveHooks();
   }
   if (climb_voltage > 1.0) {
@@ -103,14 +109,15 @@ void ClimbOperator::update(const std::unique_ptr<profiles::IProfile>& profile) {
   if (m_controller->getNewDigital(stilt_control)) {
     updateStiltState();
     toggleDriveTrainClimbMode();
+    toggleIntakeClimbMode();
   }
 
   double climb_voltage{m_controller->getAnalog(climb_voltage_control) *
                        VOLTAGE_CONVERSION};
 
   setClimberState(climb_voltage);
-  if(climb_voltage <= 0.0 || arePassivesOut()) {
-  climbDriveTrain(climb_voltage);
+  if (climb_voltage <= 0.0 || arePassivesOut()) {
+    climbDriveTrain(climb_voltage);
   }
 }
 

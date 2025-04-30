@@ -62,15 +62,6 @@ void IntakeOperator::updateSpinner(EControllerDigital spin,
   }
 }
 
-void IntakeOperator::updateSecondaryPistons(EControllerDigital toggle) {
-  bool toggle_pistons{m_controller->getNewDigital(toggle)};
-  if (toggle_pistons) {
-    m_robot->sendCommand(
-        robot::subsystems::ESubsystem::INTAKE,
-        robot::subsystems::ESubsystemCommand::INTAKE_TOGGLE_SECONDARY_PISTONS);
-  }
-}
-
 IntakeOperator::IntakeOperator(
     const std::shared_ptr<driftless::io::IController>& controller,
     const std::shared_ptr<driftless::robot::Robot>& robot)
@@ -111,7 +102,6 @@ void IntakeOperator::update(
   }
 
   updateSpinner(spin, reverse);
-  updateSecondaryPistons(toggle_secondary_pistons);
 }
 }  // namespace intake
 }  // namespace op_control
