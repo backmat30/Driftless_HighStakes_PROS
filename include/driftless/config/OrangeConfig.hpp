@@ -67,10 +67,6 @@
 #include "driftless/robot/subsystems/climb/ClimbSubsystem.hpp"
 #include "driftless/robot/subsystems/climb/PneumaticClimbBuilder.hpp"
 
-// climb subsystem includes
-#include "driftless/robot/subsystems/climb/ClimbSubsystem.hpp"
-#include "driftless/robot/subsystems/climb/PneumaticClimbBuilder.hpp"
-
 // drivetrain subsystem includes
 #include "driftless/robot/subsystems/drivetrain/DirectDriveBuilder.hpp"
 #include "driftless/robot/subsystems/drivetrain/DrivetrainSubsystem.hpp"
@@ -170,7 +166,7 @@ class OrangeConfig : public IConfig {
   /// @brief kd value for the turn rotational pid controller
   static constexpr double PID_TURN_ROTATIONAL_KD{1000.0};
   /// @brief the target tolerance of the turn algorithm
-  static constexpr double PID_TURN_TARGET_TOLERANCE{M_PI / 100.0};
+  static constexpr double PID_TURN_TARGET_TOLERANCE{M_PI / 50.0};
   /// @brief the target velocity of the turn algorithm
   static constexpr double PID_TURN_TARGET_VELOCITY{M_PI / 200.0};
 

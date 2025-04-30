@@ -26,6 +26,7 @@
 
 // hardware interface includes
 #include "driftless/hal/TrackingWheel.hpp"
+#include "driftless/hal/SparkfunOTOS.hpp"
 #include "driftless/io/IColorSensor.hpp"
 #include "driftless/io/IController.hpp"
 #include "driftless/io/IDistanceSensor.hpp"
@@ -49,6 +50,7 @@
 #include "driftless/pros_adapters/ProsRotationSensor.hpp"
 #include "driftless/pros_adapters/ProsTask.hpp"
 #include "driftless/pros_adapters/ProsV5Motor.hpp"
+#include "driftless/pros_adapters/ProsSerialDevice.hpp"
 
 // robot include
 #include "driftless/robot/Robot.hpp"
@@ -60,6 +62,10 @@
 // clamp subsystem includes
 #include "driftless/robot/subsystems/clamp/ClampSubsystem.hpp"
 #include "driftless/robot/subsystems/clamp/PistonClampBuilder.hpp"
+
+// climb subsystem includes
+#include "driftless/robot/subsystems/climb/ClimbSubsystem.hpp"
+#include "driftless/robot/subsystems/climb/PneumaticClimbBuilder.hpp"
 
 // drivetrain subsystem includes
 #include "driftless/robot/subsystems/drivetrain/DirectDriveBuilder.hpp"
@@ -78,6 +84,7 @@
 
 // odometry subsystem includes
 #include "driftless/robot/subsystems/odometry/DistancePositionResetterBuilder.hpp"
+#include "driftless/robot/subsystems/odometry/SparkFunPositionTrackerBuilder.hpp"
 #include "driftless/robot/subsystems/odometry/InertialPositionTrackerBuilder.hpp"
 #include "driftless/robot/subsystems/odometry/OdometrySubsystem.hpp"
 
@@ -195,68 +202,84 @@ class DefaultConfig : public IConfig {
   // DRIVE MOTORS
 
   /// @brief first left drive motor
-  static constexpr int8_t DRIVE_LEFT_MOTOR_1{-2};
+  static constexpr int8_t DRIVE_LEFT_MOTOR_1{-10};
   /// @brief second left drive motor
-  static constexpr int8_t DRIVE_LEFT_MOTOR_2{-3};
+  static constexpr int8_t DRIVE_LEFT_MOTOR_2{9};
   /// @brief third left drive motor
-  static constexpr int8_t DRIVE_LEFT_MOTOR_3{4};
+  static constexpr int8_t DRIVE_LEFT_MOTOR_3{-8};
   /// @brief fourth left drive motor
-  static constexpr int8_t DRIVE_LEFT_MOTOR_4{-5};
+  static constexpr int8_t DRIVE_LEFT_MOTOR_4{-7};
+
+  static constexpr int8_t DRIVE_LEFT_MOTOR_5{6};
   /// @brief first right drive motor
-  static constexpr int8_t DRIVE_RIGHT_MOTOR_1{7};
+  static constexpr int8_t DRIVE_RIGHT_MOTOR_1{1};
   /// @brief second right drive motor
-  static constexpr int8_t DRIVE_RIGHT_MOTOR_2{-8};
+  static constexpr int8_t DRIVE_RIGHT_MOTOR_2{-2};
   /// @brief third right drive motor
-  static constexpr int8_t DRIVE_RIGHT_MOTOR_3{9};
+  static constexpr int8_t DRIVE_RIGHT_MOTOR_3{3};
   /// @brief fourth right drive motor
-  static constexpr int8_t DRIVE_RIGHT_MOTOR_4{10};
+  static constexpr int8_t DRIVE_RIGHT_MOTOR_4{4};
+
+  static constexpr int8_t DRIVE_RIGHT_MOTOR_5{-5};
 
   // ARM PORTS
 
   /// @brief left side arm rotational motor
-  static constexpr int8_t ARM_LEFT_ROTATION_MOTOR{12};
-
-  /// @brief right side arm rotational motor
-  static constexpr int8_t ARM_RIGHT_ROTATION_MOTOR{-19};
+  static constexpr int8_t ARM_LEFT_ROTATION_MOTOR{15};
 
   /// @brief arm linear motor
-  static constexpr int8_t ARM_LINEAR_MOTOR{20};
+  static constexpr int8_t ARM_LINEAR_MOTOR{-18};
 
   // CLAMP PORTS
 
   /// @brief clamp piston controller
-  static constexpr int8_t CLAMP_PISTON_1{1};
+  static constexpr int8_t CLAMP_PISTON_1{2};
+
+  // CLIMB PORTS
+
+  static constexpr int8_t CLIMB_STILT_PISTON{6};
+
+  static constexpr int8_t CLIMB_CLIMBER_PISTON{4};
+
+  static constexpr int8_t CLIMB_PASSIVE_PISTON{5};
 
   // ELEVATOR PORTS
 
   /// @brief first elevator motor
-  static constexpr int8_t ELEVATOR_MOTOR_1{18};
+  static constexpr int8_t ELEVATOR_MOTOR_1{-16};
   /// @brief elevator rotational sensor
   static constexpr int8_t ELEVATOR_ROTATIONAL_SENSOR{UNDEFINED_PORT};
 
-  static constexpr int8_t ELEVATOR_REJECTION_PISTON{3};
+  static constexpr int8_t ELEVATOR_REJECTION_LEFT_PISTON{3};
+
+  static constexpr int8_t ELEVATOR_REJECTION_RIGHT_PISTON{8};
+
 
   // INTAKE PORTS
 
   /// @brief intake piston
-  static constexpr int8_t INTAKE_PISTON{2};
+  static constexpr int8_t INTAKE_STAGE1_PISTON{1};
+
+  static constexpr int8_t INTAKE_STAGE2_PISTON{7};
   /// @brief intake motor
-  static constexpr int8_t INTAKE_MOTOR{15};
+  static constexpr int8_t INTAKE_MOTOR{17};
 
   // ODOMETRY PORTS
 
   /// @brief left tracking wheel
-  static constexpr int8_t ODOMETRY_LINEAR_TRACKING_WHEEL{-16};
+  static constexpr int8_t ODOMETRY_LINEAR_TRACKING_WHEEL{UNDEFINED_PORT};
   /// @brief right tracking wheel
-  static constexpr int8_t ODOMETRY_STRAFE_TRACKING_WHEEL{6};
+  static constexpr int8_t ODOMETRY_STRAFE_TRACKING_WHEEL{UNDEFINED_PORT};
   /// @brief inertial sensor
-  static constexpr int8_t ODOMETRY_INERTIAL_SENSOR{14};
+  static constexpr int8_t ODOMETRY_INERTIAL_SENSOR{UNDEFINED_PORT};
   /// @brief distance sensor
   static constexpr int8_t ODOMETRY_DISTANCE_SENSOR{13};
 
+  static constexpr int8_t ODOMETRY_ARDUINO{13};
+
   // RING SORT PORTS
 
-  static constexpr int8_t RING_SORT_COLOR_SENSOR{17};
+  static constexpr int8_t RING_SORT_COLOR_SENSOR{19};
 
   // -----MISC VALUES-----
 
@@ -321,6 +344,9 @@ class DefaultConfig : public IConfig {
   /// position
   static constexpr double ARM_ROTATIONAL_RUSH_INTERMEDIATE_POSITION{0.5 / 4.0 *
                                                                     2.0 * M_PI};
+
+  static constexpr double ARM_ROTATIONAL_ALLIANCE_STAKE_INTERMEDIATE_POSITION{
+      0.5 / 4.0 * 2.0 * M_PI};
   /// @brief arm rotational position tolerance
   static constexpr double ARM_ROTATIONAL_TOLERANCE{0.05};
   /// @brief arm linear neutral position
@@ -366,7 +392,13 @@ class DefaultConfig : public IConfig {
   /// @brief position resetter angular offset
   static constexpr double RESETTER_LOCAL_THETA_OFFSET{0.0};
 
-  static constexpr double ODOMETRY_ANGULAR_TUNING_CONSTANT{0.9928295643};
+  static constexpr double ODOMETRY_SENSOR_LOCAL_X_OFFSET{0.0};
+
+  static constexpr double ODOMETRY_SENSOR_LOCAL_Y_OFFSET{-1.125};
+
+  static constexpr double ODOMETRY_SENSOR_LOCAL_THETA_OFFSET{0.0};
+
+  static constexpr int ODOMETRY_BAUD_RATE{74880};
 
   // ring sensor
 
