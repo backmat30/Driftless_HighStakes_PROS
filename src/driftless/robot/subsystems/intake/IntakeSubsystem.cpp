@@ -32,6 +32,9 @@ void IntakeSubsystem::command(ESubsystemCommand command_name, va_list& args) {
     m_height_control->pushOut();
   } else if (command_name == ESubsystemCommand::IMTAKE_PULL_IN) {
     m_height_control->pullIn();
+  } else if (command_name ==
+             ESubsystemCommand::INTAKE_TOGGLE_SECONDARY_PISTONS) {
+    m_height_control->toggleSecondaryPistons();
   }
 }
 
