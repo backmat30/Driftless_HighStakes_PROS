@@ -40,8 +40,6 @@ class directDrive : public IDrivetrain {
 
   bool is_climbing{};
 
-  bool is_climbing{};
-
  public:
   /// @brief Initializes the direct drive
   void init() override;
