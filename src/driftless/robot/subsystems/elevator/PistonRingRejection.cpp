@@ -10,9 +10,9 @@ void PistonRingRejection::run() {}
 
 void PistonRingRejection::deploy() {
   if (rejection_direction == ERejectionDirection::LEFT) {
-    m_left_pistons.extend();
-  } else if (rejection_direction == ERejectionDirection::RIGHT) {
     m_right_pistons.extend();
+  } else if (rejection_direction == ERejectionDirection::RIGHT) {
+    m_left_pistons.extend();
   } else {
     m_left_pistons.extend();
     m_right_pistons.extend();
@@ -27,6 +27,15 @@ void PistonRingRejection::retract() {
 void PistonRingRejection::setDeploymentDirection(
     ERejectionDirection direction) {
   rejection_direction = direction;
+
+  switch(rejection_direction) {
+    case ERejectionDirection::LEFT:
+      m_left_pistons.retract();
+      break;
+    case ERejectionDirection::RIGHT:
+      m_right_pistons.retract();
+      break;
+  }
 }
 
 bool PistonRingRejection::isDeployed() {
