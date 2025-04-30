@@ -279,7 +279,7 @@ class OrangeConfig : public IConfig {
   /// @brief distance sensor
   static constexpr int8_t ODOMETRY_DISTANCE_SENSOR{13};
 
-  static constexpr int8_t ODOMETRY_ARDUINO{1};
+  static constexpr int8_t ODOMETRY_ARDUINO{13};
 
   // RING SORT PORTS
 
