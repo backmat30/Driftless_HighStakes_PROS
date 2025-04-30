@@ -1,5 +1,5 @@
 #include "driftless/robot/subsystems/intake/PistonHeightControl.hpp"
-
+#include "pros/screen.hpp"
 namespace driftless {
 namespace robot {
 namespace subsystems {
@@ -9,29 +9,32 @@ void PistonHeightControl::init() {}
 void PistonHeightControl::run() {}
 
 void PistonHeightControl::setHeight(bool up) {
-  if (up) {
+  if (!up) {
     m_height_pistons.extend();
   } else if (!m_secondary_pistons.isExtended()) {
     m_height_pistons.retract();
   }
-  raised = m_height_pistons.isExtended();
+  raised = !m_height_pistons.isExtended();
+
 }
 
 void PistonHeightControl::pullIn() {
-  if (m_height_pistons.isExtended()) {
-    m_secondary_pistons.retract();
+  if (raised) {
+    m_height_pistons.extend();
   }
+  m_secondary_pistons.extend();
 }
 
 void PistonHeightControl::toggleSecondaryPistons() {
+  pros::screen::print(pros::E_TEXT_MEDIUM_CENTER, 6, "TOGGLE CALLED");
   if (m_secondary_pistons.isExtended()) {
-    m_secondary_pistons.retract();
+    pushOut();
   } else {
-    m_secondary_pistons.extend();
+    pullIn();
   }
 }
 
-void PistonHeightControl::pushOut() { m_secondary_pistons.extend(); }
+void PistonHeightControl::pushOut() { m_secondary_pistons.retract(); }
 
 bool PistonHeightControl::isRaised() { return raised; }
 

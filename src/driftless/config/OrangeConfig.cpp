@@ -423,10 +423,10 @@ std::shared_ptr<robot::Robot> OrangeConfig::buildRobot() {
           temp_intake_motor_1)};
   std::unique_ptr<driftless::io::IPiston> intake_piston{
       std::make_unique<driftless::pros_adapters::ProsPiston>(
-          temp_intake_piston)};
+          temp_intake_piston, false)};
     std::unique_ptr<driftless::io::IPiston> secondary_intake_piston{
       std::make_unique<driftless::pros_adapters::ProsPiston>(
-          temp_secondary_intake_piston)};
+          temp_secondary_intake_piston, false)};
 
   // build the intake
   driftless::robot::subsystems::intake::DirectIntakeBuilder
