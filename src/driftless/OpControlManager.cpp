@@ -31,7 +31,10 @@ void OpControlManager::run(
   // pause control system to allow operator takeover
   control_system->pause();
 
-  process_system->sendCommand(processes::EProcess::AUTO_RING_REJECTION, processes::EProcessCommand::AUTO_RING_REJECTION_REJECT_RINGS, robot, m_alliance);
+  process_system->sendCommand(
+      processes::EProcess::AUTO_RING_REJECTION,
+      processes::EProcessCommand::AUTO_RING_REJECTION_REJECT_RINGS, robot,
+      m_alliance);
   process_system->resumeAll();
 
   // set subsystems to driver control
@@ -45,12 +48,16 @@ void OpControlManager::run(
                                                                 process_system};
   op_control::climb::ClimbOperator climb_operator{controller, robot};
 
-  if(!m_profile->getStartupConfig(op_control::EStartupConfig::COLOR_SORT_DEFAULT)) {
+  if (!m_profile->getStartupConfig(
+          op_control::EStartupConfig::COLOR_SORT_DEFAULT)) {
     process_system->pause(processes::EProcess::AUTO_RING_REJECTION);
   }
-  if(m_profile->getStartupConfig(op_control::EStartupConfig::ARM_CALLIBRATE)) {
-    robot->sendCommand(robot::subsystems::ESubsystem::ARM, robot::subsystems::ESubsystemCommand::ARM_CALIBRATE);
+  if (m_profile->getStartupConfig(op_control::EStartupConfig::ARM_CALLIBRATE)) {
+    robot->sendCommand(robot::subsystems::ESubsystem::ARM,
+                       robot::subsystems::ESubsystemCommand::ARM_CALIBRATE);
   }
+  robot->sendCommand(robot::subsystems::ESubsystem::INTAKE,
+                     robot::subsystems::ESubsystemCommand::INTAKE_PUSH_OUT);
 
   // variable to hold time for delayer
   uint32_t current_time{};
