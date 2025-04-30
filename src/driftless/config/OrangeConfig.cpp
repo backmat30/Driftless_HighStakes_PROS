@@ -416,6 +416,8 @@ std::shared_ptr<robot::Robot> OrangeConfig::buildRobot() {
       std::make_unique<pros::Motor>(INTAKE_MOTOR)};
   std::unique_ptr<pros::adi::DigitalOut> temp_intake_piston{
       std::make_unique<pros::adi::DigitalOut>(INTAKE_STAGE1_PISTON)};
+    std::unique_ptr<pros::adi::DigitalOut> temp_secondary_intake_piston{
+      std::make_unique<pros::adi::DigitalOut>(INTAKE_STAGE2_PISTON)};
 
   // adapted objects
   std::unique_ptr<driftless::io::IMotor> intake_motor_1{
@@ -424,6 +426,9 @@ std::shared_ptr<robot::Robot> OrangeConfig::buildRobot() {
   std::unique_ptr<driftless::io::IPiston> intake_piston{
       std::make_unique<driftless::pros_adapters::ProsPiston>(
           temp_intake_piston)};
+    std::unique_ptr<driftless::io::IPiston> secondary_intake_piston{
+      std::make_unique<driftless::pros_adapters::ProsPiston>(
+          temp_secondary_intake_piston)};
 
   // build the intake
   driftless::robot::subsystems::intake::DirectIntakeBuilder
@@ -435,7 +440,7 @@ std::shared_ptr<robot::Robot> OrangeConfig::buildRobot() {
       direct_intake_builder.withMotor(intake_motor_1)->build()};
   std::unique_ptr<driftless::robot::subsystems::intake::IHeightControl>
       piston_height_control{
-          piston_height_control_builder.withPiston(intake_piston)->build()};
+          piston_height_control_builder.withHeightPiston(intake_piston)->withSecondaryPiston(secondary_intake_piston)->build()};
 
   // create and add the intake subsystem to the robot
   std::unique_ptr<driftless::robot::subsystems::ASubsystem> intake_subsystem{
