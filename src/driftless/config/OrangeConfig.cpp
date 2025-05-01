@@ -301,18 +301,26 @@ std::shared_ptr<robot::Robot> OrangeConfig::buildRobot() {
   // pros objects
   std::unique_ptr<pros::adi::DigitalOut> temp_clamp_left_piston{
       std::make_unique<pros::adi::DigitalOut>(CLAMP_PISTON_1)};
+  std::unique_ptr<pros::Distance> temp_clamp_goal_detector{
+      std::make_unique<pros::Distance>(CLAMP_DISTANCE_SENSOR)};
 
   // adapted objects
   std::unique_ptr<driftless::io::IPiston> adapted_clamp_left_piston{
       std::make_unique<driftless::pros_adapters::ProsPiston>(
           temp_clamp_left_piston)};
+  std::unique_ptr<driftless::io::IDistanceSensor> adapted_clamp_goal_detector{
+      std::make_unique<driftless::pros_adapters::ProsDistanceSensor>(
+          temp_clamp_goal_detector)};
 
   // build the clamp
   driftless::robot::subsystems::clamp::PistonClampBuilder
       piston_clamp_builder{};
 
   std::unique_ptr<driftless::robot::subsystems::clamp::IClamp> piston_clamp{
-      piston_clamp_builder.withPiston(adapted_clamp_left_piston)->build()};
+      piston_clamp_builder.withPiston(adapted_clamp_left_piston)
+          ->withDistanceSensor(adapted_clamp_goal_detector)
+          ->withDistanceToGoal(CLAMP_GOAL_DISTANCE)
+          ->build()};
 
   std::unique_ptr<driftless::robot::subsystems::ASubsystem> clamp_subsystem{
       std::make_unique<driftless::robot::subsystems::clamp::ClampSubsystem>(
