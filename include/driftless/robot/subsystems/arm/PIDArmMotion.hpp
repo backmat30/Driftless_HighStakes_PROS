@@ -56,7 +56,7 @@ class PIDArmMotion : public IArmMotion {
   static constexpr uint8_t TASK_DELAY{10};
 
   // the conversion factor from motor rotations to arm rotations
-  static constexpr double MOTOR_TO_ARM_ROTATIONS{1.0 / 4.0};
+  static constexpr double MOTOR_TO_ARM_ROTATIONS{1.0};
 
   // the conversion factor from potentiometer or rotation sensor rotations to
   // arm rotations
