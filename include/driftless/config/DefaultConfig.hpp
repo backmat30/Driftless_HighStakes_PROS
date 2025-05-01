@@ -25,8 +25,8 @@
 #include "driftless/control/path/PathFollowerControl.hpp"
 
 // hardware interface includes
-#include "driftless/hal/TrackingWheel.hpp"
 #include "driftless/hal/SparkfunOTOS.hpp"
+#include "driftless/hal/TrackingWheel.hpp"
 #include "driftless/io/IColorSensor.hpp"
 #include "driftless/io/IController.hpp"
 #include "driftless/io/IDistanceSensor.hpp"
@@ -48,9 +48,9 @@
 #include "driftless/pros_adapters/ProsMutex.hpp"
 #include "driftless/pros_adapters/ProsPiston.hpp"
 #include "driftless/pros_adapters/ProsRotationSensor.hpp"
+#include "driftless/pros_adapters/ProsSerialDevice.hpp"
 #include "driftless/pros_adapters/ProsTask.hpp"
 #include "driftless/pros_adapters/ProsV5Motor.hpp"
-#include "driftless/pros_adapters/ProsSerialDevice.hpp"
 
 // robot include
 #include "driftless/robot/Robot.hpp"
@@ -84,9 +84,9 @@
 
 // odometry subsystem includes
 #include "driftless/robot/subsystems/odometry/DistancePositionResetterBuilder.hpp"
-#include "driftless/robot/subsystems/odometry/SparkFunPositionTrackerBuilder.hpp"
 #include "driftless/robot/subsystems/odometry/InertialPositionTrackerBuilder.hpp"
 #include "driftless/robot/subsystems/odometry/OdometrySubsystem.hpp"
+#include "driftless/robot/subsystems/odometry/SparkFunPositionTrackerBuilder.hpp"
 
 // ring sort subsystem includes
 #include "driftless/robot/subsystems/ring_sort/ColorRingSortBuilder.hpp"
@@ -329,7 +329,9 @@ class DefaultConfig : public IConfig {
   static constexpr double ARM_ROTATIONAL_RUSH_POSITION{2.1 * 2.0 * M_PI};
 
   static constexpr double ARM_ROTATIONAL_ALLIANCE_STAKE_POSITION{1.7 * 2.0 *
-                                                       M_PI};
+                                                                 M_PI};
+
+  static constexpr double ARM_ROTATIONAL_CLIMB_POSITION{1.3 * 2.0 * M_PI};
 
   /// @brief The intermediate position on the rotation towards the arm ready
   /// position
@@ -337,8 +339,8 @@ class DefaultConfig : public IConfig {
                                                                      M_PI};
   /// @brief The intermediate position on the rotation towards the arm score
   /// position
-  static constexpr double ARM_ROTATIONAL_SCORE_INTERMEDIATE_POSITION{
-      1.3 * 2.0 * M_PI};
+  static constexpr double ARM_ROTATIONAL_SCORE_INTERMEDIATE_POSITION{1.3 * 2.0 *
+                                                                     M_PI};
   /// @brief The intermediate position on the rotation towards the arm rush
   /// position
   static constexpr double ARM_ROTATIONAL_RUSH_INTERMEDIATE_POSITION{0.5 * 2.0 *
@@ -360,6 +362,11 @@ class DefaultConfig : public IConfig {
   static constexpr double ARM_LINEAR_RUSH_POSITION{0.530 * 2 * M_PI};
 
   static constexpr double ARM_LINEAR_ALLIANCE_STAKE_POSITION{0.175 * 2 * M_PI};
+
+  static constexpr double ARM_LINEAR_CLIMB_READY_POSITION{0.5 * 2 * M_PI};
+
+  static constexpr double ARM_LINEAR_CLIMB_POSITION{0.05 * 2 * M_PI};
+
   /// @brief arm linear position tolerance
   static constexpr double ARM_LINEAR_TOLERANCE{0.1};
 
