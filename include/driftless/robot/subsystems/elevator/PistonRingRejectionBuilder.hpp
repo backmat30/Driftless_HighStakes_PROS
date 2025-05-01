@@ -6,7 +6,7 @@
 /// @brief The namespace for driftless library code
 /// @author Matthew Backman
 namespace driftless {
-    
+
 /// @brief The namespace for robot code
 /// @author Matthew Backman
 namespace robot {
@@ -23,13 +23,21 @@ namespace elevator {
 /// @author Matthew Backman
 class PistonRingRejectionBuilder {
  private:
-  driftless::hal::PistonGroup m_pistons{};
+  driftless::hal::PistonGroup m_left_pistons{};
+
+  hal::PistonGroup m_right_pistons{};
 
  public:
-  /// @brief Adds a piston to the builder
-  /// @param piston The piston to add
+  /// @brief Adds a left piston to the builder
+  /// @param piston __std::unique_ptr<io::IPiston>&__ The piston to add
   /// @return __PistonRingRejectionBuilder*__ Pointer to the current builder
-  PistonRingRejectionBuilder* withPiston(
+  PistonRingRejectionBuilder* withLeftPiston(
+      std::unique_ptr<driftless::io::IPiston>& piston);
+
+  /// @brief Adds a right piston to the builder
+  /// @param piston __std::unique_ptr<io::IPiston>&__ The piston to add
+  /// @return __PistonRingRejectionBuilder*__ Pointer to the current builder
+  PistonRingRejectionBuilder* withRightPiston(
       std::unique_ptr<driftless::io::IPiston>& piston);
 
   /// @brief Builds a new PistonRingRejection object

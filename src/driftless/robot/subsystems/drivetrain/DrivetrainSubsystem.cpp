@@ -23,6 +23,11 @@ void DrivetrainSubsystem::command(ESubsystemCommand command_name,
     double left_voltage{va_arg(args, double)};
     double right_voltage{va_arg(args, double)};
     m_drivetrain->setVoltage(left_voltage, right_voltage);
+  } else if (command_name == ESubsystemCommand::DRIVETRAIN_CLIMB) {
+    double voltage{va_arg(args, double)};
+    m_drivetrain->climb(voltage);
+  } else if (command_name == ESubsystemCommand::DRIVETRAIN_TOGGLE_CLIMB_MODE) {
+    m_drivetrain->toggleClimb();
   }
 }
 
@@ -35,6 +40,12 @@ void* DrivetrainSubsystem::state(ESubsystemState state_name) {
   } else if (state_name == ESubsystemState::DRIVETRAIN_GET_RADIUS) {
     double* radius{new double{m_drivetrain->getDriveRadius()}};
     result = radius;
+  } else if (state_name == ESubsystemState::DRIVETRAIN_GET_LEFT_POSITION) {
+    double* left_position{new double{m_drivetrain->getLeftMotorPosition()}};
+    result = left_position;
+  } else if (state_name == ESubsystemState::DRIVETRAIN_GET_RIGHT_POSITION) {
+    double* right_position{new double{m_drivetrain->getRightMotorPosition()}};
+    result = right_position;
   }
   return result;
 }

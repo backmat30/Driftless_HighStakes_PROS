@@ -29,7 +29,7 @@ class IController {
 
   /// @brief Gets the reading from an analog channel
   /// @param channel __op_control::EControllerAnalog__ The channel to read from
-  /// @return __double__ The reading from the analog channel, 0 to 1.0
+  /// @return __double__ The reading from the analog channel, -127 to 127
   virtual double getAnalog(op_control::EControllerAnalog channel) = 0;
 
   /// @brief Gets the reading from a digital channel

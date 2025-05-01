@@ -18,6 +18,7 @@ namespace subsystems {
 enum class ESubsystem {
   ARM,
   CLAMP,
+  CLIMB,
   DRIVETRAIN,
   ELEVATOR,
   INTAKE,
