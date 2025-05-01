@@ -331,7 +331,7 @@ class DefaultConfig : public IConfig {
   static constexpr double ARM_ROTATIONAL_ALLIANCE_STAKE_POSITION{1.7 * 2.0 *
                                                                  M_PI};
 
-  static constexpr double ARM_ROTATIONAL_CLIMB_POSITION{1.3 * 2.0 * M_PI};
+  static constexpr double ARM_ROTATIONAL_CLIMB_POSITION{1.4 * 2.0 * M_PI};
 
   /// @brief The intermediate position on the rotation towards the arm ready
   /// position
