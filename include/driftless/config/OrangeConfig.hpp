@@ -406,7 +406,7 @@ class OrangeConfig : public IConfig {
 
   static constexpr double ODOMETRY_SENSOR_LOCAL_Y_OFFSET{-1.125};
 
-  static constexpr double ODOMETRY_SENSOR_LOCAL_THETA_OFFSET{0.0};
+  static constexpr double ODOMETRY_SENSOR_LOCAL_THETA_OFFSET{M_PI};
 
   static constexpr int ODOMETRY_BAUD_RATE{74880};
 
