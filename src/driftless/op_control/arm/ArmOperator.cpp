@@ -96,11 +96,13 @@ void ArmOperator::updateSplitToggle(
 void ArmOperator::updateSmartToggle(
     EControllerDigital toggle, EControllerDigital rush,
     EControllerDigital calibrate, EControllerDigital alliance_stake,
+    EControllerDigital climb,
     const std::shared_ptr<alliance::IAlliance>& alliance) {
   bool next_position{m_controller->getNewDigital(toggle)};
   bool go_rush{m_controller->getNewDigital(rush)};
   bool calibrate_arm{m_controller->getNewDigital(calibrate)};
   bool go_alliance_stake{m_controller->getNewDigital(alliance_stake)};
+  bool cycle_climb{m_controller->getNewDigital(climb)};
 
   void* is_neutral_state{
       m_robot->getState(robot::subsystems::ESubsystem::ARM,
@@ -160,6 +162,18 @@ void ArmOperator::updateSmartToggle(
   bool is_going_rush{is_going_rush_state != nullptr &&
                      *static_cast<bool*>(is_going_rush_state)};
 
+  void* is_climb_ready_state{m_robot->getState(
+      robot::subsystems::ESubsystem::ARM,
+      robot::subsystems::ESubsystemState::ARM_IS_CLIMB_READY)};
+  bool is_climb_ready{is_climb_ready_state != nullptr &&
+                      *static_cast<bool*>(is_climb_ready_state)};
+
+  void* is_climb_state{
+      m_robot->getState(robot::subsystems::ESubsystem::ARM,
+                        robot::subsystems::ESubsystemState::ARM_IS_CLIMB)};
+  bool is_climb{is_climb_state != nullptr &&
+                *static_cast<bool*>(is_climb_state)};
+
   bool has_alliance_ring{hasAllianceRing(alliance)};
 
   bool is_color_sorting_paused{*static_cast<bool*>(m_process_system->getState(
@@ -175,7 +189,8 @@ void ArmOperator::updateSmartToggle(
   robot::subsystems::ESubsystemCommand::ARM_GO_NEUTRAL);
     }
   } else {*/
-  if (next_position && !go_rush && !calibrate_arm && !go_alliance_stake) {
+  if (next_position && !go_rush && !calibrate_arm && !go_alliance_stake &&
+      !cycle_climb) {
     if (is_neutral) {
       m_robot->sendCommand(robot::subsystems::ESubsystem::ARM,
                            robot::subsystems::ESubsystemCommand::ARM_GO_LOAD);
@@ -200,7 +215,7 @@ void ArmOperator::updateSmartToggle(
           robot::subsystems::ESubsystemCommand::ARM_GO_NEUTRAL);
     }
   } else if (!next_position && go_rush && !calibrate_arm &&
-             !go_alliance_stake) {
+             !go_alliance_stake && !cycle_climb) {
     if (is_rush) {
       m_robot->sendCommand(robot::subsystems::ESubsystem::ARM,
                            robot::subsystems::ESubsystemCommand::ARM_GO_LOAD);
@@ -209,15 +224,28 @@ void ArmOperator::updateSmartToggle(
                            robot::subsystems::ESubsystemCommand::ARM_GO_RUSH);
     }
   } else if (!next_position && !go_rush && !calibrate_arm &&
-             go_alliance_stake) {
+             go_alliance_stake && !cycle_climb) {
     m_robot->sendCommand(
         robot::subsystems::ESubsystem::ARM,
         robot::subsystems::ESubsystemCommand::ARM_GO_ALLIANCE_STAKE);
-  }
-  //}
-  if (!next_position && !go_rush && calibrate_arm && !go_alliance_stake) {
+  } else if (!next_position && !go_rush && calibrate_arm &&
+             !go_alliance_stake && !cycle_climb) {
     m_robot->sendCommand(robot::subsystems::ESubsystem::ARM,
                          robot::subsystems::ESubsystemCommand::ARM_CALIBRATE);
+  } else if (!next_position && !go_rush && !calibrate_arm &&
+             !go_alliance_stake && cycle_climb) {
+    if (is_climb) {
+      m_robot->sendCommand(
+          robot::subsystems::ESubsystem::ARM,
+          robot::subsystems::ESubsystemCommand::ARM_GO_NEUTRAL);
+    } else if (is_climb_ready) {
+      m_robot->sendCommand(robot::subsystems::ESubsystem::ARM,
+                           robot::subsystems::ESubsystemCommand::ARM_GO_CLIMB);
+    } else {
+      m_robot->sendCommand(
+          robot::subsystems::ESubsystem::ARM,
+          robot::subsystems::ESubsystemCommand::ARM_GO_CLIMB_READY);
+    }
   }
 }
 
@@ -248,16 +276,18 @@ void ArmOperator::update(
       profile->getDigitalControlMapping(EControl::ARM_CALIBRATE)};
   EControllerDigital alliance_stake{
       profile->getDigitalControlMapping(EControl::ARM_ALLIANCE_STAKE)};
+  EControllerDigital climb{
+      profile->getDigitalControlMapping(EControl::ARM_CLIMB_CYCLE)};
 
-  switch (static_cast<EArmControlMode>(
-      profile->getControlMode(EControlType::ARM))) {
-    case EArmControlMode::SPLIT_TOGGLE:
-      updateSplitToggle(neutral, load, ready, score, alliance);
-      break;
-    case EArmControlMode::SMART_TOGGLE:
-      updateSmartToggle(toggle, rush, calibrate, alliance_stake, alliance);
-      break;
-  }
+switch (
+    static_cast<EArmControlMode>(profile->getControlMode(EControlType::ARM))) {
+  case EArmControlMode::SPLIT_TOGGLE:
+    updateSplitToggle(neutral, load, ready, score, alliance);
+    break;
+  case EArmControlMode::SMART_TOGGLE:
+    updateSmartToggle(toggle, rush, calibrate, alliance_stake, climb, alliance);
+    break;
+}
 }
 }  // namespace arm
 }  // namespace op_control

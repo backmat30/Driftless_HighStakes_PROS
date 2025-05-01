@@ -27,6 +27,7 @@
 #include "driftless/control/path/PathFollowerControl.hpp"
 
 // hardware interface includes
+#include "driftless/hal/SparkfunOTOS.hpp"
 #include "driftless/hal/TrackingWheel.hpp"
 #include "driftless/io/IColorSensor.hpp"
 #include "driftless/io/IController.hpp"
@@ -49,6 +50,7 @@
 #include "driftless/pros_adapters/ProsMutex.hpp"
 #include "driftless/pros_adapters/ProsPiston.hpp"
 #include "driftless/pros_adapters/ProsRotationSensor.hpp"
+#include "driftless/pros_adapters/ProsSerialDevice.hpp"
 #include "driftless/pros_adapters/ProsTask.hpp"
 #include "driftless/pros_adapters/ProsV5Motor.hpp"
 
@@ -62,6 +64,10 @@
 // clamp subsystem includes
 #include "driftless/robot/subsystems/clamp/ClampSubsystem.hpp"
 #include "driftless/robot/subsystems/clamp/PistonClampBuilder.hpp"
+
+// climb subsystem includes
+#include "driftless/robot/subsystems/climb/ClimbSubsystem.hpp"
+#include "driftless/robot/subsystems/climb/PneumaticClimbBuilder.hpp"
 
 // drivetrain subsystem includes
 #include "driftless/robot/subsystems/drivetrain/DirectDriveBuilder.hpp"
@@ -82,6 +88,7 @@
 #include "driftless/robot/subsystems/odometry/DistancePositionResetterBuilder.hpp"
 #include "driftless/robot/subsystems/odometry/InertialPositionTrackerBuilder.hpp"
 #include "driftless/robot/subsystems/odometry/OdometrySubsystem.hpp"
+#include "driftless/robot/subsystems/odometry/SparkFunPositionTrackerBuilder.hpp"
 
 // ring sort subsystem includes
 #include "driftless/robot/subsystems/ring_sort/ColorRingSortBuilder.hpp"
@@ -161,7 +168,7 @@ class OrangeConfig : public IConfig {
   /// @brief kd value for the turn rotational pid controller
   static constexpr double PID_TURN_ROTATIONAL_KD{1000.0};
   /// @brief the target tolerance of the turn algorithm
-  static constexpr double PID_TURN_TARGET_TOLERANCE{M_PI / 100.0};
+  static constexpr double PID_TURN_TARGET_TOLERANCE{M_PI / 50.0};
   /// @brief the target velocity of the turn algorithm
   static constexpr double PID_TURN_TARGET_VELOCITY{M_PI / 200.0};
 
@@ -219,68 +226,85 @@ class OrangeConfig : public IConfig {
   // DRIVE MOTORS
 
   /// @brief first left drive motor
-  static constexpr int8_t DRIVE_LEFT_MOTOR_1{-2};
+  static constexpr int8_t DRIVE_LEFT_MOTOR_1{-10};
   /// @brief second left drive motor
-  static constexpr int8_t DRIVE_LEFT_MOTOR_2{-3};
+  static constexpr int8_t DRIVE_LEFT_MOTOR_2{9};
   /// @brief third left drive motor
-  static constexpr int8_t DRIVE_LEFT_MOTOR_3{4};
+  static constexpr int8_t DRIVE_LEFT_MOTOR_3{-8};
   /// @brief fourth left drive motor
-  static constexpr int8_t DRIVE_LEFT_MOTOR_4{-5};
+  static constexpr int8_t DRIVE_LEFT_MOTOR_4{-7};
+
+  static constexpr int8_t DRIVE_LEFT_MOTOR_5{6};
   /// @brief first right drive motor
-  static constexpr int8_t DRIVE_RIGHT_MOTOR_1{7};
+  static constexpr int8_t DRIVE_RIGHT_MOTOR_1{1};
   /// @brief second right drive motor
-  static constexpr int8_t DRIVE_RIGHT_MOTOR_2{-8};
+  static constexpr int8_t DRIVE_RIGHT_MOTOR_2{-2};
   /// @brief third right drive motor
-  static constexpr int8_t DRIVE_RIGHT_MOTOR_3{9};
+  static constexpr int8_t DRIVE_RIGHT_MOTOR_3{3};
   /// @brief fourth right drive motor
-  static constexpr int8_t DRIVE_RIGHT_MOTOR_4{10};
+  static constexpr int8_t DRIVE_RIGHT_MOTOR_4{4};
+
+  static constexpr int8_t DRIVE_RIGHT_MOTOR_5{-5};
 
   // ARM PORTS
 
   /// @brief left side arm rotational motor
-  static constexpr int8_t ARM_LEFT_ROTATION_MOTOR{12};
-
-  /// @brief right side arm rotational motor
-  static constexpr int8_t ARM_RIGHT_ROTATION_MOTOR{-19};
+  static constexpr int8_t ARM_LEFT_ROTATION_MOTOR{15};
 
   /// @brief arm linear motor
-  static constexpr int8_t ARM_LINEAR_MOTOR{20};
+  static constexpr int8_t ARM_LINEAR_MOTOR{-18};
 
   // CLAMP PORTS
 
   /// @brief clamp piston controller
-  static constexpr int8_t CLAMP_PISTON_1{1};
+  static constexpr int8_t CLAMP_PISTON_1{2};
+
+  static constexpr int8_t CLAMP_DISTANCE_SENSOR{14};
+
+  // CLIMB PORTS
+
+  static constexpr int8_t CLIMB_STILT_PISTON{6};
+
+  static constexpr int8_t CLIMB_CLIMBER_PISTON{4};
+
+  static constexpr int8_t CLIMB_PASSIVE_PISTON{5};
 
   // ELEVATOR PORTS
 
   /// @brief first elevator motor
-  static constexpr int8_t ELEVATOR_MOTOR_1{18};
+  static constexpr int8_t ELEVATOR_MOTOR_1{-16};
   /// @brief elevator rotational sensor
   static constexpr int8_t ELEVATOR_ROTATIONAL_SENSOR{UNDEFINED_PORT};
 
-  static constexpr int8_t ELEVATOR_REJECTION_PISTON{3};
+  static constexpr int8_t ELEVATOR_REJECTION_LEFT_PISTON{3};
+
+  static constexpr int8_t ELEVATOR_REJECTION_RIGHT_PISTON{8};
 
   // INTAKE PORTS
 
   /// @brief intake piston
-  static constexpr int8_t INTAKE_PISTON{2};
+  static constexpr int8_t INTAKE_STAGE1_PISTON{1};
+
+  static constexpr int8_t INTAKE_STAGE2_PISTON{7};
   /// @brief intake motor
-  static constexpr int8_t INTAKE_MOTOR{15};
+  static constexpr int8_t INTAKE_MOTOR{17};
 
   // ODOMETRY PORTS
 
   /// @brief left tracking wheel
-  static constexpr int8_t ODOMETRY_LINEAR_TRACKING_WHEEL{-16};
+  static constexpr int8_t ODOMETRY_LINEAR_TRACKING_WHEEL{UNDEFINED_PORT};
   /// @brief right tracking wheel
-  static constexpr int8_t ODOMETRY_STRAFE_TRACKING_WHEEL{6};
+  static constexpr int8_t ODOMETRY_STRAFE_TRACKING_WHEEL{UNDEFINED_PORT};
   /// @brief inertial sensor
-  static constexpr int8_t ODOMETRY_INERTIAL_SENSOR{14};
+  static constexpr int8_t ODOMETRY_INERTIAL_SENSOR{UNDEFINED_PORT};
   /// @brief distance sensor
   static constexpr int8_t ODOMETRY_DISTANCE_SENSOR{13};
 
+  static constexpr int8_t ODOMETRY_ARDUINO{13};
+
   // RING SORT PORTS
 
-  static constexpr int8_t RING_SORT_COLOR_SENSOR{17};
+  static constexpr int8_t RING_SORT_COLOR_SENSOR{19};
 
   // -----MISC VALUES-----
 
@@ -289,9 +313,9 @@ class OrangeConfig : public IConfig {
   /// @brief drive gearset
   static constexpr pros::MotorGearset DRIVE_GEARSET{pros::E_MOTOR_GEAR_BLUE};
   /// @brief drive ratio of motor voltage to velocity
-  static constexpr double DRIVE_VELOCITY_TO_VOLTAGE{12.0 / 72.0};
+  static constexpr double DRIVE_VELOCITY_TO_VOLTAGE{12.0 / 83.0};
   /// @brief radius of the robot
-  static constexpr double ROBOT_RADIUS{6.0625};
+  static constexpr double ROBOT_RADIUS{5.5};
   /// @brief radius of the drive wheels
   static constexpr double DRIVE_WHEEL_RADIUS{1.25};
 
@@ -306,54 +330,54 @@ class OrangeConfig : public IConfig {
   static constexpr pros::MotorGearset ARM_ROTATIONAL_GEARSET{
       pros::E_MOTOR_GEAR_200};
   /// @brief arm rotational pid controller kp value
-  static constexpr double PID_ARM_ROTATIONAL_KP{24.0};
+  static constexpr double PID_ARM_ROTATIONAL_KP{18.0};
   /// @brief arm rotational pid controller ki value
   static constexpr double PID_ARM_ROTATIONAL_KI{0.0};
   /// @brief arm rotational pid controller kd value
-  static constexpr double PID_ARM_ROTATIONAL_KD{0.0};
+  static constexpr double PID_ARM_ROTATIONAL_KD{500.0};
   /// @brief arm linear pid controller kp value
   static constexpr double PID_ARM_LINEAR_KP{24.0};
   /// @brief arm linear pid controller ki value
   static constexpr double PID_ARM_LINEAR_KI{0.0};
   /// @brief arm linear pid controller kd value
-  static constexpr double PID_ARM_LINEAR_KD{0.0};
+  static constexpr double PID_ARM_LINEAR_KD{200.0};
   /// @brief arm rotational neutral position
-  static constexpr double ARM_ROTATIONAL_NEUTRAL_POSITION{0.06};
+  static constexpr double ARM_ROTATIONAL_NEUTRAL_POSITION{0.075 * 2.0 * M_PI};
   /// @brief arm rotational load position
-  static constexpr double ARM_ROTATIONAL_LOAD_POSITION{0.06};
+  static constexpr double ARM_ROTATIONAL_LOAD_POSITION{0.075 * 2.0 * M_PI};
   /// @brief arm rotational ready position
-  static constexpr double ARM_ROTATIONAL_READY_POSITION{1.3 / 4.0 * 2.0 * M_PI};
+  static constexpr double ARM_ROTATIONAL_READY_POSITION{1.2 * 2.0 * M_PI};
   /// @brief arm rotational score position
-  static constexpr double ARM_ROTATIONAL_SCORE_POSITION{1.45 / 4.0 * 2.0 *
-                                                        M_PI};
+  static constexpr double ARM_ROTATIONAL_SCORE_POSITION{1.3 * 2.0 * M_PI};
   /// @brief arm rotational rush position
-  static constexpr double ARM_ROTATIONAL_RUSH_POSITION{2.475 / 4.0 * 2.0 *
-                                                       M_PI};
+  static constexpr double ARM_ROTATIONAL_RUSH_POSITION{2.1 * 2.0 * M_PI};
 
-  static constexpr double ARM_ROTATIONAL_ALLIANCE_STAKE_POSITION{1.95 / 4.0 *
-                                                                 2.0 * M_PI};
+  static constexpr double ARM_ROTATIONAL_ALLIANCE_STAKE_POSITION{1.7 * 2.0 *
+                                                                 M_PI};
+
+  static constexpr double ARM_ROTATIONAL_CLIMB_POSITION{1.4 * 2.0 * M_PI};
 
   /// @brief The intermediate position on the rotation towards the arm ready
   /// position
-  static constexpr double ARM_ROTATIONAL_READY_INTERMEDIATE_POSITION{
-      0.5 / 4.0 * 2.0 * M_PI};
+  static constexpr double ARM_ROTATIONAL_READY_INTERMEDIATE_POSITION{0.5 * 2.0 *
+                                                                     M_PI};
   /// @brief The intermediate position on the rotation towards the arm score
   /// position
-  static constexpr double ARM_ROTATIONAL_SCORE_INTERMEDIATE_POSITION{
-      1.375 / 4.0 * 2.0 * M_PI};
+  static constexpr double ARM_ROTATIONAL_SCORE_INTERMEDIATE_POSITION{1.3 * 2.0 *
+                                                                     M_PI};
   /// @brief The intermediate position on the rotation towards the arm rush
   /// position
-  static constexpr double ARM_ROTATIONAL_RUSH_INTERMEDIATE_POSITION{0.5 / 4.0 *
-                                                                    2.0 * M_PI};
+  static constexpr double ARM_ROTATIONAL_RUSH_INTERMEDIATE_POSITION{0.5 * 2.0 *
+                                                                    M_PI};
 
   static constexpr double ARM_ROTATIONAL_ALLIANCE_STAKE_INTERMEDIATE_POSITION{
-      0.5 / 4.0 * 2.0 * M_PI};
+      0.5 * 2.0 * M_PI};
   /// @brief arm rotational position tolerance
-  static constexpr double ARM_ROTATIONAL_TOLERANCE{0.05};
+  static constexpr double ARM_ROTATIONAL_TOLERANCE{0.1};
   /// @brief arm linear neutral position
-  static constexpr double ARM_LINEAR_NEUTRAL_POSITION{0.35 * 2.0 * M_PI};
+  static constexpr double ARM_LINEAR_NEUTRAL_POSITION{0.5 * 2.0 * M_PI};
   /// @brief arm linear load position
-  static constexpr double ARM_LINEAR_LOAD_POSITION{0.08};
+  static constexpr double ARM_LINEAR_LOAD_POSITION{0.05 * 2.0 * M_PI};
   /// @brief arm linear ready position
   static constexpr double ARM_LINEAR_READY_POSITION{0.965 * 2 * M_PI};
   /// @brief arm linear score position
@@ -362,8 +386,17 @@ class OrangeConfig : public IConfig {
   static constexpr double ARM_LINEAR_RUSH_POSITION{0.530 * 2 * M_PI};
 
   static constexpr double ARM_LINEAR_ALLIANCE_STAKE_POSITION{0.175 * 2 * M_PI};
+
+  static constexpr double ARM_LINEAR_CLIMB_READY_POSITION{0.5 * 2 * M_PI};
+
+  static constexpr double ARM_LINEAR_CLIMB_POSITION{0.05 * 2 * M_PI};
+
   /// @brief arm linear position tolerance
   static constexpr double ARM_LINEAR_TOLERANCE{0.1};
+
+  // clamp
+
+  static constexpr double CLAMP_GOAL_DISTANCE{80.0 / 25.4};
 
   // elevator
 
@@ -393,7 +426,13 @@ class OrangeConfig : public IConfig {
   /// @brief position resetter angular offset
   static constexpr double RESETTER_LOCAL_THETA_OFFSET{0.0};
 
-  static constexpr double ODOMETRY_ANGULAR_TUNING_CONSTANT{0.9950248756};
+  static constexpr double ODOMETRY_SENSOR_LOCAL_X_OFFSET{0.0};
+
+  static constexpr double ODOMETRY_SENSOR_LOCAL_Y_OFFSET{-1.125};
+
+  static constexpr double ODOMETRY_SENSOR_LOCAL_THETA_OFFSET{M_PI};
+
+  static constexpr int ODOMETRY_BAUD_RATE{74880};
 
   // ring sensor
 

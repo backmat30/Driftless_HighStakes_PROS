@@ -20,8 +20,13 @@ void ClampSubsystem::command(ESubsystemCommand command_name, va_list& args) {
 
 void* ClampSubsystem::state(ESubsystemState state_name) {
   void* result{nullptr};
-  if (state_name == ESubsystemState::CLAMP_GET_STATE) {
+  switch (state_name ) {
+    case ESubsystemState::CLAMP_GET_STATE:
     result = new bool{m_clamp->getState()};
+    break;
+    case ESubsystemState::CLAMP_HAS_GOAL:
+    result = new bool{m_clamp->hasGoal()};
+    break;
   }
 
   return result;

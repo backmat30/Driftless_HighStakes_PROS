@@ -26,11 +26,29 @@ class PistonClampBuilder {
   // piston group used to build the clamp
   driftless::hal::PistonGroup m_pistons{};
 
+  std::unique_ptr<driftless::io::IDistanceSensor> m_distance_sensor{};
+
+  double m_distance_to_goal{};
+
  public:
   /// @brief Adds a piston to the builder
-  /// @param piston __std::unique_ptr<driftless::io::IPiston>&__ The piston to add
+  /// @param piston __std::unique_ptr<driftless::io::IPiston>&__ The piston to
+  /// add
   /// @return __PistonClampBuilder*__ The builder instance
-  PistonClampBuilder* withPiston(std::unique_ptr<driftless::io::IPiston>& piston);
+  PistonClampBuilder* withPiston(
+      std::unique_ptr<driftless::io::IPiston>& piston);
+
+  /// @brief Sets the distance sensor used by the clamp
+  /// @param distance_sensor __std::unique_ptr<io::IDistanceSensor>&__ The
+  /// distance sensor to set
+  /// @return __PistonClampBuilder*__ The builder instance
+  PistonClampBuilder* withDistanceSensor(
+      std::unique_ptr<driftless::io::IDistanceSensor>& distance_sensor);
+
+  /// @brief Sets the distance to goal for the clamp
+  /// @param distance_to_goal __double__ The distance to goal to use
+  /// @return __PistonClampBuilder*__ The builder instance
+  PistonClampBuilder* withDistanceToGoal(double distance_to_goal);
 
   /// @brief Builds a PistonClamp object
   /// @return __std::unique_ptr<PistonClamp>__ The built PistonClamp object
