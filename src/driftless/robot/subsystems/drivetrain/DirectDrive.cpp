@@ -30,10 +30,6 @@ void directDrive::setVoltage(double left_voltage, double right_voltage) {
     m_left_motors.setVoltage(left_voltage);
     m_right_motors.setVoltage(right_voltage);
   }
-  if (!is_climbing) {
-    m_left_motors.setVoltage(left_voltage);
-    m_right_motors.setVoltage(right_voltage);
-  }
 }
 
 void directDrive::setLeftMotors(hal::MotorGroup& left_motors) {

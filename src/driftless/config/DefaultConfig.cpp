@@ -202,13 +202,6 @@ std::shared_ptr<robot::Robot> DefaultConfig::buildRobot() {
   driftless::control::FeedForward right_motor_feed_forward{
       DRIVE_FEEDFORWARD_KS, DRIVE_FEEDFORWARD_KV};
 
-  // feed forward objects
-  driftless::control::FeedForward left_motor_feed_forward{DRIVE_FEEDFORWARD_KS,
-                                                          DRIVE_FEEDFORWARD_KV};
-
-  driftless::control::FeedForward right_motor_feed_forward{
-      DRIVE_FEEDFORWARD_KS, DRIVE_FEEDFORWARD_KV};
-
   // assembling the drive train
   std::unique_ptr<robot::subsystems::drivetrain::IDrivetrain> drivetrain{
       // call the factory and add all necessary items for the drivetrain
