@@ -28,6 +28,10 @@ void ArmSubsystem::command(ESubsystemCommand command_name, va_list& args) {
     m_arm_motion->goPrevious();
   } else if (command_name == ESubsystemCommand::ARM_GO_ALLIANCE_STAKE) {
     m_arm_motion->goAllianceStake();
+  } else if (command_name == ESubsystemCommand::ARM_GO_CLIMB_READY) {
+    m_arm_motion->goClimbReady();
+  } else if (command_name == ESubsystemCommand::ARM_GO_CLIMB) {
+    m_arm_motion->goClimb();
   }
 }
 
@@ -58,6 +62,10 @@ void* ArmSubsystem::state(ESubsystemState state_name) {
     result = new bool{m_arm_motion->isAtAllianceStake()};
   } else if (state_name == ESubsystemState::ARM_IS_GOING_ALLIANCE_STAKE) {
     result = new bool{m_arm_motion->isGoingAllianceStake()};
+  } else if (state_name == ESubsystemState::ARM_IS_CLIMB_READY) {
+    result = new bool{m_arm_motion->isAtClimbReady()};
+  } else if (state_name == ESubsystemState::ARM_IS_CLIMB) {
+    result = new bool{m_arm_motion->isAtClimb()};
   }
 
   return result;
