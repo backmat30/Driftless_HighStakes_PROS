@@ -331,14 +331,16 @@ class OrangeConfig : public IConfig {
   static constexpr double ARM_ROTATIONAL_ALLIANCE_STAKE_POSITION{1.7 * 2.0 *
                                                                  M_PI};
 
+  static constexpr double ARM_ROTATIONAL_CLIMB_POSITION{1.3 * 2.0 * M_PI};
+
   /// @brief The intermediate position on the rotation towards the arm ready
   /// position
   static constexpr double ARM_ROTATIONAL_READY_INTERMEDIATE_POSITION{0.5 * 2.0 *
                                                                      M_PI};
   /// @brief The intermediate position on the rotation towards the arm score
   /// position
-  static constexpr double ARM_ROTATIONAL_SCORE_INTERMEDIATE_POSITION{
-      1.3 * 2.0 * M_PI};
+  static constexpr double ARM_ROTATIONAL_SCORE_INTERMEDIATE_POSITION{1.3 * 2.0 *
+                                                                     M_PI};
   /// @brief The intermediate position on the rotation towards the arm rush
   /// position
   static constexpr double ARM_ROTATIONAL_RUSH_INTERMEDIATE_POSITION{0.5 * 2.0 *
@@ -360,6 +362,11 @@ class OrangeConfig : public IConfig {
   static constexpr double ARM_LINEAR_RUSH_POSITION{0.530 * 2 * M_PI};
 
   static constexpr double ARM_LINEAR_ALLIANCE_STAKE_POSITION{0.175 * 2 * M_PI};
+
+  static constexpr double ARM_LINEAR_CLIMB_READY_POSITION{0.5 * 2 * M_PI};
+
+  static constexpr double ARM_LINEAR_CLIMB_POSITION{0.05 * 2 * M_PI};
+
   /// @brief arm linear position tolerance
   static constexpr double ARM_LINEAR_TOLERANCE{0.1};
 

@@ -272,6 +272,7 @@ std::shared_ptr<robot::Robot> DefaultConfig::buildRobot() {
           ->withRotationalRushPosition(ARM_ROTATIONAL_RUSH_POSITION)
           ->withRotationalAllianceStakePosition(
               ARM_ROTATIONAL_ALLIANCE_STAKE_POSITION)
+          ->withRotationalClimbPosition(ARM_ROTATIONAL_CLIMB_POSITION)
           ->withRotationalReadyIntermediatePosition(
               ARM_ROTATIONAL_READY_INTERMEDIATE_POSITION)
           ->withRotationalScoreIntermediatePosition(
@@ -287,6 +288,8 @@ std::shared_ptr<robot::Robot> DefaultConfig::buildRobot() {
           ->withLinearScorePosition(ARM_LINEAR_SCORE_POSITION)
           ->withLinearRushPosition(ARM_LINEAR_RUSH_POSITION)
           ->withLinearAllianceStakePosition(ARM_LINEAR_ALLIANCE_STAKE_POSITION)
+          ->withLinearClimbReadyPosition(ARM_LINEAR_CLIMB_READY_POSITION)
+          ->withLinearClimbPosition(ARM_LINEAR_CLIMB_POSITION)
           ->withLinearTolerance(ARM_LINEAR_TOLERANCE)
           ->build()};
 

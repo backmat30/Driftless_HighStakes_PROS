@@ -63,6 +63,8 @@ class EricProfile : public driftless::profiles::IProfile {
            op_control::EControllerDigital::BUTTON_B},
           {op_control::EControl::ARM_CALIBRATE,
            op_control::EControllerDigital::DPAD_RIGHT},
+          {op_control::EControl::ARM_CLIMB_CYCLE,
+           op_control::EControllerDigital::BUTTON_A},
           {op_control::EControl::CLAMP_TOGGLE,
            op_control::EControllerDigital::BUTTON_Y},
           {op_control::EControl::CLIMB_TOGGLE,

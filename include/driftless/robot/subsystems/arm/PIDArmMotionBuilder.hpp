@@ -73,6 +73,8 @@ class PIDArmMotionBuilder {
   // The rotational position when scoring on alliance stake
   double m_rotational_alliance_stake_position{};
 
+  double m_rotational_climb_position{};
+
   // the rotational intermediate position during ready motion
   double m_rotational_ready_intermediate_position{};
 
@@ -105,6 +107,10 @@ class PIDArmMotionBuilder {
 
   // the linear position when scoring on the alliance stake
   double m_linear_alliance_stake_position{};
+
+  double m_linear_climb_ready_position{};
+
+  double m_linear_climb_position{};
 
   // the linear position tolerance
   double m_linear_tolerance{};
@@ -204,6 +210,12 @@ class PIDArmMotionBuilder {
   PIDArmMotionBuilder* withRotationalAllianceStakePosition(
       double rotational_alliance_stake_position);
 
+  /// @brief Adds a rotational climb position to the builder
+  /// @param rotational_climb_position The position being added
+  /// @return __PIDArmMotionBuilder*__ Pointer to the current builder
+  PIDArmMotionBuilder* withRotationalClimbPosition(
+      double rotational_climb_position);
+
   /// @brief Adds a rotational ready intermediate position to the builder
   /// @param rotational_ready_intermediate_position The position being added
   /// @return __PIDArmMotionBuilder*__ Pointer to the current builder
@@ -266,6 +278,17 @@ class PIDArmMotionBuilder {
   /// @return __PIDArmMotionBuilder*__ Pointer to the current builder
   PIDArmMotionBuilder* withLinearAllianceStakePosition(
       double linear_alliance_stake_position);
+
+  /// @brief Adds a linear climb ready position to the builder
+  /// @param linear_climb_ready_position The position being added
+  /// @return __PIDArmMotionBuilder*__ Pointer to the current builder
+  PIDArmMotionBuilder* withLinearClimbReadyPosition(
+      double linear_climb_ready_position);
+
+  /// @brief Adds a linear climb position to the builder
+  /// @param linear_climb_position The position being added
+  /// @return __PIDArmMotionBuilder*__ Pointer to the current builder
+  PIDArmMotionBuilder* withLinearClimbPosition(double linear_climb_position);
 
   /// @brief Adds a linear position tolerance to the builder
   /// @param linear_tolerance The tolerance being added
