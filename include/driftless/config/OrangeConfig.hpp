@@ -25,8 +25,8 @@
 #include "driftless/control/path/PathFollowerControl.hpp"
 
 // hardware interface includes
-#include "driftless/hal/TrackingWheel.hpp"
 #include "driftless/hal/SparkfunOTOS.hpp"
+#include "driftless/hal/TrackingWheel.hpp"
 #include "driftless/io/IColorSensor.hpp"
 #include "driftless/io/IController.hpp"
 #include "driftless/io/IDistanceSensor.hpp"
@@ -48,9 +48,9 @@
 #include "driftless/pros_adapters/ProsMutex.hpp"
 #include "driftless/pros_adapters/ProsPiston.hpp"
 #include "driftless/pros_adapters/ProsRotationSensor.hpp"
+#include "driftless/pros_adapters/ProsSerialDevice.hpp"
 #include "driftless/pros_adapters/ProsTask.hpp"
 #include "driftless/pros_adapters/ProsV5Motor.hpp"
-#include "driftless/pros_adapters/ProsSerialDevice.hpp"
 
 // robot include
 #include "driftless/robot/Robot.hpp"
@@ -84,9 +84,9 @@
 
 // odometry subsystem includes
 #include "driftless/robot/subsystems/odometry/DistancePositionResetterBuilder.hpp"
-#include "driftless/robot/subsystems/odometry/SparkFunPositionTrackerBuilder.hpp"
 #include "driftless/robot/subsystems/odometry/InertialPositionTrackerBuilder.hpp"
 #include "driftless/robot/subsystems/odometry/OdometrySubsystem.hpp"
+#include "driftless/robot/subsystems/odometry/SparkFunPositionTrackerBuilder.hpp"
 
 // ring sort subsystem includes
 #include "driftless/robot/subsystems/ring_sort/ColorRingSortBuilder.hpp"
@@ -256,7 +256,6 @@ class OrangeConfig : public IConfig {
 
   static constexpr int8_t ELEVATOR_REJECTION_RIGHT_PISTON{8};
 
-
   // INTAKE PORTS
 
   /// @brief intake piston
@@ -319,33 +318,31 @@ class OrangeConfig : public IConfig {
   /// @brief arm linear pid controller kd value
   static constexpr double PID_ARM_LINEAR_KD{0.0};
   /// @brief arm rotational neutral position
-  static constexpr double ARM_ROTATIONAL_NEUTRAL_POSITION{0.06};
+  static constexpr double ARM_ROTATIONAL_NEUTRAL_POSITION{0.06 * 2.0 * M_PI};
   /// @brief arm rotational load position
-  static constexpr double ARM_ROTATIONAL_LOAD_POSITION{0.06};
+  static constexpr double ARM_ROTATIONAL_LOAD_POSITION{0.06 * 2.0 * M_PI};
   /// @brief arm rotational ready position
-  static constexpr double ARM_ROTATIONAL_READY_POSITION{1.3 / 4.0 * 2.0 * M_PI};
+  static constexpr double ARM_ROTATIONAL_READY_POSITION{1.1 * 2.0 * M_PI};
   /// @brief arm rotational score position
-  static constexpr double ARM_ROTATIONAL_SCORE_POSITION{1.45 / 4.0 * 2.0 *
-                                                        M_PI};
+  static constexpr double ARM_ROTATIONAL_SCORE_POSITION{1.2 / 4.0 * 2.0 * M_PI};
   /// @brief arm rotational rush position
-  static constexpr double ARM_ROTATIONAL_RUSH_POSITION{2.475 / 4.0 * 2.0 *
-                                                       M_PI};
+  static constexpr double ARM_ROTATIONAL_RUSH_POSITION{2.1 / 4.0 * 2.0 * M_PI};
 
-  static constexpr double ARM_ROTATIONAL_ALLIANCE_STAKE_POSITION{1.95 / 4.0 *
+  static constexpr double ARM_ROTATIONAL_ALLIANCE_STAKE_POSITION{1.7 / 4.0 *
                                                                  2.0 * M_PI};
 
   /// @brief The intermediate position on the rotation towards the arm ready
   /// position
-  static constexpr double ARM_ROTATIONAL_READY_INTERMEDIATE_POSITION{
-      0.5 / 4.0 * 2.0 * M_PI};
+  static constexpr double ARM_ROTATIONAL_READY_INTERMEDIATE_POSITION{0.5 * 2.0 *
+                                                                     M_PI};
   /// @brief The intermediate position on the rotation towards the arm score
   /// position
   static constexpr double ARM_ROTATIONAL_SCORE_INTERMEDIATE_POSITION{
-      1.375 / 4.0 * 2.0 * M_PI};
+      1.15 * 2.0 * M_PI};
   /// @brief The intermediate position on the rotation towards the arm rush
   /// position
-  static constexpr double ARM_ROTATIONAL_RUSH_INTERMEDIATE_POSITION{0.5 / 4.0 *
-                                                                    2.0 * M_PI};
+  static constexpr double ARM_ROTATIONAL_RUSH_INTERMEDIATE_POSITION{0.5 * 2.0 *
+                                                                    M_PI};
 
   static constexpr double ARM_ROTATIONAL_ALLIANCE_STAKE_INTERMEDIATE_POSITION{
       0.5 / 4.0 * 2.0 * M_PI};
