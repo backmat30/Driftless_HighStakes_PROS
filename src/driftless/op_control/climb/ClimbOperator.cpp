@@ -38,6 +38,13 @@ bool ClimbOperator::arePassivesOut() {
   return are_passives_out;
 }
 
+bool ClimbOperator::isArmInClimbState() {
+  bool is_climb_state{*static_cast<bool*>(m_robot->getState(
+      robot::subsystems::ESubsystem::ARM,
+      robot::subsystems::ESubsystemState::ARM_IS_CLIMB))};
+  return is_climb_state;
+}
+
 double ClimbOperator::getDriveTrainLeftMotorPosition() {
   double position{*static_cast<double*>(m_robot->getState(
       robot::subsystems::ESubsystem::DRIVETRAIN,
@@ -79,13 +86,13 @@ void ClimbOperator::setClimberState(double climb_voltage) {
     pushOutPassiveHooks();
   }
   if (climb_voltage > 1.0) {
-    if (avg_position > 5.0) {
+    if (avg_position > 5.0 || isArmInClimbState()) {
       pullBackClimber();
     }
     pushOutPassiveHooks();
   } else if (climb_voltage < -1.0) {
     pushForwardClimber();
-    if (avg_position < 46.0) {
+    if (avg_position < 41.0) {
       pullInPassiveHooks();
     }
   }

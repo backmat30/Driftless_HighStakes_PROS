@@ -35,6 +35,8 @@ class ClimbOperator {
 
   bool arePassivesOut();
 
+  bool isArmInClimbState();
+
   double getDriveTrainLeftMotorPosition();
 
   double getDriveTrainRightMotorPosition();
