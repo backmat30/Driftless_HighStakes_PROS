@@ -306,30 +306,30 @@ class OrangeConfig : public IConfig {
   static constexpr pros::MotorGearset ARM_ROTATIONAL_GEARSET{
       pros::E_MOTOR_GEAR_200};
   /// @brief arm rotational pid controller kp value
-  static constexpr double PID_ARM_ROTATIONAL_KP{24.0};
+  static constexpr double PID_ARM_ROTATIONAL_KP{18.0};
   /// @brief arm rotational pid controller ki value
   static constexpr double PID_ARM_ROTATIONAL_KI{0.0};
   /// @brief arm rotational pid controller kd value
-  static constexpr double PID_ARM_ROTATIONAL_KD{0.0};
+  static constexpr double PID_ARM_ROTATIONAL_KD{500.0};
   /// @brief arm linear pid controller kp value
   static constexpr double PID_ARM_LINEAR_KP{24.0};
   /// @brief arm linear pid controller ki value
   static constexpr double PID_ARM_LINEAR_KI{0.0};
   /// @brief arm linear pid controller kd value
-  static constexpr double PID_ARM_LINEAR_KD{0.0};
+  static constexpr double PID_ARM_LINEAR_KD{200.0};
   /// @brief arm rotational neutral position
-  static constexpr double ARM_ROTATIONAL_NEUTRAL_POSITION{0.06 * 2.0 * M_PI};
+  static constexpr double ARM_ROTATIONAL_NEUTRAL_POSITION{0.075 * 2.0 * M_PI};
   /// @brief arm rotational load position
-  static constexpr double ARM_ROTATIONAL_LOAD_POSITION{0.06 * 2.0 * M_PI};
+  static constexpr double ARM_ROTATIONAL_LOAD_POSITION{0.075 * 2.0 * M_PI};
   /// @brief arm rotational ready position
-  static constexpr double ARM_ROTATIONAL_READY_POSITION{1.1 * 2.0 * M_PI};
+  static constexpr double ARM_ROTATIONAL_READY_POSITION{1.2 * 2.0 * M_PI};
   /// @brief arm rotational score position
-  static constexpr double ARM_ROTATIONAL_SCORE_POSITION{1.2 / 4.0 * 2.0 * M_PI};
+  static constexpr double ARM_ROTATIONAL_SCORE_POSITION{1.3 * 2.0 * M_PI};
   /// @brief arm rotational rush position
-  static constexpr double ARM_ROTATIONAL_RUSH_POSITION{2.1 / 4.0 * 2.0 * M_PI};
+  static constexpr double ARM_ROTATIONAL_RUSH_POSITION{2.1 * 2.0 * M_PI};
 
-  static constexpr double ARM_ROTATIONAL_ALLIANCE_STAKE_POSITION{1.7 / 4.0 *
-                                                                 2.0 * M_PI};
+  static constexpr double ARM_ROTATIONAL_ALLIANCE_STAKE_POSITION{1.7 * 2.0 *
+                                                                 M_PI};
 
   /// @brief The intermediate position on the rotation towards the arm ready
   /// position
@@ -338,20 +338,20 @@ class OrangeConfig : public IConfig {
   /// @brief The intermediate position on the rotation towards the arm score
   /// position
   static constexpr double ARM_ROTATIONAL_SCORE_INTERMEDIATE_POSITION{
-      1.15 * 2.0 * M_PI};
+      1.3 * 2.0 * M_PI};
   /// @brief The intermediate position on the rotation towards the arm rush
   /// position
   static constexpr double ARM_ROTATIONAL_RUSH_INTERMEDIATE_POSITION{0.5 * 2.0 *
                                                                     M_PI};
 
   static constexpr double ARM_ROTATIONAL_ALLIANCE_STAKE_INTERMEDIATE_POSITION{
-      0.5 / 4.0 * 2.0 * M_PI};
+      0.5 * 2.0 * M_PI};
   /// @brief arm rotational position tolerance
-  static constexpr double ARM_ROTATIONAL_TOLERANCE{0.05};
+  static constexpr double ARM_ROTATIONAL_TOLERANCE{0.1};
   /// @brief arm linear neutral position
-  static constexpr double ARM_LINEAR_NEUTRAL_POSITION{0.35 * 2.0 * M_PI};
+  static constexpr double ARM_LINEAR_NEUTRAL_POSITION{0.5 * 2.0 * M_PI};
   /// @brief arm linear load position
-  static constexpr double ARM_LINEAR_LOAD_POSITION{0.08};
+  static constexpr double ARM_LINEAR_LOAD_POSITION{0.05 * 2.0 * M_PI};
   /// @brief arm linear ready position
   static constexpr double ARM_LINEAR_READY_POSITION{0.965 * 2 * M_PI};
   /// @brief arm linear score position
