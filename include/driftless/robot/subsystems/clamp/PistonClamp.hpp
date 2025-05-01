@@ -3,6 +3,7 @@
 
 #include <memory>
 
+#include "driftless/io/IDistanceSensor.hpp"
 #include "driftless/hal/PistonGroup.hpp"
 #include "driftless/robot/subsystems/clamp/IClamp.hpp"
 
@@ -29,6 +30,10 @@ class PistonClamp : public IClamp {
   // the pistons controlling the clamp
   driftless::hal::PistonGroup m_pistons{};
 
+  std::unique_ptr<io::IDistanceSensor> m_distance_sensor{};
+
+  double m_distance_to_goal{};
+
   // whether the clamp is active or idle
   bool state{};
 
@@ -47,9 +52,21 @@ class PistonClamp : public IClamp {
   /// @return __bool__ The current state of the clamp
   bool getState() override;
 
+  /// @brief Determines if the clamp has a goal
+  /// @return __bool__ True if the clamp has a goal, false otherwise
+  bool hasGoal() override;
+
   /// @brief Sets the pistons used by the clamp
   /// @param pistons __driftless::hal::PistonGroup&__ The pistons to set
   void setPistons(driftless::hal::PistonGroup& pistons);
+
+  /// @brief Sets the distance sensor used by the clamp
+  /// @param distance_sensor __std::unique_ptr<io::IDistanceSensor>&__ The distance sensor to use
+  void setDistanceSensor(std::unique_ptr<io::IDistanceSensor>& distance_sensor);
+
+  /// @brief Sets the distance to the goal
+  /// @param distance_to_goal __double__ The distance to the goal
+  void setDistanceToGoal(double distance_to_goal);
 };
 
 }  // namespace clamp
