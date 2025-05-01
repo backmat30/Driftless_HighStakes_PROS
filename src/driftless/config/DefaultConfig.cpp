@@ -301,18 +301,26 @@ std::shared_ptr<robot::Robot> DefaultConfig::buildRobot() {
   // pros objects
   std::unique_ptr<pros::adi::DigitalOut> temp_clamp_left_piston{
       std::make_unique<pros::adi::DigitalOut>(CLAMP_PISTON_1)};
+  std::unique_ptr<pros::Distance> temp_clamp_goal_detector{
+      std::make_unique<pros::Distance>(CLAMP_DISTANCE_SENSOR)};
 
   // adapted objects
   std::unique_ptr<driftless::io::IPiston> adapted_clamp_left_piston{
       std::make_unique<driftless::pros_adapters::ProsPiston>(
           temp_clamp_left_piston)};
+  std::unique_ptr<driftless::io::IDistanceSensor> adapted_clamp_goal_detector{
+      std::make_unique<driftless::pros_adapters::ProsDistanceSensor>(
+          temp_clamp_goal_detector)};
 
   // build the clamp
   driftless::robot::subsystems::clamp::PistonClampBuilder
       piston_clamp_builder{};
 
   std::unique_ptr<driftless::robot::subsystems::clamp::IClamp> piston_clamp{
-      piston_clamp_builder.withPiston(adapted_clamp_left_piston)->build()};
+      piston_clamp_builder.withPiston(adapted_clamp_left_piston)
+          ->withDistanceSensor(adapted_clamp_goal_detector)
+          ->withDistanceToGoal(CLAMP_GOAL_DISTANCE)
+          ->build()};
 
   std::unique_ptr<driftless::robot::subsystems::ASubsystem> clamp_subsystem{
       std::make_unique<driftless::robot::subsystems::clamp::ClampSubsystem>(
@@ -430,11 +438,11 @@ std::shared_ptr<robot::Robot> DefaultConfig::buildRobot() {
       std::make_unique<driftless::pros_adapters::ProsV5Motor>(
           temp_intake_motor_1)};
   std::unique_ptr<driftless::io::IPiston> intake_piston{
-      std::make_unique<driftless::pros_adapters::ProsPiston>(
-          temp_intake_piston)};
+      std::make_unique<driftless::pros_adapters::ProsPiston>(temp_intake_piston,
+                                                             false)};
     std::unique_ptr<driftless::io::IPiston> secondary_intake_piston{
       std::make_unique<driftless::pros_adapters::ProsPiston>(
-          temp_secondary_intake_piston)};
+          temp_secondary_intake_piston, false)};
 
   // build the intake
   driftless::robot::subsystems::intake::DirectIntakeBuilder
@@ -446,7 +454,9 @@ std::shared_ptr<robot::Robot> DefaultConfig::buildRobot() {
       direct_intake_builder.withMotor(intake_motor_1)->build()};
   std::unique_ptr<driftless::robot::subsystems::intake::IHeightControl>
       piston_height_control{
-          piston_height_control_builder.withHeightPiston(intake_piston)->withSecondaryPiston(secondary_intake_piston)->build()};
+          piston_height_control_builder.withHeightPiston(intake_piston)
+              ->withSecondaryPiston(secondary_intake_piston)
+              ->build()};
 
   // create and add the intake subsystem to the robot
   std::unique_ptr<driftless::robot::subsystems::ASubsystem> intake_subsystem{

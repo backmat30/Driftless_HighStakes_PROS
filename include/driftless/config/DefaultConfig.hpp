@@ -235,6 +235,8 @@ class DefaultConfig : public IConfig {
   /// @brief clamp piston controller
   static constexpr int8_t CLAMP_PISTON_1{2};
 
+  static constexpr int8_t CLAMP_DISTANCE_SENSOR{14};
+
   // CLIMB PORTS
 
   static constexpr int8_t CLIMB_STILT_PISTON{6};
@@ -363,6 +365,10 @@ class DefaultConfig : public IConfig {
   static constexpr double ARM_LINEAR_ALLIANCE_STAKE_POSITION{0.175 * 2 * M_PI};
   /// @brief arm linear position tolerance
   static constexpr double ARM_LINEAR_TOLERANCE{0.1};
+
+  // clamp
+
+  static constexpr double CLAMP_GOAL_DISTANCE{80.0 / 25.4};
 
   // elevator
 

@@ -31,12 +31,17 @@ class IClamp {
   virtual void run() = 0;
 
   /// @brief Sets the state of the clamp
-  /// @param clamped __bool__ The state to set (true for clamped, false for unclamped)
+  /// @param clamped __bool__ The state to set (true for clamped, false for
+  /// unclamped)
   virtual void setState(bool clamped) = 0;
 
   /// @brief Gets the state of the clamp
   /// @return __bool__ The current state of the clamp
   virtual bool getState() = 0;
+
+  /// @brief Determines if the clamp has a goal
+  /// @return __bool__ True if the clamp has a goal, false otherwise
+  virtual bool hasGoal() = 0;
 };
 
 }  // namespace clamp
