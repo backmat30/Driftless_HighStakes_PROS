@@ -73,7 +73,7 @@ class ArmOperator {
   /// current alliance
   void updateSmartToggle(EControllerDigital toggle, EControllerDigital rush,
                          EControllerDigital calibrate,
-                         EControllerDigital alliance_stake,
+                         EControllerDigital alliance_stake,EControllerDigital climb,
                          const std::shared_ptr<alliance::IAlliance>& alliance);
 
  public:
