@@ -335,7 +335,11 @@ void OrangeRushAuton::run(
 
   // Set the robots starting values
   uint32_t start_time{getTime()};
+  uint32_t current_time{start_time};
 
+  setOdomPosition(0.0, 0.0, 0.0);
+  m_control_system->sendCommand(control::EControl::BOOMERANG, control::EControlCommand::BOOMERANG_GO_TO_POSITION, m_robot, 40.0, 20.0, 60.0, M_PI / 4.0);
+/*
   if (alliance->getAlliance() == alliance::EAlliance::RED)
     setOdomPosition(35.0, 114.5, M_PI / 2.0);
   else if (alliance->getAlliance() == alliance::EAlliance::BLUE)
@@ -343,7 +347,6 @@ void OrangeRushAuton::run(
   robot::subsystems::odometry::Position position{getOdomPosition()};
   double velocity{getOdomVelocity()};
 
-  uint32_t current_time{start_time};
   control::Point target_point{};
   double target_distance{};
   double target_velocity{};
@@ -673,7 +676,7 @@ void OrangeRushAuton::run(
   // delay(1000);
   // armGoAllianceStake();
   m_control_system->pause();
-
+*/
   // display the runtime at the end
   current_time = getTime();
   pros::screen::print(pros::E_TEXT_LARGE_CENTER, 3, "Runtime: %7.2f",

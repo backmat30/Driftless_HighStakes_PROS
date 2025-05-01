@@ -4,7 +4,7 @@ namespace driftless::control::boomerang {
 
 BoomerangControl::BoomerangControl(
     std::unique_ptr<driftless::control::boomerang::IBoomerang>& boomerang)
-    : AControl(), m_boomerang(std::move(boomerang)) {}
+    : AControl(EControl::BOOMERANG), m_boomerang(std::move(boomerang)) {}
 
 void BoomerangControl::init() { m_boomerang->init(); }
 

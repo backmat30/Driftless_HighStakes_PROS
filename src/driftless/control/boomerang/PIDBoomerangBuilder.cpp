@@ -51,4 +51,20 @@ PIDBoomerangBuilder* PIDBoomerangBuilder::withTargetVelocity(
   m_target_velocity = target_velocity;
   return this;
 }
+
+std::unique_ptr<PIDBoomerang> PIDBoomerangBuilder::build() {
+  std::unique_ptr<PIDBoomerang> boomerang{std::make_unique<PIDBoomerang>()};
+
+  boomerang->setDelayer(std::move(m_delayer));
+  boomerang->setMutex(m_mutex);
+  boomerang->setTask(m_task);
+  boomerang->setLinearPID(m_linear_pid);
+  boomerang->setRotationalPID(m_rotational_pid);
+  boomerang->setLead(m_lead);
+  boomerang->setAimDistance(m_aim_distance);
+  boomerang->setTargetTolerance(m_target_tolerance);
+  boomerang->setTargetVelocity(m_target_velocity);
+
+  return boomerang;
+}
 }  // namespace driftless::control::boomerang
