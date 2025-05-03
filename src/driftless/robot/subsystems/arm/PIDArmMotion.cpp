@@ -221,8 +221,8 @@ void PIDArmMotion::calibrate() {
   }
   calibrating = true;
   calibrate_time = m_clock->getTime();
-  m_rotation_motors.setVoltage(-12.0);
-  m_linear_motors.setVoltage(-12.0);
+  m_rotation_motors.setVoltage(-8.0);
+  m_linear_motors.setVoltage(-4.0);
 
   if (m_mutex) {
     m_mutex->give();
@@ -398,7 +398,7 @@ bool PIDArmMotion::isGoingAllianceStake() {
 
 bool PIDArmMotion::isAtClimbReady() { return (state == EState::CLIMB_READY); }
 
-bool PIDArmMotion::isAtClimb() { return (state == EState::CLIMB); }
+bool PIDArmMotion::isAtClimb() { return (state == EState::CLIMB || state == EState::CLIMB_MOTION); }
 
 void PIDArmMotion::setClock(
     const std::unique_ptr<driftless::rtos::IClock>& clock) {

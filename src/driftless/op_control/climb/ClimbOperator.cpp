@@ -39,9 +39,9 @@ bool ClimbOperator::arePassivesOut() {
 }
 
 bool ClimbOperator::isArmInClimbState() {
-  bool is_climb_state{*static_cast<bool*>(m_robot->getState(
-      robot::subsystems::ESubsystem::ARM,
-      robot::subsystems::ESubsystemState::ARM_IS_CLIMB))};
+  bool is_climb_state{*static_cast<bool*>(
+      m_robot->getState(robot::subsystems::ESubsystem::ARM,
+                        robot::subsystems::ESubsystemState::ARM_IS_CLIMB))};
   return is_climb_state;
 }
 
@@ -82,19 +82,12 @@ void ClimbOperator::setClimberState(double climb_voltage) {
   double right_position{getDriveTrainRightMotorPosition()};
   double avg_position{(left_position + right_position) / 2.0};
 
-  if (avg_position <= 0.0) {
-    pushOutPassiveHooks();
-  }
   if (climb_voltage > 1.0) {
     if (avg_position > 5.0 || isArmInClimbState()) {
       pullBackClimber();
     }
-    pushOutPassiveHooks();
   } else if (climb_voltage < -1.0) {
     pushForwardClimber();
-    if (avg_position < 41.0) {
-      pullInPassiveHooks();
-    }
   }
 }
 
@@ -108,10 +101,16 @@ void ClimbOperator::update(const std::unique_ptr<profiles::IProfile>& profile) {
     return;
   }
 
+  bool is_climbing{*static_cast<bool*>(m_robot->getState(
+      robot::subsystems::ESubsystem::CLIMB,
+      robot::subsystems::ESubsystemState::CLIMB_IS_CLIMBING))};
+
   EControllerAnalog climb_voltage_control{
       profile->getAnalogControlMapping(EControl::CLIMB_CHANGE_HEIGHT)};
   EControllerDigital stilt_control{
       profile->getDigitalControlMapping(EControl::CLIMB_TOGGLE)};
+  EControllerDigital passive_control{
+      profile->getDigitalControlMapping(EControl::CLIMB_TOGGLE_PASSIVES)};
 
   if (m_controller->getNewDigital(stilt_control)) {
     updateStiltState();
@@ -119,12 +118,22 @@ void ClimbOperator::update(const std::unique_ptr<profiles::IProfile>& profile) {
     toggleIntakeClimbMode();
   }
 
+  if (m_controller->getNewDigital(passive_control)) {
+    if (arePassivesOut()) {
+      pullInPassiveHooks();
+    } else if (is_climbing) {
+      pushOutPassiveHooks();
+    }
+  }
+
   double climb_voltage{m_controller->getAnalog(climb_voltage_control) *
                        VOLTAGE_CONVERSION};
 
   setClimberState(climb_voltage);
-  if (climb_voltage <= 0.0 || arePassivesOut()) {
-    climbDriveTrain(climb_voltage);
+  climbDriveTrain(climb_voltage);
+
+  if (arePassivesOut()) {
+    m_controller->rumble(".");
   }
 }
 

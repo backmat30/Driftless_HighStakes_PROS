@@ -19,7 +19,7 @@ namespace elevator {
 
 /// @brief Enumeration representing a direction the color sort can reject a ring
 /// @author Matthew Backman
-enum class ERejectionDirection { LEFT, RIGHT, FORWARD };
+enum class ERejectionDirection { LEFT, RIGHT};
 }  // namespace elevator
 }  // namespace subsystems
 }  // namespace robot

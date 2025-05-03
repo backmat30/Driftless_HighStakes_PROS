@@ -35,6 +35,8 @@ class PneumaticClimb : public IClimb {
 
     bool arePassivesOut() override;
 
+    bool isClimbing() override;
+
     void setStiltPistons(hal::PistonGroup& pistons);
 
     void setClimberPistons(hal::PistonGroup& pistons);

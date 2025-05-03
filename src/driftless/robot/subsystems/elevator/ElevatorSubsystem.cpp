@@ -1,5 +1,5 @@
 #include "driftless/robot/subsystems/elevator/ElevatorSubsystem.hpp"
-
+#include "pros/screen.hpp"
 namespace driftless {
 namespace robot {
 namespace subsystems {
@@ -36,8 +36,6 @@ void ElevatorSubsystem::command(ESubsystemCommand command_name, va_list& args) {
     m_ring_rejector->setDeploymentDirection(ERejectionDirection::LEFT);
   } else if (command_name == ESubsystemCommand::ELEVATOR_REJECT_RIGHT) {
     m_ring_rejector->setDeploymentDirection(ERejectionDirection::RIGHT);
-  } else if (command_name == ESubsystemCommand::ELEVATOR_REJECT_FORWARD) {
-    m_ring_rejector->setDeploymentDirection(ERejectionDirection::FORWARD);
   }
 }
 

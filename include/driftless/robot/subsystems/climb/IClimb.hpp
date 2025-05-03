@@ -28,6 +28,8 @@ class IClimb {
   virtual void pullInPassiveHooks() = 0;
 
   virtual bool arePassivesOut() = 0;
+
+  virtual bool isClimbing() = 0;
 };
 }  // namespace climb
 }  // namespace subsystems

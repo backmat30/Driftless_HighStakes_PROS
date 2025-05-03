@@ -82,7 +82,9 @@ class EricProfile : public driftless::profiles::IProfile {
           {op_control::EControl::COLOR_SORT_TOGGLE,
            op_control::EControllerDigital::DPAD_LEFT},
           {op_control::EControl::ARM_ALLIANCE_STAKE,
-           op_control::EControllerDigital::DPAD_DOWN}};
+           op_control::EControllerDigital::DPAD_DOWN},
+          {op_control::EControl::CLIMB_TOGGLE_PASSIVES,
+           op_control::EControllerDigital::TRIGGER_RIGHT_TOP}};
 
   const std::map<op_control::EStartupConfig, bool> STARTUP_CONFIG_MAP{
       {op_control::EStartupConfig::COLOR_SORT_DEFAULT, true},

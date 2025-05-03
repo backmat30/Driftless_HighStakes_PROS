@@ -147,9 +147,9 @@ class OrangeConfig : public IConfig {
   /// @brief kd value of the go to point linear pid controller
   static constexpr double PID_GO_TO_POINT_LINEAR_KD{200};
   /// @brief kp value for the go to point rotational pid controller
-  static constexpr double PID_GO_TO_POINT_ROTATIONAL_KP{0.8};
+  static constexpr double PID_GO_TO_POINT_ROTATIONAL_KP{1.5};
   /// @brief ki value for the go to point rotational pid controller
-  static constexpr double PID_GO_TO_POINT_ROTATIONAL_KI{0.001};
+  static constexpr double PID_GO_TO_POINT_ROTATIONAL_KI{0};
   /// @brief kd value for the go to point rotational pid controller
   static constexpr double PID_GO_TO_POINT_ROTATIONAL_KD{100};
   /// @brief the target tolerance of the go to point algorithm
@@ -160,11 +160,11 @@ class OrangeConfig : public IConfig {
   // turn
 
   /// @brief kp value for the turn rotational pid controller
-  static constexpr double PID_TURN_ROTATIONAL_KP{25.0};
+  static constexpr double PID_TURN_ROTATIONAL_KP{32.0};
   /// @brief ki value for the turn rotational pid controller
   static constexpr double PID_TURN_ROTATIONAL_KI{0.001};
   /// @brief kd value for the turn rotational pid controller
-  static constexpr double PID_TURN_ROTATIONAL_KD{1000.0};
+  static constexpr double PID_TURN_ROTATIONAL_KD{1250.0};
   /// @brief the target tolerance of the turn algorithm
   static constexpr double PID_TURN_TARGET_TOLERANCE{M_PI / 50.0};
   /// @brief the target velocity of the turn algorithm
@@ -406,7 +406,7 @@ class OrangeConfig : public IConfig {
 
   static constexpr double ODOMETRY_SENSOR_LOCAL_Y_OFFSET{-1.125};
 
-  static constexpr double ODOMETRY_SENSOR_LOCAL_THETA_OFFSET{M_PI};
+  static constexpr double ODOMETRY_SENSOR_LOCAL_THETA_OFFSET{M_PI / 2.0};
 
   static constexpr int ODOMETRY_BAUD_RATE{74880};
 

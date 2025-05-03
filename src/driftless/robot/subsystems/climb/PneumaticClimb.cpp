@@ -37,6 +37,10 @@ bool PneumaticClimb::arePassivesOut() {
   return m_passive_hook_pistons.isExtended();
 }
 
+bool PneumaticClimb::isClimbing() {
+  return is_climbing;
+}
+
 void PneumaticClimb::setStiltPistons(hal::PistonGroup& pistons) {
   m_stilt_pistons = std::move(pistons);
 }

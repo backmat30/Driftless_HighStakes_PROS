@@ -1,5 +1,6 @@
 #include "driftless/robot/subsystems/elevator/PistonRingRejection.hpp"
 
+#include "pros/screen.hpp"
 namespace driftless {
 namespace robot {
 namespace subsystems {
@@ -9,13 +10,15 @@ void PistonRingRejection::init() {}
 void PistonRingRejection::run() {}
 
 void PistonRingRejection::deploy() {
-  if (rejection_direction == ERejectionDirection::LEFT) {
-    m_right_pistons.extend();
-  } else if (rejection_direction == ERejectionDirection::RIGHT) {
-    m_left_pistons.extend();
-  } else {
-    m_left_pistons.extend();
-    m_right_pistons.extend();
+  switch (rejection_direction) {
+    case ERejectionDirection::LEFT:
+      m_right_pistons.extend();
+      break;
+    case ERejectionDirection::RIGHT:
+      m_left_pistons.extend();
+      pros::screen::print(pros::E_TEXT_LARGE_CENTER, 7, "PISTON EXTENDED");
+
+      break;
   }
 }
 
@@ -28,12 +31,14 @@ void PistonRingRejection::setDeploymentDirection(
     ERejectionDirection direction) {
   rejection_direction = direction;
 
-  switch(rejection_direction) {
+  pros::screen::print(pros::E_TEXT_LARGE_CENTER, 7, "DIRECTION: %d", static_cast<int>(direction));
+  switch (direction) {
     case ERejectionDirection::LEFT:
       m_left_pistons.retract();
       break;
     case ERejectionDirection::RIGHT:
       m_right_pistons.retract();
+      pros::screen::print(pros::E_TEXT_LARGE_CENTER, 9, "DEPLOYMENT SET");
       break;
   }
 }

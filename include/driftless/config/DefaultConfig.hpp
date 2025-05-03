@@ -147,9 +147,9 @@ class DefaultConfig : public IConfig {
   /// @brief kd value of the go to point linear pid controller
   static constexpr double PID_GO_TO_POINT_LINEAR_KD{200};
   /// @brief kp value for the go to point rotational pid controller
-  static constexpr double PID_GO_TO_POINT_ROTATIONAL_KP{0.8};
+  static constexpr double PID_GO_TO_POINT_ROTATIONAL_KP{1.5};
   /// @brief ki value for the go to point rotational pid controller
-  static constexpr double PID_GO_TO_POINT_ROTATIONAL_KI{0.001};
+  static constexpr double PID_GO_TO_POINT_ROTATIONAL_KI{0};
   /// @brief kd value for the go to point rotational pid controller
   static constexpr double PID_GO_TO_POINT_ROTATIONAL_KD{100};
   /// @brief the target tolerance of the go to point algorithm
@@ -160,11 +160,11 @@ class DefaultConfig : public IConfig {
   // turn
 
   /// @brief kp value for the turn rotational pid controller
-  static constexpr double PID_TURN_ROTATIONAL_KP{25.0};
+  static constexpr double PID_TURN_ROTATIONAL_KP{32.0};
   /// @brief ki value for the turn rotational pid controller
   static constexpr double PID_TURN_ROTATIONAL_KI{0.001};
   /// @brief kd value for the turn rotational pid controller
-  static constexpr double PID_TURN_ROTATIONAL_KD{1000.0};
+  static constexpr double PID_TURN_ROTATIONAL_KD{1250.0};
   /// @brief the target tolerance of the turn algorithm
   static constexpr double PID_TURN_TARGET_TOLERANCE{M_PI / 50.0};
   /// @brief the target velocity of the turn algorithm
@@ -233,7 +233,7 @@ class DefaultConfig : public IConfig {
   // CLAMP PORTS
 
   /// @brief clamp piston controller
-  static constexpr int8_t CLAMP_PISTON_1{2};
+  static constexpr int8_t CLAMP_PISTON_1{3};
 
   static constexpr int8_t CLAMP_DISTANCE_SENSOR{14};
 
@@ -241,9 +241,9 @@ class DefaultConfig : public IConfig {
 
   static constexpr int8_t CLIMB_STILT_PISTON{6};
 
-  static constexpr int8_t CLIMB_CLIMBER_PISTON{4};
+  static constexpr int8_t CLIMB_CLIMBER_PISTON{5};
 
-  static constexpr int8_t CLIMB_PASSIVE_PISTON{5};
+  static constexpr int8_t CLIMB_PASSIVE_PISTON{2};
 
   // ELEVATOR PORTS
 
@@ -252,7 +252,7 @@ class DefaultConfig : public IConfig {
   /// @brief elevator rotational sensor
   static constexpr int8_t ELEVATOR_ROTATIONAL_SENSOR{UNDEFINED_PORT};
 
-  static constexpr int8_t ELEVATOR_REJECTION_LEFT_PISTON{3};
+  static constexpr int8_t ELEVATOR_REJECTION_LEFT_PISTON{4};
 
   static constexpr int8_t ELEVATOR_REJECTION_RIGHT_PISTON{8};
 
@@ -331,7 +331,7 @@ class DefaultConfig : public IConfig {
   static constexpr double ARM_ROTATIONAL_ALLIANCE_STAKE_POSITION{1.7 * 2.0 *
                                                                  M_PI};
 
-  static constexpr double ARM_ROTATIONAL_CLIMB_POSITION{1.4 * 2.0 * M_PI};
+  static constexpr double ARM_ROTATIONAL_CLIMB_POSITION{1.0 * 2.0 * M_PI};
 
   /// @brief The intermediate position on the rotation towards the arm ready
   /// position

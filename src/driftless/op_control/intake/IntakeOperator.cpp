@@ -88,17 +88,23 @@ void IntakeOperator::update(
     return;
   }
 
-  switch (static_cast<EIntakeControlMode>(
-      profile->getControlMode(EControlType::INTAKE))) {
-    case EIntakeControlMode::SPLIT_TOGGLE:
-      updateSplitToggle(toggle_up, toggle_down);
-      break;
-    case EIntakeControlMode::SINGLE_TOGGLE:
-      updateSingleToggle(toggle_states);
-      break;
-    case EIntakeControlMode::HOLD_UP:
-      updateHoldUp(hold_up);
-      break;
+  bool is_climbing{*static_cast<bool*>(m_robot->getState(
+      robot::subsystems::ESubsystem::CLIMB,
+      robot::subsystems::ESubsystemState::CLIMB_IS_CLIMBING))};
+
+  if (!is_climbing) {
+    switch (static_cast<EIntakeControlMode>(
+        profile->getControlMode(EControlType::INTAKE))) {
+      case EIntakeControlMode::SPLIT_TOGGLE:
+        updateSplitToggle(toggle_up, toggle_down);
+        break;
+      case EIntakeControlMode::SINGLE_TOGGLE:
+        updateSingleToggle(toggle_states);
+        break;
+      case EIntakeControlMode::HOLD_UP:
+        updateHoldUp(hold_up);
+        break;
+    }
   }
 
   updateSpinner(spin, reverse);

@@ -30,7 +30,7 @@ class PistonRingRejection : public IRingRejection {
     /// @brief The pistons controlling the right side of the rejection system
   driftless::hal::PistonGroup m_right_pistons{};
 
-  ERejectionDirection rejection_direction{ERejectionDirection::FORWARD};
+  ERejectionDirection rejection_direction{ERejectionDirection::LEFT};
 
  public:
   /// @brief Initializes the ring rejector
