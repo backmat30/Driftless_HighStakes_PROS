@@ -1,6 +1,7 @@
 #ifndef __I_RING_REJECTION_HPP__
 #define __I_RING_REJECTION_HPP__
 
+#include "driftless/robot/subsystems/elevator/ERejectionDirection.hpp"
 /// @brief The namespace for driftless library code
 /// @author Matthew Backman
 namespace driftless {
@@ -35,6 +36,10 @@ class IRingRejection {
 
   /// @brief Retracts the rejection system
   virtual void retract() = 0;
+
+  /// @brief Sets the direction the ring rejector will send rings
+  /// @param direction __ERejectionDirection__ The direction to send the rings
+  virtual void setDeploymentDirection(ERejectionDirection direction) = 0;
 
   /// @brief Determines if the ring rejector is actively deployed
   /// @return __True__ if extended, __false__ otherwise

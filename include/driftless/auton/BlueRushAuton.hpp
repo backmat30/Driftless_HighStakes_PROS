@@ -70,6 +70,12 @@ class BlueRushAuton : public IAuton {
   /// @param high __bool__ True if raised, false if lowered
   void setIntakeHeight(bool high);
 
+  void ejectRingsLeft();
+
+  void ejectRingsRight();
+
+  void pushIntakeOut();
+
   /// @brief Sets the position of the odometry subsystem
   /// @param x __double__ The x coordinate
   /// @param y __double__ The y coordinate
@@ -200,6 +206,10 @@ class BlueRushAuton : public IAuton {
   /// @brief Determines if the ring sensor sees an opposing ring
   /// @return __bool__ True if there is an opposing ring, false otherwise
   bool hasOpposingRing();
+
+  /// @brief Determines if the robot has a goal
+  /// @return __bool__ True if the robot has a goal, false otherwise
+  bool hasGoal();
 
  public:
   /// @brief Gets the name of the auton

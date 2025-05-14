@@ -1,5 +1,5 @@
 #include "driftless/robot/subsystems/elevator/ElevatorSubsystem.hpp"
-
+#include "pros/screen.hpp"
 namespace driftless {
 namespace robot {
 namespace subsystems {
@@ -32,6 +32,14 @@ void ElevatorSubsystem::command(ESubsystemCommand command_name, va_list& args) {
     m_ring_rejector->deploy();
   } else if (command_name == ESubsystemCommand::ELEVATOR_RETRACT_REJECTOR) {
     m_ring_rejector->retract();
+  } else if (command_name == ESubsystemCommand::ELEVATOR_REJECT_LEFT) {
+    m_ring_rejector->setDeploymentDirection(ERejectionDirection::LEFT);
+  } else if (command_name == ESubsystemCommand::ELEVATOR_REJECT_RIGHT) {
+    m_ring_rejector->setDeploymentDirection(ERejectionDirection::RIGHT);
+  } else if (command_name == ESubsystemCommand::ELEVATOR_PAUSE) {
+    m_elevator->pause();
+  } else if (command_name == ESubsystemCommand::ELEVATOR_RESUME) {
+    m_elevator->resume();
   }
 }
 
@@ -41,6 +49,8 @@ void* ElevatorSubsystem::state(ESubsystemState state_name) {
     result = new double{m_elevator->getPosition()};
   } else if (state_name == ESubsystemState::ELEVATOR_IS_DEPLOYED) {
     result = new bool{m_ring_rejector->isDeployed()};
+  } else if (state_name == ESubsystemState::ELEVATOR_IS_PAUSED) {
+    result = new bool{m_elevator->isPaused()};
   }
 
   return result;

@@ -84,15 +84,20 @@ void PIDArmMotion::updateState() {
         state = EState::RUSH;
       }
       break;
-    case EState::LOAD_INTERMEDIATE:
-      if (previous_state != EState::NEUTRAL ||
-          (std::abs(m_rotational_load_intermediate_position -
-                    rotation_position) <= m_rotational_tolerance &&
-           std::abs(m_linear_load_intermediate_position - linear_position) <=
-               m_linear_tolerance)) {
-        state = EState::LOAD_MOTION;
-        rotational_target_position = m_rotational_load_position;
-        linear_target_position = m_linear_load_position;
+    case EState::CLIMB_READY_MOTION:
+      if (std::abs(rotation_position - m_rotational_climb_position) <=
+              m_rotational_tolerance &&
+          std::abs(linear_position - m_linear_climb_ready_position) <=
+              m_linear_tolerance) {
+        state = EState::CLIMB_READY;
+      }
+      break;
+    case EState::CLIMB_MOTION:
+      if (std::abs(rotation_position - m_rotational_climb_position) <=
+              m_rotational_tolerance &&
+          std::abs(linear_position - m_linear_climb_position) <=
+              m_linear_tolerance) {
+        state = EState::CLIMB;
       }
       break;
     case EState::READY_INTERMEDIATE:
@@ -205,8 +210,8 @@ void PIDArmMotion::calibrate() {
   }
   calibrating = true;
   calibrate_time = m_clock->getTime();
-  m_rotation_motors.setVoltage(-12.0);
-  m_linear_motors.setVoltage(-12.0);
+  m_rotation_motors.setVoltage(-8.0);
+  m_linear_motors.setVoltage(-9.0);
 
   if (m_mutex) {
     m_mutex->give();
@@ -232,9 +237,9 @@ void PIDArmMotion::goLoad() {
     m_mutex->take();
   }
   if (state != EState::LOAD && state != EState::LOAD_MOTION) {
-    state = EState::LOAD_INTERMEDIATE;
-    rotational_target_position = m_rotational_load_intermediate_position;
-    linear_target_position = m_linear_load_intermediate_position;
+    state = EState::LOAD_MOTION;
+    rotational_target_position = m_rotational_load_position;
+    linear_target_position = m_linear_load_position;
   }
   if (m_mutex) {
     m_mutex->give();
@@ -296,6 +301,34 @@ void PIDArmMotion::goAllianceStake() {
   }
 }
 
+void PIDArmMotion::goClimbReady() {
+  if (m_mutex) {
+    m_mutex->take();
+  }
+  if (state != EState::CLIMB_READY && state != EState::CLIMB_READY_MOTION) {
+    state = EState::CLIMB_READY_MOTION;
+    rotational_target_position = m_rotational_climb_position;
+    linear_target_position = m_linear_climb_ready_position;
+  }
+  if (m_mutex) {
+    m_mutex->give();
+  }
+}
+
+void PIDArmMotion::goClimb() {
+  if (m_mutex) {
+    m_mutex->take();
+  }
+  if (state != EState::CLIMB && state != EState::CLIMB_MOTION) {
+    state = EState::CLIMB_MOTION;
+    rotational_target_position = m_rotational_climb_position;
+    linear_target_position = m_linear_climb_position;
+  }
+  if (m_mutex) {
+    m_mutex->give();
+  }
+}
+
 void PIDArmMotion::goPrevious() {
   switch (previous_state) {
     case EState::NEUTRAL:
@@ -351,6 +384,14 @@ bool PIDArmMotion::isGoingAllianceStake() {
   return (state == EState::ALLIANCE_STAKE_INTERMEDIATE ||
           state == EState::ALLIANCE_STAKE_MOTION);
 }
+
+bool PIDArmMotion::isAtClimbReady() { return (state == EState::CLIMB_READY); }
+
+bool PIDArmMotion::isGoingClimbReady() {
+  return (state == EState::CLIMB_READY_MOTION);
+}
+
+bool PIDArmMotion::isAtClimb() { return (state == EState::CLIMB || state == EState::CLIMB_MOTION); }
 
 void PIDArmMotion::setClock(
     const std::unique_ptr<driftless::rtos::IClock>& clock) {
@@ -425,6 +466,11 @@ void PIDArmMotion::setRotationalAllianceStakePosition(
   m_rotational_alliance_stake_position = rotational_alliance_stake_position;
 }
 
+void PIDArmMotion::setRotationalClimbPosition(
+    double rotational_climb_position) {
+  m_rotational_climb_position = rotational_climb_position;
+}
+
 void PIDArmMotion::setRotationalReadyIntermediatePosition(
     double rotational_ready_intermediate_position) {
   m_rotational_ready_intermediate_position =
@@ -476,6 +522,15 @@ void PIDArmMotion::setLinearRushPosition(double linear_rush_position) {
 void PIDArmMotion::setLinearAllianceStakePosition(
     double linear_alliance_stake_position) {
   m_linear_alliance_stake_position = linear_alliance_stake_position;
+}
+
+void PIDArmMotion::setLinearClimbReadyPosition(
+    double linear_climb_ready_position) {
+  m_linear_climb_ready_position = linear_climb_ready_position;
+}
+
+void PIDArmMotion::setLinearClimbPosition(double linear_climb_position) {
+  m_linear_climb_position = linear_climb_position;
 }
 
 void PIDArmMotion::setLinearTolerance(double linear_tolerance) {

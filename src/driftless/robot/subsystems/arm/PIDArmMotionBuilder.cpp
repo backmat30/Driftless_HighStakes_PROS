@@ -99,6 +99,12 @@ PIDArmMotionBuilder* PIDArmMotionBuilder::withRotationalAllianceStakePosition(
   return this;
 }
 
+PIDArmMotionBuilder* PIDArmMotionBuilder::withRotationalClimbPosition(
+    double rotational_climb_position) {
+  m_rotational_climb_position = rotational_climb_position;
+  return this;
+}
+
 PIDArmMotionBuilder*
 PIDArmMotionBuilder::withRotationalReadyIntermediatePosition(
     double rotational_ready_intermediate_position) {
@@ -173,6 +179,18 @@ PIDArmMotionBuilder* PIDArmMotionBuilder::withLinearAllianceStakePosition(
   return this;
 }
 
+PIDArmMotionBuilder* PIDArmMotionBuilder::withLinearClimbReadyPosition(
+    double linear_climb_ready_position) {
+  m_linear_climb_ready_position = linear_climb_ready_position;
+  return this;
+}
+
+PIDArmMotionBuilder* PIDArmMotionBuilder::withLinearClimbPosition(
+    double linear_climb_position) {
+  m_linear_climb_position = linear_climb_position;
+  return this;
+}
+
 PIDArmMotionBuilder* PIDArmMotionBuilder::withLinearTolerance(
     double linear_tolerance) {
   m_linear_tolerance = linear_tolerance;
@@ -200,6 +218,7 @@ std::unique_ptr<PIDArmMotion> PIDArmMotionBuilder::build() {
   pid_arm_motion->setRotationalRushPosition(m_rotational_rush_position);
   pid_arm_motion->setRotationalAllianceStakePosition(
       m_rotational_alliance_stake_position);
+  pid_arm_motion->setRotationalClimbPosition(m_rotational_climb_position);
   pid_arm_motion->setRotationalReadyIntermediatePosition(
       m_rotational_ready_intermediate_position);
   pid_arm_motion->setRotationalScoreIntermediatePosition(
@@ -216,6 +235,8 @@ std::unique_ptr<PIDArmMotion> PIDArmMotionBuilder::build() {
   pid_arm_motion->setLinearRushPosition(m_linear_rush_position);
   pid_arm_motion->setLinearAllianceStakePosition(
       m_linear_alliance_stake_position);
+  pid_arm_motion->setLinearClimbReadyPosition(m_linear_climb_ready_position);
+  pid_arm_motion->setLinearClimbPosition(m_linear_climb_position);
   pid_arm_motion->setLinearTolerance(m_linear_tolerance);
 
   return pid_arm_motion;

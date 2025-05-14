@@ -24,8 +24,13 @@ namespace elevator {
 /// @author Matthew Backman
 class PistonRingRejection : public IRingRejection {
  private:
-  /// @brief The pistons controlling the rejection system
-  driftless::hal::PistonGroup m_pistons{};
+  /// @brief The pistons controlling the left side of the rejection system
+  driftless::hal::PistonGroup m_left_pistons{};
+
+    /// @brief The pistons controlling the right side of the rejection system
+  driftless::hal::PistonGroup m_right_pistons{};
+
+  ERejectionDirection rejection_direction{ERejectionDirection::LEFT};
 
  public:
   /// @brief Initializes the ring rejector
@@ -40,13 +45,21 @@ class PistonRingRejection : public IRingRejection {
   /// @brief Retracts the ring rejector
   void retract() override;
 
+  /// @brief Sets the direction the ring rejector will send rings
+  /// @param direction __ERejectionDirection__ The direction to send the rings
+  void setDeploymentDirection(ERejectionDirection direction) override;
+
   /// @brief Determines if the ring rejector is actively deployed
   /// @return __True__ if extended, __false__ otherwise
   bool isDeployed() override;
 
-  /// @brief Sets the pistons used by the rejection system
+  /// @brief Sets the pistons used by the left side of the rejection system
   /// @param pistons The new pistons used
-  void setPistons(driftless::hal::PistonGroup& pistons);
+  void setLeftPistons(driftless::hal::PistonGroup& pistons);
+
+  /// @brief Sets the pistons used by the right side of the rejection system
+  /// @param pistons The new pistons used
+  void setRightPistons(driftless::hal::PistonGroup& pistons);
 };
 }  // namespace elevator
 }  // namespace subsystems

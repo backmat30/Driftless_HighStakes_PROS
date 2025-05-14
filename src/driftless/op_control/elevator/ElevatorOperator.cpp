@@ -110,16 +110,23 @@ void ElevatorOperator::update(
     updateElevatorVoltage(0);
     return;
   }
-  bool run{};
 
-  switch (static_cast<EElevatorControlMode>(
-      profile->getControlMode(EControlType::ELEVATOR))) {
-    case EElevatorControlMode::HOLD:
-      updateHold(spin, reverse);
-      break;
-    case EElevatorControlMode::TOGGLE:
-      updateToggle(spin, reverse);
-      break;
+  bool is_climbing{*static_cast<bool*>(m_robot->getState(
+      robot::subsystems::ESubsystem::CLIMB,
+      robot::subsystems::ESubsystemState::CLIMB_IS_CLIMBING))};
+
+  if (!is_climbing) {
+    switch (static_cast<EElevatorControlMode>(
+        profile->getControlMode(EControlType::ELEVATOR))) {
+      case EElevatorControlMode::HOLD:
+        updateHold(spin, reverse);
+        break;
+      case EElevatorControlMode::TOGGLE:
+        updateToggle(spin, reverse);
+        break;
+    }
+  } else {
+    updateElevatorVoltage(0.0);
   }
   // moved to color sort process
   // updateRingSensor(toggle_color_sort, alliance);

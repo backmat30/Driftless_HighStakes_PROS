@@ -51,6 +51,12 @@ class IArmMotion {
   /// @brief Goes to the alliance position
   virtual void goAllianceStake() = 0;
 
+  /// @brief Goes to the ready position for climbing
+  virtual void goClimbReady() = 0;
+
+  /// @brief Goes to the climb position
+  virtual void goClimb() = 0;
+
   /// @brief Goes to the previous position
   virtual void goPrevious() = 0;
 
@@ -101,6 +107,16 @@ class IArmMotion {
   /// @brief Determines if the arm is going to the alliance stake position
   /// @return __bool__ True if going alliance stake, false otherwise
   virtual bool isGoingAllianceStake() = 0;
+
+  /// @brief Determines if the arm is at the climb ready position
+  /// @return __bool__ True if at climb ready, false otherwise
+  virtual bool isAtClimbReady() = 0;
+
+  virtual bool isGoingClimbReady() = 0;
+
+  /// @brief Determines if the arm is at the climb position
+  /// @return __bool__ True if at climb, false otherwise
+  virtual bool isAtClimb() = 0;
 };
 }  // namespace arm
 }  // namespace subsystems

@@ -40,6 +40,8 @@ class PIDArmMotion : public IArmMotion {
     SCORE,
     RUSH,
     ALLIANCE_STAKE,
+    CLIMB_READY,
+    CLIMB,
     LOAD_INTERMEDIATE,
     READY_INTERMEDIATE,
     SCORE_INTERMEDIATE,
@@ -50,13 +52,15 @@ class PIDArmMotion : public IArmMotion {
     READY_MOTION,
     SCORE_MOTION,
     RUSH_MOTION,
-    ALLIANCE_STAKE_MOTION
+    ALLIANCE_STAKE_MOTION,
+    CLIMB_READY_MOTION,
+    CLIMB_MOTION
   };
   // delay between task updates
   static constexpr uint8_t TASK_DELAY{10};
 
   // the conversion factor from motor rotations to arm rotations
-  static constexpr double MOTOR_TO_ARM_ROTATIONS{1.0 / 4.0};
+  static constexpr double MOTOR_TO_ARM_ROTATIONS{1.0};
 
   // the conversion factor from potentiometer or rotation sensor rotations to
   // arm rotations
@@ -113,6 +117,8 @@ class PIDArmMotion : public IArmMotion {
   // the rotational position when scoring on the alliance stake
   double m_rotational_alliance_stake_position{};
 
+  double m_rotational_climb_position{};
+
   // the rotational position of the intermediate load position
   double m_rotational_load_intermediate_position{};
 
@@ -148,6 +154,10 @@ class PIDArmMotion : public IArmMotion {
 
   // the linear position when scoring on the alliance stake
   double m_linear_alliance_stake_position{};
+
+  double m_linear_climb_ready_position{};
+
+  double m_linear_climb_position{};
 
   // the linear position of the intermediate load position
   double m_linear_load_intermediate_position{};
@@ -227,6 +237,12 @@ class PIDArmMotion : public IArmMotion {
   /// @brief Puts the arm at the alliance stake position
   void goAllianceStake() override;
 
+  /// @brief Goes to the climb ready position
+  void goClimbReady() override;
+
+  /// @brief Goes to the climb position
+  void goClimb() override;
+
   /// @brief Goes to the previous position
   void goPrevious() override;
 
@@ -277,6 +293,16 @@ class PIDArmMotion : public IArmMotion {
   /// @brief Determines if the arm is going to the alliance stake position
   /// @return __bool__ True if going alliance stake, false otherwise
   bool isGoingAllianceStake() override;
+
+  /// @brief Determines if the arm is at the climb ready position
+  /// @return __bool__ True if at climb ready, false otherwise
+  bool isAtClimbReady() override;
+
+  bool isGoingClimbReady() override;
+
+  /// @brief Determines if the arm is at the climb position
+  /// @return __bool__ True if at climb, false otherwise
+  bool isAtClimb() override;
 
   /// @brief Sets the internal clock of the system
   /// @param clock The new internal clock
@@ -346,6 +372,10 @@ class PIDArmMotion : public IArmMotion {
   void setRotationalAllianceStakePosition(
       double rotational_alliance_stake_position);
 
+  /// @brief Sets the rotational climb ready position
+  /// @param rotational_climb_position The new rotational climb position
+  void setRotationalClimbPosition(double rotational_climb_position);
+
   /// @brief Sets the rotational ready intermediate position
   /// @param rotational_ready_intermediate_position The new position
   void setRotationalReadyIntermediatePosition(
@@ -393,6 +423,14 @@ class PIDArmMotion : public IArmMotion {
   /// @brief Sets the linear alliance stake position
   /// @param linear_alliance_stake_position The new position
   void setLinearAllianceStakePosition(double linear_alliance_stake_position);
+
+  /// @brief Sets the linear climb ready position
+  /// @param linear_climb_ready_position The new position
+  void setLinearClimbReadyPosition(double linear_climb_ready_position);
+
+  /// @brief Sets the linear climb position
+  /// @param linear_climb_position The new position
+  void setLinearClimbPosition(double linear_climb_position);
 
   // sets the linear position tolerance
   void setLinearTolerance(double linear_tolerance);

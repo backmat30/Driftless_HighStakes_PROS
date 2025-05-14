@@ -34,6 +34,15 @@ class IHeightControl {
   /// @param up __bool__ Whether to raise or lower the intake
   virtual void setHeight(bool up) = 0;
 
+  /// @brief Pulls the intake in
+  virtual void pullIn() = 0;
+
+  /// @brief Pushes the intake out
+  virtual void pushOut() = 0;
+
+  /// @brief Toggles the secondary pistons
+  virtual void toggleSecondaryPistons() = 0;
+
   /// @brief Gets the position of the intake
   /// @return __bool__ Whether the intake is raised
   virtual bool isRaised() = 0;

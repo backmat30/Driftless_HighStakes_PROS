@@ -36,6 +36,12 @@ class IElevator {
   // set the position of the elevator
   virtual void setPosition(double position) = 0;
 
+  virtual void pause() = 0;
+
+  virtual void resume() = 0;
+
+  virtual bool isPaused() = 0;
+
   // get the position of the elevator
   virtual double getPosition() = 0;
 };

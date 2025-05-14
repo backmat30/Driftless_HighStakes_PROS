@@ -46,7 +46,10 @@ void PIDElevator::setVoltage(double voltage) {
   if (m_mutex) {
     m_mutex->take();
   }
-  m_motors.setVoltage(voltage);
+  if (!paused) {
+    m_motors.setVoltage(voltage);
+    latest_voltage = voltage;
+  }
   manual_control = true;
 
   if (m_mutex) {
@@ -65,6 +68,32 @@ void PIDElevator::setPosition(double position) {
     m_mutex->give();
   }
 }
+
+void PIDElevator::pause() {
+  if (m_mutex) {
+    m_mutex->take();
+  }
+  m_motors.setVoltage(0.0);
+  paused = true;
+
+  if (m_mutex) {
+    m_mutex->give();
+  }
+}
+
+void PIDElevator::resume() {
+  if (m_mutex) {
+    m_mutex->take();
+  }
+  paused = false;
+  m_motors.setVoltage(latest_voltage);
+
+  if (m_mutex) {
+    m_mutex->give();
+  }
+}
+
+bool PIDElevator::isPaused() { return paused; }
 
 double PIDElevator::getPosition() {
   double position{};

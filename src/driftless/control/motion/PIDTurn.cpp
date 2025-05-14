@@ -78,6 +78,7 @@ void PIDTurn::taskUpdate() {
 
   if (!target_reached && !paused) {
     driftless::robot::subsystems::odometry::Position position{getPosition()};
+
     double target_angle{calculateAngleToTarget(position)};
     double angle_error{bindRadians(target_angle - position.theta)};
 

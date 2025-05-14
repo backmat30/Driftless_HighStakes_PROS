@@ -25,22 +25,25 @@ void ElevatorAutoRingRejector::taskUpdate() {
       last_opposing_ring_pos = elevator_pos;
       setArmPosition(true);
     }
-    if(!has_opposing_ring) {
+    if (!has_opposing_ring) {
       seen_opposing_ring = false;
     }
 
-    if (elevator_pos >= last_opposing_ring_pos + 0.6 &&
-        elevator_pos < last_opposing_ring_pos + elevator_distance_to_sensor && !rejecting_ring) {
+    if (elevator_pos >= last_opposing_ring_pos + 0.8 &&
+        elevator_pos < last_opposing_ring_pos + elevator_distance_to_sensor &&
+        !rejecting_ring) {
       setRejectorPosition(true);
       rejecting_ring = true;
     } else if (elevator_pos < last_opposing_ring_pos - 0.25 ||
                elevator_pos >
-                   last_opposing_ring_pos + elevator_distance_to_sensor && rejecting_ring) {
+                       last_opposing_ring_pos + elevator_distance_to_sensor &&
+                   rejecting_ring) {
+      rejecting_ring = false;
       setRejectorPosition(false);
       setArmPosition(false);
-      rejecting_ring = false;
       last_opposing_ring_pos = -__DBL_MAX__;
     }
+    updateElevator();
   }
   if (m_mutex) {
     m_mutex->give();
@@ -77,12 +80,14 @@ bool ElevatorAutoRingRejector::hasOpposingRing() {
                         robot::subsystems::ESubsystemState::RING_SORT_GET_RGB)};
   io::RGBValue ring_rgb{*static_cast<io::RGBValue*>(ring_rgb_state)};
 
+  pros::screen::print(pros::E_TEXT_LARGE_CENTER, 8, "R: %7.2f, B: %7.2f", ring_rgb.red, ring_rgb.blue);
+
   if (has_ring) {
     has_opposing_ring =
         ((m_alliance->getAlliance() == alliance::EAlliance::RED &&
-          ring_rgb.red < ring_rgb.blue * 0.9) ||
+          ring_rgb.red * 1.5 < ring_rgb.blue) ||
          (m_alliance->getAlliance() == alliance::EAlliance::BLUE &&
-          ring_rgb.blue * 0.9 < ring_rgb.red));
+          ring_rgb.blue < ring_rgb.red * 0.95));
   }
 
   return has_opposing_ring;
@@ -113,6 +118,29 @@ void ElevatorAutoRingRejector::setArmPosition(bool go_neutral) {
     m_robot->sendCommand(robot::subsystems::ESubsystem::ARM,
                          robot::subsystems::ESubsystemCommand::ARM_GO_LOAD);
     was_arm_moved = false;
+  }
+}
+
+void ElevatorAutoRingRejector::updateElevator() {
+  bool is_load{*static_cast<bool*>(
+      m_robot->getState(robot::subsystems::ESubsystem::ARM,
+                        robot::subsystems::ESubsystemState::ARM_IS_LOAD))};
+  bool is_going_neutral{*static_cast<bool*>(m_robot->getState(
+      robot::subsystems::ESubsystem::ARM,
+      robot::subsystems::ESubsystemState::ARM_IS_GOING_NEUTRAL))};
+
+  bool is_elevator_paused{*static_cast<bool*>(m_robot->getState(
+      robot::subsystems::ESubsystem::ELEVATOR,
+      robot::subsystems::ESubsystemState::ELEVATOR_IS_PAUSED))};
+
+  if (rejecting_ring && !is_elevator_paused && (is_load || is_going_neutral)) {
+    m_robot->sendCommand(
+        robot::subsystems::ESubsystem::ELEVATOR,
+        robot::subsystems::ESubsystemCommand::ELEVATOR_PAUSE);
+  } else if (is_elevator_paused) {
+    m_robot->sendCommand(
+        robot::subsystems::ESubsystem::ELEVATOR,
+        robot::subsystems::ESubsystemCommand::ELEVATOR_RESUME);
   }
 }
 

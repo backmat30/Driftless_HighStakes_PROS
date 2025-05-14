@@ -9,9 +9,13 @@ void IntakeOperator::updateSplitToggle(EControllerDigital up,
   bool move_down{m_controller->getNewDigital(down)};
 
   if (move_up && !move_down) {
-    m_robot->sendCommand(robot::subsystems::ESubsystem::INTAKE, robot::subsystems::ESubsystemCommand::INTAKE_SET_HEIGHT, true);
+    m_robot->sendCommand(
+        robot::subsystems::ESubsystem::INTAKE,
+        robot::subsystems::ESubsystemCommand::INTAKE_SET_HEIGHT, true);
   } else if (!move_up && move_down) {
-    m_robot->sendCommand(robot::subsystems::ESubsystem::INTAKE, robot::subsystems::ESubsystemCommand::INTAKE_SET_HEIGHT, false);
+    m_robot->sendCommand(
+        robot::subsystems::ESubsystem::INTAKE,
+        robot::subsystems::ESubsystemCommand::INTAKE_SET_HEIGHT, false);
   }
 }
 
@@ -19,30 +23,42 @@ void IntakeOperator::updateSingleToggle(EControllerDigital toggle) {
   bool toggle_position{m_controller->getNewDigital(toggle)};
 
   if (toggle_position) {
-    void* intake_state{
-        m_robot->getState(robot::subsystems::ESubsystem::INTAKE, robot::subsystems::ESubsystemState::INTAKE_GET_HEIGHT)};
+    void* intake_state{m_robot->getState(
+        robot::subsystems::ESubsystem::INTAKE,
+        robot::subsystems::ESubsystemState::INTAKE_GET_HEIGHT)};
     bool current_height{*static_cast<bool*>(intake_state)};
 
-    m_robot->sendCommand(robot::subsystems::ESubsystem::INTAKE, robot::subsystems::ESubsystemCommand::INTAKE_SET_HEIGHT,
-                         !current_height);
+    m_robot->sendCommand(
+        robot::subsystems::ESubsystem::INTAKE,
+        robot::subsystems::ESubsystemCommand::INTAKE_SET_HEIGHT,
+        !current_height);
   }
 }
 
 void IntakeOperator::updateHoldUp(EControllerDigital up) {
   bool move_up{m_controller->getDigital(up)};
 
-  m_robot->sendCommand(robot::subsystems::ESubsystem::INTAKE, robot::subsystems::ESubsystemCommand::INTAKE_SET_HEIGHT, move_up);
+  m_robot->sendCommand(robot::subsystems::ESubsystem::INTAKE,
+                       robot::subsystems::ESubsystemCommand::INTAKE_SET_HEIGHT,
+                       move_up);
 }
 
-void IntakeOperator::updateSpinner(EControllerDigital spin, EControllerDigital reverse) {
+void IntakeOperator::updateSpinner(EControllerDigital spin,
+                                   EControllerDigital reverse) {
   bool spin_motors{m_controller->getDigital(spin)};
   bool reverse_motors{m_controller->getDigital(reverse)};
   if (spin_motors && !reverse_motors) {
-    m_robot->sendCommand(robot::subsystems::ESubsystem::INTAKE, robot::subsystems::ESubsystemCommand::INTAKE_SET_VOLTAGE, 12.0);
+    m_robot->sendCommand(
+        robot::subsystems::ESubsystem::INTAKE,
+        robot::subsystems::ESubsystemCommand::INTAKE_SET_VOLTAGE, 12.0);
   } else if (!spin_motors && reverse_motors) {
-    m_robot->sendCommand(robot::subsystems::ESubsystem::INTAKE, robot::subsystems::ESubsystemCommand::INTAKE_SET_VOLTAGE, -12.0);
+    m_robot->sendCommand(
+        robot::subsystems::ESubsystem::INTAKE,
+        robot::subsystems::ESubsystemCommand::INTAKE_SET_VOLTAGE, -12.0);
   } else {
-    m_robot->sendCommand(robot::subsystems::ESubsystem::INTAKE, robot::subsystems::ESubsystemCommand::INTAKE_SET_VOLTAGE, 0.0);
+    m_robot->sendCommand(
+        robot::subsystems::ESubsystem::INTAKE,
+        robot::subsystems::ESubsystemCommand::INTAKE_SET_VOLTAGE, 0.0);
   }
 }
 
@@ -65,25 +81,37 @@ void IntakeOperator::update(
       profile->getDigitalControlMapping(EControl::INTAKE_SPIN)};
   EControllerDigital reverse{
       profile->getDigitalControlMapping(EControl::INTAKE_REVERSE)};
+  EControllerDigital toggle_secondary_pistons{
+      profile->getDigitalControlMapping(EControl::CLIMB_TOGGLE)};
 
   if (!m_controller) {
     return;
   }
 
-  switch (static_cast<EIntakeControlMode>(
-      profile->getControlMode(EControlType::INTAKE))) {
-    case EIntakeControlMode::SPLIT_TOGGLE:
-      updateSplitToggle(toggle_up, toggle_down);
-      break;
-    case EIntakeControlMode::SINGLE_TOGGLE:
-      updateSingleToggle(toggle_states);
-      break;
-    case EIntakeControlMode::HOLD_UP:
-      updateHoldUp(hold_up);
-      break;
-  }
+  bool is_climbing{*static_cast<bool*>(m_robot->getState(
+      robot::subsystems::ESubsystem::CLIMB,
+      robot::subsystems::ESubsystemState::CLIMB_IS_CLIMBING))};
+
+  if (!is_climbing) {
+    switch (static_cast<EIntakeControlMode>(
+        profile->getControlMode(EControlType::INTAKE))) {
+      case EIntakeControlMode::SPLIT_TOGGLE:
+        updateSplitToggle(toggle_up, toggle_down);
+        break;
+      case EIntakeControlMode::SINGLE_TOGGLE:
+        updateSingleToggle(toggle_states);
+        break;
+      case EIntakeControlMode::HOLD_UP:
+        updateHoldUp(hold_up);
+        break;
+    }
 
   updateSpinner(spin, reverse);
+  } else {
+    m_robot->sendCommand(
+        robot::subsystems::ESubsystem::INTAKE,
+        robot::subsystems::ESubsystemCommand::INTAKE_SET_VOLTAGE, 0.0);
+  }
 }
 }  // namespace intake
 }  // namespace op_control

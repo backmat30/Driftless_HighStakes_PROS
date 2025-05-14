@@ -65,6 +65,10 @@ class PIDElevator : public driftless::robot::subsystems::elevator::IElevator {
   // whether the elevator is manually controlled
   bool manual_control{};
 
+  bool paused{};
+
+  double latest_voltage{};
+
   // update all instance specific data
   void taskUpdate();
 
@@ -83,6 +87,12 @@ class PIDElevator : public driftless::robot::subsystems::elevator::IElevator {
 
   // set the position of the elevator
   void setPosition(double position) override;
+
+  void pause() override;
+
+  void resume() override;
+
+  bool isPaused() override;
 
   // get the position of the elevator
   double getPosition() override;

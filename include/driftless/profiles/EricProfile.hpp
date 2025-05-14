@@ -10,6 +10,7 @@
 #include "driftless/op_control/EControllerDigital.hpp"
 #include "driftless/op_control/arm/EArmControlMode.hpp"
 #include "driftless/op_control/clamp/EClampControlMode.hpp"
+#include "driftless/op_control/climb/ECLimbControlMode.hpp"
 #include "driftless/op_control/drivetrain/EDrivetrainControlMode.hpp"
 #include "driftless/op_control/elevator/EElevatorControlMode.hpp"
 #include "driftless/op_control/intake/EIntakeControlMode.hpp"
@@ -42,15 +43,20 @@ class EricProfile : public driftless::profiles::IProfile {
       {op_control::EControlType::ELEVATOR,
        static_cast<int>(op_control::elevator::EElevatorControlMode::HOLD)},
       {op_control::EControlType::INTAKE,
-       static_cast<int>(
-           op_control::intake::EIntakeControlMode::SINGLE_TOGGLE)}};
+       static_cast<int>(op_control::intake::EIntakeControlMode::SINGLE_TOGGLE)},
+      {op_control::EControlType::CLIMB,
+       static_cast<int>(op_control::climb::EClimbControlMode::EXPONENTIAL)}};
 
   /// @brief Maps subsystem controls to analog inputs
   const std::map<op_control::EControl, op_control::EControllerAnalog>
       ANALOG_CONTROL_MAP{{op_control::EControl::DRIVE_ARCADE_LINEAR,
                           op_control::EControllerAnalog::JOYSTICK_RIGHT_Y},
                          {op_control::EControl::DRIVE_ARCADE_TURN,
-                          op_control::EControllerAnalog::JOYSTICK_LEFT_X}};
+                          op_control::EControllerAnalog::JOYSTICK_LEFT_X},
+                         {op_control::EControl::CLIMB_CHANGE_HEIGHT,
+                          op_control::EControllerAnalog::JOYSTICK_LEFT_Y},
+                         {op_control::EControl::CLIMB_CHANGE_HEIGHT_SLOW,
+                          op_control::EControllerAnalog::JOYSTICK_RIGHT_Y}};
 
   /// @brief Maps subsystem controls to digital inputs
   const std::map<op_control::EControl, op_control::EControllerDigital>
@@ -61,8 +67,12 @@ class EricProfile : public driftless::profiles::IProfile {
            op_control::EControllerDigital::BUTTON_B},
           {op_control::EControl::ARM_CALIBRATE,
            op_control::EControllerDigital::DPAD_RIGHT},
+          {op_control::EControl::ARM_CLIMB_CYCLE,
+           op_control::EControllerDigital::TRIGGER_LEFT_BOTTOM},
           {op_control::EControl::CLAMP_TOGGLE,
            op_control::EControllerDigital::BUTTON_Y},
+          {op_control::EControl::CLIMB_TOGGLE,
+           op_control::EControllerDigital::BUTTON_X},
           {op_control::EControl::ELEVATOR_SPIN,
            op_control::EControllerDigital::TRIGGER_RIGHT_TOP},
           {op_control::EControl::ELEVATOR_REVERSE,
@@ -72,15 +82,19 @@ class EricProfile : public driftless::profiles::IProfile {
           {op_control::EControl::INTAKE_REVERSE,
            op_control::EControllerDigital::TRIGGER_RIGHT_BOTTOM},
           {op_control::EControl::INTAKE_TOGGLE_HEIGHT,
-           op_control::EControllerDigital::TRIGGER_LEFT_BOTTOM},
-          {op_control::EControl::COLOR_SORT_TOGGLE,
-           op_control::EControllerDigital::DPAD_LEFT},
+           op_control::EControllerDigital::BUTTON_A},
           {op_control::EControl::ARM_ALLIANCE_STAKE,
-           op_control::EControllerDigital::DPAD_DOWN}};
+           op_control::EControllerDigital::DPAD_DOWN},
+          {op_control::EControl::CLIMB_TOGGLE_PASSIVES,
+           op_control::EControllerDigital::TRIGGER_RIGHT_TOP},
+          {op_control::EControl::CONTROLLER_SWITCH_PROFILE,
+           op_control::EControllerDigital::DPAD_LEFT},
+          {op_control::EControl::CONTROLLER_VERIFY_PROFILE,
+           op_control::EControllerDigital::DPAD_UP}};
 
-    const std::map<op_control::EStartupConfig, bool> STARTUP_CONFIG_MAP{
-        {op_control::EStartupConfig::COLOR_SORT_DEFAULT, true},
-        {op_control::EStartupConfig::ARM_CALLIBRATE, false}};
+  const std::map<op_control::EStartupConfig, bool> STARTUP_CONFIG_MAP{
+      {op_control::EStartupConfig::COLOR_SORT_DEFAULT, true},
+      {op_control::EStartupConfig::ARM_CALLIBRATE, false}};
 
  public:
   /// @brief Gets the name of the profile
@@ -112,12 +126,12 @@ class EricProfile : public driftless::profiles::IProfile {
   op_control::EControllerDigital getDigitalControlMapping(
       op_control::EControl control) const override;
 
-    /// @brief Gets the value of the desired startup configuration
-    /// @param startup_config __op_control::EStartupConfig__ The desired startup
-    /// configuration
-    /// @return __bool__ The value of the desired startup configuration
-    bool getStartupConfig(
-        op_control::EStartupConfig startup_config) const override;
+  /// @brief Gets the value of the desired startup configuration
+  /// @param startup_config __op_control::EStartupConfig__ The desired startup
+  /// configuration
+  /// @return __bool__ The value of the desired startup configuration
+  bool getStartupConfig(
+      op_control::EStartupConfig startup_config) const override;
 };
 }  // namespace profiles
 }  // namespace driftless
