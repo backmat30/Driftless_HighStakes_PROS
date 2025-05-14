@@ -12,11 +12,13 @@ void SparkFunPositionTracker::taskLoop(void* params) {
 }
 
 void SparkFunPositionTracker::taskUpdate() {
-  uint64_t current_time{m_clock->getTime()};
+  uint64_t start_time{m_clock->getTime()};
 
   updatePosition();
-
-  m_delayer->delayUntil(current_time + TASK_DELAY);
+  uint64_t current_time{m_clock->getTime()};
+  if(current_time - start_time < TASK_DELAY) {
+    m_delayer->delay(TASK_DELAY - (current_time - start_time));
+  }
 }
 
 void SparkFunPositionTracker::updatePosition() {

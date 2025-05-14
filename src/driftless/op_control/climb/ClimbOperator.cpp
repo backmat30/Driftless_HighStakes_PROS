@@ -72,6 +72,9 @@ void ClimbOperator::toggleIntakeClimbMode() {
 }
 
 void ClimbOperator::climbDriveTrain(double voltage) {
+  if (voltage < 0) {
+    voltage *= 8.0 / 12.0;
+  }
   m_robot->sendCommand(robot::subsystems::ESubsystem::DRIVETRAIN,
                        robot::subsystems::ESubsystemCommand::DRIVETRAIN_CLIMB,
                        voltage);
@@ -82,12 +85,25 @@ void ClimbOperator::setClimberState(double climb_voltage) {
   double right_position{getDriveTrainRightMotorPosition()};
   double avg_position{(left_position + right_position) / 2.0};
 
+  bool is_climbing{*static_cast<bool*>(m_robot->getState(
+      robot::subsystems::ESubsystem::CLIMB,
+      robot::subsystems::ESubsystemState::CLIMB_IS_CLIMBING))};
+
   if (climb_voltage > 1.0) {
     if (avg_position > 5.0 || isArmInClimbState()) {
       pullBackClimber();
     }
   } else if (climb_voltage < -1.0) {
     pushForwardClimber();
+    if (avg_position < 40.0 && avg_position > 10.0 && arePassivesOut()) {
+      pullInPassiveHooks();
+
+      if (is_climbing) {
+        m_robot->sendCommand(
+            robot::subsystems::ESubsystem::ARM,
+            robot::subsystems::ESubsystemCommand::ARM_GO_NEUTRAL);
+      }
+    }
   }
 }
 
@@ -105,10 +121,19 @@ void ClimbOperator::update(const std::unique_ptr<profiles::IProfile>& profile) {
       robot::subsystems::ESubsystem::CLIMB,
       robot::subsystems::ESubsystemState::CLIMB_IS_CLIMBING))};
 
+  bool is_tank_drive{profile->getControlMode(EControlType::DRIVE) == 0};
+  bool is_eric_robot{profile->getName() == "ERIC"};
+
   EControllerAnalog climb_voltage_control{
       profile->getAnalogControlMapping(EControl::CLIMB_CHANGE_HEIGHT)};
+  EControllerAnalog climb_slow_voltage_control{
+      profile->getAnalogControlMapping(EControl::CLIMB_CHANGE_HEIGHT_SLOW)};
   EControllerDigital stilt_control{
       profile->getDigitalControlMapping(EControl::CLIMB_TOGGLE)};
+  // REALLY SCUFFED I KNOW BUT I DONT HAVE TIME TO DO IT RIGHT :(
+  if ((is_eric_robot && is_tank_drive) || (!is_eric_robot && !is_tank_drive)) {
+    stilt_control = profile->getDigitalControlMapping(EControl::ARM_CALIBRATE);
+  }
   EControllerDigital passive_control{
       profile->getDigitalControlMapping(EControl::CLIMB_TOGGLE_PASSIVES)};
 
@@ -121,16 +146,35 @@ void ClimbOperator::update(const std::unique_ptr<profiles::IProfile>& profile) {
   if (m_controller->getNewDigital(passive_control)) {
     if (arePassivesOut()) {
       pullInPassiveHooks();
+      m_robot->sendCommand(
+          robot::subsystems::ESubsystem::ARM,
+          robot::subsystems::ESubsystemCommand::ARM_GO_NEUTRAL);
     } else if (is_climbing) {
       pushOutPassiveHooks();
+      if (is_tank_drive && is_eric_robot) {
+        m_robot->sendCommand(
+            robot::subsystems::ESubsystem::ARM,
+            robot::subsystems::ESubsystemCommand::ARM_GO_CLIMB_READY);
+      }
     }
   }
+  double climb_power{m_controller->getAnalog(climb_voltage_control)};
+  if (profile->getControlMode(EControlType::CLIMB) ==
+      (int)EClimbControlMode::EXPONENTIAL) {
+    climb_power =
+        climb_power * std::abs(std::pow(climb_power, 2)) / std::pow(127, 3);
+  }
+  double climb_slow_power{m_controller->getAnalog(climb_slow_voltage_control)};
 
-  double climb_voltage{m_controller->getAnalog(climb_voltage_control) *
-                       VOLTAGE_CONVERSION};
+  if (std::abs(climb_power) < 10 && std::abs(climb_slow_power) > 10) {
+    climbDriveTrain(climb_slow_power * SLOW_VOLTAGE_CONVERSION);
+  } else {
+    double climb_voltage{m_controller->getAnalog(climb_voltage_control) *
+                         VOLTAGE_CONVERSION};
 
-  setClimberState(climb_voltage);
-  climbDriveTrain(climb_voltage);
+    setClimberState(climb_voltage);
+    climbDriveTrain(climb_voltage);
+  }
 
   if (arePassivesOut()) {
     m_controller->rumble(".");

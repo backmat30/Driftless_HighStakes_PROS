@@ -10,12 +10,13 @@ void SparkfunOTOS::updatePosition() {
     while (m_serial_device->getInputBytes()) {
       arduino_buffer += static_cast<char>(m_serial_device->readByte());
     }
+    pros::screen::print(pros::E_TEXT_MEDIUM_CENTER, 5, "%s", arduino_buffer);
   }
+
   if (arduino_buffer.find('/') != std::string::npos) {
     arduino_buffer = arduino_buffer.substr(arduino_buffer.find('/'));
 
     while (arduino_buffer.find(';') != std::string::npos) {
-      pros::screen::print(pros::E_TEXT_MEDIUM_CENTER, 5, "%s", arduino_buffer);
       arduino_buffer = arduino_buffer.substr(arduino_buffer.find('/') + 1);
 
       char current_key{static_cast<char>(arduino_buffer.at(0))};
@@ -29,6 +30,7 @@ void SparkfunOTOS::updatePosition() {
       try {
         value_as_double = std::stod(value);
       } catch (std::invalid_argument& e) {
+        arduino_buffer = "";
         return;
       }
 

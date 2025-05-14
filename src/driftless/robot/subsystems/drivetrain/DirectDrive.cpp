@@ -87,6 +87,9 @@ void directDrive::climb(double voltage) {
       m_left_motors.setPosition(51.0);
       left_position = 51.0;
     }
+    if (left_position > 46.0 && left_voltage > 2.0) {
+      left_voltage = std::max((left_voltage / (left_position - 44.0)), left_voltage / 4.0);
+    }
     double right_position{m_right_motors.getPosition()};
     if (right_position < 0) {
       m_right_motors.setPosition(0.0);
@@ -94,6 +97,9 @@ void directDrive::climb(double voltage) {
     } else if (right_position > 51.0) {
       m_right_motors.setPosition(51.0);
       right_position = 51.0;
+    } 
+    if (right_position > 46.0 && right_voltage > 2.0) {
+      right_voltage = std::max((right_voltage / (right_position - 44.0)), right_voltage / 4.0);
     }
 
     double position_difference{left_position - right_position};

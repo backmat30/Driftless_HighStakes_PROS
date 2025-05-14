@@ -12,7 +12,7 @@ namespace robot {
 /// @brief The namespace for subsystems code
 /// @author Matthew Backman
 namespace subsystems {
-  
+
 /// @brief The enum class for subsystem states
 /// @author Matthew Backman
 enum class ESubsystemState {
@@ -29,6 +29,7 @@ enum class ESubsystemState {
   ARM_IS_ALLIANCE_STAKE,
   ARM_IS_GOING_ALLIANCE_STAKE,
   ARM_IS_CLIMB_READY,
+  ARM_IS_GOING_CLIMB_READY,
   ARM_IS_CLIMB,
   CLAMP_GET_STATE,
   CLAMP_HAS_GOAL,
@@ -40,6 +41,7 @@ enum class ESubsystemState {
   DRIVETRAIN_GET_RIGHT_POSITION,
   ELEVATOR_GET_POSITION,
   ELEVATOR_IS_DEPLOYED,
+  ELEVATOR_IS_PAUSED,
   INTAKE_GET_HEIGHT,
   ODOMETRY_GET_POSITION,
   ODOMETRY_GET_RESETTER_RAW_VALUE,

@@ -16,8 +16,6 @@ void PistonRingRejection::deploy() {
       break;
     case ERejectionDirection::RIGHT:
       m_left_pistons.extend();
-      pros::screen::print(pros::E_TEXT_LARGE_CENTER, 7, "PISTON EXTENDED");
-
       break;
   }
 }
@@ -31,14 +29,12 @@ void PistonRingRejection::setDeploymentDirection(
     ERejectionDirection direction) {
   rejection_direction = direction;
 
-  pros::screen::print(pros::E_TEXT_LARGE_CENTER, 7, "DIRECTION: %d", static_cast<int>(direction));
   switch (direction) {
     case ERejectionDirection::LEFT:
       m_left_pistons.retract();
       break;
     case ERejectionDirection::RIGHT:
       m_right_pistons.retract();
-      pros::screen::print(pros::E_TEXT_LARGE_CENTER, 9, "DEPLOYMENT SET");
       break;
   }
 }

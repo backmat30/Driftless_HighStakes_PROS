@@ -112,6 +112,8 @@ class IArmMotion {
   /// @return __bool__ True if at climb ready, false otherwise
   virtual bool isAtClimbReady() = 0;
 
+  virtual bool isGoingClimbReady() = 0;
+
   /// @brief Determines if the arm is at the climb position
   /// @return __bool__ True if at climb, false otherwise
   virtual bool isAtClimb() = 0;

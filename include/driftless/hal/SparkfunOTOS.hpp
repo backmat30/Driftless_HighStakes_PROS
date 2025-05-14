@@ -24,6 +24,8 @@ class SparkfunOTOS : public io::IPositionSensor {
 
   std::string arduino_buffer{};
 
+  int empty_buffers{};
+
   /// @brief Looks for new data from the serial device and updates the latest
   /// position
   void updatePosition();

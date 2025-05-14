@@ -74,8 +74,6 @@ class OrangeRushAuton : public IAuton {
 
   void ejectRingsRight();
 
-  void ejectRingsForward();
-
   /// @brief Pushes the intake out
   void pushIntakeOut();
 

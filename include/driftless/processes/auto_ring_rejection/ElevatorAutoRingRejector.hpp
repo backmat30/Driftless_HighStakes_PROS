@@ -84,6 +84,8 @@ class ElevatorAutoRingRejector : public IAutoRingRejector {
   /// @param go_neutral __bool__ whether to go to the neutral position
   void setArmPosition(bool go_neutral);
 
+  void updateElevator();
+
  public:
   /// @brief Initializes the automatic ring rejector
   void init() override;

@@ -125,6 +125,8 @@ void ElevatorOperator::update(
         updateToggle(spin, reverse);
         break;
     }
+  } else {
+    updateElevatorVoltage(0.0);
   }
   // moved to color sort process
   // updateRingSensor(toggle_color_sort, alliance);

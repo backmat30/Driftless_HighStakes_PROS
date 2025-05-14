@@ -47,6 +47,8 @@ void OpControlManager::run(
   op_control::color_sort::ColorSortOperator color_sort_operator{controller,
                                                                 process_system};
   op_control::climb::ClimbOperator climb_operator{controller, robot};
+  op_control::controller_swap::ControllerSwapOperator controller_swap_operator{
+      controller};
 
   if (!m_profile->getStartupConfig(
           op_control::EStartupConfig::COLOR_SORT_DEFAULT)) {
@@ -77,6 +79,7 @@ void OpControlManager::run(
     intake_operator.update(m_profile);
     arm_operator.update(m_profile, m_alliance);
     color_sort_operator.updateRingRejection(m_profile, m_alliance);
+    controller_swap_operator.update(m_profile);    
 
     // delay until 10 seconds after loop start
     // keeps time per loop consistent rather than delaying 10 seconds AFTER

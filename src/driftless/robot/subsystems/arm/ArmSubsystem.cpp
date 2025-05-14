@@ -66,6 +66,8 @@ void* ArmSubsystem::state(ESubsystemState state_name) {
     result = new bool{m_arm_motion->isAtClimbReady()};
   } else if (state_name == ESubsystemState::ARM_IS_CLIMB) {
     result = new bool{m_arm_motion->isAtClimb()};
+  } else if (state_name == ESubsystemState::ARM_IS_GOING_CLIMB_READY) {
+    result = new bool{m_arm_motion->isGoingClimbReady()};
   }
 
   return result;

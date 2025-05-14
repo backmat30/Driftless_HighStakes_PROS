@@ -1,5 +1,6 @@
 #include "driftless/robot/subsystems/ring_sort/ColorRingSort.hpp"
 
+#include "pros/screen.hpp"
 namespace driftless {
 namespace robot {
 namespace subsystems {

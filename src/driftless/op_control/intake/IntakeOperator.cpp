@@ -105,9 +105,13 @@ void IntakeOperator::update(
         updateHoldUp(hold_up);
         break;
     }
-  }
 
   updateSpinner(spin, reverse);
+  } else {
+    m_robot->sendCommand(
+        robot::subsystems::ESubsystem::INTAKE,
+        robot::subsystems::ESubsystemCommand::INTAKE_SET_VOLTAGE, 0.0);
+  }
 }
 }  // namespace intake
 }  // namespace op_control

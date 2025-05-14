@@ -168,13 +168,17 @@ void ArmOperator::updateSmartToggle(
   bool is_climb_ready{is_climb_ready_state != nullptr &&
                       *static_cast<bool*>(is_climb_ready_state)};
 
+  void* is_going_climb_ready_state{m_robot->getState(
+      robot::subsystems::ESubsystem::ARM,
+      robot::subsystems::ESubsystemState::ARM_IS_GOING_CLIMB_READY)};
+  bool is_going_climb_ready{is_going_climb_ready_state != nullptr &&
+                            *static_cast<bool*>(is_going_climb_ready_state)};
+
   void* is_climb_state{
       m_robot->getState(robot::subsystems::ESubsystem::ARM,
                         robot::subsystems::ESubsystemState::ARM_IS_CLIMB)};
   bool is_climb{is_climb_state != nullptr &&
                 *static_cast<bool*>(is_climb_state)};
-
-  bool has_alliance_ring{hasAllianceRing(alliance)};
 
   bool is_color_sorting_paused{*static_cast<bool*>(m_process_system->getState(
       processes::EProcess::AUTO_RING_REJECTION,
@@ -194,8 +198,7 @@ void ArmOperator::updateSmartToggle(
     if (is_neutral) {
       m_robot->sendCommand(robot::subsystems::ESubsystem::ARM,
                            robot::subsystems::ESubsystemCommand::ARM_GO_LOAD);
-    } else if (is_load &&
-               (has_alliance_ring || (is_color_sorting_paused && hasRing()))) {
+    } else if (is_load && (hasRing())) {
       m_robot->sendCommand(robot::subsystems::ESubsystem::ARM,
                            robot::subsystems::ESubsystemCommand::ARM_GO_READY);
     } else if (is_ready) {
@@ -238,7 +241,7 @@ void ArmOperator::updateSmartToggle(
       m_robot->sendCommand(
           robot::subsystems::ESubsystem::ARM,
           robot::subsystems::ESubsystemCommand::ARM_GO_NEUTRAL);
-    } else if (is_climb_ready) {
+    } else if (is_climb_ready || is_going_climb_ready) {
       m_robot->sendCommand(robot::subsystems::ESubsystem::ARM,
                            robot::subsystems::ESubsystemCommand::ARM_GO_CLIMB);
     } else {
@@ -260,6 +263,9 @@ ArmOperator::ArmOperator(
 void ArmOperator::update(
     const std::unique_ptr<driftless::profiles::IProfile>& profile,
     const std::shared_ptr<alliance::IAlliance>& alliance) {
+bool is_eric_robot{profile->getName() == "ERIC"};
+bool is_tank_drive{profile->getControlMode(EControlType::DRIVE) == 0};
+
   EControllerDigital neutral{
       profile->getDigitalControlMapping(EControl::ARM_NEUTRAL)};
   EControllerDigital load{
@@ -274,20 +280,24 @@ void ArmOperator::update(
       profile->getDigitalControlMapping(EControl::ARM_RUSH)};
   EControllerDigital calibrate{
       profile->getDigitalControlMapping(EControl::ARM_CALIBRATE)};
+      if ((is_eric_robot && is_tank_drive) || (!is_eric_robot && !is_tank_drive)) {
+    calibrate = profile->getDigitalControlMapping(EControl::CLIMB_TOGGLE);
+  }
   EControllerDigital alliance_stake{
       profile->getDigitalControlMapping(EControl::ARM_ALLIANCE_STAKE)};
   EControllerDigital climb{
       profile->getDigitalControlMapping(EControl::ARM_CLIMB_CYCLE)};
 
-switch (
-    static_cast<EArmControlMode>(profile->getControlMode(EControlType::ARM))) {
-  case EArmControlMode::SPLIT_TOGGLE:
-    updateSplitToggle(neutral, load, ready, score, alliance);
-    break;
-  case EArmControlMode::SMART_TOGGLE:
-    updateSmartToggle(toggle, rush, calibrate, alliance_stake, climb, alliance);
-    break;
-}
+  switch (static_cast<EArmControlMode>(
+      profile->getControlMode(EControlType::ARM))) {
+    case EArmControlMode::SPLIT_TOGGLE:
+      updateSplitToggle(neutral, load, ready, score, alliance);
+      break;
+    case EArmControlMode::SMART_TOGGLE:
+      updateSmartToggle(toggle, rush, calibrate, alliance_stake, climb,
+                        alliance);
+      break;
+  }
 }
 }  // namespace arm
 }  // namespace op_control

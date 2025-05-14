@@ -20,6 +20,17 @@ void BlueRushAuton::armGoNeutral() {
                        robot::subsystems::ESubsystemCommand::ARM_GO_NEUTRAL);
 }
 
+void BlueRushAuton::armGoLoad() {
+  m_robot->sendCommand(robot::subsystems::ESubsystem::ARM,
+                       robot::subsystems::ESubsystemCommand::ARM_GO_LOAD);
+}
+
+void BlueRushAuton::armGoAllianceStake() {
+  m_robot->sendCommand(
+      robot::subsystems::ESubsystem::ARM,
+      robot::subsystems::ESubsystemCommand::ARM_GO_ALLIANCE_STAKE);
+}
+
 void BlueRushAuton::setClamp(bool clamped) {
   m_robot->sendCommand(robot::subsystems::ESubsystem::CLAMP,
                        robot::subsystems::ESubsystemCommand::CLAMP_SET_STATE,
@@ -60,6 +71,23 @@ void BlueRushAuton::setIntakeHeight(bool high) {
   m_robot->sendCommand(robot::subsystems::ESubsystem::INTAKE,
                        robot::subsystems::ESubsystemCommand::INTAKE_SET_HEIGHT,
                        high);
+}
+
+void BlueRushAuton::ejectRingsLeft() {
+  m_robot->sendCommand(
+      robot::subsystems::ESubsystem::ELEVATOR,
+      robot::subsystems::ESubsystemCommand::ELEVATOR_REJECT_LEFT);
+}
+
+void BlueRushAuton::ejectRingsRight() {
+  m_robot->sendCommand(
+      robot::subsystems::ESubsystem::ELEVATOR,
+      robot::subsystems::ESubsystemCommand::ELEVATOR_REJECT_RIGHT);
+}
+
+void BlueRushAuton::pushIntakeOut() {
+  m_robot->sendCommand(robot::subsystems::ESubsystem::INTAKE,
+                       robot::subsystems::ESubsystemCommand::INTAKE_PUSH_OUT);
 }
 
 void BlueRushAuton::setOdomPosition(double x, double y, double theta) {
@@ -264,9 +292,9 @@ bool BlueRushAuton::hasAllianceRing() {
   if (has_ring) {
     has_alliance_ring =
         ((m_alliance->getAlliance() == alliance::EAlliance::RED &&
-          ring_rgb.red > ring_rgb.blue) ||
+          ring_rgb.red * 0.75 > ring_rgb.blue) ||
          (m_alliance->getAlliance() == alliance::EAlliance::BLUE &&
-          ring_rgb.blue > ring_rgb.red));
+          ring_rgb.blue > ring_rgb.red * 0.85));
   }
 
   return has_alliance_ring;
@@ -289,12 +317,23 @@ bool BlueRushAuton::hasOpposingRing() {
   if (has_ring) {
     has_opposing_ring =
         ((m_alliance->getAlliance() == alliance::EAlliance::RED &&
-          ring_rgb.red < ring_rgb.blue) ||
+          ring_rgb.red * 0.95 < ring_rgb.blue) ||
          (m_alliance->getAlliance() == alliance::EAlliance::BLUE &&
-          ring_rgb.blue < ring_rgb.red));
+          ring_rgb.blue < ring_rgb.red * 0.6));
   }
 
   return has_opposing_ring;
+}
+
+bool BlueRushAuton::hasGoal() {
+  bool has_goal{};
+  void* has_goal_state{
+      m_robot->getState(robot::subsystems::ESubsystem::CLAMP,
+                        robot::subsystems::ESubsystemState::CLAMP_HAS_GOAL)};
+  if (has_goal_state != nullptr) {
+    has_goal = *static_cast<bool*>(has_goal_state);
+  }
+  return has_goal;
 }
 
 std::string BlueRushAuton::getName() { return AUTON_NAME; }
@@ -325,9 +364,9 @@ void BlueRushAuton::run(
   // Set the robots starting values
   uint32_t start_time{getTime()};
   if (alliance->getAlliance() == alliance::EAlliance::RED)
-    setOdomPosition(109.0, 125.0, M_PI / 2.0);
+    setOdomPosition(39.0, 19.5, 3 * M_PI / 2.0);
   else if (alliance->getAlliance() == alliance::EAlliance::BLUE)
-    setOdomPosition(144.0 - 109.0, 125.0, M_PI / 2.0);
+    setOdomPosition(144.0 - 39.0, 19.5, 3 * M_PI / 2.0);
   robot::subsystems::odometry::Position position{getOdomPosition()};
   double velocity{getOdomVelocity()};
 
@@ -335,155 +374,291 @@ void BlueRushAuton::run(
   control::Point target_point{};
   double target_distance{};
   double target_velocity{};
-  double target_angular_velocity{1.75 * M_PI};
+  double target_angular_velocity{4.0 * M_PI};
 
   startColorSort();
+  pushIntakeOut();
+  calibrateArm();
 
   // Start the rush path
-  std::vector<control::Point> rush_control_points{};
-  if (alliance->getAlliance() == alliance::EAlliance::RED) {
-    rush_control_points = std::vector<control::Point>{
-        control::Point{109.0, 125.0}, control::Point{108.0, 98.0},
-        control::Point{114.0, 96.0}, control::Point{121.0, 83.5}};
+  if (alliance->getAlliance() == alliance::EAlliance::RED)
+    target_point = control::Point{28.5, 63.35};
+  else if (alliance->getAlliance() == alliance::EAlliance::BLUE)
+    target_point = control::Point{144.0 - 28.35, 63.35};
 
-  } else if (alliance->getAlliance() == alliance::EAlliance::BLUE) {
-    rush_control_points =
-        std::vector<control::Point>{control::Point{144.0 - 109.0, 125.0},
-                                    control::Point{144.0 - 110.0, 98.0},
-                                    control::Point{144.0 - 116.0, 96.0},
-                                    control::Point{144.0 - 120.0, 82.0}};
-  }
+  target_velocity = 83.0;
 
-  std::vector<control::Point> rush_path{
-      control::path::BezierCurveInterpolation::calculate(rush_control_points)};
-  target_point = rush_control_points.back();
-  target_velocity = 72.0;
-
-  followPath(rush_path, target_velocity);
-  // Set up subsystems while moving to the path
-  setIntakeVoltage(12.0);
-  calibrateArm();
-  m_delayer->delay(75);
-  setIntakeVoltage(0.0);
+  driveStraight(-72.0, target_velocity, 3.0 * M_PI / 2.0);
 
   position = getOdomPosition();
   target_distance = distance(position.x, position.y, target_point.getX(),
                              target_point.getY());
-  while (target_distance > 28.0) {
-    m_delayer->delay(LOOP_DELAY);
-    position = getOdomPosition();
-    target_distance = distance(position.x, position.y, target_point.getX(),
-                               target_point.getY());
+
+  if (m_alliance->getAlliance() == alliance::EAlliance::RED) {
+    while (target_distance > 36.0) {
+      m_delayer->delay(LOOP_DELAY);
+      position = getOdomPosition();
+      target_distance = distance(position.x, position.y, target_point.getX(),
+                                 target_point.getY());
+    }
+  } else if (m_alliance->getAlliance() == alliance::EAlliance::BLUE) {
+    while (target_distance > 36.0) {
+      m_delayer->delay(LOOP_DELAY);
+      position = getOdomPosition();
+      target_distance = distance(position.x, position.y, target_point.getX(),
+                                 target_point.getY());
+    }
   }
 
-  target_distance = distance(position.x, position.y, target_point.getX(),
-                             target_point.getY());
-  while (target_distance > 15.0) {
-    m_delayer->delay(LOOP_DELAY);
-    position = getOdomPosition();
-    target_distance = distance(position.x, position.y, target_point.getX(),
-                               target_point.getY());
-  }
-  armGoNeutral();
-
-  target_velocity = 16.0;
   goToPoint(target_point.getX(), target_point.getY(), target_velocity);
-  position = getOdomPosition();
-  waitForGoToPoint(target_point.getX(), target_point.getY(), 1200, 0.5);
+
+  while (target_distance > 12.5) {
+    m_delayer->delay(LOOP_DELAY);
+    position = getOdomPosition();
+    target_distance = distance(position.x, position.y, target_point.getX(),
+                               target_point.getY());
+  }
+  target_velocity = 10.0;
+  setGoToPointVelocity(target_velocity);
+  waitForGoToPoint(target_point.getX(), target_point.getY(), 750, 1.0);
 
   setClamp(true);
   m_control_system->pause();
 
-  // raise the intake to get ready for the ring stacks
-  setIntakeHeight(true);
-  setIntakeVoltage(12.0);
-  m_delayer->delay(50);
+  armGoNeutral();
 
-  // Go to first ring stack
-  if (alliance->getAlliance() == alliance::EAlliance::RED) {
-    target_point = control::Point{124.0, 92.0};
-    turnToPoint(target_point.getX(), target_point.getY(),
-                target_angular_velocity,
-                control::motion::ETurnDirection::CLOCKWISE);
-  } else if (alliance->getAlliance() == alliance::EAlliance::BLUE) {
-    target_point = control::Point{144.0 - 123.0, 92.0};
-    turnToPoint(target_point.getX(), target_point.getY(),
-                target_angular_velocity,
-                control::motion::ETurnDirection::COUNTERCLOCKWISE);
-  }
-
-  waitForTurnToPoint(target_point.getX(), target_point.getY(), 500,
-                     M_PI / 10.0);
-  setElevatorVoltage(12.0);
-  delay(400);
-  target_velocity = 32.0;
-  goToPoint(target_point.getX(), target_point.getY(), target_velocity);
-  while (target_distance > 6.0) {
-    m_delayer->delay(LOOP_DELAY);
-    position = getOdomPosition();
-    target_distance = distance(position.x, position.y, target_point.getX(),
-                               target_point.getY());
-  }
-  setGoToPointVelocity(8.0);
-  setElevatorVoltage(6.0);
-  waitForGoToPoint(target_point.getX(), target_point.getY(), 1000, 0.5);
-  setIntakeHeight(false);
-  setClamp(false);
-  m_control_system->pause();
-
-  // wait until the robot sees an alliance ring to continue the path
-  waitForAllianceRing(500);
   position = getOdomPosition();
-  target_velocity = 36.0;
-  driveStraight(12.0, target_velocity, position.theta);
-  waitForDriveStraight(12.0, 1000, 0.5);
-  m_control_system->pause();
-  if (hasAllianceRing()) {
-    setIntakeVoltage(-12.0);
+  target_velocity = 32.0;
+
+  delay(100);
+  if (alliance->getAlliance() == alliance::EAlliance::RED) {
+    driveStraight(10.0, target_velocity, position.theta + (M_PI / 12.0));
+    waitForDriveStraight(10.0, 1000, 0.5);
+  } else if (alliance->getAlliance() == alliance::EAlliance::BLUE) {
+    driveStraight(12.0, target_velocity, position.theta - (M_PI / 12.0));
+    waitForDriveStraight(12.0, 1000, 0.5);
+  }
+
+  if (hasGoal()) {
+    setElevatorVoltage(12.0);
+    setIntakeVoltage(12.0);
+    delay(50);
+
+    // Go to first ring stack
+    if (alliance->getAlliance() == alliance::EAlliance::RED) {
+      target_point = control::Point{27.0, 49.5};
+      turnToPoint(target_point.getX(), target_point.getY(),
+                  target_angular_velocity / 3.0,
+                  control::motion::ETurnDirection::CLOCKWISE);
+    } else if (alliance->getAlliance() == alliance::EAlliance::BLUE) {
+      target_point = control::Point{144.0 - 27.0, 51.0};
+      turnToPoint(target_point.getX(), target_point.getY(),
+                  target_angular_velocity / 3.0,
+                  control::motion::ETurnDirection::COUNTERCLOCKWISE);
+    }
+
+    waitForTurnToPoint(target_point.getX(), target_point.getY(), 750,
+                       M_PI / 10.0);
+
+    delay(400);
+
+    setClamp(false);
+    setElevatorVoltage(12.0);
+    target_velocity = 24.0;
+    goToPoint(target_point.getX(), target_point.getY(), target_velocity);
+    waitForGoToPoint(target_point.getX(), target_point.getY(), 1500, 7.0);
+
+    // wait until the robot sees an alliance ring to continue the path
+    delay(250);
+    position = getOdomPosition();
+    target_velocity = 30.0;
+    driveStraight(12.0, target_velocity, position.theta);
+    waitForAllianceRing(1500);
+    setElevatorVoltage(0.0);
+    setIntakeVoltage(0.0);
+
+    if (m_alliance->getAlliance() == alliance::EAlliance::RED) {
+      ejectRingsRight();
+    } else if (m_alliance->getAlliance() == alliance::EAlliance::BLUE) {
+      ejectRingsRight();
+    }
+
+    position = getOdomPosition();
+    turnToAngle(M_PI / 2.0, target_angular_velocity,
+                control::motion::ETurnDirection::AUTO);
+    waitForTurnToAngle(M_PI / 2.0, 1000, M_PI / 10.0);
+    // MISSED GOAL ROUTE
+  } else {
+    setClamp(false);
+    position = getOdomPosition();
+
+    target_velocity = 32.0;
+    if (m_alliance->getAlliance() == alliance::EAlliance::RED) {
+      target_point = control::Point{38.0, 20.0};
+    } else if (m_alliance->getAlliance() == alliance::EAlliance::BLUE) {
+      target_point = control::Point{144.0 - 38.0, 20.0};
+    }
+
+    goToPoint(target_point.getX(), target_point.getY(), target_velocity);
+    waitForGoToPoint(target_point.getX(), target_point.getY(), 1500, 1.5);
+
+    if (m_alliance->getAlliance() == alliance::EAlliance::RED) {
+      turnToAngle(M_PI, target_angular_velocity,
+                  control::motion::ETurnDirection::AUTO);
+      waitForTurnToAngle(M_PI, 750, M_PI / 5.0);
+    } else if (m_alliance->getAlliance() == alliance::EAlliance::BLUE) {
+      turnToAngle(0.0, target_angular_velocity,
+                  control::motion::ETurnDirection::AUTO);
+      waitForTurnToAngle(0.0, 750, M_PI / 5.0);
+    }
   }
 
   // go to the next mobile goal
-  if (alliance->getAlliance() == alliance::EAlliance::RED)
-    target_point = control::Point{83.0, 121.5};
-  else if (alliance->getAlliance() == alliance::EAlliance::BLUE)
-    target_point = control::Point{144.0 - 84.0, 121.5};
 
-  position = getOdomPosition();
-  turnToPoint(mirrorValue(target_point.getX(), position.x),
-              mirrorValue(target_point.getY(), position.y),
-              target_angular_velocity, control::motion::ETurnDirection::AUTO);
-  waitForTurnToPoint(mirrorValue(target_point.getX(), position.x),
-                     mirrorValue(target_point.getY(), position.y), 800,
-                     M_PI / 20.0);
-  setIntakeVoltage(0.0);
-  setElevatorVoltage(0.0);
-  target_velocity = 72.0;
+  if (alliance->getAlliance() == alliance::EAlliance::RED) {
+    target_point = control::Point{52.0, 19.0};
+  } else if (alliance->getAlliance() == alliance::EAlliance::BLUE) {
+    target_point = control::Point{144.0 - 52.0, 20.0};
+  }
+
+  target_velocity = 83.0;
+  goToPoint(target_point.getX(), target_point.getY(), target_velocity);
+  waitForGoToPoint(target_point.getX(), target_point.getY(), 2000, 1.0);
+
+  if (alliance->getAlliance() == alliance::EAlliance::RED) {
+    target_point = control::Point{74.0, 23.25};
+  } else if (alliance->getAlliance() == alliance::EAlliance::BLUE) {
+    target_point = control::Point{144.0 - 74.0, 25.0};
+  }
+
+  target_velocity = 64.0;
+
   goToPoint(target_point.getX(), target_point.getY(), target_velocity);
 
   position = getOdomPosition();
   target_distance = distance(position.x, position.y, target_point.getX(),
                              target_point.getY());
   // delay until close to the goal
-  while (target_distance > 14.0) {
+  while (target_distance > 20.0) {
     m_delayer->delay(LOOP_DELAY);
     position = getOdomPosition();
     target_distance = distance(position.x, position.y, target_point.getX(),
                                target_point.getY());
   }
   // slow down near the target
-  target_velocity = 16.0;
+  target_velocity = 36.0;
   setGoToPointVelocity(target_velocity);
-  waitForGoToPoint(target_point.getX(), target_point.getY(), 3000, 1.0);
+  waitForGoToPoint(target_point.getX(), target_point.getY(), 3000, 2.0);
+  position = getOdomPosition();
+  target_velocity = 24.0;
+  driveStraight(-18.0, target_velocity, position.theta);
+  delay(200);
   setClamp(true);
+  waitForDriveStraight(-18.0, 3000, 1.0);
+  m_control_system->pause();
+  setElevatorVoltage(12.0);
   delay(75);
 
-  // get orange preload
-  if (alliance->getAlliance() == alliance::EAlliance::RED)
-    target_point = control::Point{61.0, 118.0};
-  else if (alliance->getAlliance() == alliance::EAlliance::BLUE)
-    target_point = control::Point{144.0 - 61.0, 118.0};
+  target_velocity = 48.0;
+  position = getOdomPosition();
+  turnToAngle(-M_PI / 2.0, target_angular_velocity / 3.0,
+              control::motion::ETurnDirection::AUTO);
+  waitForTurnToAngle(-M_PI / 2.0, 1000, M_PI / 4.0);
+
+  // alliance stake
+  if (m_alliance->getAlliance() == alliance::EAlliance::RED) {
+    target_point = control::Point{71.0, 13.0};
+  } else if (m_alliance->getAlliance() == alliance::EAlliance::BLUE) {
+    target_point = control::Point{144.0 - 73.5, 16.0};
+  }
+
+  if (m_alliance->getAlliance() == alliance::EAlliance::RED) {
+    ejectRingsRight();
+  } else if (m_alliance->getAlliance() == alliance::EAlliance::BLUE) {
+    ejectRingsLeft();
+  }
+
   target_velocity = 72.0;
+
+  turnToPoint(target_point.getX(), target_point.getY(), target_angular_velocity,
+              control::motion::ETurnDirection::AUTO);
+  waitForTurnToPoint(target_point.getX(), target_point.getY(), 1000,
+                     M_PI / 10.0);
   goToPoint(target_point.getX(), target_point.getY(), target_velocity);
+
+  setElevatorVoltage(12.0);
+  setIntakeVoltage(12.0);
+  calibrateArm();
+
+  waitForGoToPoint(target_point.getX(), target_point.getY(), 1500, 1.0);
+  m_control_system->pause();
+
+  target_velocity = 32.0;
+  if (alliance->getAlliance() == alliance::EAlliance::RED) {
+    target_point = control::Point{71.5, 3.0};
+  } else if (alliance->getAlliance() == alliance::EAlliance::BLUE) {
+    target_point = control::Point{144.0 - 71.75, 3.0};
+  }
+
+  turnToAngle(-M_PI / 2.0, target_angular_velocity,
+              control::motion::ETurnDirection::AUTO);
+  waitForTurnToAngle(-M_PI / 2.0, 1000, M_PI / 10.0);
+
+  goToPoint(target_point.getX(), target_point.getY(), target_velocity);
+  waitForGoToPoint(target_point.getX(), target_point.getY(), 550, 1.0);
+
+  position = getOdomPosition();
+  driveStraight(-1.0, target_velocity, position.theta);
+  waitForDriveStraight(-1.0, 300, 0.5);
+  m_control_system->pause();
+
+  armGoAllianceStake();
+  setElevatorVoltage(0.0);
+  setIntakeVoltage(0.0);
+  delay(700);
+
+  target_velocity = 36.0;
+  driveStraight(-15.0, target_velocity, -M_PI / 2.0);
+  waitForDriveStraight(-15.0, 1250, 0.5);
+  armGoNeutral();
+  m_control_system->pause();
+
+  // Orange preload
+
+  setIntakeVoltage(12.0);
+  setElevatorVoltage(12.0);
+
+  if (alliance->getAlliance() == alliance::EAlliance::RED)
+    target_point = control::Point{94.0, 17.0};
+  else if (alliance->getAlliance() == alliance::EAlliance::BLUE)
+    target_point = control::Point{144.0 - 94.0, 17.0};
+
+  target_velocity = 83.0;
+  turnToPoint(target_point.getX(), target_point.getY(), target_angular_velocity,
+              control::motion::ETurnDirection::AUTO);
+  waitForTurnToPoint(target_point.getX(), target_point.getY(), 1500,
+                     M_PI / 5.0);
+  goToPoint(target_point.getX(), target_point.getY(), target_velocity);
+  waitForGoToPoint(target_point.getX(), target_point.getY(), 3000, 2.0);
+  m_control_system->pause();
+
+  // next rings
+
+  if (alliance->getAlliance() == alliance::EAlliance::RED) {
+    target_point = control::Point{118.0, 48.0};
+  } else if (alliance->getAlliance() == alliance::EAlliance::BLUE) {
+    target_point = control::Point{144.0 - 121.0, 48.0};
+  }
+
+  target_velocity = 72.0;
+  turnToPoint(target_point.getX(), target_point.getY(), target_angular_velocity,
+              control::motion::ETurnDirection::AUTO);
+  waitForTurnToPoint(target_point.getX(), target_point.getY(), 1500,
+                     M_PI / 5.0);
+  goToPoint(target_point.getX(), target_point.getY(), target_velocity);
+
+  setIntakeVoltage(12.0);
+
   position = getOdomPosition();
   target_distance = distance(position.x, position.y, target_point.getX(),
                              target_point.getY());
@@ -493,174 +668,148 @@ void BlueRushAuton::run(
     target_distance = distance(position.x, position.y, target_point.getX(),
                                target_point.getY());
   }
-  target_velocity = 32.0;
+
+  target_velocity = 28.0;
+  setGoToPointVelocity(target_velocity);
+
+  waitForGoToPoint(target_point.getX(), target_point.getY(), 3000, 2.0);
+
+  position = getOdomPosition();
+  target_velocity = 16.0;
+  if (m_alliance->getAlliance() == alliance::EAlliance::RED) {
+    driveStraight(14.0, target_velocity, position.theta + M_PI / 10.0);
+  } else if (m_alliance->getAlliance() == alliance::EAlliance::BLUE) {
+    driveStraight(14.0, target_velocity, position.theta - M_PI / 10.0);
+  }
+  waitForAllianceRing(1000);
   setElevatorVoltage(0.0);
-  if (alliance->getAlliance() == alliance::EAlliance::RED)
-    turnToPoint(target_point.getX(), target_point.getY(),
-                target_angular_velocity,
-                control::motion::ETurnDirection::COUNTERCLOCKWISE);
-  else if (alliance->getAlliance() == alliance::EAlliance::BLUE)
-    turnToPoint(target_point.getX(), target_point.getY(),
-                target_angular_velocity,
-                control::motion::ETurnDirection::CLOCKWISE);
+  m_control_system->pause();
 
-  waitForTurnToPoint(target_point.getX(), target_point.getY(), 1000,
-                     M_PI / 4.0);
+  if (alliance->getAlliance() == alliance::EAlliance::RED) {
+    target_point = control::Point{120.0, 24.0};
+  } else if (alliance->getAlliance() == alliance::EAlliance::BLUE) {
+    target_point = control::Point{144.0 - 120.0, 24.0};
+  }
+
+  turnToPoint(target_point.getX(), target_point.getY(), target_angular_velocity,
+              control::motion::ETurnDirection::AUTO);
+  waitForTurnToPoint(target_point.getX(), target_point.getY(), 1500,
+                     M_PI / 5.0);
   setElevatorVoltage(12.0);
 
+  target_velocity = 56.0;
   goToPoint(target_point.getX(), target_point.getY(), target_velocity);
-  setIntakeVoltage(12.0);
-  setElevatorVoltage(12.0);
-  waitForGoToPoint(target_point.getX(), target_point.getY(), 1000, 1.0);
-  waitForAllianceRing(3000);
+  waitForGoToPoint(target_point.getX(), target_point.getY(), 3000, 2.0);
 
-  // move towards next rings
-  if (alliance->getAlliance() == alliance::EAlliance::RED)
-    target_point = control::Point{32.0, 99.0};
-  else if (alliance->getAlliance() == alliance::EAlliance::BLUE)
-    target_point = control::Point{144.0 - 32.0, 100.0};
+  if (alliance->getAlliance() == alliance::EAlliance::RED) {
+    target_point = control::Point{140.0, 0.0};
+  } else if (alliance->getAlliance() == alliance::EAlliance::BLUE) {
+    target_point = control::Point{144.0 - 140.0, 0.0};
+  }
+
+  turnToPoint(target_point.getX(), target_point.getY(), target_angular_velocity,
+              control::motion::ETurnDirection::AUTO);
+  waitForTurnToPoint(target_point.getX(), target_point.getY(), 1500,
+                     M_PI / 25.0);
+
+  position = getOdomPosition();
+
+  setIntakeHeight(true);
+  target_velocity = 24.0;
   goToPoint(target_point.getX(), target_point.getY(), target_velocity);
-  setIntakeVoltage(12.0);
-  setElevatorVoltage(12.0);
+  waitForGoToPoint(target_point.getX(), target_point.getY(), 1250, 2.0);
+  setIntakeHeight(false);
+  waitForAllianceRing(1000);
 
-  while (target_distance > 20.0) {
+  for (int i = 0; i < 2; ++i) {
+    position = getOdomPosition();
+    target_velocity = 30.0;
+    driveStraight(-12.0, target_velocity, position.theta);
+    waitForDriveStraight(-12.0, 800, 0.5);
+    delay(150);
+
+    target_velocity = 30.0;
+    driveStraight(20.0, target_velocity, position.theta);
+    waitForDriveStraight(20.0, 1200, 0.5);
+
+    delay(150);
+  }
+
+  driveStraight(-20.0, target_velocity, position.theta);
+  waitForDriveStraight(-20.0, 1000, 0.5);
+  m_control_system->pause();
+  delay(100);
+
+  if (m_alliance->getAlliance() == alliance::EAlliance::RED) {
+    turnToAngle(3 * M_PI / 4.0, target_angular_velocity,
+                control::motion::ETurnDirection::AUTO);
+    waitForTurnToAngle(3 * M_PI / 4.0, 1000, M_PI / 10.0);
+  } else if (m_alliance->getAlliance() == alliance::EAlliance::BLUE) {
+    turnToAngle(M_PI / 4.0, target_angular_velocity,
+                control::motion::ETurnDirection::AUTO);
+    waitForTurnToAngle(M_PI / 4.0, 1000, M_PI / 10.0);
+  }
+
+  setClamp(false);
+  setElevatorVoltage(-12.0);
+  setIntakeVoltage(-12.0);
+
+  if (m_alliance->getAlliance() == alliance::EAlliance::RED) {
+    driveStraight(-16.0, target_velocity, 3.0 * M_PI / 4.0);
+    waitForDriveStraight(-16.0, 1000, 0.5);
+
+    position = getOdomPosition();
+    target_velocity = 36.0;
+    driveStraight(12.0, target_velocity, position.theta);
+    waitForDriveStraight(12.0, 1000, 0.5);
+    delay(100);
+
+    target_point = control::Point{81.0, 56.0};
+    turnToAngle(-M_PI / 4.0, target_angular_velocity / 2.0,
+                control::motion::ETurnDirection::AUTO);
+    waitForTurnToAngle(-M_PI / 4.0, 1000, M_PI / 10.0);
+  } else if (m_alliance->getAlliance() == alliance::EAlliance::BLUE) {
+    driveStraight(-16.0, target_velocity, M_PI / 4.0);
+    waitForDriveStraight(-16.0, 1000, 0.5);
+
+    position = getOdomPosition();
+    target_velocity = 36.0;
+    driveStraight(12.0, target_velocity, position.theta);
+    waitForDriveStraight(12.0, 1000, 0.5);
+    delay(100);
+
+    target_point = control::Point{144.0 - 74.0, 60.0};
+    turnToAngle(-3.0 * M_PI / 4.0, target_angular_velocity / 2.0,
+                control::motion::ETurnDirection::AUTO);
+    waitForTurnToAngle(-3.0 * M_PI / 4.0, 1000, M_PI / 10.0);
+  }
+  delay(100);
+
+  target_velocity = 54.0;
+  goToPoint(target_point.getX(), target_point.getY(), target_velocity);
+
+  position = getOdomPosition();
+  target_distance = distance(position.x, position.y, target_point.getX(),
+                             target_point.getY());
+
+  while (target_distance > 14.0) {
     m_delayer->delay(LOOP_DELAY);
     position = getOdomPosition();
     target_distance = distance(position.x, position.y, target_point.getX(),
                                target_point.getY());
   }
-  setIntakeHeight(true);
-  waitForGoToPoint(target_point.getX(), target_point.getY(), 2500, 1.0);
-  setIntakeHeight(false);
-
-  waitForOpposingRing(400);
-  position = getOdomPosition();
-  driveStraight(15.0, target_velocity, position.theta);
-  waitForDriveStraight(15.0, 1000, 0.5);
+  target_velocity = 16.0;
+  setGoToPointVelocity(target_velocity);
+  waitForGoToPoint(target_point.getX(), target_point.getY(), 1500, 1.0);
   m_control_system->pause();
-  waitForOpposingRing(1000);
 
-  // move to next rings (cont.)
+  target_velocity = 72.0;
+  goToPoint(144.0 - 48.0, 50.0, target_velocity);
+  waitForGoToPoint(144 - 48, 50.0, 2000, 2.0);
 
-  setIntakeHeight(true);
-  setElevatorVoltage(0.0);
-  if (alliance->getAlliance() == alliance::EAlliance::RED)
-    target_point = control::Point{30.5, 116.0};
-  else if (alliance->getAlliance() == alliance::EAlliance::BLUE)
-    target_point = control::Point{144.0 - 30.5, 116.0};
-  target_velocity = 32.0;
-  turnToPoint(target_point.getX(), target_point.getY(), target_angular_velocity,
-              control::motion::ETurnDirection::AUTO);
-  waitForTurnToPoint(target_point.getX(), target_point.getY(), 1500,
-                     M_PI / 15.0);
-  setElevatorVoltage(12.0);
-  goToPoint(target_point.getX(), target_point.getY(), target_velocity);
-  waitForGoToPoint(target_point.getX(), target_point.getY(), 2500, 1.0);
-  setIntakeHeight(false);
-
-  waitForAllianceRing(400);
-  position = getOdomPosition();
-  target_velocity = 40.0;
-  driveStraight(10.0, target_velocity, position.theta);
-  waitForDriveStraight(10.0, 1000, 0.5);
+  turnToAngle(M_PI / 2.0, target_angular_velocity, control::motion::ETurnDirection::AUTO);
+  waitForTurnToAngle(M_PI / 2.0, 1000, M_PI / 5.0);
   m_control_system->pause();
-  waitForAllianceRing(2000);
-  setElevatorVoltage(0.0);
-  delay(500);
-
-  // Line up for corner
-  if (alliance->getAlliance() == alliance::EAlliance::RED) {
-    target_point = control::Point{45.0, 130.0};
-    target_velocity = 16.0;
-    turnToPoint(target_point.getX(), target_point.getY(),
-                target_angular_velocity, control::motion::ETurnDirection::AUTO);
-    waitForTurnToPoint(target_point.getX(), target_point.getY(), 1000,
-                       M_PI / 25.0);
-    setElevatorVoltage(12.0);
-
-    goToPoint(target_point.getX(), target_point.getY(), target_velocity);
-    waitForGoToPoint(target_point.getX(), target_point.getY(), 1000, 0.5);
-    position = getOdomPosition();
-    target_velocity = 42.0;
-    driveStraight(5.0, target_velocity, position.theta);
-    waitForDriveStraight(5.0, 700, 0.5);
-    m_control_system->pause();
-  } else if (alliance->getAlliance() == alliance::EAlliance::BLUE) {
-    setElevatorVoltage(12.0);
-    
-    position = getOdomPosition();
-    driveStraight(8.0, target_velocity, position.theta);
-    waitForDriveStraight(8.0, 700, 0.5);
-    m_control_system->pause();
-  }
-
-  // attempt to clear corner :)
-  setIntakeHeight(true);
-
-  if (alliance->getAlliance() == alliance::EAlliance::RED) {
-    target_point = control::Point{0.0, 140.0};
-    turnToPoint(target_point.getX(), target_point.getY(),
-                target_angular_velocity,
-                control::motion::ETurnDirection::COUNTERCLOCKWISE);
-  } else if (alliance->getAlliance() == alliance::EAlliance::BLUE) {
-    target_point = control::Point{144.0 - 0.0, 140.0};
-    turnToPoint(target_point.getX(), target_point.getY(),
-                target_angular_velocity,
-                control::motion::ETurnDirection::CLOCKWISE);
-  }
-  waitForTurnToPoint(target_point.getX(), target_point.getY(), 3000,
-                     M_PI / 25.0);
-
-  target_velocity = 36.0;
-  goToPoint(target_point.getX(), target_point.getY(), target_velocity);
-  waitForGoToPoint(target_point.getX(), target_point.getY(), 1750, 0.5);
-
-  setIntakeHeight(false);
-
-  target_velocity = 20;
-  position = getOdomPosition();
-  while (current_time < start_time + 23500) {
-    driveStraight(5.0, target_velocity, position.theta);
-    waitForDriveStraight(5.0, 500, 0.5);
-    m_control_system->pause();
-    delay(100);
-    driveStraight(-4.5, target_velocity, position.theta);
-    waitForDriveStraight(-4.5, 500, 0.5);
-    m_control_system->pause();
-    delay(100);
-    current_time = getTime();
-  }
-  target_velocity = 48.0;
-  driveStraight(-10.0, target_velocity, position.theta);
-  waitForDriveStraight(-10.0, 1000, 0.5);
-  driveStraight(15.0, target_velocity, position.theta);
-  waitForDriveStraight(15.0, 1000, 0.5);
-  if (alliance->getAlliance() == alliance::EAlliance::RED) {
-    driveStraight(-20.0, target_velocity, 3.0 * M_PI / 4.0);
-    waitForDriveStraight(-20.0, 2000, 0.5);
-    turnToAngle(-M_PI / 4.0, target_angular_velocity,
-                control::motion::ETurnDirection::AUTO);
-    waitForTurnToAngle(-M_PI / 4.0, 1000, M_PI / 25.0);
-    setClamp(false);
-    driveStraight(-20.0, target_velocity, -M_PI / 4.0);
-    waitForDriveStraight(-20.0, 500, 0.5);
-    driveStraight(25.0, target_velocity, -M_PI / 4.0);
-    waitForDriveStraight(25.0, 1000, 0.5);
-  } else if (alliance->getAlliance() == alliance::EAlliance::BLUE) {
-    driveStraight(-20.0, target_velocity, M_PI / 4.0);
-    waitForDriveStraight(-20.0, 2000, 0.5);
-    turnToAngle(-3.0 * M_PI / 4.0, target_angular_velocity,
-                control::motion::ETurnDirection::AUTO);
-    waitForTurnToAngle(-3.0 * M_PI / 4.0, 1000, M_PI / 25.0);
-    setClamp(false);
-    driveStraight(-20.0, target_velocity, -3.0 * M_PI / 4.0);
-    waitForDriveStraight(-20.0, 500, 0.5);
-    driveStraight(25.0, target_velocity, -3.0 * M_PI / 4.0);
-    waitForDriveStraight(25.0, 1000, 0.5);
-  }
-  m_control_system->pause();
-  setElevatorVoltage(0.0);
-  setIntakeVoltage(0.0);
 
   // Print the run-time for routing purposes, determine how much more can be
   // done after current tasks

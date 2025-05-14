@@ -100,17 +100,6 @@ void PIDArmMotion::updateState() {
         state = EState::CLIMB;
       }
       break;
-    case EState::LOAD_INTERMEDIATE:
-      if (previous_state != EState::NEUTRAL ||
-          (std::abs(m_rotational_load_intermediate_position -
-                    rotation_position) <= m_rotational_tolerance &&
-           std::abs(m_linear_load_intermediate_position - linear_position) <=
-               m_linear_tolerance)) {
-        state = EState::LOAD_MOTION;
-        rotational_target_position = m_rotational_load_position;
-        linear_target_position = m_linear_load_position;
-      }
-      break;
     case EState::READY_INTERMEDIATE:
       if (m_rotational_rush_intermediate_position - rotation_position <=
           m_rotational_tolerance) {
@@ -222,7 +211,7 @@ void PIDArmMotion::calibrate() {
   calibrating = true;
   calibrate_time = m_clock->getTime();
   m_rotation_motors.setVoltage(-8.0);
-  m_linear_motors.setVoltage(-4.0);
+  m_linear_motors.setVoltage(-9.0);
 
   if (m_mutex) {
     m_mutex->give();
@@ -248,9 +237,9 @@ void PIDArmMotion::goLoad() {
     m_mutex->take();
   }
   if (state != EState::LOAD && state != EState::LOAD_MOTION) {
-    state = EState::LOAD_INTERMEDIATE;
-    rotational_target_position = m_rotational_load_intermediate_position;
-    linear_target_position = m_linear_load_intermediate_position;
+    state = EState::LOAD_MOTION;
+    rotational_target_position = m_rotational_load_position;
+    linear_target_position = m_linear_load_position;
   }
   if (m_mutex) {
     m_mutex->give();
@@ -397,6 +386,10 @@ bool PIDArmMotion::isGoingAllianceStake() {
 }
 
 bool PIDArmMotion::isAtClimbReady() { return (state == EState::CLIMB_READY); }
+
+bool PIDArmMotion::isGoingClimbReady() {
+  return (state == EState::CLIMB_READY_MOTION);
+}
 
 bool PIDArmMotion::isAtClimb() { return (state == EState::CLIMB || state == EState::CLIMB_MOTION); }
 

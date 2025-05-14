@@ -298,6 +298,8 @@ class PIDArmMotion : public IArmMotion {
   /// @return __bool__ True if at climb ready, false otherwise
   bool isAtClimbReady() override;
 
+  bool isGoingClimbReady() override;
+
   /// @brief Determines if the arm is at the climb position
   /// @return __bool__ True if at climb, false otherwise
   bool isAtClimb() override;

@@ -14,6 +14,7 @@
 #include "driftless/op_control/drivetrain/DrivetrainOperator.hpp"
 #include "driftless/op_control/elevator/ElevatorOperator.hpp"
 #include "driftless/op_control/intake/IntakeOperator.hpp"
+#include "driftless/op_control/controller_swap/ControllerSwapOperator.hpp"
 #include "driftless/processes/ProcessSystem.hpp"
 #include "driftless/profiles/IProfile.hpp"
 #include "driftless/robot/Robot.hpp"

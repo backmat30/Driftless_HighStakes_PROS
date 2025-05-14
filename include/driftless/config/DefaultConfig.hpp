@@ -122,7 +122,7 @@ class DefaultConfig : public IConfig {
   // drive straight
 
   /// @brief kp value for the drive straight linear pid controller
-  static constexpr double PID_DRIVE_STRAIGHT_LINEAR_KP{5.5};
+  static constexpr double PID_DRIVE_STRAIGHT_LINEAR_KP{12.0};
   /// @brief ki value for the drive straight linear pid controller
   static constexpr double PID_DRIVE_STRAIGHT_LINEAR_KI{0};
   /// @brief kd value for the drive straight linear pid controller
@@ -141,17 +141,17 @@ class DefaultConfig : public IConfig {
   // go to point
 
   /// @brief kp value for the go to point linear pid controller
-  static constexpr double PID_GO_TO_POINT_LINEAR_KP{5.2};
+  static constexpr double PID_GO_TO_POINT_LINEAR_KP{6.5};
   /// @brief ki value for the go to point linear pid controller
   static constexpr double PID_GO_TO_POINT_LINEAR_KI{0};
   /// @brief kd value of the go to point linear pid controller
-  static constexpr double PID_GO_TO_POINT_LINEAR_KD{200};
+  static constexpr double PID_GO_TO_POINT_LINEAR_KD{280};
   /// @brief kp value for the go to point rotational pid controller
-  static constexpr double PID_GO_TO_POINT_ROTATIONAL_KP{1.5};
+  static constexpr double PID_GO_TO_POINT_ROTATIONAL_KP{2.9};
   /// @brief ki value for the go to point rotational pid controller
   static constexpr double PID_GO_TO_POINT_ROTATIONAL_KI{0};
   /// @brief kd value for the go to point rotational pid controller
-  static constexpr double PID_GO_TO_POINT_ROTATIONAL_KD{100};
+  static constexpr double PID_GO_TO_POINT_ROTATIONAL_KD{230};
   /// @brief the target tolerance of the go to point algorithm
   static constexpr double PID_GO_TO_POINT_TARGET_TOLERANCE{0.5};
   /// @brief the target velocity of the go to point algorithm
@@ -318,32 +318,32 @@ class DefaultConfig : public IConfig {
   /// @brief arm linear pid controller kd value
   static constexpr double PID_ARM_LINEAR_KD{200.0};
   /// @brief arm rotational neutral position
-  static constexpr double ARM_ROTATIONAL_NEUTRAL_POSITION{0.075 * 2.0 * M_PI};
+  static constexpr double ARM_ROTATIONAL_NEUTRAL_POSITION{0.15 * 2.0 * M_PI};
   /// @brief arm rotational load position
-  static constexpr double ARM_ROTATIONAL_LOAD_POSITION{0.075 * 2.0 * M_PI};
+  static constexpr double ARM_ROTATIONAL_LOAD_POSITION{0.15 * 2.0 * M_PI};
   /// @brief arm rotational ready position
   static constexpr double ARM_ROTATIONAL_READY_POSITION{1.2 * 2.0 * M_PI};
   /// @brief arm rotational score position
-  static constexpr double ARM_ROTATIONAL_SCORE_POSITION{1.3 * 2.0 * M_PI};
+  static constexpr double ARM_ROTATIONAL_SCORE_POSITION{1.45 * 2.0 * M_PI};
   /// @brief arm rotational rush position
-  static constexpr double ARM_ROTATIONAL_RUSH_POSITION{2.1 * 2.0 * M_PI};
+  static constexpr double ARM_ROTATIONAL_RUSH_POSITION{2.25 * 2.0 * M_PI};
 
-  static constexpr double ARM_ROTATIONAL_ALLIANCE_STAKE_POSITION{1.7 * 2.0 *
+  static constexpr double ARM_ROTATIONAL_ALLIANCE_STAKE_POSITION{1.71 * 2.0 *
                                                                  M_PI};
 
-  static constexpr double ARM_ROTATIONAL_CLIMB_POSITION{1.0 * 2.0 * M_PI};
+  static constexpr double ARM_ROTATIONAL_CLIMB_POSITION{1.38 * 2.0 * M_PI};
 
   /// @brief The intermediate position on the rotation towards the arm ready
   /// position
-  static constexpr double ARM_ROTATIONAL_READY_INTERMEDIATE_POSITION{0.5 * 2.0 *
+  static constexpr double ARM_ROTATIONAL_READY_INTERMEDIATE_POSITION{0.75 * 2.0 *
                                                                      M_PI};
   /// @brief The intermediate position on the rotation towards the arm score
   /// position
-  static constexpr double ARM_ROTATIONAL_SCORE_INTERMEDIATE_POSITION{1.3 * 2.0 *
+  static constexpr double ARM_ROTATIONAL_SCORE_INTERMEDIATE_POSITION{1.4 * 2.0 *
                                                                      M_PI};
   /// @brief The intermediate position on the rotation towards the arm rush
   /// position
-  static constexpr double ARM_ROTATIONAL_RUSH_INTERMEDIATE_POSITION{0.5 * 2.0 *
+  static constexpr double ARM_ROTATIONAL_RUSH_INTERMEDIATE_POSITION{0.75 * 2.0 *
                                                                     M_PI};
 
   static constexpr double ARM_ROTATIONAL_ALLIANCE_STAKE_INTERMEDIATE_POSITION{
@@ -353,7 +353,7 @@ class DefaultConfig : public IConfig {
   /// @brief arm linear neutral position
   static constexpr double ARM_LINEAR_NEUTRAL_POSITION{0.5 * 2.0 * M_PI};
   /// @brief arm linear load position
-  static constexpr double ARM_LINEAR_LOAD_POSITION{0.05 * 2.0 * M_PI};
+  static constexpr double ARM_LINEAR_LOAD_POSITION{0.08 * 2.0 * M_PI};
   /// @brief arm linear ready position
   static constexpr double ARM_LINEAR_READY_POSITION{0.965 * 2 * M_PI};
   /// @brief arm linear score position
@@ -363,9 +363,9 @@ class DefaultConfig : public IConfig {
 
   static constexpr double ARM_LINEAR_ALLIANCE_STAKE_POSITION{0.175 * 2 * M_PI};
 
-  static constexpr double ARM_LINEAR_CLIMB_READY_POSITION{0.5 * 2 * M_PI};
+  static constexpr double ARM_LINEAR_CLIMB_READY_POSITION{0.4 * 2 * M_PI};
 
-  static constexpr double ARM_LINEAR_CLIMB_POSITION{0.05 * 2 * M_PI};
+  static constexpr double ARM_LINEAR_CLIMB_POSITION{0.16 * 2 * M_PI};
 
   /// @brief arm linear position tolerance
   static constexpr double ARM_LINEAR_TOLERANCE{0.1};
@@ -406,14 +406,14 @@ class DefaultConfig : public IConfig {
 
   static constexpr double ODOMETRY_SENSOR_LOCAL_Y_OFFSET{-1.125};
 
-  static constexpr double ODOMETRY_SENSOR_LOCAL_THETA_OFFSET{M_PI};
+  static constexpr double ODOMETRY_SENSOR_LOCAL_THETA_OFFSET{M_PI / 2.0};
 
   static constexpr int ODOMETRY_BAUD_RATE{74880};
 
   // ring sensor
 
   /// @brief The distance from the color sensor to the end of the elevator
-  static constexpr double RING_SORT_COLOR_SENSOR_TO_END{3.35};
+  static constexpr double RING_SORT_COLOR_SENSOR_TO_END{1.8};
   /// @brief The minimum proximity value to be considered a ring
   static constexpr uint8_t RING_SORT_MIN_RING_PROXIMITY{50};
 
